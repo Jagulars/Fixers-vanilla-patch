@@ -1,0 +1,3045 @@
+section.begin
+   Name = DoCreateGUIState
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoCreateGUIState.inc
+section.end
+
+section.begin
+   Name = DoCreate
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoCreate.inc
+section.end
+
+section.begin
+   Name = GUIInitialize
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\GUIInitialize.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = OnAfterFullLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\OnAfterFullLoad.inc
+section.end
+
+section.begin
+   Name = VVK.ProcessCommandsShortcuts
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ProcessCommandsShortcuts.inc
+section.end
+
+section.begin
+   Name = SwitchToGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\SwitchToGame.inc
+section.end
+
+section.begin
+   Name = DoProgressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = vvk.map.UpdateProvinceHUD
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.UpdateProvinceHUD.inc
+section.end
+
+section.begin
+   Name = vvk.map.ProgressProvinceGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ProgressProvinceGUI.inc
+section.end
+
+section.begin
+   Name = map.EditorProgressGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EditorProgressGUI.inc
+section.end
+
+section.begin
+   Name = DoDestroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoDestroy.inc
+section.end
+
+section.begin
+   Name = VVK.CameraCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.CameraCommands.inc
+section.end
+
+section.begin
+   Name = VVK.TutorialCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.TutorialCommands.inc
+section.end
+
+section.begin
+   Name = VVK.TopTutorialCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.TopTutorialCommands.inc
+section.end
+
+section.begin
+   Name = VVK.map.TopCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.TopCommands.inc
+section.end
+
+section.begin
+   Name = VVK.battle.TopCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\VVK.battle.TopCommands.inc
+section.end
+
+section.begin
+   Name = VVK.Map.EndTurnCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.Map.EndTurnCommands.inc
+section.end
+
+section.begin
+   Name = VVK.DebugCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.DebugCommands.inc
+section.end
+
+section.begin
+   Name = GUICreateMouseControls
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\GUICreateMouseControls.inc
+section.end
+
+section.begin
+   Name = DoOnMouseEnter
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnMouseEnter.inc
+section.end
+
+section.begin
+   Name = DoOnMouseLeave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnMouseLeave.inc
+section.end
+
+section.begin
+   Name = DoOnMouseMove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnMouseMove.inc
+section.end
+
+section.begin
+   Name = OnMouseWheel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnMouseWheel.inc
+section.end
+
+section.begin
+   Name = DoDebugDrawHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoDebugDrawHexGrid.inc
+section.end
+
+section.begin
+   Name = InitViewerZones
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\InitViewerZones.inc
+section.end
+
+section.begin
+   Name = DoInitSound
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoInitSound.inc
+section.end
+
+section.begin
+   Name = DoOnClickGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnClickGUI.inc
+section.end
+
+section.begin
+   Name = DoResizeGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoResizeGUI.inc
+section.end
+
+section.begin
+   Name = UpdateCameraRestrict
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\UpdateCameraRestrict.inc
+section.end
+
+section.begin
+   Name = vvk.OnClickHint
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.OnClickHint.inc
+section.end
+
+section.begin
+   Name = VVK.FloatingTooltipsCore
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FloatingTooltipsCore.inc
+section.end
+
+section.begin
+   Name = VVK.FitTooltipToScreen
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FitTooltipToScreen.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipInnerBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipInnerBuilding.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipCPRes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.FTooltipCPRes.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipItem.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipUnit.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipResource
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipResource.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipSpell.inc
+section.end
+
+section.begin
+   Name = VVK.map.FTooltipRitual
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.FTooltipRitual.inc
+section.end
+
+section.begin
+   Name = VVK.map.FTooltipSite
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.FTooltipSite.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipUpgradeWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.FTooltipUpgradeWindow.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipHighlightList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipHighlightList.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipDefender.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipOuterBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipOuterBuild.inc
+section.end
+
+section.begin
+   Name = vvk.ShowUnitInfoModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowUnitInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowAchievListModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowAchievListModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowSpellInfoModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowSpellInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowDefenderInfoModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowDefenderInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.map.ShowDefendersList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ShowDefendersList.inc
+section.end
+
+section.begin
+   Name = vvk.ShowOuterBuildInfoModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowOuterBuildInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.map.ShowOuterBuildList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ShowOuterBuildList.inc
+section.end
+
+section.begin
+   Name = vvk.map.EventOuterBuildList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.EventOuterBuildList.inc
+section.end
+
+section.begin
+   Name = vvk.map.ShowRitualInfoModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ShowRitualInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.map.ShowRitualsList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ShowRitualsList.inc
+section.end
+
+section.begin
+   Name = VVK.ProcessHintGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.ProcessHintGUI.inc
+section.end
+
+section.begin
+   Name = DoOnHintGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnHintGUI.inc
+section.end
+
+section.begin
+   Name = DoOnHintGUIExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnHintGUIExt.inc
+section.end
+
+section.begin
+   Name = VVK.HintCommonCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintCommonCallback.inc
+section.end
+
+section.begin
+   Name = VVK.map.HintProvRadialCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.HintProvRadialCallback.inc
+section.end
+
+section.begin
+   Name = VVK.map.HintProvMoodCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.HintProvMoodCallback.inc
+section.end
+
+section.begin
+   Name = VVK.map.HintProvDetailsCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.HintProvDetailsCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintUnitStatsCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.HintUnitStatsCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroSkillCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroSkillCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroParamCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroParamCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroClassCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroClassCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintASERCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintASERCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintUnitMedalsCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.HintUnitMedalsCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintAchievementIcon
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintAchievementIcon.inc
+section.end
+
+section.begin
+   Name = VVK.ShowInfoWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowInfoWindow.inc
+section.end
+
+section.begin
+   Name = VVK.CloseOneButtonWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CloseOneButtonWindow.inc
+section.end
+
+section.begin
+   Name = DoBlendLighting
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoBlendLighting.inc
+section.end
+
+section.begin
+   Name = VVK.AchievementsCore
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.AchievementsCore.inc
+section.end
+
+section.begin
+   Name = VVK.ShowAchievement
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowAchievement.inc
+section.end
+
+section.begin
+   Name = VVK.GetAchievementFromQuery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.GetAchievementFromQuery.inc
+section.end
+
+section.begin
+   Name = -------------------- console commands ---------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = VVK.HelperMethods
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HelperMethods.inc
+section.end
+
+section.begin
+   Name = SwitchToChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\SwitchToChat.inc
+section.end
+
+section.begin
+   Name = OnEventChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnEventChat.inc
+section.end
+
+section.begin
+   Name = CreateChatLayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateChatLayer.inc
+section.end
+
+section.begin
+   Name = VVK.ChatCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ChatCommands.inc
+section.end
+
+section.begin
+   Name = ----------------- Map -----------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = map.DoCreate
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoCreate.inc
+section.end
+
+section.begin
+   Name = map.GUIInitialize
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GUIInitialize.inc
+section.end
+
+section.begin
+   Name = map.DoProgressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = map.DoResizeGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoResizeGUI.inc
+section.end
+
+section.begin
+   Name = map.GUICreateHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GUICreateHUD.inc
+section.end
+
+section.begin
+   Name = map.GUIUpdateHeroHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GUIUpdateHeroHUD.inc
+section.end
+
+section.begin
+   Name = map.GUIUpdateResHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GUIUpdateResHUD.inc
+section.end
+
+section.begin
+   Name = map.GUIUpdateProvHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GUIUpdateProvHUD.inc
+section.end
+
+section.begin
+   Name = map.EventGUIResHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventGUIResHUD.inc
+section.end
+
+section.begin
+   Name = map.GUIUpdateHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GUIUpdateHUD.inc
+section.end
+
+section.begin
+   Name = map.DoOnClickGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnClickGUI.inc
+section.end
+
+section.begin
+   Name = map.EventDismissApprove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventDismissApprove.inc
+section.end
+
+section.begin
+   Name = map.DoOnMouseMove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnMouseMove.inc
+section.end
+
+section.begin
+   Name = map.UpdateMouseMove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.UpdateMouseMove.inc
+section.end
+
+section.begin
+   Name = map.DoOnMouseEnter
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnMouseEnter.inc
+section.end
+
+section.begin
+   Name = map.DoOnMouseLeave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnMouseLeave.inc
+section.end
+
+section.begin
+   Name = map.DoOnPressHeroHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnPressHeroHUD.inc
+section.end
+
+section.begin
+   Name = map.DoOnPressHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnPressHUD.inc
+section.end
+
+section.begin
+   Name = map.OnGUIMouseDown
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.OnGUIMouseDown.inc
+section.end
+
+section.begin
+   Name = map.OnClickHeroHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.OnClickHeroHUD.inc
+section.end
+
+section.begin
+   Name = map.CreateInfoPanel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateInfoPanel.inc
+section.end
+
+section.begin
+   Name = map.CreateHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateHeroWindow.inc
+section.end
+
+section.begin
+   Name = map.EventHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventHeroWindow.inc
+section.end
+
+section.begin
+   Name = VVK.Map.HeroWindowCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.Map.HeroWindowCommands.inc
+section.end
+
+section.begin
+   Name = VVK.Map.GarrisonWindowCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.Map.GarrisonWindowCommands.inc
+section.end
+
+section.begin
+   Name = map.CreateCastleBuildWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateCastleBuildWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateShopWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateShopWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateSpellWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateSpellWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateLibraryWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateLibraryWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateUnitsWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateUnitsWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateGarrisonWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateGarrisonWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateHeroRecruitWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateHeroRecruitWindow.inc
+section.end
+
+section.begin
+   Name = map.EventHeroRecruitWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventHeroRecruitWindow.inc
+section.end
+
+section.begin
+   Name = map.CreateProvRadialWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateProvRadialWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseProvOuterBuildWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseProvOuterBuildWindow.inc
+section.end
+
+section.begin
+   Name = vvk.map.EventDefendersList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.EventDefendersList.inc
+section.end
+
+section.begin
+   Name = map.CloseProvDefenderWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseProvDefenderWindow.inc
+section.end
+
+section.begin
+   Name = map.EventProvRitualWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventProvRitualWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseProvRitualWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseProvRitualWindow.inc
+section.end
+
+section.begin
+   Name = CheckHeroUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\CheckHeroUpgrade.inc
+section.end
+
+section.begin
+   Name = map.CreateHeroUpgradeWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateHeroUpgradeWindow.inc
+section.end
+
+section.begin
+   Name = vvk.map.ShowSitesList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ShowSitesList.inc
+section.end
+
+section.begin
+   Name = map.EventProvSiteWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventProvSiteWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseProvSiteWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseProvSiteWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseHeroWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseCastleWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseCastleWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseBuildingWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseBuildingWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseShopWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseShopWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseSpellWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseSpellWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseUnitsWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseUnitsWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseHeroRecruitWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseHeroRecruitWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseCastleTabs
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseCastleTabs.inc
+section.end
+
+section.begin
+   Name = map.CloseProvRadialWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseProvRadialWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseGarrisonWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseGarrisonWindow.inc
+section.end
+
+section.begin
+   Name = ---------- Map Functions --------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = map.HeroHUDControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.HeroHUDControl.inc
+section.end
+
+section.begin
+   Name = map.HeroHUDControlHide
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.HeroHUDControlHide.inc
+section.end
+
+section.begin
+   Name = map.HeroHUDControlTask
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.HeroHUDControlTask.inc
+section.end
+
+section.begin
+   Name = map.DrawHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DrawHexGrid.inc
+section.end
+
+section.begin
+   Name = map.DrawSelectedHex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DrawSelectedHex.inc
+section.end
+
+section.begin
+   Name = map.DrawUnderCursorHex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DrawUnderCursorHex.inc
+section.end
+
+section.begin
+   Name = map.InitViewerZones
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.InitViewerZones.inc
+section.end
+
+section.begin
+   Name = ToolQueryWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ToolQueryWindow.inc
+section.end
+
+section.begin
+   Name = EventQueryWindowModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventQueryWindowModal.inc
+section.end
+
+section.begin
+   Name = map.EventQueryWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventQueryWindow.inc
+section.end
+
+section.begin
+   Name = map.RequestQueryWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.RequestQueryWindow.inc
+section.end
+
+section.begin
+   Name = map.PickUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PickUnit.inc
+section.end
+
+section.begin
+   Name = map.PickSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PickSpell.inc
+section.end
+
+section.begin
+   Name = map.ShopPickItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.ShopPickItem.inc
+section.end
+
+section.begin
+   Name = map.PressUnitSlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PressUnitSlot.inc
+section.end
+
+section.begin
+   Name = map.PressGarrisonSlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PressGarrisonSlot.inc
+section.end
+
+section.begin
+   Name = map.PressSpellSlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PressSpellSlot.inc
+section.end
+
+section.begin
+   Name = map.PressTreasurySlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PressTreasurySlot.inc
+section.end
+
+section.begin
+   Name = map.PressHeroInventorySlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.PressHeroInventorySlot.inc
+section.end
+
+section.begin
+   Name = map.SwitchToBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.SwitchToBattle.inc
+section.end
+
+section.begin
+   Name = vvk.map.StartTacticalBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.StartTacticalBattle.inc
+section.end
+
+section.begin
+   Name = map.DrawGroupDataViewer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DrawGroupDataViewer.inc
+section.end
+
+section.begin
+   Name = map.DrawPath
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DrawPath.inc
+section.end
+
+section.begin
+   Name = map.ChooseHeroUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.ChooseHeroUpgrade.inc
+section.end
+
+section.begin
+   Name = map.RecruitHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.RecruitHero.inc
+section.end
+
+section.begin
+   Name = map.DoCancelOrder
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoCancelOrder.inc
+section.end
+
+section.begin
+   Name = map.DoResurrectHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoResurrectHero.inc
+section.end
+
+section.begin
+   Name = ---------------- Battle ----------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = battle.DoProgressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = battle.DoOnMouseMove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoOnMouseMove.inc
+section.end
+
+section.begin
+   Name = battle.DoOnMouseEnter
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoOnMouseEnter.inc
+section.end
+
+section.begin
+   Name = battle.DoOnMouseLeave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoOnMouseLeave.inc
+section.end
+
+section.begin
+   Name = battle.OnGUIMouseDown
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.OnGUIMouseDown.inc
+section.end
+
+section.begin
+   Name = battle.DoOnClickGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoOnClickGUI.inc
+section.end
+
+section.begin
+   Name = battle.GUIInitialize
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.GUIInitialize.inc
+section.end
+
+section.begin
+   Name = battle.GUICreateHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.GUICreateHUD.inc
+section.end
+
+section.begin
+   Name = battle.UnitHUDControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.UnitHUDControl.inc
+section.end
+
+section.begin
+   Name = battle.GUIUpdateUnitHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.GUIUpdateUnitHUD.inc
+section.end
+
+section.begin
+   Name = battle.UpdateCursor
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.UpdateCursor.inc
+section.end
+
+section.begin
+   Name = battle.DrawPath
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DrawPath.inc
+section.end
+
+section.begin
+   Name = battle.DoDrawHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoDrawHexGrid.inc
+section.end
+
+section.begin
+   Name = battle.SetPlacementMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.SetPlacementMode.inc
+section.end
+
+section.begin
+   Name = battle.ExitPlacementMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.ExitPlacementMode.inc
+section.end
+
+section.begin
+   Name = CheckUnitUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\CheckUnitUpgrade.inc
+section.end
+
+section.begin
+   Name = battle.CreateUnitUpgradeWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateUnitUpgradeWindow.inc
+section.end
+
+section.begin
+   Name = vvk.battle.CreateUnitUpgradeWindowC
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\vvk.battle.CreateUnitUpgradeWindowC.inc
+section.end
+
+// vvk.battle.ShowUnitUpgradeWindow
+section.begin
+   Name = vvk.battle.ShowUnitUpgradeWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\vvk.battle.ShowUnitUpgradeWindow.inc
+section.end
+
+section.begin
+   Name = battle.EventUnitUpgradeWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.EventUnitUpgradeWindow.inc
+section.end
+
+section.begin
+   Name = battle.CreateUnitMedalWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateUnitMedalWindow.inc
+section.end
+
+section.begin
+   Name = battle.EventUnitMedalWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.EventUnitMedalWindow.inc
+section.end
+
+section.begin
+   Name = battle.CloseUnitMedalWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CloseUnitMedalWindow.inc
+section.end
+
+section.begin
+   Name = battle.CreateControlPanelWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateControlPanelWindow.inc
+section.end
+
+section.begin
+   Name = vvk.battle.MainPanelCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\vvk.battle.MainPanelCommands.inc
+section.end
+
+section.begin
+   Name = battle.CreateResultWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateResultWindow.inc
+section.end
+
+section.begin
+   Name = battle.EventResultWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.EventResultWindow.inc
+section.end
+
+section.begin
+   Name = vvk.battle.ShowSpellBook
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\vvk.battle.ShowSpellBook.inc
+section.end
+
+section.begin
+   Name = vvk.battle.DynamicSpellbookCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\vvk.battle.DynamicSpellbookCallback.inc
+section.end
+
+section.begin
+   Name = battle.EventSpellBookWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.EventSpellBookWindow.inc
+section.end
+
+section.begin
+   Name = battle.SwitchToMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.SwitchToMap.inc
+section.end
+
+section.begin
+   Name = battle.ActivateAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.ActivateAbility.inc
+section.end
+
+section.begin
+   Name = battle.DoResizeGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.DoResizeGUI.inc
+section.end
+
+section.begin
+   Name = battle.IsLockMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.IsLockMode.inc
+section.end
+
+section.begin
+   Name = battle.UpdateSelectedUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.UpdateSelectedUnit.inc
+section.end
+
+section.begin
+   Name = map.CreateChooseHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateChooseHeroWindow.inc
+section.end
+
+section.begin
+   Name = map.EventChooseHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventChooseHeroWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseChooseHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseChooseHeroWindow.inc
+section.end
+
+section.begin
+   Name = vvk.map.ConfirmRecruitHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.ConfirmRecruitHeroWindow.inc
+section.end
+
+section.begin
+   Name = map.EventRecruitHeroApprove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventRecruitHeroApprove.inc
+section.end
+
+section.begin
+   Name = map.CreateSiteLootWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateSiteLootWindow.inc
+section.end
+
+section.begin
+   Name = map.EventSiteLootWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventSiteLootWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseSiteLootWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseSiteLootWindow.inc
+section.end
+
+section.begin
+   Name = battle.CheckSiteLootWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CheckSiteLootWindow.inc
+section.end
+
+section.begin
+   Name = DoOnPressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnPressGUI.inc
+section.end
+
+section.begin
+   Name = DoOnUnPressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnUnPressGUI.inc
+section.end
+
+section.begin
+   Name = DoOnHookEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnHookEvent.inc
+section.end
+
+section.begin
+   Name = DoOnSelectionChange
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoOnSelectionChange.inc
+section.end
+
+section.begin
+   Name = DoShowScreenMessage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoShowScreenMessage.inc
+section.end
+
+section.begin
+   Name = DoEventScreenMessage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoEventScreenMessage.inc
+section.end
+
+section.begin
+   Name = DoHideScreenMessage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoHideScreenMessage.inc
+section.end
+
+section.begin
+   Name = DoMBTNControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoMBTNControl.inc
+section.end
+
+section.begin
+   Name = map.ProvHUDControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.ProvHUDControl.inc
+section.end
+
+section.begin
+   Name = DoDragElement
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoDragElement.inc
+section.end
+
+section.begin
+   Name = VVK.DragCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DragCommands.inc
+section.end
+
+section.begin
+   Name = DoResetDragElement
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoResetDragElement.inc
+section.end
+
+section.begin
+   Name = map.DoOnClickBackground
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoOnClickBackground.inc
+section.end
+
+section.begin
+   Name = map.CreateSquadSlots
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateSquadSlots.inc
+section.end
+
+section.begin
+   Name = todo.CreateSwitchHeroTab
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateSwitchHeroTab.inc
+section.end
+
+section.begin
+   Name = map.CreateHeroMultiHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateHeroMultiHUD.inc
+section.end
+
+section.begin
+   Name = map.CreateProvinceTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateProvinceTooltip.inc
+section.end
+
+section.begin
+   Name = map.CreateProvinceTooltipExt
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateProvinceTooltipExt.inc
+section.end
+
+section.begin
+   Name = map.CheckEndGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CheckEndGame.inc
+section.end
+
+section.begin
+   Name = map.OnStartTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.OnStartTurn.inc
+section.end
+
+section.begin
+   Name = map.OnEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.OnEndTurn.inc
+section.end
+
+section.begin
+   Name = map.UpdateCursor
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.UpdateCursor.inc
+section.end
+
+section.begin
+   Name = battle.SelectNextUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.SelectNextUnit.inc
+section.end
+
+section.begin
+   Name = battle.UpdateHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.UpdateHexGrid.inc
+section.end
+
+section.begin
+   Name = battle.ResetHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.ResetHexGrid.inc
+section.end
+
+section.begin
+   Name = battle.EndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.EndTurn.inc
+section.end
+
+section.begin
+   Name = GUIInvokeMouseMove
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\GUIInvokeMouseMove.inc
+section.end
+
+section.begin
+   Name = ResetHint
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ResetHint.inc
+section.end
+
+section.begin
+   Name = ResetProvinceHint
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\ResetProvinceHint.inc
+section.end
+
+section.begin
+   Name = DoUpdate
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\DoUpdate.inc
+section.end
+
+section.begin
+   Name = battle.SetAutoBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.SetAutoBattle.inc
+section.end
+
+section.begin
+   Name = map.CreateDiplomacyWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateDiplomacyWindow.inc
+section.end
+
+section.begin
+   Name = map.EventDiplomacyWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventDiplomacyWindow.inc
+section.end
+
+section.begin
+   Name = map.CloseDiplomacyWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CloseDiplomacyWindow.inc
+section.end
+
+section.begin
+   Name = map.GetBuildIDUnderMouse
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.GetBuildIDUnderMouse.inc
+section.end
+
+section.begin
+   Name = map.DoHeroDismissUpdateGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoHeroDismissUpdateGUI.inc
+section.end
+
+section.begin
+   Name = battle.CreateSwitchWeapon
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateSwitchWeapon.inc
+section.end
+
+section.begin
+   Name = battle.EventSwitchWeapon
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.EventSwitchWeapon.inc
+section.end
+
+section.begin
+   Name = battle.CreateTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateTooltip.inc
+section.end
+
+section.begin
+   Name = battle.CreateTooltipExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.CreateTooltipExt.inc
+section.end
+
+section.begin
+   Name = battle.GetTerrainInfoByType
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\battle\battle.GetTerrainInfoByType.inc
+section.end
+
+section.begin
+   Name = DoMouseHookSliderControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoMouseHookSliderControl.inc
+section.end
+
+section.begin
+   Name = DoMouseUnPressSliderControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoMouseUnPressSliderControl.inc
+section.end
+
+section.begin
+   Name = map.CreateHeroUpgradeClass
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateHeroUpgradeClass.inc
+section.end
+
+section.begin
+   Name = map.EventHeroUpgradeClass
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventHeroUpgradeClass.inc
+section.end
+
+section.begin
+   Name = map.DoHeroExchange
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DoHeroExchange.inc
+section.end
+
+section.begin
+   Name = map.CreateShardCapture
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateShardCapture.inc
+section.end
+
+section.begin
+   Name = map.EventShardCapture
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventShardCapture.inc
+section.end
+
+section.begin
+   Name = map.EventEndGameStatistics
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventEndGameStatistics.inc
+section.end
+
+section.begin
+   Name = VVK.map.GetGoldAndGemStats
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.GetGoldAndGemStats.inc
+section.end
+
+section.begin
+   Name = map.CreateStatistics
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateStatistics.inc
+section.end
+
+section.begin
+   Name = map.EventStatistics
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventStatistics.inc
+section.end
+
+section.begin
+   Name = map.CreateProvinceList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateProvinceList.inc
+section.end
+
+section.begin
+   Name = map.EventProvinceList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventProvinceList.inc
+section.end
+
+section.begin
+   Name = map.ProvinceListCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.ProvinceListCommands.inc
+section.end
+
+section.begin
+   Name = map.CreateNoSpaceForItemWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateNoSpaceForItemWindow.inc
+section.end
+
+section.begin
+   Name = map.EventNoSpaceForItemWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventNoSpaceForItemWindow.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = ShowListMenu
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowListMenu.inc
+section.end
+
+section.begin
+   Name = ShowMenu
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\ShowMenu.inc
+section.end
+
+section.begin
+   Name = VVK.MainMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.MainMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.ExitMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.ExitMenuCommands.inc
+section.end
+
+section.begin
+   Name = ShowHeader
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\ShowHeader.inc
+section.end
+
+section.begin
+   Name = ShowMenuHeader
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowMenuHeader.inc
+section.end
+
+section.begin
+   Name = EventMenu
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\EventMenu.inc
+section.end
+
+section.begin
+   Name = ShowLoadMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowLoadMap.inc
+section.end
+
+section.begin
+   Name = EventLoadMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventLoadMap.inc
+section.end
+
+section.begin
+   Name = ShowSaveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowSaveMap.inc
+section.end
+
+section.begin
+   Name = EventSaveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventSaveMap.inc
+section.end
+
+section.begin
+   Name = ShowSettings
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowSettings.inc
+section.end
+
+section.begin
+   Name = EventSettings
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventSettings.inc
+section.end
+
+section.begin
+   Name = ShowQuestionDialog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowQuestionDialog.inc
+section.end
+
+section.begin
+   Name = EventQuestionDialog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventQuestionDialog.inc
+section.end
+
+section.begin
+   Name = ShowExit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\ShowExit.inc
+section.end
+
+section.begin
+   Name = ShowExitExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\ShowExitExt.inc
+section.end
+
+section.begin
+   Name = ShowItemDetailedWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowItemDetailedWindow.inc
+section.end
+
+section.begin
+   Name = ShowNecromancy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\ShowNecromancy.inc
+section.end
+
+section.begin
+   Name = EventNecromancy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\EventNecromancy.inc
+section.end
+
+section.begin
+   Name = map.ShowWhosTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.ShowWhosTurn.inc
+section.end
+
+section.begin
+   Name = ShowTutorial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowTutorial.inc
+section.end
+
+section.begin
+   Name = ShowTutorialAligned
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowTutorialAligned.inc
+section.end
+
+section.begin
+   Name = EventTutorial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventTutorial.inc
+section.end
+
+section.begin
+   Name = CloseTutorial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CloseTutorial.inc
+section.end
+
+section.begin
+   Name = DestroyTutorial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DestroyTutorial.inc
+section.end
+
+section.begin
+   Name = CreateShowTutorialButton
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateShowTutorialButton.inc
+section.end
+
+section.begin
+   Name = map.CreateTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateTooltip.inc
+section.end
+
+section.begin
+   Name = map.CreateTooltipExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateTooltipExt.inc
+section.end
+
+section.begin
+   Name = map.DrawDiplomacyOfferCover
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.DrawDiplomacyOfferCover.inc
+section.end
+
+section.begin
+   Name = map.CreateAlchemy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.CreateAlchemy.inc
+section.end
+
+section.begin
+   Name = map.EventAlchemy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.EventAlchemy.inc
+section.end
+
+section.begin
+   Name = VVK.DiplomacyHelper
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.DiplomacyHelper.inc
+section.end
+
+section.begin
+   Name = VVK.ShowBuildWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.ShowBuildWindow.inc
+section.end
+
+section.begin
+   Name = VVK.BuildWindowEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildWindowEvent.inc
+section.end
+
+section.begin
+   Name = VVK.BuildWindow2
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildWindow2.inc
+section.end
+
+section.begin
+   Name = VVK.BuildWindow2Commands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildWindow2Commands.inc
+section.end
+
+section.begin
+   Name = VVK.BuildWindow1Commands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildWindow1Commands.inc
+section.end
+
+section.begin
+   Name = VVK.BuildQueueOperations
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildQueueOperations.inc
+section.end
+
+section.begin
+   Name = VVK.BW2.ShowBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BW2.ShowBuilding.inc
+section.end
+
+section.begin
+   Name = VVK.BW2.ShowBuildDetails
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BW2.ShowBuildDetails.inc
+section.end
+
+section.begin
+   Name = VVK.BW2.UpdatesQuartersByMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BW2.UpdatesQuartersByMode.inc
+section.end
+
+section.begin
+   Name = VVK.BuildWindow2Event
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildWindow2Event.inc
+section.end
+
+section.begin
+   Name = VVK.BuildingTooltipHook2
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.BuildingTooltipHook2.inc
+section.end
+
+section.begin
+   Name = VVK.CloseCommonTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CloseCommonTooltip.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindow.inc
+section.end
+
+section.begin
+   Name = VVK.ShowDynamicAsModal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowDynamicAsModal.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowBuildingCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowBuildingCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowUnitCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowUnitCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowItemCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowItemCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowAchievCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowAchievCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowSpellCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowSpellCallback.inc
+section.end
+
+section.begin
+   Name = vvk.map.DynamicProvRitualsCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.DynamicProvRitualsCallback.inc
+section.end
+
+section.begin
+   Name = vvk.map.DynamicWindowRitualCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.DynamicWindowRitualCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowDefenderCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowDefenderCallback.inc
+section.end
+
+section.begin
+   Name = vvk.map.DynamicProvDefendersCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.DynamicProvDefendersCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowOuterBuildCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowOuterBuildCallback.inc
+section.end
+
+section.begin
+   Name = vvk.map.DynamicWindowSiteCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.DynamicWindowSiteCallback.inc
+section.end
+
+section.begin
+   Name = vvk.map.DynamicProvSitesCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.DynamicProvSitesCallback.inc
+section.end
+
+section.begin
+   Name = VVK.EventUpdateSteamAchievements
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.EventUpdateSteamAchievements.inc
+section.end
+
+section.begin
+   Name = VVK.ShowBuildingTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowBuildingTooltip.inc
+section.end
+
+section.begin
+   Name = VVK.DoProgressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = VVK.UpdateBuildingTooltipHook
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.UpdateBuildingTooltipHook.inc
+section.end
+
+section.begin
+   Name = VVK.map.CreateMainPanel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.CreateMainPanel.inc
+section.end
+
+section.begin
+   Name = VVK.map.UpdateMainPanel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.UpdateMainPanel.inc
+section.end
+
+section.begin
+   Name = vvk.map.MainPanelCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.MainPanelCommands.inc
+section.end
+
+section.begin
+   Name = VVK.map.CreateHeroResPanel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.CreateHeroResPanel.inc
+section.end
+
+section.begin
+   Name = VVK.map.UpdateHeroResPanel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.UpdateHeroResPanel.inc
+section.end
+
+section.begin
+   Name = VVK.GameCommandsCore
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.GameCommandsCore.inc
+section.end
+
+section.begin
+   Name = VVK.ModalCommandsBlock
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ModalCommandsBlock.inc
+section.end
+
+section.begin
+   Name = VVK.map.CreatePopupButtonsWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.CreatePopupButtonsWindow.inc
+section.end
+
+section.begin
+   Name = VVK.map.MainPanelUpdateButtonsState
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.MainPanelUpdateButtonsState.inc
+section.end
+
+section.begin
+   Name = VVK.map.MainPanelGetPopupButtons
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.MainPanelGetPopupButtons.inc
+section.end
+
+section.begin
+   Name = VVK.map.ShowResourcesTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.ShowResourcesTooltip.inc
+section.end
+
+section.begin
+   Name = VVK.map.ProcessBuildingsQueue
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.ProcessBuildingsQueue.inc
+section.end
+
+section.begin
+   Name = VVK.map.ShowLastTurnIncome
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.ShowLastTurnIncome.inc
+section.end
+
+section.begin
+   Name = VVK.map.CloseLastTurnIncome
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.CloseLastTurnIncome.inc
+section.end
+
+section.begin
+   Name = VVK.ReorderInterfaceLayers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ReorderInterfaceLayers.inc
+section.end
+
+section.begin
+   Name = VVK.SwitchGameMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.SwitchGameMode.inc
+section.end
+
+section.begin
+   Name = VVK.ControlGameModeChange
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.ControlGameModeChange.inc
+section.end
+
+section.begin
+   Name = VVK.RootWindowOperations
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.RootWindowOperations.inc
+section.end
+
+section.begin
+   Name = VVK.FadeWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FadeWindow.inc
+section.end
+
+section.begin
+   Name = VVK.FadeWindowTrigger
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FadeWindowTrigger.inc
+section.end
+
+section.begin
+   Name = VVK.AchievementsCore
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.AchievementsCore.inc
+section.end
+
+section.begin
+   Name = VVK.LanLogHelper
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.LanLogHelper.inc
+section.end
+
+section.begin
+   Name = EvLanConnect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanConnect.inc
+section.end
+
+section.begin
+   Name = EvLanShellChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanShellChat.inc
+section.end
+
+section.begin
+   Name = VVK.CreateLanChatLayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CreateLanChatLayer.inc
+section.end
+
+section.begin
+   Name = VVK.OnLanEventChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.OnLanEventChat.inc
+section.end
+
+section.begin
+   Name = VVK.LanChatCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.LanChatCommands.inc
+section.end
+
+section.begin
+   Name = VVK.SwitchToLanChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.SwitchToLanChat.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChatExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChatExt.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChat2
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChat2.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChat.inc
+section.end
+
+section.begin
+   Name = map.SwitchToAstral
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.SwitchToAstral.inc
+section.end
+
+section.begin
+   Name = EventModalBackgroundClick
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventModalBackgroundClick.inc
+section.end
+
+section.begin
+   Name = DoChatLogText
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoChatLogText.inc
+section.end
+
+section.begin
+   Name = map.UpdatePlayerHUDs
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.UpdatePlayerHUDs.inc
+section.end
+
+section.begin
+   Name = map.StartHumanTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.StartHumanTurn.inc
+section.end
+
+section.begin
+   Name = map.SetPlayerCamera
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.SetPlayerCamera.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = vvk.lan.OnProgressGUI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\vvk.lan.OnProgressGUI.inc
+section.end
+
+section.begin
+   Name = vvk.lan.PushLanEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\vvk.lan.PushLanEvent.inc
+section.end
+
+section.begin
+   Name = vvk.lan.LoadingSync
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\vvk.lan.LoadingSync.inc
+section.end
+
+section.begin
+   Name = VVK.lan.resetbattleglobals
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.lan.resetbattleglobals.inc
+section.end
+
+section.begin
+   Name = lan.OnLanEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.OnLanEvent.inc
+section.end
+
+section.begin
+   Name = lan.ProcessParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.ProcessParser.inc
+section.end
+
+section.begin
+   Name = lan.DoCreate
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.DoCreate.inc
+section.end
+
+section.begin
+   Name = lan.SendMessage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.SendMessage.inc
+section.end
+
+section.begin
+   Name = lan.SwitchToClientTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.SwitchToClientTurn.inc
+section.end
+
+section.begin
+   Name = lan.SwitchToMasterTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.SwitchToMasterTurn.inc
+section.end
+
+section.begin
+   Name = lan.ExitPlacementMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.ExitPlacementMode.inc
+section.end
+
+section.begin
+   Name = lan.OnEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.OnEndTurn.inc
+section.end
+
+section.begin
+   Name = lan.OnProgressEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.OnProgressEndTurn.inc
+section.end
+
+section.begin
+   Name = lan.OnProgressClientEndTurn
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.OnProgressClientEndTurn.inc
+section.end
+
+section.begin
+   Name = lan.DoProgressGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = EventLanDialogs
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventLanDialogs.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = DebugXYZ
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DebugXYZ.inc
+section.end
+
+section.begin
+   Name = ExecuteEditorCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ExecuteEditorCommands.inc
+section.end
+
+section.begin
+   Name = ShowEditorProvince
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorProvince.inc
+section.end
+
+section.begin
+   Name = EventEditorProvince
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorProvince.inc
+section.end
+
+section.begin
+   Name = ShowEditorPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorPlayer.inc
+section.end
+
+section.begin
+   Name = EventEditorPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorPlayer.inc
+section.end
+
+section.begin
+   Name = ShowEditorControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorControl.inc
+section.end
+
+section.begin
+   Name = EventEditorControl
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorControl.inc
+section.end
+
+section.begin
+   Name = ShowEditorPalette
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorPalette.inc
+section.end
+
+section.begin
+   Name = EventEditorPalette
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorPalette.inc
+section.end
+
+section.begin
+   Name = ShowEditorHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorHero.inc
+section.end
+
+section.begin
+   Name = EventEditorHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorHero.inc
+section.end
+
+section.begin
+   Name = ShowEditorHeroesList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorHeroesList.inc
+section.end
+
+section.begin
+   Name = EventEditorHeroesList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorHeroesList.inc
+section.end
+
+section.begin
+   Name = UpdateCustomHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\UpdateCustomHeroWindow.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroSquad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroSquad.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroSquad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroSquad.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroSquadRecruit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroSquadRecruit.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroSquadRecruit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroSquadRecruit.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroSpellbook
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroSpellbook.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroSpellbook
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroSpellbook.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroLibrary
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroLibrary.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroLibrary
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroLibrary.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroInventory
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroInventory.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroInventory
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroInventory.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroShop
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroShop.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroShop
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroShop.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroHeroRecruit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroHeroRecruit.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroHeroRecruit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroHeroRecruit.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroHeroUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroHeroUpgrade.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroHeroUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroHeroUpgrade.inc
+section.end
+
+section.begin
+   Name = ShowEditorTrigger
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowEditorTrigger.inc
+section.end
+
+section.begin
+   Name = EventEditorTrigger
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventEditorTrigger.inc
+section.end
+
+section.begin
+   Name = map.ProcessChooseHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\map.ProcessChooseHero.inc
+section.end
+
+section.begin
+   Name = VVK.map.ShowMiniMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.ShowMiniMap.inc
+section.end
+
+section.begin
+   Name = VVK.map.EventShowMiniMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.EventShowMiniMap.inc
+section.end
+
+section.begin
+   Name = VVK.map.GetHeroAstralTransferPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.GetHeroAstralTransferPrice.inc
+section.end
+
+section.begin
+   Name = VVK.map.CreateAstralPricePanel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\VVK.map.CreateAstralPricePanel.inc
+section.end
+
+section.begin
+   Name = vvk.map.HeroAstralTransfer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.HeroAstralTransfer.inc
+section.end
+
+section.begin
+   Name = vvk.map.DisplayAstralPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.DisplayAstralPrice.inc
+section.end
+
+section.begin
+   Name = vvk.map.CreateProvinceIncomeTooltip
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\map\vvk.map.CreateProvinceIncomeTooltip.inc
+section.end
+
+section.begin
+   Name = ShowAstralChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowAstralChat.inc
+section.end
+
+section.begin
+   Name = EventAstralChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventAstralChat.inc
+section.end
+
+section.begin
+   Name = LanEventDefault
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\LanEventDefault.inc
+section.end
+
+section.begin
+   Name = DoLanConnect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoLanConnect.inc
+section.end
+
+section.begin
+   Name = DoProgressMusic
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoProgressMusic.inc
+section.end
+
+section.begin
+   Name = CreateWindowFromParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateWindowFromParser.inc
+section.end
+
+section.begin
+   Name = EventGameplaySettings
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventGameplaySettings.inc
+section.end
+
+section.begin
+   Name = CheckScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CheckScenery.inc
+section.end
+
+section.begin
+   Name = EventGenesisMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventGenesisMode.inc
+section.end
+
+section.begin
+   Name = TestingScript
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\TestingScript.inc
+section.end
+
+section.begin
+   CurrentState = DoProgressGUI
+   SaveVariables = False
+section.end
+

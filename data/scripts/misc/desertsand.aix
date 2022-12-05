@@ -1,0 +1,28 @@
+section.begin
+   Name = initial
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\desertsand.inc\initial.inc
+section.end
+
+section.begin
+   Name = Nothing
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\desertsand.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\desertsand.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\desertsand.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   CurrentState = initial
+   SaveVariables = False
+section.end

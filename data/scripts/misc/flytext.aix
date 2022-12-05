@@ -1,0 +1,75 @@
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\Initial.inc
+section.end
+
+section.begin
+   Name = Nothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = StartFly
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\StartFly.inc
+section.end
+
+section.begin
+   Name = SetupBehaviour
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\SetupBehaviour.inc
+section.end
+
+section.begin
+   Name = CreateHUD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\CreateHUD.inc
+section.end
+
+section.begin
+   Name = Destroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\flytext.inc\Destroy.inc
+section.end
+
+section.begin
+   Name = Recycle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\DoNothing.inc
+section.end
+
+section.begin
+   Name = Recycle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\Recycle.inc
+section.end
+
+section.begin
+   CurrentState = Initial
+   SaveVariables = False
+section.end
+

@@ -1,0 +1,884 @@
+section.begin
+   Nodes : struct.begin
+      [*] : struct.begin
+         name = sample0_Spiral_ring
+
+         destroy : struct.begin
+            setupFor = forSelf
+
+            immediatelyBehaviours = false
+            immediatelyEffects = false
+            immediatelyDecals = false
+            immediatelyObjects = false
+
+            self = false
+            parent = false
+            root = false
+            target = false
+            selfStateTargetObject = 
+            parentStateTargetObject = 
+            rootStateTargetObject = 
+            targetStateTargetObject = 
+
+            clearBehavioursList = false
+            clearBehavioursDirect = false
+            clearBehavioursProgressChildrenIncluded = false
+            clearEffectsList = false
+            clearEffectsDirect = false
+            clearEffectsTLFAnimationIncluded = false
+            clearDecalsList = false
+            clearDecalsDirect = false
+            clearDecalsAttachedOnly = false
+            clearDecalsAttachedIncluded = false
+            clearObjectsList = false
+            clearObjectsDirect = false
+
+            behavioursList : struct.begin
+               [*] : struct.begin
+                  className = 
+                  name = 
+                  direct = 
+                  directFor = 
+               struct.end
+            struct.end
+            effectsList : struct.begin
+               [*] : struct.begin
+                  className = 
+                  name = 
+                  direct = 
+                  directFor = 
+               struct.end
+            struct.end
+            decalsList : struct.begin
+               [*] : struct.begin
+                  name = 
+                  matname =
+                  direct = 
+                  clearFromIndex = 
+                  clearFromFirst =
+                  clearFromLatest = 
+                  clearRandom = 
+                  clearMinCount = 
+                  clearMaxCount = 
+               struct.end
+            struct.end
+            objectsList : struct.begin
+               [*] : struct.begin
+                  baseName = 
+                  customName =
+                  playerName = 
+                  direct = 
+                  clearFromIndex = 
+                  clearFromFirst =
+                  clearFromLatest = 
+                  clearRandom = 
+                  clearMinCount = 
+                  clearMaxCount = 
+               struct.end
+            struct.end
+         struct.end
+
+         //starttime = 0
+         //endtime = 0
+         //lifetime = 0
+         //interval = 0
+
+         objects : struct.begin
+            [*] : struct.begin
+               setupFor = forSelf
+               getOrCreate = false
+               justCreate = true
+               justGet = false
+
+               getAsOwnedObject = true
+               getAsChildOfSelf = false
+               getAsChildOfParent = false
+               getAsChildOfRoot = false
+               getAsChildOfTarget = false
+               getAsChildOfHierarchySelf = false
+               getAsChildOfHierarchyParent = false
+               getAsChildOfHierarchyRoot = false
+               getAsChildOfHierarchyTarget = false
+               getAsParentOfScene = false
+
+               createAsOwnedObject = true
+               createAsChildOfSelf = true
+               createAsChildOfParent = false
+               createAsChildOfRoot = false
+               createAsChildOfTarget = false
+               createAsParentOfScene = false
+
+               raceName = 
+               baseName = 
+               playerName = 
+               customName = 
+
+               posInitX = 0
+               posInitY = 0
+               posInitZ = 0
+               posDisp = 0
+               posRangeX = 0
+               posRangeY = 0
+               posRangeZ = 0
+
+               createMinCount = 1
+               createMaxCount = 1
+
+               poolObject = false
+               destroy = false
+
+               setToTargetSelf = false
+               setToStateTargetObjectSelf = false
+               setToStateTargetObjectParent = false
+               setToStateTargetObjectRoot = false
+               setToStateTargetObjectTarget = false
+
+               properties : struct.begin
+               struct.end
+
+               render : struct.begin
+               struct.end
+
+               animation : struct.begin
+               struct.end
+
+               trackpoint : struct.begin
+               struct.end
+
+               statemachine : struct.begin
+               struct.end
+
+               collision : struct.begin
+               struct.end
+
+               behavioursAsOwned = false
+               behaviours : struct.begin
+               struct.end
+
+               effectsAsOwned = false
+               effects : struct.begin
+               struct.end
+
+               misc : struct.begin
+               struct.end
+
+               nodeNames : struct.begin
+                  [*] : struct.begin
+                     time = 0
+                     name = 
+                     asOwned = false
+                  struct.end
+               struct.end
+               nodeNamesRandom = false
+               nodeNamesRandomMin = 0
+               nodeNamesRandomMax = 0
+            struct.end
+         struct.end
+
+         decals : struct.begin
+            [*] : struct.begin
+               setupFor = forSelf
+               getOrCreate = false
+               justCreate = false
+               justGet = false
+               name =
+               attach =
+               deattach =
+               destroy = 
+               numMinCount = 1
+               numMaxCount = 1
+               initialPosition : struct.begin
+                  X = 0
+                  Y = 0
+                  Z = 0
+               struct.end
+               positionDispersion = 0
+               positionDispersionRange : struct.begin
+                  X = 1
+                  Y = 0
+                  Z = 1
+               struct.end
+               positionAbsolute = false
+               texRollAngle : struct.begin
+                  minTexRollAngle = 0
+                  maxTexRollAngle = 0
+               struct.end
+               libDecalName = 
+               libDecalRand : struct.begin
+                  [*] = 
+               struct.end
+               width = 
+               height = 
+               texOffset : struct.begin
+                  X = 
+                  Z = 
+               struct.end
+               texScale : struct.begin
+                  X = 
+                  Z = 
+               struct.end
+               texRollAngle = 
+               epsilon = 
+               texRotateEnable = 
+               texScaleEnable = 
+               texOffsetEnable = 
+               texOffsetByRotate = 
+               libMaterialName = 
+               libMaterialRand : struct.begin
+                  [*] = 
+               struct.end
+               libDecalName = 
+               initialScale : struct.begin
+                  X = 1
+                  Z = 1
+               struct.end
+               scaleDispersion = 0
+               scaleDispersionRange : struct.begin
+                  X = 0
+                  Z = 0
+               struct.end
+               scaleAbsolute = false
+               behavioursClear = false
+               behaviours : struct.begin
+                  [*] : struct.begin
+                  struct.end
+               struct.end
+               effectsClear = false
+               effects : struct.begin
+                  [*] : struct.begin
+                  struct.end
+               struct.end
+            struct.end
+         struct.end
+
+         properties : struct.begin
+            setupFor = forSelf
+            //setupFor = forParent
+            //setupFor = forRoot
+            //setupFor = forTarget ?
+            raceName = 
+            baseName = 
+            playerName = 
+            customName = 
+            randomNames : struct.begin
+               [*] : struct.begin
+                  raceName = 
+                  baseName = 
+                  playerName = 
+                  customName = 
+               struct.end
+            struct.end
+         struct.end
+
+         render : struct.begin
+            setupFor = forSelf
+            shaderID = 
+            uniform1f : struct.begin
+               [*] : struct.begin
+                  index = 
+                  value = 
+                  random : struct.begin
+                     [*] = 
+                  struct.end
+                  child = true
+               struct.end
+            struct.end
+            uniform4f : struct.begin
+               [*] : struct.begin
+                  index = 
+                  value : struct.begin
+                     X = 
+                     Y = 
+                     Z =
+                     W =
+                  struct.end
+                  random : struct.begin
+                     [*] : struct.begin
+                        X = 
+                        Y = 
+                        Z = 
+                        W = 
+                     struct.end
+                  struct.end
+
+                  child = true
+               struct.end
+            struct.end
+            lodActorName = 
+            meshName = 
+            materialName = 
+            randomNames : struct.begin
+               [*] : struct.begin
+                  lodActorName = 
+                  meshName = 
+                  materialName = 
+               struct.end
+            struct.end
+            visible = 
+         struct.end
+
+         animation : struct.begin
+            setupFor = forSelf
+            frameAnimationResetBlend = 
+            deferredFrameBlend =
+            minFrameBlend =
+            maxFrameBlend =
+            frameAnimationMode = 
+            frameAnimationName = 
+            frameAnimationNameRand : struct.begin
+               [*] = 
+            struct.end
+            frameAnimationRandom = 
+            frameAnimationBlend =
+            frameAnimationBlendRandom = 
+            frameAnimationBlendSmooth = 
+            frameAnimationBlendMinFrame = 
+            frameAnimationBlendMaxFrame =
+            frameAnimationStartReachedNode =
+            frameAnimationEndReachedNode = 
+            frameFBAnimationName = 
+            frameFBAnimationNameRand : struct.begin
+               [*] = 
+            struct.end
+            frameFBAnimationRandom = 
+            cyclesAnimationEnabled = 
+            cyclesAnimationLib = 
+            cyclesAnimationName = 
+            cyclesAnimationNameRand : struct.begin
+               [*] = 
+            struct.end
+            cyclesAnimationMode = 
+            cyclesAnimationRandom = 
+            cyclesAnimationTree = 
+            cyclesAnimationDefault = 
+            cyclesFBAnimationName = 
+            cyclesFBAnimationNameRand : struct.begin
+               [*] = 
+            struct.end
+            cyclesFBAnimationRandom = 
+            cyclesFBAnimationDefault = 
+            cyclesFBAnimationBlend = 
+            cyclesFBAnimationBlendMinFrame = 
+            cyclesFBAnimationBlendMaxFrame =
+            cyclesAnimationStartReachedNode = 
+            cyclesAnimationEndReachedNode =
+            cyclesFBAnimationEndReachedNode = 
+            switchSelf =
+            switchParent = 
+            switchRoot = 
+            switchTarget = 
+            switchStateTarget = 
+            switchRootStateTarget = 
+            switchTargetStateTarget = 
+            switchChildrenSelf = 
+            switchChildrenParent = 
+            switchChildrenRoot = 
+            switchChildrenTarget = 
+            switchChildrenStateTarget = 
+            switchChildrenRootStateTarget = 
+            switchChildrenTargetStateTarget = 
+         struct.end
+
+         trackpoint : struct.begin
+            setupFor = forSelf
+            callStateBefore = 
+            clear = 
+            addPointRandom = 
+            addPointRandomMinCount = 
+            addPointRandomMaxCount = 
+            addPointRelative = 
+            // locOfSelf
+            // absOfSelf
+            // locOfParent
+            // absOfParent
+            // locOfRoot
+            // absOfRoot
+            // locOfTarget
+            // absOfTarget
+            // locOfCoordTarget
+            // locOfStateTarget
+            // locOfParentStateTarget
+            // locOfRootStateTarget
+            // locOfTargetStateTarget
+            // locOfStateTargetObject
+            // absOfStateTargetObject
+            // locOfParentStateTargetObject
+            // absOfParentStateTargetObject
+            // locOfRootStateTargetObject
+            // absOfRootStateTargetObject
+            // locOfTargetStateTargetObject
+            // absOfTargetStateTargetObject
+            addPointCoords : struct.begin
+               [*] : struct.begin
+                  posX = 
+                  posY = 
+                  posZ = 
+                  disp = 
+                  dispX = 
+                  dispY = 
+                  dispZ = 
+               struct.end
+            struct.end
+            currentPointIndex = 
+            currentPointIndexRandom = 
+            extPointReached = 
+            extPointEnabled = 
+            extPointCIBuild = 
+            extPointCIDist = 
+            extPointRelative =
+            // locOfSelf
+            // absOfSelf
+            // locOfParent
+            // absOfParent
+            // locOfRoot
+            // absOfRoot
+            // locOfTarget
+            // absOfTarget
+            // locOfCoordTarget
+            // locOfStateTarget
+            // locOfParentStateTarget
+            // locOfRootStateTarget
+            // locOfTargetStateTarget
+            // locOfStateTargetObject
+            // absOfStateTargetObject
+            // locOfParentStateTargetObject
+            // absOfParentStateTargetObject
+            // locOfRootStateTargetObject
+            // absOfRootStateTargetObject
+            // locOfTargetStateTargetObject
+            // absOfTargetStateTargetObject
+            extPointPosition : struct.begin
+               X = 
+               Y = 
+               Z = 
+            struct.end
+            extPointDispersion = 0
+            extPointDispersionRange : struct.begin
+               X = 
+               Y = 
+               Z = 
+            struct.end
+            animationMove = 
+            animationStand = 
+            movementMode = 
+            useAnimationCycles = 
+            moveStep = 
+            moveStepInterval = 
+            epsilonDistance =
+            virtualDirection : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            turnStep = 
+            turnStepInterval = 
+            epsilonAngle = 
+            virtualUp : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            distanceToPointReached = 
+            distanceToPoint = 
+            startPointReached = 
+            endPointReached = 
+            directionReached = 
+            rotatingMode = 
+            intervalFactor = 
+            callStateAfter = 
+         struct.end
+
+         statemachine : struct.begin
+            setupFor = forSelf
+            interval = 
+            active = 
+            executeState = 
+            delayCancel =
+            delayState = 
+            delayTime = 
+            switchState = 
+            stack : struct.begin
+            struct.end
+            destroyState =
+            destroyNode = 
+         struct.end
+
+         transformation : struct.begin
+            setupFor = forSelf
+
+            useAbsolutePosition = 
+            initialPosition : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            positionDispersion = 0
+            positionDispersionRange : struct.begin
+               X = 1
+               Y = 1
+               Z = 1
+            struct.end
+            positionAbsolute = 
+
+            useAbsoluteScale = 
+            initialScale : struct.begin
+               X = 1
+               Y = 1
+               Z = 1
+            struct.end
+            scaleDispersion = 0
+            scaleDispersionRange : struct.begin
+               X = 1
+               Y = 1
+               Z = 1
+            struct.end
+            scaleAbsolute = 
+
+            selfMatrix : struct.begin
+               useIdentityMatrix = 
+               useNoChildrenRecTransformationChanged = 
+            struct.end
+            parentMatrix : struct.begin
+               useIdentityMatrix = 
+               useNoChildrenRecTransformationChanged = 
+            struct.end
+            rootMatrix : struct.begin
+               useIdentityMatrix = 
+               useNoChildrenRecTransformationChanged = 
+            struct.end
+
+            rollAngle = 
+            turnAngle = 
+            pitchAngle = 
+
+            setupIdentityRecTransformation = 
+            rootSetupIdentityRecTransformation = 
+         struct.end
+
+         collision : struct.begin
+            setupFor = forSelf
+            detection = False
+            rayCastIntersect = False
+            priority =
+            boundingMode = 
+            boundingData = 
+            boundingSpace = 
+            boundingAABB : struct.begin
+               min : struct.begin
+                  X = 0
+                  Y = 0
+                  Z = 0
+               struct.end
+               max : struct.begin
+                  X = 0
+                  Y = 0
+                  Z = 0
+               struct.end
+            struct.end
+            boundingSphere = 
+            collidedState =
+            collidedNode = 
+            uncollidedState = 
+            uncollidedNode = 
+            useCustAABBinSP = 
+            useCameraCollision =
+            useNoSPCull =
+            uncollideDelta = 
+            rayCastUsingTLF = 
+            rayCastNotifyState = 
+            rayCastNotifyNode =
+            inertiaEnabled = 
+            inertiaMovable = 
+            inertiaMass = 
+            inertiaIntersectRadius = 
+            inertiaMaxDistKoef = 
+            inertiaDeltaStep = 
+            inertiaRotationSpeed = 
+            inertiaStuckAngle = 
+            inertiaEpsilonAngle = 
+            inertiaEpsilonShift = 
+            inertiaEpsilonMove = 
+            inertiaDistExtPointEpsilon = 
+            inertiaAvoidPointMaxAngle = 
+            inertiaMaxCollideCounter = 
+            bvRayCastIntersectEnabled = 
+            bvUseTrackNode = 
+            bvTestEnabled = 
+            bvTestShpereRadius = 
+         struct.end
+
+         behaviours : struct.begin
+            [*] : struct.begin
+               setupFor = forSelf
+               className = TOSWBInertia
+               name = sample0_Spiral_ring
+               DampingEnabled = false
+               TurnSpeed = 120
+            struct.end
+         struct.end
+
+         managers : struct.begin
+            [*] : struct.begin
+               name = sample0_Spiral_ring
+               pfxtype = pfxPerlin
+               PointLightImage = true
+               SpritesPerTexture = sptOne
+               ColorMode = scmFade
+               Friction = 1
+               //NbSides = 9
+               ParticleSize = 0.5
+               ColorInner : struct.begin
+                  Red = 0
+                  Green = 0
+                  Blue = 0.627
+                  Alpha = 1
+               struct.end
+               ColorOuter : struct.begin
+                  Red = 0
+                  Green = 0
+                  Blue = 0
+                  Alpha = 0
+               struct.end
+               LifeColors : struct.begin
+                  [0] : struct.begin
+                     LifeTime = 2.5
+                     SizeScale = 1
+                     ColorInner : struct.begin
+                        Red = 1
+                        Green = 1
+                        Blue = 1
+                        Alpha = 0.6
+                     struct.end
+                     ColorOuter : struct.begin
+                        Red = 0
+                        Green = 0
+                        Blue = 0
+                        Alpha = 0
+                     struct.end
+                  struct.end
+                  [1] : struct.begin
+                     LifeTime = 3.5
+                     SizeScale = 1
+                     ColorInner : struct.begin
+                        Red = 0
+                        Green = 0
+                        Blue = 0
+                        Alpha = 0
+                     struct.end
+                     ColorOuter : struct.begin
+                        Red = 0
+                        Green = 0
+                        Blue = 0
+                        Alpha = 0
+                     struct.end
+                  struct.end
+               struct.end
+            struct.end
+         struct.end
+
+         effects : struct.begin
+            [*] : struct.begin
+               setupFor = forSelf
+               LibraryEffect = false
+               ClassName = TOSWSourcePFXEffect
+               LibSourceName = sample0_Spiral_ring
+               LibManagerName = sample0_Spiral_ring
+               DisabledIfOwnerInvisible = False
+               DispersionMode = sdmIsotropic
+               EffectScale = 1
+               Enabled = true
+               InitialPosition : struct.begin
+                  X = 0
+                  Y = 2.5
+                  Z = 0
+               struct.end
+               ParticleInterval = 500
+            struct.end
+         struct.end
+
+         misc : struct.begin
+            setupFor = forSelf
+            autoTLFAnimationEffect = false
+            autoProgressChildrenBehaviour = false
+            createTLFAnimationEffect = false
+            destroyTLFAnimationEffect = false
+            createProgressChildrenBehaviour = false
+            destroyProgressChildrenBehaviour = false
+            setupIdentityRecTransformation = false
+         struct.end
+
+         fx : struct.begin
+            destroyNode = 
+            destroyBehaviours = true
+            destroyEffect = true
+            destroyDecal = true
+            destroyObject = true
+  
+            id = 
+            
+            stack : struct.begin
+            struct.end
+
+            switch : struct.begin
+               nextNode =
+               sleepTime = 
+            struct.end
+
+            run : struct.begin
+               nextNode =
+               sleepTime = 
+            struct.end
+
+            reqDestroy = false
+         struct.end
+
+      struct.end
+
+      [*] : struct.begin
+         name = sample0_Spiral_spiral
+
+         transformation : struct.begin
+            setupFor = forSelf
+            initialPosition : struct.begin
+               X = 1
+               Y = 2
+               Z = 0
+            struct.end
+         struct.end
+
+         managers : struct.begin
+            [*] : struct.begin
+               name = sample0_Spiral_spiral
+               pfxtype = pfxPerlin
+               PointLightImage = true
+               SpritesPerTexture = sptOne
+               ColorMode = scmNone
+               Acceleration : struct.begin
+                  X = 0
+                  Y = -0.2
+                  Z = 0
+               struct.end
+               ColorInner : struct.begin
+                  Red = 1
+                  Green = 1
+                  Blue = 0
+                  Alpha = 1
+               struct.end
+               ColorOuter : struct.begin
+                  Red = 1
+                  Green = 0
+                  Blue = 0
+                  Alpha = 0
+               struct.end
+               Friction = 1
+               //NbSides = 9
+               ParticleSize = 0.3
+               MixLSDiff0 = false
+               LifeColors : struct.begin
+                  [0] : struct.begin
+                     LifeTime = 3
+                     SizeScale = 1
+                     ColorInner : struct.begin
+                        Red = 1
+                        Green = 1
+                        Blue = 0
+                        Alpha = 1
+                     struct.end
+                     ColorOuter : struct.begin
+                        Red = 0
+                        Green = 0
+                        Blue = 1
+                        Alpha = 0
+                     struct.end
+                  struct.end
+                  [1] : struct.begin
+                     LifeTime = 6
+                     SizeScale = 1
+                     ColorInner : struct.begin
+                        Red = 0.32
+                        Green = 0.49
+                        Blue = 0.46
+                        Alpha = 1
+                     struct.end
+                     ColorOuter : struct.begin
+                        Red = 1
+                        Green = 0
+                        Blue = 0
+                        Alpha = 0
+                     struct.end
+                  struct.end
+                  [2] : struct.begin
+                     LifeTime = 9
+                  struct.end
+               struct.end
+            struct.end
+         struct.end
+
+         effects : struct.begin
+            [*] : struct.begin
+               ClassName = TOSWSourcePFXEffect
+               LibSourceName = sample0_Spiral_spiral
+               LibManagerName = sample0_Spiral_spiral
+               DisabledIfOwnerInvisible = False
+               EffectScale = 1
+               Enabled = true
+               InitialVelocity : struct.begin
+                  X = 0
+                  Y = -0.2
+                  Z = 0
+               struct.end
+               ParticleInterval = 0.05
+               VelocityDispersion = 0.1
+            struct.end
+         struct.end
+      struct.end
+      [*] : struct.begin
+         name = sample0_Spiral_sphere_explosion
+
+         effects : struct.begin
+            [*] : struct.begin
+               ClassName = TOSWSourcePFXEffect
+               LibSourceName = sample0_Spiral_ring
+               VelocityDispersion = 1.5
+            struct.end
+            [*] : struct.begin
+               ClassName = TOSWSourcePFXEffect
+               LibSourceName = sample0_Spiral_ring
+               Burst : struct.begin
+                  Delta = 0
+                  Time = 0
+                  NumParticles = 200
+               struct.end
+            struct.end
+            [*] : struct.begin
+               ClassName = TOSWSourcePFXEffect
+               LibSourceName = sample0_Spiral_ring
+               VelocityDispersion = 0
+            struct.end
+         struct.end
+
+         nextNode = sample0_Spiral_ring_explosion
+         sleepTime = 2
+      struct.end
+      [*] : struct.begin
+         name = sample0_Spiral_ring_explosion
+
+         effects : struct.begin
+            [*] : struct.begin
+               ClassName = TOSWSourcePFXEffect
+               LibSourceName = sample0_Spiral_ring
+               Ring : struct.begin
+                  Delta = 0
+                  Time = 0
+                  NumParticles = 150
+                  MinInitialSpeed = 1
+                  maxInitialSpeed = 1.2
+               struct.end
+            struct.end
+         struct.end
+
+         nextNode = sample0_Spiral_sphere_explosion
+         sleepTime = 2
+      struct.end
+   struct.end
+section.end

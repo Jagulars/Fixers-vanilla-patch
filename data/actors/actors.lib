@@ -1,0 +1,6528 @@
+section.begin
+   HintCaption = //*************************** ПОСТРОЙКИ ****************************************
+   Hint = //----------------- МАГИЧЕСКИЙ КВРАРТАЛ ----------------------------------------
+   HintDesc = //Библиотека (5)
+   LODActorName = library
+   LODActorFileName = .\data\actors\buildings\magic\library.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library1_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\library1_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library1_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\library1_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library2_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\library2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library2_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\library2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library3_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\library3_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library3_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\library3_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library3_attach3
+   LODActorFileName = .\data\actors\buildings\magic\attach\library3_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library3_attach4
+   LODActorFileName = .\data\actors\buildings\magic\attach\library3_attach4.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library4_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\library4_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library4_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\library4_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library4_attach3
+   LODActorFileName = .\data\actors\buildings\magic\attach\library4_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library4_attach4
+   LODActorFileName = .\data\actors\buildings\magic\attach\library4_attach4.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library4_attach5
+   LODActorFileName = .\data\actors\buildings\magic\attach\library4_attach5.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library5_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\library5_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library5_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\library5_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library5_attach3
+   LODActorFileName = .\data\actors\buildings\magic\attach\library5_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library5_attach4
+   LODActorFileName = .\data\actors\buildings\magic\attach\library5_attach4.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Библиотека (attach)
+   LODActorName = library5_attach5
+   LODActorFileName = .\data\actors\buildings\magic\attach\library5_attach5.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (4)
+   LODActorName = sorcererworkshop
+   LODActorFileName = .\data\actors\buildings\magic\sorcererworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (Attach)
+   LODActorName = sorcererworkshop2_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcererworkshop2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (Attach)
+   LODActorName = sorcererworkshop2_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcererworkshop2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (Attach)
+   LODActorName = sorcererworkshop3_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcererworkshop3_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (Attach)
+   LODActorName = sorcererworkshop3_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcererworkshop3_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (Attach)
+   LODActorName = sorcererworkshop4_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcererworkshop4_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерская колдуна (Attach)
+   LODActorName = sorcererworkshop4_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcererworkshop4_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа волшебства (4)
+   LODActorName = wizardry
+   LODActorFileName = .\data\actors\buildings\magic\wizardry.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Святилище (4)
+   LODActorName = holymagic
+   LODActorFileName = .\data\actors\buildings\magic\holymagic.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа хаоса (4)
+   LODActorName = chaos
+   LODActorFileName = .\data\actors\buildings\magic\chaos.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа хаоса, Attach
+   LODActorName = chaos4_attach
+   LODActorFileName = .\data\actors\buildings\magic\attach\chaos4_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (4)
+   LODActorName = sorcery
+   LODActorFileName = .\data\actors\buildings\magic\sorcery.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery2_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery2_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery3_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery3_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery3_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery3_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery3_attach3
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery3_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery4_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery4_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery4_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery4_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа колдовства (Attach)
+   LODActorName = sorcery4_attach3
+   LODActorFileName = .\data\actors\buildings\magic\attach\sorcery4_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа некроманнии (5)
+   LODActorName = necromancy
+   LODActorFileName = .\data\actors\buildings\magic\necromancy.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа стихий (4)
+   LODActorName = elemental
+   LODActorFileName = .\data\actors\buildings\magic\elemental.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа стихий (Attach)
+   LODActorName = elemental_attach1
+   LODActorFileName = .\data\actors\buildings\magic\attach\elemental_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа стихий (Attach)
+   LODActorName = elemental_attach2
+   LODActorFileName = .\data\actors\buildings\magic\attach\elemental_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа стихий (Attach)
+   LODActorName = elemental_attach3
+   LODActorFileName = .\data\actors\buildings\magic\attach\elemental_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа стихий (Attach)
+   LODActorName = elemental_attach4
+   LODActorFileName = .\data\actors\buildings\magic\attach\elemental_attach4.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+
+section.begin
+   Hint = //----------------------- ТОРГОВЫЙ КВАРТАЛ -------------------------------
+   HintDesc = //Таверна (4)
+   LODActorName = tavern
+   LODActorFileName = .\data\actors\buildings\trade\tavern.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Амбар (6)
+   LODActorName = granary
+   LODActorFileName = .\data\actors\buildings\trade\granary.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Конюшня (2)
+   LODActorName = stables
+   LODActorFileName = .\data\actors\buildings\trade\stables.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастер брони (3)
+   LODActorName = armorerworkshop
+   LODActorFileName = .\data\actors\buildings\trade\armorerworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ювелир (3)
+   LODActorName = jeweler
+   LODActorFileName = .\data\actors\buildings\trade\jeweler.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастер кольчуг (3)
+   LODActorName = mailsmith
+   LODActorFileName = .\data\actors\buildings\trade\mailsmith.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Оружейник (3)
+   LODActorName = weaponsmithworkshop
+   LODActorFileName = .\data\actors\buildings\trade\weaponsmithworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка плотника (3)
+   LODActorName = carpenterworkshop
+   LODActorFileName = .\data\actors\buildings\trade\carpenterworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка плотника (Attach)
+   LODActorName = carpenterworkshop1_attach
+   LODActorFileName = .\data\actors\buildings\trade\attach\carpenterworkshop1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка плотника (Attach)
+   LODActorName = carpenterworkshop2_attach
+   LODActorFileName = .\data\actors\buildings\trade\attach\carpenterworkshop2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка плотника (Attach)
+   LODActorName = carpenterworkshop3_attach
+   LODActorFileName = .\data\actors\buildings\trade\attach\carpenterworkshop2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка скорняка (3)
+   LODActorName = leatherworkerworkshop
+   LODActorFileName = .\data\actors\buildings\trade\leatherworkerworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка скорняка (attach)
+   LODActorName = leatherworkerworkshop1_attach
+   LODActorFileName = .\data\actors\buildings\trade\attach\leatherworkerworkshop1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка скорняка (attach)
+   LODActorName = leatherworkerworkshop2_attach
+   LODActorFileName = .\data\actors\buildings\trade\attach\leatherworkerworkshop2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка скорняка (attach)
+   LODActorName = leatherworkerworkshop3_attach
+   LODActorFileName = .\data\actors\buildings\trade\attach\leatherworkerworkshop3_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лавка портного (3)
+   LODActorName = clothierworkshop
+   LODActorFileName = .\data\actors\buildings\trade\clothierworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Фурнитура (8)
+   LODActorName = furniture
+   LODActorFileName = .\data\actors\buildings\trade\furniture.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Давка чародея (3)
+   LODActorName = enchanterworkshop
+   LODActorFileName = .\data\actors\buildings\trade\enchanterworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ ЦЕНТРАЛЬНЫЙ КВАРТАЛ -----------------------------------
+   HintDesc = //Дворец
+   LODActorName = palace
+   LODActorFileName = .\data\actors\buildings\central\palace.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Тюрьма
+   LODActorName = jail
+   LODActorFileName = .\data\actors\buildings\central\jail.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Управа
+   LODActorName = townhall
+   LODActorFileName = .\data\actors\buildings\central\townhall.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Фонтан Молодости
+   LODActorName = fountainofyouth
+   LODActorFileName = .\data\actors\buildings\central\fountainofyouth.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сокровищница (3)
+   LODActorName = treasury
+   LODActorFileName = .\data\actors\buildings\central\treasury.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сокровищница (Attach)
+   LODActorName = treasury1_attach
+   LODActorFileName = .\data\actors\buildings\central\attach\treasury1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сокровищница (Attach)
+   LODActorName = treasury2_attach
+   LODActorFileName = .\data\actors\buildings\central\attach\treasury2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сокровищница (Attach)
+   LODActorName = treasury3_attach
+   LODActorFileName = .\data\actors\buildings\central\attach\treasury3_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+
+section.begin
+   Hint = //------------------ ВОЕННЫЙ КВАРТАЛ ---------------------------------------
+   HintDesc = //Пыточная (2)
+   LODActorName = executioner_house
+   LODActorFileName = .\data\actors\buildings\military\executioner_house.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пыточная (Attach)
+   LODActorName = executioner_house1_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\executioner_house1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пыточная (Attach)
+   LODActorName = executioner_house2_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\executioner_house2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Круг колдунов (2)
+   LODActorName = sorcererscircle
+   LODActorFileName = .\data\actors\buildings\military\sorcererscircle.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Оружейная (4)
+   LODActorName = armory
+   LODActorFileName = .\data\actors\buildings\military\armory.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Замок (4)
+   LODActorName = castle
+   LODActorFileName = .\data\actors\buildings\military\castle.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Замок, флаг
+   LODActorName = castle4_flag
+   LODActorFileName = .\data\actors\buildings\military\attach\castle4_flag.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Подножие замка
+   LODActorName = castlehill
+   LODActorFileName = .\data\actors\buildings\military\castlehill.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Замок Тьмы
+   LODActorName = darkcastle
+   LODActorFileName = .\data\actors\buildings\military\darkcastle.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Замок Тьмы (attach)
+   LODActorName = darkcastle_attach1
+   LODActorFileName = .\data\actors\buildings\military\attach\darkcastle_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Замок Тьмы (attach)
+   LODActorName = darkcastle_attach2
+   LODActorFileName = .\data\actors\buildings\military\attach\darkcastle_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Слоновник
+   LODActorName = elephantstable
+   LODActorFileName = .\data\actors\buildings\military\elephantstable.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Священный Орден
+   LODActorName = holyorder
+   LODActorFileName = .\data\actors\buildings\military\holyorder.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрельбище (2)
+   LODActorName = archeryrange
+   LODActorFileName = .\data\actors\buildings\military\archeryrange.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вербовочный пункт (2)
+   LODActorName = recruitpoint
+   LODActorFileName = .\data\actors\buildings\military\recruitpoint.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа пращников (2)
+   LODActorName = slingerschool
+   LODActorFileName = .\data\actors\buildings\military\slingerschool.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа копейщиков
+   LODActorName = spearmanschool
+   LODActorFileName = .\data\actors\buildings\military\spearmanschool.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа мечников
+   LODActorName = swordsmanschool
+   LODActorFileName = .\data\actors\buildings\military\swordsmanschool.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лагерь варваров (2)
+   LODActorName = barbariancamp
+   LODActorFileName = .\data\actors\buildings\military\barbariancamp.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа арбалетчиков (2)
+   LODActorName = crossbowmanschool
+   LODActorFileName = .\data\actors\buildings\military\crossbowmanschool.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Храм Орла (2)
+   LODActorName = eagletemple
+   LODActorFileName = .\data\actors\buildings\military\eagletemple.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гнёзда грифонов (2)
+   LODActorName = griffinnest
+   LODActorFileName = .\data\actors\buildings\military\griffinnest.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рыцарский орден (2)
+   LODActorName = knightlyorder
+   LODActorFileName = .\data\actors\buildings\military\knightlyorder.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рыцарский орден (Attach)
+   LODActorName = knightlyorder1_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\knightlyorder1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рыцарский орден (Attach)
+   LODActorName = knightlyorder2_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\knightlyorder2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Братство Света (2)
+   LODActorName = lightbrotherhood
+   LODActorFileName = .\data\actors\buildings\military\lightbrotherhood.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Братство Света, колесо 1
+   LODActorName = lightbrotherhood2_rotator1
+   LODActorFileName = .\data\actors\buildings\military\attach\lightbrotherhood2_rotator1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Братство Света, колесо 2
+   LODActorName = lightbrotherhood2_rotator2
+   LODActorFileName = .\data\actors\buildings\military\attach\lightbrotherhood2_rotator2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня магов (2)
+   LODActorName = magetower
+   LODActorFileName = .\data\actors\buildings\military\magetower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня магов (attach)
+   LODActorName = magetower1_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\magetower1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня магов (attach)
+   LODActorName = magetower2_attach1
+   LODActorFileName = .\data\actors\buildings\military\attach\magetower2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня магов (attach)
+   LODActorName = magetower2_attach2
+   LODActorFileName = .\data\actors\buildings\military\attach\magetower2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Школа пикинёров (2)
+   LODActorName = pikemanschool
+   LODActorFileName = .\data\actors\buildings\military\pikemanschool.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Воровской притон (2)
+   LODActorName = thievesden
+   LODActorFileName = .\data\actors\buildings\military\thievesden.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Логово разбойников (2)
+   LODActorName = robberlair
+   LODActorFileName = .\data\actors\buildings\military\robberlair.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Казармы гвардейцев (2)
+   LODActorName = guardsmanbarracks
+   LODActorFileName = .\data\actors\buildings\military\guardsmanbarracks.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Казармы гвардейцев (Attach)
+   LODActorName = guardsmanbarracks1_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\guardsmanbarracks1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Казармы гвардейцев (Attach)
+   LODActorName = guardsmanbarracks2_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\guardsmanbarracks2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Манеж (2)
+   LODActorName = horsearcherground
+   LODActorFileName = .\data\actors\buildings\military\horsearcherground.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Монастырь (2)
+   LODActorName = monastery
+   LODActorFileName = .\data\actors\buildings\military\monastery.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стойла пегасов
+   LODActorName = pegasusstable
+   LODActorFileName = .\data\actors\buildings\military\pegasusstable.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осадные мастерские
+   LODActorName = siegeworkshop
+   LODActorFileName = .\data\actors\buildings\military\siegeworkshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осадные мастерские (attach)
+   LODActorName = siegeworkshop_attach
+   LODActorFileName = .\data\actors\buildings\military\attach\siegeworkshop_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Тотем
+   LODActorName = totem
+   LODActorFileName = .\data\actors\buildings\military\totem.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия убийц (3)
+   LODActorName = assassinsguild
+   LODActorFileName = .\data\actors\buildings\military\assassinsguild.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бойцовские бараки (2)
+   LODActorName = brawlersbarracks
+   LODActorFileName = .\data\actors\buildings\military\brawlersbarracks.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ристалище (2)
+   LODActorName = cavalrybarracks
+   LODActorFileName = .\data\actors\buildings\military\cavalrybarracks.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осадный цех (2)
+   LODActorName = mechanistsguild
+   LODActorFileName = .\data\actors\buildings\military\mechanistsguild.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осадный цех (Attach)
+   LODActorName = mechanistsguild2_attach1
+   LODActorFileName = .\data\actors\buildings\military\attach\mechanistsguild2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осадный цех (Attach)
+   LODActorName = mechanistsguild2_attach2
+   LODActorFileName = .\data\actors\buildings\military\attach\mechanistsguild2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ КВАРТАЛ РАЗВЛЕЧЕНИЙ -----------------------------------
+   HintDesc = //Театр (3)
+   LODActorName = theatre
+   LODActorFileName = .\data\actors\buildings\joy\theatre.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Арена (2)
+   LODActorName = arena
+   LODActorFileName = .\data\actors\buildings\joy\arena.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ипподром
+   LODActorName = hippodrome
+   LODActorFileName = .\data\actors\buildings\joy\hippodrome.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ ХРАМОВЫЙ КВАРТАЛ -----------------------------------
+   HintDesc = //Госпиталь (3)
+   LODActorName = hospital
+   LODActorFileName = .\data\actors\buildings\holy\hospital.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Алтарь (4)
+   LODActorName = altar
+   LODActorFileName = .\data\actors\buildings\holy\altar.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кристалл Силы (3)
+   LODActorName = powercrystal
+   LODActorFileName = .\data\actors\buildings\holy\powercrystal.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Храм Мира
+   LODActorName = templeofpeace
+   LODActorFileName = .\data\actors\buildings\holy\templeofpeace.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Храм Войны
+   LODActorName = templeofwar
+   LODActorFileName = .\data\actors\buildings\holy\templeofwar.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ ЛЕСНОЙ КВАРТАЛ -----------------------------------
+   HintDesc = //Сад кристаллов (2)
+   LODActorName = crystalgarden
+   LODActorFileName = .\data\actors\buildings\forest\crystalgarden.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (4)
+   LODActorName = foresterguild
+   LODActorFileName = .\data\actors\buildings\forest\foresterguild.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild1_bridge1
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild1_bridge1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild1_bridge2
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild1_bridge2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild2_bridge1
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild2_bridge1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild2_bridge2
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild2_bridge2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild2_bridge3
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild2_bridge3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild3_bridge1
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild3_bridge1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild3_bridge2
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild3_bridge2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild3_bridge3
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild3_bridge3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild3_cage
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild3_cage.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild3_fishing_net
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild3_fishing_net.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild4_bridge1
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild4_bridge1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild4_bridge2
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild4_bridge2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild4_bridge3
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild4_bridge3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild4_cage1
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild4_cage1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild4_cage2
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild4_cage2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия лесников (attach)
+   LODActorName = foresterguild4_fishing_net
+   LODActorFileName = .\data\actors\buildings\forest\attach\foresterguild4_fishing_net.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия травников
+   LODActorName = herbalistguild
+   LODActorFileName = .\data\actors\buildings\forest\herbalistguild.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Магический колодец (2)
+   LODActorName = magicwell
+   LODActorFileName = .\data\actors\buildings\forest\magicwell.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Волшебная рощя
+   LODActorName = enchantedgrove
+   LODActorFileName = .\data\actors\buildings\forest\enchantedgrove.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ КВАРТАЛ РЕМЕСЛЕННИКОВ -----------------------------------
+   HintDesc = //Кузница (2)
+   LODActorName = blacksmith
+   LODActorFileName = .\data\actors\buildings\crafter\blacksmith.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кузница (Attach)
+   LODActorName = blacksmith1_attach
+   LODActorFileName = .\data\actors\buildings\crafter\attach\blacksmith1_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кузница (Attach)
+   LODActorName = blacksmith2_attach1
+   LODActorFileName = .\data\actors\buildings\crafter\attach\blacksmith2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кузница (Attach)
+   LODActorName = blacksmith2_attach2
+   LODActorFileName = .\data\actors\buildings\crafter\attach\blacksmith2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия строителей (4)
+   LODActorName = buildersguild
+   LODActorFileName = .\data\actors\buildings\crafter\buildersguild.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия строителей (4) аттач
+   LODActorName = buildersguild2_attach
+   LODActorFileName = .\data\actors\buildings\crafter\attach\buildersguild2_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия строителей (4) аттач
+   LODActorName = buildersguild3_attach
+   LODActorFileName = .\data\actors\buildings\crafter\attach\buildersguild3_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гончарные мастерские (2)
+   LODActorName = pottery
+   LODActorFileName = .\data\actors\buildings\crafter\pottery.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гильдия шахтёров (2)
+   LODActorName = minersguild
+   LODActorFileName = .\data\actors\buildings\crafter\minersguild.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мастерские (2)
+   LODActorName = workshop
+   LODActorFileName = .\data\actors\buildings\crafter\workshop.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (3)
+   LODActorName = shipyard
+   LODActorFileName = .\data\actors\buildings\crafter\shipyard.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard_attach1
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard_attach2
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard_attach3
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard3_attach1
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard3_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard3_attach2
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard3_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard3_attach3
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard3_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Верфь (Attach)
+   LODActorName = shipyard3_attach4
+   LODActorFileName = .\data\actors\buildings\crafter\attach\shipyard3_attach4.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ КВАРТАЛ СОЮЗНИКОВ -----------------------------------
+   HintDesc = //Гоблины (9)
+   LODActorName = goblinquarter
+   LODActorFileName = .\data\actors\buildings\ally\goblinquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гоблины #4
+   LODActorName = goblinquarter04
+   LODActorFileName = .\data\actors\buildings\ally\goblinquarter04.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орки (14)
+   LODActorName = orcquarter
+   LODActorFileName = .\data\actors\buildings\ally\orcquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орки (Attach)
+   LODActorName = orcquarter01_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\orcquarter01_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орки (Attach)
+   LODActorName = orcquarter04_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\orcquarter04_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орки (Attach)
+   LODActorName = orcquarter09_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\orcquarter09_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кентавры (9)
+   LODActorName = centaurquarter
+   LODActorFileName = .\data\actors\buildings\ally\centaurquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Половинчики (9)
+   LODActorName = halflingquarter
+   LODActorFileName = .\data\actors\buildings\ally\halflingquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Люди (8)
+   LODActorName = housing
+   LODActorFileName = .\data\actors\buildings\ally\housing.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (8)
+   LODActorName = dwarvenquarter
+   LODActorFileName = .\data\actors\buildings\ally\dwarvenquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (Attach)
+   LODActorName = dwarvenquarter01_attach1
+   LODActorFileName = .\data\actors\buildings\ally\attach\dwarvenquarter01_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (Attach)
+   LODActorName = dwarvenquarter03_attach1
+   LODActorFileName = .\data\actors\buildings\ally\attach\dwarvenquarter03_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (Attach)
+   LODActorName = dwarvenquarter03_attach2
+   LODActorFileName = .\data\actors\buildings\ally\attach\dwarvenquarter03_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (Attach)
+   LODActorName = dwarvenquarter03_attach3
+   LODActorFileName = .\data\actors\buildings\ally\attach\dwarvenquarter03_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (Attach)
+   LODActorName = dwarvenquarter07_attach1
+   LODActorFileName = .\data\actors\buildings\ally\attach\dwarvenquarter07_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гномы (Attach)
+   LODActorName = dwarvenquarter08_attach1
+   LODActorFileName = .\data\actors\buildings\ally\attach\dwarvenquarter08_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (9)
+   LODActorName = lizardmanquarter
+   LODActorFileName = .\data\actors\buildings\ally\lizardmanquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (Attach)
+   LODActorName = lizardmanquarter02_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\lizardmanquarter02_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (Attach)
+   LODActorName = lizardmanquarter04_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\lizardmanquarter04_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (Attach)
+   LODActorName = lizardmanquarter05_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\lizardmanquarter05_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (Attach)
+   LODActorName = lizardmanquarter06_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\lizardmanquarter06_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (Attach)
+   LODActorName = lizardmanquarter07_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\lizardmanquarter07_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящеры (Attach)
+   LODActorName = lizardmanquarter08_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\lizardmanquarter08_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Омут людоящеров
+   LODActorName = pool
+   LODActorFileName = .\data\actors\buildings\ally\pool.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (8)
+   LODActorName = elvenquarter
+   LODActorFileName = .\data\actors\buildings\ally\elvenquarter.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (Attach)
+   LODActorName = elvenquarter01_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\elvenquarter01_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (Attach)
+   LODActorName = elvenquarter02_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\elvenquarter02_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (Attach)
+   LODActorName = elvenquarter04_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\elvenquarter04_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (Attach)
+   LODActorName = elvenquarter06_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\elvenquarter06_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (Attach)
+   LODActorName = elvenquarter07_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\elvenquarter07_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльфы (Attach)
+   LODActorName = elvenquarter08_attach
+   LODActorFileName = .\data\actors\buildings\ally\attach\elvenquarter08_attach.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //----------------------- УКРЕПЛЕНИЯ -----------------------------
+   HintDesc = //Частокол
+   LODActorName = woodwall
+   LODActorFileName = .\data\actors\buildings\wall\woodwall.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Каменная стена
+   LODActorName = stonewall
+   LODActorFileName = .\data\actors\buildings\wall\stonewall.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Каменная круглая стена
+   LODActorName = stonewallround
+   LODActorFileName = .\data\actors\buildings\wall\stonewallround.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Каменные ворота
+   LODActorName = stonegate
+   LODActorFileName = .\data\actors\buildings\wall\stonegate.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Каменная башня
+   LODActorName = stonetower
+   LODActorFileName = .\data\actors\buildings\wall\stonetower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Каменная лестница
+   LODActorName = stonestairs
+   LODActorFileName = .\data\actors\buildings\wall\stonestairs.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ ВНЕШНИЕ ПОСТРОЙКИ ---------------------------
+   HintDesc = //Древний храм
+   LODActorName = ancienttemple
+   LODActorFileName = .\data\actors\buildings\outer\ancienttemple.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Святилище Древних
+   LODActorName = ancientshrine
+   LODActorFileName = .\data\actors\buildings\outer\ancientshrine.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сокровищница Древних
+   LODActorName = ancienttreasury
+   LODActorFileName = .\data\actors\buildings\outer\ancienttreasury.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рудник Древних
+   LODActorName = ancientorepit
+   LODActorFileName = .\data\actors\buildings\outer\ancientorepit.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рудник Древних, колесо
+   LODActorName = ancientorepit_wheel
+   LODActorFileName = .\data\actors\buildings\outer\attach\ancientorepit_wheel.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Хижина шамана
+   LODActorName = shamanhut
+   LODActorFileName = .\data\actors\buildings\outer\shamanhut.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мельница
+   LODActorName = windmill
+   LODActorFileName = .\data\actors\buildings\outer\windmill.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мельница аттач
+   LODActorName = windmill1_attach1
+   LODActorFileName = .\data\actors\buildings\outer\attach\windmill1_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мельница аттач
+   LODActorName = windmill1_attach2
+   LODActorFileName = .\data\actors\buildings\outer\attach\windmill1_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мельница аттач
+   LODActorName = windmill2_attach1
+   LODActorFileName = .\data\actors\buildings\outer\attach\windmill2_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мельница аттач
+   LODActorName = windmill2_attach2
+   LODActorFileName = .\data\actors\buildings\outer\attach\windmill2_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Шахта
+   LODActorName = mine
+   LODActorFileName = .\data\actors\buildings\outer\mine.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лесопилка
+   LODActorName = sawmill
+   LODActorFileName = .\data\actors\buildings\outer\sawmill.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Золотая сфера
+   LODActorName = goldensphere
+   LODActorFileName = .\data\actors\buildings\outer\goldensphere.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Застава
+   LODActorName = outpost
+   LODActorFileName = .\data\actors\buildings\outer\outpost.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Форт
+   LODActorName = fort
+   LODActorFileName = .\data\actors\buildings\outer\fort.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Тёмная башня
+   LODActorName = darktower
+   LODActorFileName = .\data\actors\buildings\outer\darktower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня Молний
+   LODActorName = lightningtower
+   LODActorFileName = .\data\actors\buildings\outer\lightningtower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Магическая башня
+   LODActorName = magictower
+   LODActorFileName = .\data\actors\buildings\outer\magictower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Магическая башня (Attach)
+   LODActorName = magictower_attach1
+   LODActorFileName = .\data\actors\buildings\outer\attach\magictower_attach1.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Магическая башня (Attach)
+   LODActorName = magictower_attach2
+   LODActorFileName = .\data\actors\buildings\outer\attach\magictower_attach2.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Магическая башня (Attach)
+   LODActorName = magictower_attach3
+   LODActorFileName = .\data\actors\buildings\outer\attach\magictower_attach3.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Управа (4)
+   LODActorName = courthouse
+   LODActorFileName = .\data\actors\buildings\outer\courthouse.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Склад (3)
+   LODActorName = storehouse
+   LODActorFileName = .\data\actors\buildings\outer\storehouse.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пирамида
+   LODActorName = pyramid
+   LODActorFileName = .\data\actors\buildings\outer\pyramid.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------ ПОЛЕ БОЯ -----------------------------------
+   HintDesc = //Стена (2)
+   LODActorName = wall
+   LODActorFileName = .\data\actors\buildings\battle\wall.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Разрушенные участки (3)
+   LODActorName = crash
+   LODActorFileName = .\data\actors\buildings\battle\crash.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня
+   LODActorName = tower
+   LODActorFileName = .\data\actors\buildings\battle\tower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стена застава
+   LODActorName = wall_outpost
+   LODActorFileName = .\data\actors\buildings\battle\wall_outpost.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Разрушенные участки застава (3)
+   LODActorName = outpost_crash
+   LODActorFileName = .\data\actors\buildings\battle\outpost_crash.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стена форт
+   LODActorName = wall_fort
+   LODActorFileName = .\data\actors\buildings\battle\wall_fort.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Разрушенные участки форт (3)
+   LODActorName = fort_crash
+   LODActorFileName = .\data\actors\buildings\battle\fort_crash.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Башня форт
+   LODActorName = fort_tower
+   LODActorFileName = .\data\actors\buildings\battle\fort_tower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мост
+   LODActorName = bridge
+   LODActorFileName = .\data\actors\buildings\battle\bridge.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мост малый
+   LODActorName = bridge_small
+   LODActorFileName = .\data\actors\buildings\battle\bridge_small.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Центр моста
+   LODActorName = bridge_middle
+   LODActorFileName = .\data\actors\buildings\battle\bridge_middle.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Центр моста
+   LODActorName = bf_furniture
+   LODActorFileName = .\data\actors\buildings\battle\bf_furniture.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Магическая башня
+   LODActorName = bf_magictower
+   LODActorFileName = .\data\actors\buildings\battle\bf_magictower.actor
+   MaterialLibraryInterfaceName = buildings
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //*********************** ЮНИТЫ *******************************************
+   HintDesc = //Варвар
+   LODActorName = barbarian
+   LODActorFileName = .\data\actors\units\barbarian.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Варвар левый топор
+   LODActorName = barbarian_axe_left
+   LODActorFileName = .\data\actors\units\barbarian.attach\barbarian_axe_left.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Варвар правый топор
+   LODActorName = barbarian_axe_right
+   LODActorFileName = .\data\actors\units\barbarian.attach\barbarian_axe_right.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Варвар метательный топор
+   LODActorName = barbarian_axe_small
+   LODActorFileName = .\data\actors\units\barbarian.attach\barbarian_axe_small.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ополченец
+   LODActorName = rebel
+   LODActorFileName = .\data\actors\units\rebel.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ополченец рогатина
+   LODActorName = rogatina
+   LODActorFileName = .\data\actors\units\rebel.attach\rogatina.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пращник
+   LODActorName = slinger
+   LODActorFileName = .\data\actors\units\slinger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Нож пращника
+   LODActorName = slinger_knife
+   LODActorFileName = .\data\actors\units\slinger.attach\slinger_knife.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Праща пращника
+   LODActorName = slinger_sling
+   LODActorFileName = .\data\actors\units\slinger.attach\slinger_sling.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Камень пращника
+   LODActorName = slinger_stone
+   LODActorFileName = .\data\actors\units\slinger.attach\slinger_stone.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гоблин
+   LODActorName = goblin
+   LODActorFileName = .\data\actors\units\goblin.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Нож гоблина
+   LODActorName = goblin_knife
+   LODActorFileName = .\data\actors\units\goblin.attach\goblin_knife.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Половинчик
+   LODActorName = halfling
+   LODActorFileName = .\data\actors\units\halfling.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Нож половинчика
+   LODActorName = halfling_knife
+   LODActorFileName = .\data\actors\units\halfling.attach\halfling_knife.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Праща половинчика
+   LODActorName = halfling_sling
+   LODActorFileName = .\data\actors\units\halfling.attach\halfling_sling.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Нож половинчика в руке
+   LODActorName = halfling_knife_hand
+   LODActorFileName = .\data\actors\units\halfling.attach\halfling_knife_hand.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сумка половинчика
+   LODActorName = halfling_bag
+   LODActorFileName = .\data\actors\units\halfling.attach\halfling_bag.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Камень половинчика
+   LODActorName = halfling_stone
+   LODActorFileName = .\data\actors\units\halfling.attach\halfling_stone.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бандит
+   LODActorName = robber
+   LODActorFileName = .\data\actors\units\robber.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бандит щит
+   LODActorName = robber_shield
+   LODActorFileName = .\data\actors\units\robber.attach\robber_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бандит сабля
+   LODActorName = robber_sword
+   LODActorFileName = .\data\actors\units\robber.attach\robber_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вор
+   LODActorName = thief
+   LODActorFileName = .\data\actors\units\thief.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вор левый нож
+   LODActorName = thief_knife_left
+   LODActorFileName = .\data\actors\units\thief.attach\thief_knife_left.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вор правый нож
+   LODActorName = thief_knife_right
+   LODActorFileName = .\data\actors\units\thief.attach\thief_knife_right.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лекарь
+   LODActorName = healer
+   LODActorFileName = .\data\actors\units\healer.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Нож лекаря
+   LODActorName = healer_knife
+   LODActorFileName = .\data\actors\units\healer.attach\healer_knife.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сумка лекаря
+   LODActorName = healer_bag
+   LODActorFileName = .\data\actors\units\healer.attach\healer_bag.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ножны лекаря
+   LODActorName = healer_scabbard
+   LODActorFileName = .\data\actors\units\healer.attach\healer_scabbard.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Зомби
+   LODActorName = zombie
+   LODActorFileName = .\data\actors\units\zombie.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гном
+   LODActorName = dwarf
+   LODActorFileName = .\data\actors\units\dwarf.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гном щит
+   LODActorName = dwarf_shield
+   LODActorFileName = .\data\actors\units\dwarf.attach\dwarf_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гном топор
+   LODActorName = dwarf_axe
+   LODActorFileName = .\data\actors\units\dwarf.attach\dwarf_axe.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орк
+   LODActorName = orc
+   LODActorFileName = .\data\actors\units\orc.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орк щит
+   LODActorName = orc_shield
+   LODActorFileName = .\data\actors\units\orc.attach\orc_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Орк булава
+   LODActorName = orc_mace
+   LODActorFileName = .\data\actors\units\orc.attach\orc_mace.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящер
+   LODActorName = lizardman
+   LODActorFileName = .\data\actors\units\lizardman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящер щит
+   LODActorName = lizardman_shield
+   LODActorFileName = .\data\actors\units\lizardman.attach\lizardman_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Людоящер копьё
+   LODActorName = lizardman_spear
+   LODActorFileName = .\data\actors\units\lizardman.attach\lizardman_spear.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Эльф
+   LODActorName = elf
+   LODActorFileName = .\data\actors\units\elf.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кинжал эльфа
+   LODActorName = elf_dagger
+   LODActorFileName = .\data\actors\units\elf.attach\elf_dagger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лук эльфа
+   LODActorName = elf_bow
+   LODActorFileName = .\data\actors\units\elf.attach\elf_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колчан эльфа
+   LODActorName = elf_quiver
+   LODActorFileName = .\data\actors\units\elf.attach\elf_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела эльфа
+   LODActorName = elf_arrow
+   LODActorFileName = .\data\actors\units\elf.attach\elf_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ножны эльфа
+   LODActorName = elf_scabbards
+   LODActorFileName = .\data\actors\units\elf.attach\elf_scabbards.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лучник
+   LODActorName = archer
+   LODActorFileName = .\data\actors\units\archer.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кинжал лучника
+   LODActorName = archer_dagger
+   LODActorFileName = .\data\actors\units\archer.attach\archer_dagger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лук лучника
+   LODActorName = archer_bow
+   LODActorFileName = .\data\actors\units\archer.attach\archer_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колчан лучника
+   LODActorName = archer_quiver
+   LODActorFileName = .\data\actors\units\archer.attach\archer_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела лучника
+   LODActorName = archer_arrow
+   LODActorFileName = .\data\actors\units\archer.attach\archer_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Копейщик
+   LODActorName = spearman
+   LODActorFileName = .\data\actors\units\spearman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Копейщик копьё
+   LODActorName = spearman_spear
+   LODActorFileName = .\data\actors\units\spearman.attach\spearman_spear.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Копейщик дротик
+   LODActorName = spearman_javelin
+   LODActorFileName = .\data\actors\units\spearman.attach\spearman_javelin.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пикинёр
+   LODActorName = pikeman
+   LODActorFileName = .\data\actors\units\pikeman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пикинёр пика
+   LODActorName = pikeman_pike
+   LODActorFileName = .\data\actors\units\pikeman.attach\pikeman_pike.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Шаман
+   LODActorName = shaman
+   LODActorFileName = .\data\actors\units\shaman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох шамана
+   LODActorName = shaman_staff
+   LODActorFileName = .\data\actors\units\shaman.attach\shaman_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова шамана
+   LODActorName = shaman_head
+   LODActorFileName = .\data\actors\units\shaman.attach\shaman_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Тотем шамана
+   LODActorName = shaman_totem
+   LODActorFileName = .\data\actors\units\shaman.attach\shaman_totem.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Плащ шамана
+   LODActorName = shaman_cloack
+   LODActorFileName = .\data\actors\units\shaman.attach\shaman_cloack.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = shaman_hand
+   LODActorFileName = .\data\actors\units\shaman.attach\shaman_hand.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = shaman_empty
+   LODActorFileName = .\data\actors\units\shaman.attach\shaman_empty.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мечник
+   LODActorName = swordsman
+   LODActorFileName = .\data\actors\units\swordsman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мечник щит
+   LODActorName = swordsman_shield
+   LODActorFileName = .\data\actors\units\swordsman.attach\swordsman_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мечник сабля
+   LODActorName = swordsman_sword
+   LODActorFileName = .\data\actors\units\swordsman.attach\swordsman_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Арбалетчик
+   LODActorName = crossbowman
+   LODActorFileName = .\data\actors\units\crossbowman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кинжал арбалетчика
+   LODActorName = crossbowman_sword
+   LODActorFileName = .\data\actors\units\crossbowman.attach\crossbowman_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лук арбалетчика
+   LODActorName = crossbowman_crossbow
+   LODActorFileName = .\data\actors\units\crossbowman.attach\crossbowman_crossbow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колчан арбалетчика
+   LODActorName = crossbowman_quiver
+   LODActorFileName = .\data\actors\units\crossbowman.attach\crossbowman_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела арбалетчика
+   LODActorName = crossbowman_arrow
+   LODActorFileName = .\data\actors\units\crossbowman.attach\crossbowman_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ножны арбалетчика
+   LODActorName = crossbowman_scabbards
+   LODActorFileName = .\data\actors\units\crossbowman.attach\crossbowman_scabbards.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бес
+   LODActorName = imp
+   LODActorFileName = .\data\actors\units\imp.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рука Беса, для эффекта
+   LODActorName = imp_hand
+   LODActorFileName = .\data\actors\units\imp.attach\imp_hand.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Фея
+   LODActorName = fairy
+   LODActorFileName = .\data\actors\units\fairy.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пояс феи
+   LODActorName = fairy_belt
+   LODActorFileName = .\data\actors\units\fairy.attach\fairy_belt.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Накидка феи
+   LODActorName = fairy_cloack
+   LODActorFileName = .\data\actors\units\fairy.attach\fairy_cloack.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Палочка феи
+   LODActorName = fairy_wand
+   LODActorFileName = .\data\actors\units\fairy.attach\fairy_wand.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова феи
+   LODActorName = fairy_head
+   LODActorFileName = .\data\actors\units\fairy.attach\fairy_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Крылья феи
+   LODActorName = fairy_wings
+   LODActorFileName = .\data\actors\units\fairy.attach\fairy_wings.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Скелет
+   LODActorName = skeleton
+   LODActorFileName = .\data\actors\units\skeleton.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Скелет меч
+   LODActorName = skeleton_sword
+   LODActorFileName = .\data\actors\units\skeleton.attach\skeleton_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //*****************
+   HintDesc = ////----- Cмерть скелета, меч
+   LODActorName = skeleton_death_sword
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, череп
+   LODActorName = skeleton_death_skull
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_skull.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, шея
+   LODActorName = skeleton_death_neck
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_neck.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, хребет 1
+   LODActorName = skeleton_death_spine_1
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_spine_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, хребет 2
+   LODActorName = skeleton_death_spine_2
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_spine_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, хребет 3
+   LODActorName = skeleton_death_spine_3
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_spine_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, хребет 4
+   LODActorName = skeleton_death_spine_4
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_spine_4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, левая рука 1
+   LODActorName = skeleton_death_left_hand_1
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_left_hand_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, левая рука 2
+   LODActorName = skeleton_death_left_hand_2
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_left_hand_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, левая рука 3
+   LODActorName = skeleton_death_left_hand_3
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_left_hand_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, правая рука 1
+   LODActorName = skeleton_death_right_hand_1
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_right_hand_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, правая рука 2
+   LODActorName = skeleton_death_right_hand_2
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_right_hand_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, правая рука 3
+   LODActorName = skeleton_death_right_hand_3
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_right_hand_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, левая нога 1
+   LODActorName = skeleton_death_left_leg_1
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_left_leg_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, левая нога 2
+   LODActorName = skeleton_death_left_leg_2
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_left_leg_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, левая нога 3
+   LODActorName = skeleton_death_left_leg_3
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_left_leg_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, правая нога 1
+   LODActorName = skeleton_death_right_leg_1
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_right_leg_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, правая нога 2
+   LODActorName = skeleton_death_right_leg_2
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_right_leg_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть скелета, правая нога 3
+   LODActorName = skeleton_death_right_leg_3
+   LODActorFileName = .\data\actors\units\skeleton.death\skeleton_death_right_leg_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //------------------------- 2 РАНГ --------------------------------
+   HintDesc = //Паук
+   LODActorName = spider
+   LODActorFileName = .\data\actors\units\spider.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Слизняк
+   LODActorName = slug
+   LODActorFileName = .\data\actors\units\slug.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Василиск
+   LODActorName = basilisk
+   LODActorFileName = .\data\actors\units\basilisk.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гарпия
+   LODActorName = harpy
+   LODActorFileName = .\data\actors\units\harpy.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Убийца
+   LODActorName = assassin
+   LODActorFileName = .\data\actors\units\assassin.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Убийца меч
+   LODActorName = assassin_sword
+   LODActorFileName = .\data\actors\units\assassin.attach\assassin_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Убийца нож
+   LODActorName = assassin_knife
+   LODActorFileName = .\data\actors\units\assassin.attach\assassin_knife.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гвардеец
+   LODActorName = guardian
+   LODActorFileName = .\data\actors\units\guardian.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Алебарда гвардейца
+   LODActorName = guardian_halberd
+   LODActorFileName = .\data\actors\units\guardian.attach\guardian_halberd.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Громила
+   LODActorName = burglar
+   LODActorFileName = .\data\actors\units\burglar.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Молот громилы
+   LODActorName = burglar_hammer
+   LODActorFileName = .\data\actors\units\burglar.attach\burglar_hammer.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Монах
+   LODActorName = monk
+   LODActorFileName = .\data\actors\units\monk.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дубина монаха
+   LODActorName = monk_club
+   LODActorFileName = .\data\actors\units\monk.attach\monk_club.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Упырь
+   LODActorName = ghoul
+   LODActorFileName = .\data\actors\units\ghoul.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Чёрт
+   LODActorName = deuce
+   LODActorFileName = .\data\actors\units\deuce.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вилы чёрта
+   LODActorName = deuce_fork
+   LODActorFileName = .\data\actors\units\deuce.attach\deuce_fork.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колдун
+   LODActorName = sorcerer
+   LODActorFileName = .\data\actors\units\sorcerer.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох колдуна
+   LODActorName = sorcerer_staff
+   LODActorFileName = .\data\actors\units\sorcerer.attach\sorcerer_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова колдуна
+   LODActorName = sorcerer_head
+   LODActorFileName = .\data\actors\units\sorcerer.attach\sorcerer_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пегас
+   LODActorName = pegasus
+   LODActorFileName = .\data\actors\units\pegasus.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Горгулья
+   LODActorName = gargoyle
+   LODActorFileName = .\data\actors\units\gargoyle.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound
+   LODActorFileName = .\data\actors\units\hellhound.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound_fire1
+   LODActorFileName = .\data\actors\units\hellhound.attach\hellhound_fire1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound_fire2
+   LODActorFileName = .\data\actors\units\hellhound.attach\hellhound_fire2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound_fire3
+   LODActorFileName = .\data\actors\units\hellhound.attach\hellhound_fire3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound_fire4
+   LODActorFileName = .\data\actors\units\hellhound.attach\hellhound_fire4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound_fire5
+   LODActorFileName = .\data\actors\units\hellhound.attach\hellhound_fire5.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Адская гончая
+   LODActorName = hellhound_fire6
+   LODActorFileName = .\data\actors\units\hellhound.attach\hellhound_fire6.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Конный лучник
+   LODActorName = horsearcher
+   LODActorFileName = .\data\actors\units\horsearcher.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Конь конного лучника
+   LODActorName = horsearcher_horse
+   LODActorFileName = .\data\actors\units\horsearcher.attach\horsearcher_horse.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ятаган конного лучника
+   LODActorName = horsearcher_scimitar
+   LODActorFileName = .\data\actors\units\horsearcher.attach\horsearcher_scimitar.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела конного лучника
+   LODActorName = horsearcher_arrow
+   LODActorFileName = .\data\actors\units\horsearcher.attach\horsearcher_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лук конного лучника
+   LODActorName = horsearcher_bow
+   LODActorFileName = .\data\actors\units\horsearcher.attach\horsearcher_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Баллиста
+   LODActorName = ballista
+   LODActorFileName = .\data\actors\units\ballista.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Снаряд баллисты
+   LODActorName = ballista_missile
+   LODActorFileName = .\data\actors\units\ballista.attach\ballista_missile.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //*****************
+   HintDesc = ////----- Cмерть баллисты, часть1
+   LODActorName = ballista_death_part1
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_part1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, часть2
+   LODActorName = ballista_death_part2
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_part2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, часть3
+   LODActorName = ballista_death_part3
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_part3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, часть4
+   LODActorName = ballista_death_part4
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_part4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, часть5
+   LODActorName = ballista_death_part5
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_part5.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, колесо1
+   LODActorName = ballista_death_wheel1
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_wheel1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, колесо2
+   LODActorName = ballista_death_wheel2
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_wheel2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, колесо3
+   LODActorName = ballista_death_wheel3
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_wheel3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, колесо4
+   LODActorName = ballista_death_wheel4
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_wheel4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть баллисты, копьё
+   LODActorName = ballista_death_spear
+   LODActorFileName = .\data\actors\units\ballista.death\ballista_death_spear.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Катапульта
+   LODActorName = catapult
+   LODActorFileName = .\data\actors\units\catapult.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Камень катапульты
+   LODActorName = catapult_stone
+   LODActorFileName = .\data\actors\units\catapult.attach\catapult_stone.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //*****************
+   HintDesc = ////----- Cмерть катапульты, часть1
+   LODActorName = catapult_death_part1
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, часть2
+   LODActorName = catapult_death_part2
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, часть3
+   LODActorName = catapult_death_part3
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, часть4
+   LODActorName = catapult_death_part4
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, часть5
+   LODActorName = catapult_death_part5
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part5.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, часть6
+   LODActorName = catapult_death_part6
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part6.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, часть7
+   LODActorName = catapult_death_part7
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_part7.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, колесо1
+   LODActorName = catapult_death_wheel1
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_wheel1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, колесо2
+   LODActorName = catapult_death_wheel2
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_wheel2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, колесо3
+   LODActorName = catapult_death_wheel3
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_wheel3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = ////----- Cмерть катапульты, колесо4
+   LODActorName = catapult_death_wheel4
+   LODActorFileName = .\data\actors\units\catapult.death\catapult_death_wheel4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дриада
+   LODActorName = dryad
+   LODActorFileName = .\data\actors\units\dryad.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бабочка дриады 1
+   LODActorName = dryad_butterfly1
+   LODActorFileName = .\data\actors\units\dryad.attach\dryad_butterfly1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бабочка дриады 2
+   LODActorName = dryad_butterfly2
+   LODActorFileName = .\data\actors\units\dryad.attach\dryad_butterfly2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бабочка дриады 3
+   LODActorName = dryad_butterfly3
+   LODActorFileName = .\data\actors\units\dryad.attach\dryad_butterfly3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бабочка дриады 4
+   LODActorName = dryad_butterfly4
+   LODActorFileName = .\data\actors\units\dryad.attach\dryad_butterfly4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бабочка дриады 5
+   LODActorName = dryad_butterfly5
+   LODActorFileName = .\data\actors\units\dryad.attach\dryad_butterfly5.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Бабочка дриады 6
+   LODActorName = dryad_butterfly6
+   LODActorFileName = .\data\actors\units\dryad.attach\dryad_butterfly6.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кентавр
+   LODActorName = centaur
+   LODActorFileName = .\data\actors\units\centaur.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лук кентавра
+   LODActorName = centaur_bow
+   LODActorFileName = .\data\actors\units\centaur.attach\centaur_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колчан кентавра
+   LODActorName = centaur_quiver
+   LODActorFileName = .\data\actors\units\centaur.attach\centaur_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела кентавра
+   LODActorName = centaur_arrow
+   LODActorFileName = .\data\actors\units\centaur.attach\centaur_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Всадник
+   LODActorName = horseman
+   LODActorFileName = .\data\actors\units\horseman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Копьё всадника
+   LODActorName = horseman_pike
+   LODActorFileName = .\data\actors\units\horseman.attach\horseman_pike.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стременв всадника
+   LODActorName = horseman_stirrup1
+   LODActorFileName = .\data\actors\units\horseman.attach\horseman_stirrup1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стременв всадника
+   LODActorName = horseman_stirrup2
+   LODActorFileName = .\data\actors\units\horseman.attach\horseman_stirrup2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Конь всадника
+   LODActorName = horseman_horse
+   LODActorFileName = .\data\actors\units\horseman.attach\horseman_horse.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Щит всадника
+   LODActorName = horseman_shield
+   LODActorFileName = .\data\actors\units\horseman.attach\horseman_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Горгулья кристал
+   LODActorName = gargoylecrystal
+   LODActorFileName = .\data\actors\units\gargoylecrystal.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Суккуб
+   LODActorName = succubus
+   LODActorFileName = .\data\actors\units\succubus.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пояс суккуба
+   LODActorName = succubus_belt
+   LODActorFileName = .\data\actors\units\succubus.attach\succubus_belt.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Палочка суккуба
+   LODActorName = succubus_wand
+   LODActorFileName = .\data\actors\units\succubus.attach\succubus_wand.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова суккуба
+   LODActorName = succubus_head
+   LODActorFileName = .\data\actors\units\succubus.attach\succubus_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Крылья суккуба
+   LODActorName = succubus_wings
+   LODActorFileName = .\data\actors\units\succubus.attach\succubus_wings.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //-------------------------- 3 РАНГ -------------------------------------
+   HintDesc = //Людоед
+   LODActorName = ogre
+   LODActorFileName = .\data\actors\units\ogre.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дубина людоеда
+   LODActorName = ogre_club
+   LODActorFileName = .\data\actors\units\ogre.attach\ogre_club.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Амулет людоеда
+   LODActorName = ogre_totem
+   LODActorFileName = .\data\actors\units\ogre.attach\ogre_totem.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голем
+   LODActorName = golem
+   LODActorFileName = .\data\actors\units\golem.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Медуза
+   LODActorName = medusa
+   LODActorFileName = .\data\actors\units\medusa.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Тролль
+   LODActorName = troll
+   LODActorFileName = .\data\actors\units\troll.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Палач
+   LODActorName = executioner
+   LODActorFileName = .\data\actors\units\executioner.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Топор палача
+   LODActorName = executioner_axe
+   LODActorFileName = .\data\actors\units\executioner.attach\executioner_axe.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Минотавр
+   LODActorName = minotaur
+   LODActorFileName = .\data\actors\units\minotaur.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Топор минотавра
+   LODActorName = minotaur_axe
+   LODActorFileName = .\data\actors\units\minotaur.attach\minotaur_axe.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Жрец
+   LODActorName = priest
+   LODActorFileName = .\data\actors\units\priest.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох жреца
+   LODActorName = priest_staff
+   LODActorFileName = .\data\actors\units\priest.attach\priest_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова жреца
+   LODActorName = priest_head
+   LODActorFileName = .\data\actors\units\priest.attach\priest_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Амулет жреца
+   LODActorName = priest_amulet
+   LODActorFileName = .\data\actors\units\priest.attach\priest_amulet.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Единорог
+   LODActorName = unicorn
+   LODActorFileName = .\data\actors\units\unicorn.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Маг
+   LODActorName = mage
+   LODActorFileName = .\data\actors\units\mage.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох черного мага
+   LODActorName = mageblack_staff
+   LODActorFileName = .\data\actors\units\mage.attach\mageblack_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох мага
+   LODActorName = mage_staff
+   LODActorFileName = .\data\actors\units\mage.attach\mage_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова мага
+   LODActorName = mage_head
+   LODActorFileName = .\data\actors\units\mage.attach\mage_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Огненный шар мага
+   LODActorName = mage_fireball
+   LODActorFileName = .\data\actors\units\mage.attach\mage_fireball.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Демон
+   LODActorName = daemon
+   LODActorFileName = .\data\actors\units\daemon.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Призрак
+   LODActorName = ghost
+   LODActorFileName = .\data\actors\units\ghost.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мантикора
+   LODActorName = manticore
+   LODActorFileName = .\data\actors\units\manticore.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мантикора
+   LODActorName = manticore_head
+   LODActorFileName = .\data\actors\units\manticore.attach\manticore_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Грифон
+   LODActorName = griffin
+   LODActorFileName = .\data\actors\units\griffin.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рыцарь
+   LODActorName = knight
+   LODActorFileName = .\data\actors\units\knight.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Копьё рыцаря
+   LODActorName = knight_lance
+   LODActorFileName = .\data\actors\units\knight.attach\knight_lance.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рука рыцаря 1
+   LODActorName = knight_arm1
+   LODActorFileName = .\data\actors\units\knight.attach\knight_arm1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рука рыцаря 2
+   LODActorName = knight_arm2
+   LODActorFileName = .\data\actors\units\knight.attach\knight_arm2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Попона рыцаря 1
+   LODActorName = knight_horse_armor1
+   LODActorFileName = .\data\actors\units\knight.attach\knight_horse_armor1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Попона рыцаря 2
+   LODActorName = knight_horse_armor2
+   LODActorFileName = .\data\actors\units\knight.attach\knight_horse_armor2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Конь рыцаря
+   LODActorName = knight_horse
+   LODActorFileName = .\data\actors\units\knight.attach\knight_horse.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Щит рыцаря
+   LODActorName = knight_shield
+   LODActorFileName = .\data\actors\units\knight.attach\knight_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голем кристалл
+   LODActorName = golemcrystal
+   LODActorFileName = .\data\actors\units\golemcrystal.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //-------------------------- 4 РАНГ -------------------------------------
+   HintDesc = //Гигант
+   LODActorName = giant
+   LODActorFileName = .\data\actors\units\giant.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Камень гиганта
+   LODActorName = giant_stone
+   LODActorFileName = .\data\actors\units\giant.attach\giant_stone.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix
+   LODActorFileName = .\data\actors\units\phoenix.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_back
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_back.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_breast
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_breast.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_head
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_neck
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_neck.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_tail1
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_tail1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_tail2
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_tail2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_tail3
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_tail3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_tail4
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_tail4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_left1
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_left1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_left2
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_left2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_left3
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_left3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_left4
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_left4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_right1
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_right1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_right2
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_right2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_right3
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_right3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Феникс
+   LODActorName = phoenix_right4
+   LODActorFileName = .\data\actors\units\phoenix.attach\phoenix_right4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гидра
+   LODActorName = hydra
+   LODActorFileName = .\data\actors\units\hydra.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Циклоп
+   LODActorName = cyclope
+   LODActorFileName = .\data\actors\units\cyclope.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Циклоп меч
+   LODActorName = cyclope_sword
+   LODActorFileName = .\data\actors\units\cyclope.attach\cyclope_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Циклоп тотем 1
+   LODActorName = cyclope_totem1
+   LODActorFileName = .\data\actors\units\cyclope.attach\cyclope_totem1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Циклоп тотем 2
+   LODActorName = cyclope_totem2
+   LODActorFileName = .\data\actors\units\cyclope.attach\cyclope_totem2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Древочеловек
+   LODActorName = treeman
+   LODActorFileName = .\data\actors\units\treeman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол
+   LODActorName = devil
+   LODActorFileName = .\data\actors\units\devil.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол плеть
+   LODActorName = devil_lash
+   LODActorFileName = .\data\actors\units\devil.attach\devil_lash.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол меч
+   LODActorName = devil_sword
+   LODActorFileName = .\data\actors\units\devil.attach\devil_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол левый наплечник
+   LODActorName = devil_shoulder_left
+   LODActorFileName = .\data\actors\units\devil.attach\devil_shoulder_left.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол правый наплечник
+   LODActorName = devil_shoulder_right
+   LODActorFileName = .\data\actors\units\devil.attach\devil_shoulder_right.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол
+   LODActorName = devil_bonelash
+   LODActorFileName = .\data\actors\units\devil.attach\devil_bonelash.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол
+   LODActorName = devil_footleft
+   LODActorFileName = .\data\actors\units\devil.attach\devil_footleft.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дьявол
+   LODActorName = devil_footright
+   LODActorFileName = .\data\actors\units\devil.attach\devil_footright.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Чернокнижник
+   LODActorName = warlock
+   LODActorFileName = .\data\actors\units\warlock.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох чернокнижника
+   LODActorName = warlock_staff
+   LODActorFileName = .\data\actors\units\warlock.attach\warlock_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Книга чернокнижника
+   LODActorName = warlock_book
+   LODActorFileName = .\data\actors\units\warlock.attach\warlock_book.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Плащ чернокнижника
+   LODActorName = warlock_cloack
+   LODActorFileName = .\data\actors\units\warlock.attach\warlock_cloack.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вампир
+   LODActorName = vampire
+   LODActorFileName = .\data\actors\units\vampire.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Крылья вампира
+   LODActorName = vampire_wings
+   LODActorFileName = .\data\actors\units\vampire.attach\vampire_wings.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сутана вампира
+   LODActorName = vampire_robe
+   LODActorFileName = .\data\actors\units\vampire.attach\vampire_robe.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Плащ вампира
+   LODActorName = vampire_cloack
+   LODActorFileName = .\data\actors\units\vampire.attach\vampire_cloack.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Паладин
+   LODActorName = paladin
+   LODActorFileName = .\data\actors\units\paladin.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Меч паладина
+   LODActorName = paladin_sword
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рука паладина 1
+   LODActorName = paladin_arm1
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_arm1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рука паладина 2
+   LODActorName = paladin_arm2
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_arm2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Конь паладина
+   LODActorName = paladin_horse
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_horse.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Щит паладина
+   LODActorName = paladin_shield
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Попона паладина 1
+   LODActorName = paladin_horsearmor1
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_horsearmor1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Попона паладина 2
+   LODActorName = paladin_horsearmor2
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_horsearmor2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стремя паладина 1
+   LODActorName = paladin_stirrup1
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_stirrup1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стремя паладина 2
+   LODActorName = paladin_stirrup2
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_stirrup2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Плюмаж паладина
+   LODActorName = paladin_plume
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_plume.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Плащ паладина
+   LODActorName = paladin_cloack
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_cloack.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Наплечник паладина 1
+   LODActorName = paladin_shoulder1
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_shoulder1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Наплечник паладина 2
+   LODActorName = paladin_shoulder2
+   LODActorFileName = .\data\actors\units\paladin.attach\paladin_shoulder2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дракон
+   LODActorName = dragon
+   LODActorFileName = .\data\actors\units\dragon.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дракон
+   LODActorName = dragon_head
+   LODActorFileName = .\data\actors\units\dragon.attach\dragon_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Слон
+   LODActorName = elephant
+   LODActorFileName = .\data\actors\units\elephant.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Попона слона
+   LODActorName = elephant_armor
+   LODActorFileName = .\data\actors\units\elephant.attach\elephant_armor.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Уши слона
+   LODActorName = elephant_ears
+   LODActorFileName = .\data\actors\units\elephant.attach\elephant_ears.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Паук черная вдова
+   LODActorName = spiderblackwidow
+   LODActorFileName = .\data\actors\units\spiderblackwidow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- 14 Рассовых юнитов --------------------------
+   LODActorName = dwarfguardian
+   LODActorFileName = .\data\actors\units\dwarfguardian.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = dwarfmechanic
+   LODActorFileName = .\data\actors\units\dwarfmechanic.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = dwarfmechanic_crossbow
+   LODActorFileName = .\data\actors\units\dwarfmechanic.attach\dwarfmechanic_crossbow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = dwarfmechanic_arrow
+   LODActorFileName = .\data\actors\units\dwarfmechanic.attach\dwarfmechanic_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = dwarfmechanic_hammer
+   LODActorFileName = .\data\actors\units\dwarfmechanic.attach\dwarfmechanic_hammer.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = dwarfmechanic_shield
+   LODActorFileName = .\data\actors\units\dwarfmechanic.attach\dwarfmechanic_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = centaurchief
+   LODActorFileName = .\data\actors\units\centaurchief.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = centaurhuntsman
+   LODActorFileName = .\data\actors\units\centaurhuntsman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = centaurhuntsman_bolo
+   LODActorFileName = .\data\actors\units\centaurhuntsman.attach\centaurhuntsman_bolo.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = centaurhuntsman_net
+   LODActorFileName = .\data\actors\units\centaurhuntsman.attach\centaurhuntsman_net.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingforager
+   LODActorFileName = .\data\actors\units\halflingforager.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingspy
+   LODActorFileName = .\data\actors\units\halflingspy.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfdruid
+   LODActorFileName = .\data\actors\units\elfdruid.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfranger
+   LODActorFileName = .\data\actors\units\elfranger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfranger_arrow
+   LODActorFileName = .\data\actors\units\elfranger.attach\elfranger_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfranger_bow
+   LODActorFileName = .\data\actors\units\elfranger.attach\elfranger_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfranger_quiver
+   LODActorFileName = .\data\actors\units\elfranger.attach\elfranger_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfranger_saber_l
+   LODActorFileName = .\data\actors\units\elfranger.attach\elfranger_saber_l.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfranger_saber_r
+   LODActorFileName = .\data\actors\units\elfranger.attach\elfranger_saber_r.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = lizardmanpriest
+   LODActorFileName = .\data\actors\units\lizardmanpriest.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = lizardmanpriest_cloak
+   LODActorFileName = .\data\actors\units\lizardmanpriest.attach\lizardmanpriest_cloak.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = lizardmanpriest_dubina
+   LODActorFileName = .\data\actors\units\lizardmanpriest.attach\lizardmanpriest_dubina.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = lizardmanturtle
+   LODActorFileName = .\data\actors\units\lizardmanturtle.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcsage
+   LODActorFileName = .\data\actors\units\orcsage.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcsage_staff
+   LODActorFileName = .\data\actors\units\orcsage.attach\orcsage_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcsage_tambourine
+   LODActorFileName = .\data\actors\units\orcsage.attach\orcsage_tambourine.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcthrower
+   LODActorFileName = .\data\actors\units\orcthrower.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinpoisonspit
+   LODActorFileName = .\data\actors\units\goblinpoisonspit.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinalchemist
+   LODActorFileName = .\data\actors\units\goblinalchemist.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = centaurchief_lance
+   LODActorFileName = .\data\actors\units\centaurchief.attach\centaurchief_lance.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = centaurchief_lance_pak
+   LODActorFileName = .\data\actors\units\centaurchief.attach\centaurchief_lance_pak.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = dwarfguardian_halberd
+   LODActorFileName = .\data\actors\units\dwarfguardian.attach\dwarfguardian_halberd.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfdruid_arrow
+   LODActorFileName = .\data\actors\units\elfdruid.attach\elfdruid_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfdruid_bow
+   LODActorFileName = .\data\actors\units\elfdruid.attach\elfdruid_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfdruid_dagger
+   LODActorFileName = .\data\actors\units\elfdruid.attach\elfdruid_dagger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfdruid_quiver
+   LODActorFileName = .\data\actors\units\elfdruid.attach\elfdruid_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = elfdruid_scabbards
+   LODActorFileName = .\data\actors\units\elfdruid.attach\elfdruid_scabbards.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinalchemist_bottle
+   LODActorFileName = .\data\actors\units\goblinalchemist.attach\goblinalchemist_bottle.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinalchemist_knife
+   LODActorFileName = .\data\actors\units\goblinalchemist.attach\goblinalchemist_knife.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinpoisonspit_dagger
+   LODActorFileName = .\data\actors\units\goblinpoisonspit.attach\goblinpoisonspit_dagger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinpoisonspit_tube
+   LODActorFileName = .\data\actors\units\goblinpoisonspit.attach\goblinpoisonspit_tube.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = goblinpoisonspit_tube_thorn
+   LODActorFileName = .\data\actors\units\goblinpoisonspit.attach\goblinpoisonspit_tube_thorn.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingforager_bag
+   LODActorFileName = .\data\actors\units\halflingforager.attach\halflingforager_bag.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingforager_sling
+   LODActorFileName = .\data\actors\units\halflingforager.attach\halflingforager_sling.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingforager_stone
+   LODActorFileName = .\data\actors\units\halflingforager.attach\halflingforager_stone.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingspy_bag
+   LODActorFileName = .\data\actors\units\halflingspy.attach\halflingspy_bag.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingspy_dagger
+   LODActorFileName = .\data\actors\units\halflingspy.attach\halflingspy_dagger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingspy_dagger2
+   LODActorFileName = .\data\actors\units\halflingspy.attach\halflingspy_dagger2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingspy_sling
+   LODActorFileName = .\data\actors\units\halflingspy.attach\halflingspy_sling.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = halflingspy_stone
+   LODActorFileName = .\data\actors\units\halflingspy.attach\halflingspy_stone.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = lizardmanturtle_dubina
+   LODActorFileName = .\data\actors\units\lizardmanturtle.attach\lizardmanturtle_dubina.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = lizardmanturtle_shield
+   LODActorFileName = .\data\actors\units\lizardmanturtle.attach\lizardmanturtle_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcthrower_dubina
+   LODActorFileName = .\data\actors\units\orcthrower.attach\orcthrower_dubina.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcthrower_dubina_small_1
+   LODActorFileName = .\data\actors\units\orcthrower.attach\orcthrower_dubina_small_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcthrower_dubina_small_2
+   LODActorFileName = .\data\actors\units\orcthrower.attach\orcthrower_dubina_small_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = orcthrower_dubina_small_3
+   LODActorFileName = .\data\actors\units\orcthrower.attach\orcthrower_dubina_small_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg
+   LODActorFileName = .\data\actors\units\spideregg.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg_death_1
+   LODActorFileName = .\data\actors\units\spideregg.attach\spideregg_death_1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg_death_2
+   LODActorFileName = .\data\actors\units\spideregg.attach\spideregg_death_2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg_death_3
+   LODActorFileName = .\data\actors\units\spideregg.attach\spideregg_death_3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg_death_4
+   LODActorFileName = .\data\actors\units\spideregg.attach\spideregg_death_4.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg_death_5
+   LODActorFileName = .\data\actors\units\spideregg.attach\spideregg_death_5.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = spideregg_web
+   LODActorFileName = .\data\actors\units\spideregg.attach\spideregg_web.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //-------------------------- ГЕРОИ -------------------------------------
+   HintDesc = //Воин
+   LODActorName = warrior
+   LODActorFileName = .\data\actors\units\warrior.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Меч воина
+   LODActorName = warrior_sword
+   LODActorFileName = .\data\actors\units\warrior.attach\warrior_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Арбалет воина
+   LODActorName = warrior_arbalet
+   LODActorFileName = .\data\actors\units\warrior.attach\warrior_arbalet.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела воина
+   LODActorName = warrior_arrow
+   LODActorFileName = .\data\actors\units\warrior.attach\warrior_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Командир
+   LODActorName = commander
+   LODActorFileName = .\data\actors\units\commander.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Флаг командира
+   LODActorName = commander_flag
+   LODActorFileName = .\data\actors\units\commander.attach\commander_flag.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Арбалет командира
+   LODActorName = commander_crossbow
+   LODActorFileName = .\data\actors\units\commander.attach\commander_crossbow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Плащ командира
+   LODActorName = commander_cloack
+   LODActorFileName = .\data\actors\units\commander.attach\commander_cloack.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела командира
+   LODActorName = commander_arrow
+   LODActorFileName = .\data\actors\units\commander.attach\commander_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Щит командира
+   LODActorName = commander_shield
+   LODActorFileName = .\data\actors\units\commander.attach\commander_shield.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Меч командира
+   LODActorName = commander_sword
+   LODActorFileName = .\data\actors\units\commander.attach\commander_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Разведчик
+   LODActorName = scout
+   LODActorFileName = .\data\actors\units\scout.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кинжал разведчика
+   LODActorName = scout_sword
+   LODActorFileName = .\data\actors\units\scout.attach\scout_sword.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лук разведчика
+   LODActorName = scout_bow
+   LODActorFileName = .\data\actors\units\scout.attach\scout_bow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колчан разведчика
+   LODActorName = scout_quiver
+   LODActorFileName = .\data\actors\units\scout.attach\scout_quiver.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела разведчика
+   LODActorName = scout_arrow
+   LODActorFileName = .\data\actors\units\scout.attach\scout_arrow.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сумка разведчика
+   LODActorName = scout_bag
+   LODActorFileName = .\data\actors\units\scout.attach\scout_bag.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Фляга разведчика
+   LODActorName = scout_flask
+   LODActorFileName = .\data\actors\units\scout.attach\scout_flask.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Волшебник
+   LODActorName = wizard
+   LODActorFileName = .\data\actors\units\wizard.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Посох волшебника
+   LODActorName = wizard_staff
+   LODActorFileName = .\data\actors\units\wizard.attach\wizard_staff.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Голова волшебника
+   LODActorName = wizard_head
+   LODActorFileName = .\data\actors\units\wizard.attach\wizard_head.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Жезл волшебника
+   LODActorName = wizard_wand
+   LODActorFileName = .\data\actors\units\wizard.attach\wizard_wand.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сумка волшебника1
+   LODActorName = wizard_bag1
+   LODActorFileName = .\data\actors\units\wizard.attach\wizard_bag1.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сумка волшебника2
+   LODActorName = wizard_bag2
+   LODActorFileName = .\data\actors\units\wizard.attach\wizard_bag2.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сумка волшебника3
+   LODActorName = wizard_bag3
+   LODActorFileName = .\data\actors\units\wizard.attach\wizard_bag3.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //*********************** ПРИРОДА *****************************************
+   HintDesc = //Гора 1
+   LODActorName = mount01
+   LODActorFileName = .\data\actors\nature\mountain\mount01.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гора 2
+   LODActorName = mount02
+   LODActorFileName = .\data\actors\nature\mountain\mount02.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гора 3
+   LODActorName = mount03
+   LODActorFileName = .\data\actors\nature\mountain\mount03.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гора 4
+   LODActorName = mount04
+   LODActorFileName = .\data\actors\nature\mountain\mount04.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вулкан 1
+   LODActorName = volcano1
+   LODActorFileName = .\data\actors\nature\mountain\volcano1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вулкан 2
+   LODActorName = volcano2
+   LODActorFileName = .\data\actors\nature\mountain\volcano2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вулкан 3
+   LODActorName = volcano3
+   LODActorFileName = .\data\actors\nature\mountain\volcano3.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Вулкан 4
+   LODActorName = volcano4
+   LODActorFileName = .\data\actors\nature\mountain\volcano4.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Холм 1
+   LODActorName = hill1
+   LODActorFileName = .\data\actors\nature\hill\hill1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Холм 2
+   LODActorName = hill2
+   LODActorFileName = .\data\actors\nature\hill\hill2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Холм 3
+   LODActorName = hill3
+   LODActorFileName = .\data\actors\nature\hill\hill3.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Холм 4
+   LODActorName = hill4
+   LODActorFileName = .\data\actors\nature\hill\hill4.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Холм 5
+   LODActorName = hill5
+   LODActorFileName = .\data\actors\nature\hill\hill5.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Холм 6
+   LODActorName = hill6
+   LODActorFileName = .\data\actors\nature\hill\hill6.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- ДЕРЕВЬЯ ------------------------------------------
+   HintDesc = //Дуб
+   LODActorName = oak
+   LODActorFileName = .\data\actors\nature\tree\oak.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево
+   LODActorName = tree01
+   LODActorFileName = .\data\actors\nature\tree\tree01.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево Тест1
+   LODActorName = test_tree01
+   LODActorFileName = .\data\actors\nature\tree\test_tree01.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево Тест2
+   LODActorName = test_tree02
+   LODActorFileName = .\data\actors\nature\tree\test_tree02.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево Тест3
+   LODActorName = test_tree03
+   LODActorFileName = .\data\actors\nature\tree\test_tree03.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево Тест4
+   LODActorName = test_tree04
+   LODActorFileName = .\data\actors\nature\tree\test_tree04.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево Тест5
+   LODActorName = test_tree05
+   LODActorFileName = .\data\actors\nature\tree\test_tree05.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ель
+   LODActorName = fir
+   LODActorFileName = .\data\actors\nature\tree\fir.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Клён
+   LODActorName = maple
+   LODActorFileName = .\data\actors\nature\tree\maple.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лиственное дерево
+   LODActorName = leaftree
+   LODActorFileName = .\data\actors\nature\tree\leaftree.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мёртвое дерево
+   LODActorName = deadtree
+   LODActorFileName = .\data\actors\nature\tree\deadtree.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Сосна
+   LODActorName = pine
+   LODActorFileName = .\data\actors\nature\tree\pine.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пень
+   LODActorName = stump
+   LODActorFileName = .\data\actors\nature\tree\stump.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мёртвое болотное дерево
+   LODActorName = swamptreedead
+   LODActorFileName = .\data\actors\nature\tree\swamptreedead.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лиственное болотное дерево
+   LODActorName = swamptreeleaves
+   LODActorFileName = .\data\actors\nature\tree\swamptreeleaves.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ива
+   LODActorName = wilow
+   LODActorFileName = .\data\actors\nature\tree\wilow.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ива
+   LODActorName = palm
+   LODActorFileName = .\data\actors\nature\tree\palm.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Тополь
+   LODActorName = poplar
+   LODActorFileName = .\data\actors\nature\tree\poplar.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Корни для края карты
+   LODActorName = edgeroots
+   LODActorFileName = .\data\actors\nature\tree\edgeroots.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Волшебная рощя
+   LODActorName = elftree
+   LODActorFileName = .\data\actors\nature\tree\elftree.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- РАСТЕНИЯ ------------------------------------------
+   HintDesc = //Папоротник
+   LODActorName = fern
+   LODActorFileName = .\data\actors\nature\plant\fern.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Цветущий папоротник
+   LODActorName = fern_f
+   LODActorFileName = .\data\actors\nature\plant\fern_f.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лопух
+   LODActorName = burdock
+   LODActorFileName = .\data\actors\nature\plant\burdock.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Трава1
+   LODActorName = grass1
+   LODActorFileName = .\data\actors\nature\plant\grass1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Трава2
+   LODActorName = grass2
+   LODActorFileName = .\data\actors\nature\plant\grass2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Агава1
+   LODActorName = agava1
+   LODActorFileName = .\data\actors\nature\plant\agava1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Агава2
+   LODActorName = agava2
+   LODActorFileName = .\data\actors\nature\plant\agava2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лилия1
+   LODActorName = lily1
+   LODActorFileName = .\data\actors\nature\plant\lily1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лилия2
+   LODActorName = lily2
+   LODActorFileName = .\data\actors\nature\plant\lily2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лилия3
+   LODActorName = lily3
+   LODActorFileName = .\data\actors\nature\plant\lily3.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лилия4
+   LODActorName = lily4
+   LODActorFileName = .\data\actors\nature\plant\lily4.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лилия5
+   LODActorName = lily5
+   LODActorFileName = .\data\actors\nature\plant\lily5.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Огород
+   LODActorName = garden
+   LODActorFileName = .\data\actors\nature\plant\garden.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Куст
+   LODActorName = bush
+   LODActorFileName = .\data\actors\nature\plant\bush.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стог
+   LODActorName = haystack
+   LODActorFileName = .\data\actors\nature\plant\haystack.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осока
+   LODActorName = reed
+   LODActorFileName = .\data\actors\nature\plant\reed.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб1
+   LODActorName = mushroom1
+   LODActorFileName = .\data\actors\nature\plant\mushroom1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб2
+   LODActorName = mushroom2
+   LODActorFileName = .\data\actors\nature\plant\mushroom2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб3
+   LODActorName = mushroom3
+   LODActorFileName = .\data\actors\nature\plant\mushroom3.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб4
+   LODActorName = mushroom4
+   LODActorFileName = .\data\actors\nature\plant\mushroom4.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб5
+   LODActorName = mushroom5
+   LODActorFileName = .\data\actors\nature\plant\mushroom5.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб6
+   LODActorName = mushroom6
+   LODActorFileName = .\data\actors\nature\plant\mushroom6.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Корень
+   LODActorName = root
+   LODActorFileName = .\data\actors\nature\plant\root.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Болотный корень
+   LODActorName = swamproot
+   LODActorFileName = .\data\actors\nature\plant\swamproot.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Болотный куст
+   LODActorName = swampbush
+   LODActorFileName = .\data\actors\nature\plant\swampbush.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ряска
+   LODActorName = waterplant
+   LODActorFileName = .\data\actors\nature\plant\waterplant.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Цветок
+   LODActorName = flower
+   LODActorFileName = .\data\actors\nature\plant\flower.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Полевой цветок
+   LODActorName = flower1
+   LODActorFileName = .\data\actors\nature\plant\flower1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- КАМНИ ------------------------------------------
+   HintDesc = //Камни
+   LODActorName = stones
+   LODActorFileName = .\data\actors\nature\stone\stones.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Камни для колодцев
+   LODActorName = wellstones
+   LODActorFileName = .\data\actors\nature\stone\wellstones.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Булыжники
+   LODActorName = boulder
+   LODActorFileName = .\data\actors\nature\stone\boulder.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кости
+   LODActorName = bones
+   LODActorFileName = .\data\actors\nature\stone\bones.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- ОКРУЖЕНИЕ --------------------------------------
+   HintDesc = //Лодка
+   LODActorName = boat
+   LODActorFileName = .\data\actors\nature\environment\boat.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рыболовная сеть
+   LODActorName = fishnet
+   LODActorFileName = .\data\actors\nature\environment\fishnet.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Колодец
+   LODActorName = riverwell
+   LODActorFileName = .\data\actors\nature\environment\riverwell.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астральное дно колодца
+   LODActorName = riverwellplane
+   LODActorFileName = .\data\actors\nature\environment\riverwellplane.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астральное дно колодца
+   LODActorName = riverwellplane2
+   LODActorFileName = .\data\actors\nature\environment\riverwellplane2.actor
+   //MaterialLibraryInterfaceName = nature
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Корабль
+   LODActorName = ship
+   LODActorFileName = .\data\actors\nature\environment\ship.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Корабль-призрак
+   LODActorName = ghostship
+   LODActorFileName = .\data\actors\nature\environment\ghostship.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge
+   LODActorFileName = .\data\actors\nature\environment\shard_edge.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_1
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_2
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_3
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_3.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_4
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_4.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_5
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_5.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_6
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_6.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_7
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_7.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge1_8
+   LODActorFileName = .\data\actors\nature\environment\shard_edge1_8.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge2_1
+   LODActorFileName = .\data\actors\nature\environment\shard_edge2_1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge2_2
+   LODActorFileName = .\data\actors\nature\environment\shard_edge2_2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge3_1
+   LODActorFileName = .\data\actors\nature\environment\shard_edge3_1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Края стратегической карты
+   LODActorName = shard_edge3_2
+   LODActorFileName = .\data\actors\nature\environment\shard_edge3_2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- АСТРАЛ --------------------------------------
+   HintDesc = //Осколок 1
+   LODActorName = shard1
+   LODActorFileName = .\data\actors\nature\astral\shard1.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 2
+   LODActorName = shard2
+   LODActorFileName = .\data\actors\nature\astral\shard2.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 3
+   LODActorName = shard3
+   LODActorFileName = .\data\actors\nature\astral\shard3.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 4
+   LODActorName = shard4
+   LODActorFileName = .\data\actors\nature\astral\shard4.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 5
+   LODActorName = shard5
+   LODActorFileName = .\data\actors\nature\astral\shard5.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 6
+   LODActorName = shard6
+   LODActorFileName = .\data\actors\nature\astral\shard6.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 7
+   LODActorName = shard7
+   LODActorFileName = .\data\actors\nature\astral\shard7.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Осколок 8
+   LODActorName = shard8
+   LODActorFileName = .\data\actors\nature\astral\shard8.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- LANDMARKS --------------------------------------
+   HintDesc = //Скелет
+   LODActorName = l_bones
+   LODActorFileName = .\data\actors\nature\landmark\l_bones.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Гриб
+   LODActorName = fungus
+   LODActorFileName = .\data\actors\nature\landmark\fungus.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Лагерь
+   LODActorName = camp
+   LODActorFileName = .\data\actors\nature\landmark\camp.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Костёр
+   LODActorName = campfire
+   LODActorFileName = .\data\actors\nature\landmark\campfire.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Могила
+   LODActorName = grave
+   LODActorFileName = .\data\actors\nature\landmark\grave.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Монолит
+   LODActorName = monolith
+   LODActorFileName = .\data\actors\nature\landmark\monolith.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Обелиск
+   LODActorName = obelisk
+   LODActorFileName = .\data\actors\nature\landmark\obelisk.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Пентаграмма
+   LODActorName = pentagram
+   LODActorFileName = .\data\actors\nature\landmark\pentagram.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Рифы
+   LODActorName = reefs
+   LODActorFileName = .\data\actors\nature\landmark\reefs.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Руины
+   LODActorName = ruins
+   LODActorFileName = .\data\actors\nature\landmark\ruins.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Кораблекрушение
+   LODActorName = seadebris
+   LODActorFileName = .\data\actors\nature\landmark\seadebris.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ракушки
+   LODActorName = shell
+   LODActorFileName = .\data\actors\nature\landmark\shell.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дорожный указатель
+   LODActorName = sign
+   LODActorFileName = .\data\actors\nature\landmark\sign.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Статуя лучника
+   LODActorName = monument_archer
+   LODActorFileName = .\data\actors\nature\landmark\monument_archer.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Статуя дриады
+   LODActorName = monument_dryad
+   LODActorFileName = .\data\actors\nature\landmark\monument_dryad.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Статуя горгульи
+   LODActorName = monument_gargoyle
+   LODActorFileName = .\data\actors\nature\landmark\monument_gargoyle.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Статуя минотавра
+   LODActorName = monument_minotaur
+   LODActorFileName = .\data\actors\nature\landmark\monument_minotaur.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Статуя воина
+   LODActorName = monument_warrior
+   LODActorFileName = .\data\actors\nature\landmark\monument_warrior.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Статуя конного лучника
+   LODActorName = monument_horsearcher
+   LODActorFileName = .\data\actors\nature\landmark\monument_horsearcher.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Дерево черепов
+   LODActorName = skulltree
+   LODActorFileName = .\data\actors\nature\landmark\skulltree.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Мёртвое дерево
+   LODActorName = eviltree
+   LODActorFileName = .\data\actors\nature\landmark\eviltree.actor
+   MaterialLibraryInterfaceName = nature
+   HoldRequested = False
+section.end
+
+section.begin
+   Hint = //--------------------- PFX&MISC ---------------------------------------
+   HintDesc = //Пустышка
+   LODActorName = empty
+   LODActorFileName = .\data\actors\misc\empty\empty.actor
+   MaterialLibraryInterfaceName =
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Камень для броска
+   LODActorName = weapon.stone
+   LODActorFileName = .\data\actors\misc\weapon\weapon.stone.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела воина
+   LODActorName = weapon.arrow.warrior
+   LODActorFileName = .\data\actors\misc\weapon\weapon.arrow.warrior.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела лучника
+   LODActorName = weapon.arrow.archer
+   LODActorFileName = .\data\actors\misc\weapon\weapon.arrow.archer.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела эльфа
+   LODActorName = weapon.arrow.elf
+   LODActorFileName = .\data\actors\misc\weapon\weapon.arrow.elf.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Стрела разведчика
+   LODActorName = weapon.arrow.scout
+   LODActorFileName = .\data\actors\misc\weapon\weapon.arrow.scout.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Топорик варвара
+   LODActorName = weapon.axe.barbarian
+   LODActorFileName = .\data\actors\misc\weapon\weapon.axe.barbarian.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Болт арбалетчика
+   LODActorName = weapon.bolt.crossbowman
+   LODActorFileName = .\data\actors\misc\weapon\weapon.bolt.crossbowman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Нож вора
+   LODActorName = weapon.knife.thief
+   LODActorFileName = .\data\actors\misc\weapon\weapon.knife.thief.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Метательное копье копейщика
+   LODActorName = weapon.pike.spearman
+   LODActorFileName = .\data\actors\misc\weapon\weapon.pike.spearman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Булыжник гиганта
+   LODActorName = weapon.stone.giant
+   LODActorFileName = .\data\actors\misc\weapon\weapon.stone.giant.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Клинок ассассина, для броска
+   LODActorName = weapon.sword.assassin
+   LODActorFileName = .\data\actors\misc\weapon\weapon.sword.assassin.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.arrow.elfdruid
+   LODActorFileName = .\data\actors\misc\weapon\weapon.arrow.elfdruid.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.arrow.elfranger
+   LODActorFileName = .\data\actors\misc\weapon\weapon.arrow.elfranger.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.bolo.centaurhuntsman
+   LODActorFileName = .\data\actors\misc\weapon\weapon.bolo.centaurhuntsman.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.bolt.dwarfmechanic
+   LODActorFileName = .\data\actors\misc\weapon\weapon.bolt.dwarfmechanic.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.bottle.goblinalchemist
+   LODActorFileName = .\data\actors\misc\weapon\weapon.bottle.goblinalchemist.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.club.orcthrower
+   LODActorFileName = .\data\actors\misc\weapon\weapon.club.orcthrower.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.pike.centaurchief
+   LODActorFileName = .\data\actors\misc\weapon\weapon.pike.centaurchief.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = weapon.thorn.goblinpoisonspit
+   LODActorFileName = .\data\actors\misc\weapon\weapon.thorn.goblinpoisonspit.actor
+   MaterialLibraryInterfaceName = units
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, небо
+   LODActorName = sky_back
+   LODActorFileName = .\data\actors\misc\astral\sky_back.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, звёзды
+   LODActorName = sky_back_stars
+   LODActorFileName = .\data\actors\misc\astral\sky_back_stars.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue1
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue2
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue3
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue3.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue4
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue4.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue5
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue5.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue6
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue6.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue7
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue7.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue8
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue8.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue9
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue9.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue10
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue10.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue11
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue11.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue12
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue12.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue13
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue13.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue14
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue14.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue15
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue15.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_blue16
+   LODActorFileName = .\data\actors\misc\astral\clouds_blue16.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_green1
+   LODActorFileName = .\data\actors\misc\astral\clouds_green1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_green2
+   LODActorFileName = .\data\actors\misc\astral\clouds_green2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange1
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange2
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange3
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange3.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange4
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange4.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange5
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange5.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange6
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange6.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange7
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange7.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Астрал, облака
+   LODActorName = clouds_orange8
+   LODActorFileName = .\data\actors\misc\astral\clouds_orange8.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Волны
+   LODActorName = wave1
+   LODActorFileName = .\data\actors\misc\wave\wave1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Луч
+   LODActorName = ray
+   LODActorFileName = .\data\actors\misc\pfx\ray.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = flag
+   LODActorFileName = .\data\actors\misc\gui\flag.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = flag_shaft
+   LODActorFileName = .\data\actors\misc\gui\flag.attach\flag_shaft.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = pointer_point
+   LODActorFileName = .\data\actors\misc\gui\pointer_point.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = pointer_point_hole
+   LODActorFileName = .\data\actors\misc\gui\pointer_point_hole.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = pointer_cross
+   LODActorFileName = .\data\actors\misc\gui\pointer_cross.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = pointer_cross_hole
+   LODActorFileName = .\data\actors\misc\gui\pointer_cross_hole.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = flag_shaft_big
+   LODActorFileName = .\data\actors\misc\gui\flag.attach\flag_shaft_big.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = flag_shaft_medium
+   LODActorFileName = .\data\actors\misc\gui\flag.attach\flag_shaft_medium.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = flag_big
+   LODActorFileName = .\data\actors\misc\gui\flag_big.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = flag_medium
+   LODActorFileName = .\data\actors\misc\gui\flag_medium.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane
+   LODActorFileName = .\data\actors\misc\astral\astral_plane.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane2
+   LODActorFileName = .\data\actors\misc\astral\astral_plane2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane3
+   LODActorFileName = .\data\actors\misc\astral\astral_plane3.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = shard_cloud
+   LODActorFileName = .\data\actors\misc\astral\shard_cloud.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer
+   LODActorFileName = .\data\actors\misc\astral\astral_layer.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_square
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_square.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_square_front
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_square_front.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_square_front2
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_square_front2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_square_front_stars
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_square_front_stars.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_square_front_stars2
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_square_front_stars2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer1
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer2
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer3
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer4
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer5
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer6
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer7
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_layer8
+   LODActorFileName = .\data\actors\misc\astral\astral_layer1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_semisphere1
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_semisphere1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_semisphere1_stars
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_semisphere1_stars.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_semisphere1_stars2
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_semisphere1_stars2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_semisphere2
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_semisphere2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_semisphere2_stars
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_semisphere2_stars.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   LODActorName = astral_plane_semisphere2_stars2
+   LODActorFileName = .\data\actors\misc\astral\astral_plane_semisphere2_stars2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Останки
+   LODActorName = remains
+   LODActorFileName = .\data\actors\misc\pfx\remains.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ритуал - Чаша Жизни
+   LODActorName = bowloflife
+   LODActorFileName = .\data\actors\misc\pfx\bowloflife.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ритуал - Чаша Жизни
+   LODActorName = shield_2
+   LODActorFileName = .\data\actors\misc\pfx\shield_2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ритуал - Зачарованный ларец
+   LODActorName = spellboundbox
+   LODActorFileName = .\data\actors\misc\pfx\spellboundbox.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying0
+   LODActorFileName = .\data\actors\misc\pfx\flying0.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying1
+   LODActorFileName = .\data\actors\misc\pfx\flying1.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying2
+   LODActorFileName = .\data\actors\misc\pfx\flying2.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying3
+   LODActorFileName = .\data\actors\misc\pfx\flying3.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying4
+   LODActorFileName = .\data\actors\misc\pfx\flying4.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying5
+   LODActorFileName = .\data\actors\misc\pfx\flying5.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying6
+   LODActorFileName = .\data\actors\misc\pfx\flying6.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = flying7
+   LODActorFileName = .\data\actors\misc\pfx\flying7.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc =
+   LODActorName = waveplane
+   LODActorFileName = .\data\actors\misc\pfx\waveplane.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+section.begin
+
+   HintDesc = 
+   LODActorName = waveplane_hypno
+   LODActorFileName = .\data\actors\misc\pfx\waveplane_hypno.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ритуал - Сотворение
+   LODActorName = creation
+   LODActorFileName = .\data\actors\misc\pfx\creation.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //Ритуал - Тварь Хаоса
+   LODActorName = pentagramm
+   LODActorFileName = .\data\actors\misc\pfx\pentagramm.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //shield
+   LODActorName = shield
+   LODActorFileName = .\data\actors\misc\pfx\shield.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = //волшебное оружие
+   LODActorName = sword
+   LODActorFileName = .\data\actors\misc\pfx\sword.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end
+
+section.begin
+   HintDesc = 
+   LODActorName = lava
+   LODActorFileName = .\data\actors\misc\pfx\lava.actor
+   MaterialLibraryInterfaceName = misc
+   HoldRequested = False
+section.end

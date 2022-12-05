@@ -1,0 +1,233 @@
+section.begin
+   Name = DoNothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoNothing.inc
+section.end
+
+section.begin
+   Name = DoNextNode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoNextNode.inc
+section.end
+
+section.begin
+   Name = DoProgress
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoProgress.inc
+section.end
+
+section.begin
+   Name = DoLibLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoLibLoad.inc
+section.end
+
+section.begin
+   Name = DoInitial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoInitial.inc
+section.end
+
+section.begin
+   Name = DoClean
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoClean.inc
+section.end
+
+section.begin
+   Name = DoCleanSafe
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoCleanSafe.inc
+section.end
+
+section.begin
+   Name = DoDestroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\DoDestroy.inc
+section.end
+
+section.begin
+   Name = ------------------------------------------------
+   LanClientExecute = True
+   UsedFileName = 
+section.end
+
+section.begin
+   Name = GetLibNodeByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetLibNodeByName.inc
+section.end
+
+section.begin
+   Name = GetCurrNode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetCurrNode.inc
+section.end
+
+section.begin
+   Name = SetNodeTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\SetNodeTarget.inc
+section.end
+
+section.begin
+   Name = GetNodeTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetNodeTarget.inc
+section.end
+
+section.begin
+   Name = SetCoordTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\SetCoordTarget.inc
+section.end
+
+section.begin
+   Name = GetCoordTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetCoordTarget.inc
+section.end
+
+section.begin
+   Name = SetNextNode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\SetNextNode.inc
+section.end
+
+section.begin
+   Name = GetNextNode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetNextNode.inc
+section.end
+
+section.begin
+   Name = ------------------------------------------------
+   LanClientExecute = True
+   UsedFileName = 
+section.end
+
+section.begin
+   Name = OnCollided
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnCollided.inc
+section.end
+
+section.begin
+   Name = OnUncollided
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnUncollided.inc
+section.end
+
+section.begin
+   Name = OnDestroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnDestroy.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = OnStartFrameReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnStartFrameReached.inc
+section.end
+
+section.begin
+   Name = OnEndFrameReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnEndFrameReached.inc
+section.end
+
+section.begin
+   Name = OnStartCyclesReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnStartCyclesReached.inc
+section.end
+
+section.begin
+   Name = OnEndCyclesReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnEndCyclesReached.inc
+section.end
+
+section.begin
+   Name = OnEndCyclesFBReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\OnEndCyclesFBReached.inc
+section.end
+
+section.begin
+   Name = ------------------------------------------------
+   LanClientExecute = True
+   UsedFileName = 
+section.end
+
+section.begin
+   Name = IsLibLoaded
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\IsLibLoaded.inc
+section.end
+
+section.begin
+   Name = GetLibHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetLibHandle.inc
+section.end
+
+section.begin
+   Name = GetOrCreateLibHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\GetOrCreateLibHandle.inc
+section.end
+
+section.begin
+   Name = AddLibFromFile
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fx.inc\AddLibFromFile.inc
+section.end
+
+section.begin
+   CurrentState = DoNothing
+   SaveVariables = False
+section.end
+

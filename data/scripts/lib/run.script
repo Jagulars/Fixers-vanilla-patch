@@ -1,0 +1,73 @@
+//
+// run.script
+//
+
+procedure _run_DoCreateMenu;
+begin
+   _init_DefaultGame();
+	
+   var p : Integer = ParserSelectByKey(gc_ParsersRoot);
+   p := ParserSelectByHandleByKey(p, 'lan_backup_sync_data');
+   if (p <> 0) then
+      ParserFreeByHandle(p);
+   
+   const cMapName = 'menu.map';
+   const cZoneName = 'Nothing';
+   const cPresetName = 'Default';
+
+   const cMapWidth = 128;
+   const cMapHeight = 128;
+   const cLightName = 'astral_neutral';
+   const cInitState = 'menu.DoInitial';
+
+   var randKey0, randKey1 : Integer;
+   GenerateMapRandKey(randKey0, randKey1);
+   SetRandomExtKey64(randKey0, randKey1);
+   SetMapGeneratorRandomKey(randKey0, randKey1);
+   SetGlobalMapGeneratorRandomKey(randKey0, randKey1);
+
+   //LoadPatterns(true, true);
+
+   GenerateMapNeededExtBorder(cMapName, cZoneName, cPresetName, cMapWidth, cMapHeight, 1, randKey0, randKey1, 0, 0, 0, '', '', '', '', '', '', '.\data\gui\menu.cfg', '', cLightName, '', cInitState, false);
+end;
+
+procedure _run_ExitGame;
+begin
+	Log('Quitting Application...');
+   CloseQuery();
+end;
+
+procedure _run_WriteRunCommands();
+begin
+	// we need to clear the first line because in default installation it will download an ad banner for Feral Blue (lost cause project), which cannot be recommended in good faith.
+	var sRunCommands : String = '';
+	procedure AddLine(const sLine : String);
+	begin
+		sRunCommands := sRunCommands + gc_gui_BreakLine + sLine;
+	end;
+	
+	AddLine('Eador. Masters of the Broken World');
+	AddLine('images\background_en.jpg');
+	AddLine('images\btn_play_en.jpg');
+	AddLine('eador_mbw.exe');
+	AddLine('images\btn_settings_en.jpg');
+	AddLine('config.exe');
+	AddLine('images\btn_manual_en.jpg');
+	AddLine('manual_en.pdf');
+	
+	_misc_WriteStringToFile('commands.cfg', sRunCommands);
+end;
+
+_run_WriteRunCommands();
+	
+if (IsEngine) then
+begin
+	if gc_TestVersion then
+		SetLogFileEnabled(True);
+	
+	_run_DoCreateMenu;
+end;
+
+
+
+

@@ -1,0 +1,232 @@
+
+function _sa_GetNumSafe_D(arr_str : String;delm : Char) : Integer;
+begin
+   if arr_str = '' then
+      Result := 0
+   else
+   begin
+      if IsDelimiterCharExists(arr_str,delm) then
+         Result := GetDelimiterStringCount(arr_str, delm, gc_gui_QuoteChar) // returns the amount of dividers + 1
+      else
+         Result := 1;
+   end;
+end;
+
+function _sa_GetNum_D(arr_str : String;delm : Char) : Integer;
+begin
+   if arr_str = '' then
+      Result := 0
+   else
+      Result := GetDelimiterStringCount(arr_str, delm, gc_gui_QuoteChar); // returns the amount of dividers + 1
+end;
+
+function _sa_GetNumSafe(arr_str : String) : Integer;
+begin
+   Result := _sa_GetNumSafe_D(arr_str,gc_gui_DelimiterChar);
+end;
+
+function _sa_GetNum(arr_str : String) : Integer;
+begin
+   Result := _sa_GetNum_D(arr_str,gc_gui_DelimiterChar);
+end;
+
+function _sa_Get_D(arr_str : String;idx : Integer;delm : Char;var dst_str : String) : Boolean;
+begin
+   dst_str := GetDelimiterStringByIndex(arr_str,delm,gc_gui_QuoteChar,idx);
+   Result := true;
+end;
+
+function _sa_GetAsInt_D(arr_str : String;idx : Integer;delm : Char) : Integer;
+begin
+   Result := StrToInt(GetDelimiterStringByIndex(arr_str,delm,gc_gui_QuoteChar,idx));
+end;
+
+function _sa_GetAsFloat_D(arr_str : String;idx : Integer;delm : Char) : Float;
+begin
+   Result := StrToFloat(GetDelimiterStringByIndex(arr_str,delm,gc_gui_QuoteChar,idx));
+end;
+
+procedure _sa_Add_D(var arr_str : String;elem : String;delm : String);
+begin
+   if (arr_str <> '') then
+      arr_str := arr_str + delm;
+   arr_str := arr_str + elem;
+end;
+
+procedure _sa_AddWithQuotes_D(var arr_str : String;elem : String;delm : String);
+begin
+   if (arr_str <> '') then
+      arr_str := arr_str + delm;
+   arr_str := arr_str + '"'+elem+'"';
+end;
+
+procedure _sa_AddAsInt_D(var arr_str : String;elem : Integer;delm : String);
+begin
+   if arr_str <> '' then
+      arr_str := arr_str + delm;
+   arr_str := arr_str + IntToStr(elem);
+end;
+
+procedure _sa_AddAsFloat_D(var arr_str : String;elem : Float;delm : String);
+begin
+   if arr_str <> '' then
+      arr_str := arr_str + delm;
+   arr_str := arr_str + FloatToStr(elem);
+end;
+
+function _sa_Get(arr_str : String;idx : Integer;var dst_str : String) : Boolean;
+begin
+   Result := _sa_Get_D(arr_str,idx,gc_gui_DelimiterChar,dst_str);
+end;
+
+function _sa_GetAsInt(arr_str : String;idx : Integer) : Integer;
+begin
+   Result := _sa_GetAsInt_D(arr_str,idx,gc_gui_DelimiterChar);
+end;
+
+function _sa_GetAsFloat(arr_str : String;idx : Integer) : Float;
+begin
+   Result := _sa_GetAsFloat_D(arr_str,idx,gc_gui_DelimiterChar);
+end;
+
+procedure _sa_Add(var arr_str : String;elem : String);
+begin
+   _sa_Add_D(arr_str,elem,gc_gui_DelimiterCharStr);
+end;
+
+procedure _sa_AddWithQuotes(var arr_str : String;elem : String);
+begin
+   _sa_AddWithQuotes_D(arr_str,elem,gc_gui_DelimiterCharStr);
+end;
+
+procedure _sa_AddAsInt(var arr_str : String;elem : Integer);
+begin
+   _sa_AddAsInt_D(arr_str,elem,gc_gui_DelimiterCharStr);
+end;
+
+procedure _sa_AddAsFloat(var arr_str : String;elem : Float);
+begin
+   _sa_AddAsFloat_D(arr_str,elem,gc_gui_DelimiterCharStr);
+end;
+
+// converts string array to parser using | as pairs separator and = as key/value separator
+procedure _sa_ToParser(dst_p : Integer;arr_str : String);
+begin
+   var i,n,l : Integer;
+   var s,k,v : String;
+
+   n := _sa_GetNum(arr_str);
+
+   for i := 0 to n-1 do
+   begin
+      _sa_Get(arr_str,i,s);
+      k := GetDelimiterStringByIndex(s,61,gc_gui_QuoteChar,0);
+      if k <> '' then
+      begin
+         l := StrLength(k)+1;
+         v := SubStr(s,l+1,StrLength(s)-l);
+         if v <> '' then
+            ParserSetValueByKeyByHandle(dst_p,k,v);
+      end;
+   end;
+end;
+
+
+procedure _sa_SetIntAtIndex(var arr_str : String; index : Integer; elem : Integer);
+begin
+   var delmCount : Integer = _sa_GetNum(arr_str);
+   var elemStr : String = IntToStr(elem);
+   
+   if (index >= 0) and (index < delmCount) then
+   begin
+      if (delmCount = 1) then
+         arr_str := elemStr
+      else
+      if (delmCount = 0) then
+         arr_str := ''
+      else
+      begin
+         var endInd : Integer = index+1;
+         
+         var tmpStr : String = '';
+         var pos : Integer = -1;
+         var len : Integer = StrLength(arr_str);
+   
+         var i : Integer;
+         for i := 0 to endInd do
+         begin
+            if (i = endInd) and (index > 0) then
+               tmpStr := SubStr(arr_str, 0, pos);
+      
+            pos := StrPosEx(gc_gui_DelimiterCharStr, arr_str, pos+1);
+      
+            if i = endInd then
+            begin
+               var tmpStr2 : String = '';
+		       if (pos > 0) or (index = 0) then
+                  tmpStr2 := SubStr(arr_str, pos, len - StrLength(tmpStr) + StrLength(elemStr));
+            
+               arr_str := tmpStr + elemStr + tmpStr2;
+            end;
+         end;
+      end;
+   end;
+end;
+
+function _sa_GetIntValueIndex(arr_str : String; search : Integer) : Integer;
+begin
+   Result := -1;
+   
+   var i : Integer;
+   var delmCount : Integer = _sa_GetNum(arr_str);
+   for i := 0 to delmCount do
+   begin
+      if _sa_GetAsInt(arr_str, i) = search then
+      begin
+         Result := i;
+         break;
+      end;
+   end;
+end;
+
+
+procedure _sa_RemoveAtIndex(var arr_str : String; index : Integer);
+begin
+   var delmCount : Integer = _sa_GetNum(arr_str);
+   
+   if (index >= 0) and (index < delmCount) then
+   begin
+      if (delmCount = 1) then
+         arr_str := ''
+      else
+      begin
+         var endInd : Integer = index+1;
+         
+         var tmpStr : String = '';
+         var pos : Integer = -1;
+         var len : Integer = StrLength(arr_str);
+   
+         var i : Integer;
+         for i := 0 to endInd do
+         begin
+            if (i = endInd) and (index > 0) then
+               tmpStr := SubStr(arr_str, 0, pos);
+      
+            pos := StrPosEx(gc_gui_DelimiterCharStr, arr_str, pos+1);
+      
+            if i = endInd then
+            begin
+               var tmpStr2 : String = '';
+		       if (pos > 0) or (index = 0) then
+                  tmpStr2 := SubStr(arr_str, pos+1, len - StrLength(tmpStr));
+            
+               arr_str := tmpStr + tmpStr2;
+               
+               if (index > 0) and (index = delmCount-1) then // if last index removed, remove also the last delimiter char
+                  arr_str := SubStr(arr_str, 0, StrLength(arr_str)-1);
+            end;
+         end;
+      end;
+   end;
+end;
+

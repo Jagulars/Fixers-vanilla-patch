@@ -1,0 +1,239 @@
+//
+// actor.script
+//
+
+procedure _actor_ReloadByName(const targetActorName : String);
+begin
+   var i, j, k, count, actorHandle : Integer;
+   var actorName : String;
+   for i:=0 to GetResourceLODActorLibraryCount-1 do
+   begin
+		actorName := GetResourceLODActorLibraryLibActorNameByIndex(i);
+      
+      if (targetActorName = '') or (StrExists(actorName, targetActorName) and (Round(Abs(StrLength(actorName) - StrLength(targetActorName))) < 3)) then
+      begin
+			actorHandle := GetResourceLODActorLibraryLibActorHandleByIndex(i);
+			LibActorReloadByHandle(actorHandle);
+      end;
+   end;
+end;
+
+procedure _actor_ModifyLODDistance(const targetActorName : String; const fMultiplier : Float);
+begin
+   var i, j, k, count, actorHandle : Integer;
+   var actorName : String;
+   for i:=0 to GetResourceLODActorLibraryCount-1 do
+   begin
+		actorName := GetResourceLODActorLibraryLibActorNameByIndex(i);
+      
+      if (StrExists(actorName, targetActorName) and (Round(Abs(StrLength(actorName) - StrLength(targetActorName))) < 3)) then
+      begin
+			actorHandle := GetResourceLODActorLibraryLibActorHandleByIndex(i);
+				
+         var count : Integer = GetLibActorLODActorCollectionCountByHandle(actorHandle);
+         for j:=0 to count-1 do
+         begin
+				var lodCount : Integer = GetLibActorLODActorCollectionCountLODByHandleByIndex(actorHandle, j);
+				for k:=0 to lodCount-1 do
+				begin
+					var minDist : Float = GetLibActorLODActorCollectionDistanceMinByHandleByIndex(actorHandle, j, k) * fMultiplier;
+					var maxDist : Float = GetLibActorLODActorCollectionDistanceMaxByHandleByIndex(actorHandle, j, k) * fMultiplier;
+					SetLibActorLODActorCollectionDistanceMinMaxByHandleByIndex(actorHandle, j, k, minDist, maxDist);
+				end;
+         end;
+      end;
+   end;
+end;
+
+procedure _actor_SetImposterDataFromParser(const actorHandle, lodCollectionIndex, pImposterData : Integer);
+begin
+	var bImpostered : Boolean = GetLibActorLODActorCollectionImpostoredByHandleByIndex(actorHandle, lodCollectionIndex);
+	if not bImpostered then
+		SetLibActorLODActorCollectionImpostoredByHandleByIndex(actorHandle, lodCollectionIndex, True); // if not set true first, all imposter data acquired next will be zero.
+
+	var pParser, i : Integer;
+	var fr, smpsz, light, ref, comp, magf, minf : Integer;
+	var imblend, imalpha, impers, imrot : Boolean;
+	var smpratbias, smpalpscale, bckr, bckg, bckb, bcka, boffx, boffy, boffz, alptresh, mindist : Float;
+
+	GetLibActorImpDataByHndByInd(actorHandle, lodCollectionIndex, fr,smpsz,light,ref,comp,magf,minf,imblend,imalpha,impers,imrot,smpratbias,smpalpscale,bckr,bckg,bckb,bcka,boffx,boffy,boffz,alptresh,mindist);
+
+	fr := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'ImposterFrame', fr);
+	smpsz := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'SampleSize', smpsz);
+	light := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'Lighting', light);
+	ref := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'ImposterReference', ref);
+	comp := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'Compression', comp);
+	magf := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'MagFilter', magf);
+	minf := _pars_GetIntValueByKeyByHandleDef(pImposterData, 'MinFilter', minf);
+
+	pParser := ParserSelectByHandleByKey(pImposterData, 'ImposterOptions');
+	imblend := _pars_GetBoolValueByKeyByHandleDef(pParser, 'impoBlended', imblend); // blend with surroundings
+	imalpha := _pars_GetBoolValueByKeyByHandleDef(pParser, 'impoAlphaTest', imalpha); // use alpha?
+	impers := _pars_GetBoolValueByKeyByHandleDef(pParser, 'impoPerspectiveCorrection', impers); //if true, image according to object rotation, if false, image perpendicular to camera
+	imrot := _pars_GetBoolValueByKeyByHandleDef(pParser, 'impoRotated', imrot); // dunno
+            
+	smpratbias := _pars_GetFloatValueByKeyByHandleDef(pImposterData, 'SamplingRatioBias', smpratbias); // How concentrated the sample takes will be
+	smpalpscale := _pars_GetFloatValueByKeyByHandleDef(pImposterData, 'SamplesAlphaScale', smpalpscale);
+	
+	pParser := ParserSelectByHandleByKey(pImposterData, 'BackColor');
+	bckr := _pars_GetFloatValueByKeyByHandleDef(pParser, 'Red', bckr);
+	bckg := _pars_GetFloatValueByKeyByHandleDef(pParser, 'Green', bckg);
+	bckb := _pars_GetFloatValueByKeyByHandleDef(pParser, 'Blue', bckb);
+	bcka := _pars_GetFloatValueByKeyByHandleDef(pParser, 'Alpha', bcka);
+	
+	pParser := ParserSelectByHandleByKey(pImposterData, 'BuildOffset');
+	boffx := _pars_GetFloatValueByKeyByHandleDef(pParser, 'X', boffx);
+	boffy := _pars_GetFloatValueByKeyByHandleDef(pParser, 'Y', boffy);
+	boffz := _pars_GetFloatValueByKeyByHandleDef(pParser, 'Z', boffz);
+	
+	alptresh := _pars_GetFloatValueByKeyByHandleDef(pImposterData, 'AlphaTreshold', alptresh); // yes, Treshold
+	mindist := _pars_GetFloatValueByKeyByHandleDef(pImposterData, 'MinDistance', mindist);
+	
+	pParser := ParserSelectByHandleByKey(pImposterData, 'Coronas'); // no idea what Coronas do
+	for i := 0 to ParserGetCountByHandle(pParser)-1 do
+	begin
+		var pChild : Integer = ParserSelectByHandleByIndex(pParser, i);
+		var elevation : Float = ParserGetFloatValueByKeyByHandle(pChild, 'Elevation'); // dunno
+		var samples : Integer = ParserGetIntValueByKeyByHandle(pChild, 'Samples'); // determines from how many angles snap shot will be taken
+		SetLibActorImpCoronasDataByHandleByIndex(actorHandle, lodCollectionIndex, i, elevation, samples);
+	end;
+	
+	for i := 0 to 1 do  // the obstinate system won't behave unless hit twice
+	SetLibActorImpDataByHndByInd(actorHandle, lodCollectionIndex, fr,smpsz,light,ref,comp,magf,minf,imblend,imalpha,impers,imrot,smpratbias,smpalpscale,bckr,bckg,bckb,bcka,boffx,boffy,boffz,alptresh,mindist);
+end;
+
+function _actor_SetImposterValue(const targetActorName, valueName, sValue : String) : Boolean;
+begin
+	var i, j, k, actorHandle, count : Integer;
+
+	var fr, smpsz, light, ref, comp, magf, minf : Integer;
+	var imblend, imalpha, impers, imrot : Boolean;
+	var smpratbias, smpalpscale, bckr, bckg, bckb, bcka, boffx, boffy, boffz, alptresh, mindist : Float;
+	
+	for i:=0 to GetResourceLODActorLibraryCount-1 do
+	begin
+		var actorName : String = GetResourceLODActorLibraryLibActorNameByIndex(i);
+			
+		//if (StrExists(actorName, targetActorName) and (Round(Abs(StrLength(actorName) - StrLength(targetActorName))) < 3)) then
+		if StrExists(actorName, targetActorName) then
+		begin
+			Log('_actor_SetImposterValue '+actorName);
+			actorHandle := GetResourceLODActorLibraryLibActorHandleByIndex(i);
+			count := GetLibActorLODActorCollectionCountByHandle(actorHandle);
+			
+			for j := 0 to count-1 do
+			begin
+				var bImpostered : Boolean = GetLibActorLODActorCollectionImpostoredByHandleByIndex(actorHandle, j);
+				if not bImpostered then
+					SetLibActorLODActorCollectionImpostoredByHandleByIndex(actorHandle, j, True); // if not set true first, all imposter data acquired next will be zero.
+
+				GetLibActorImpDataByHndByInd(actorHandle, j, fr,smpsz,light,ref,comp,magf,minf,imblend,imalpha,impers,imrot,smpratbias,smpalpscale,bckr,bckg,bckb,bcka,boffx,boffy,boffz,alptresh,mindist);
+
+				case StrToLowerCase(valueName) of
+					'imposterframe', 'fr' : fr := StrToInt(sValue);
+					'samplesize', 'smpsz' : smpsz := StrToInt(sValue);
+					'lighting', 'light' : light := StrToInt(sValue);
+					'imposterreference', 'ref' : ref := StrToInt(sValue);
+					'compression', 'comp' : comp := StrToInt(sValue);
+					'magfilter', 'magf' : magf := StrToInt(sValue);
+					'minfilter', 'minf' : minf := StrToInt(sValue);
+					'impoblended', 'imblend' : imblend := StrToBool(sValue);
+					'impoalphatest', 'imalpha' : imalpha := StrToBool(sValue);
+					'impoperspectivecorrection', 'impers' : impers := StrToBool(sValue);
+					'imporotated', 'imrot' : imrot := StrToBool(sValue);
+					'samplingratiobias', 'smpratbias' : smpratbias := StrToFloat(sValue);
+					'samplesalphascale', 'smpalpscale' : smpalpscale := StrToFloat(sValue);
+					'backcolorred', 'red', 'bckr' : bckr := StrToFloat(sValue);
+					'backcolorgreen', 'green', 'bckr' : bckg := StrToFloat(sValue);
+					'backcolorblue', 'blue', 'bckb' : bckb := StrToFloat(sValue);
+					'backcoloralpha', 'alpha', 'bcka' : bcka := StrToFloat(sValue);
+					'buildoffsetx', 'z', 'boffx' : boffx := StrToFloat(sValue);
+					'buildoffsety', 'y', 'boffy' : boffy := StrToFloat(sValue);
+					'buildoffsetz', 'z', 'boffz' : boffz := StrToFloat(sValue);
+					'alphatreshold', 'alptresh' : alptresh := StrToFloat(sValue);
+					'mindistance', 'mindist' : mindist := StrToFloat(sValue);
+				end;
+				
+				//Log(' ImposterFrame: '+IntToStr(fr)+' SampleSize: '+IntToStr(smpsz)+' Lighting: '+IntToStr(light)+' ImposterReference: '+IntToStr(ref)+' Compression: '+IntToStr(comp)+' MagFilter: '+IntToStr(magf)+' MinFilter: '+IntToStr(minf));
+				//Log(' impoBlended: '+BoolToStr(imblend)+' impoAlphaTest: '+BoolToStr(imalpha)+' impoPerspectiveCorrection: '+BoolToStr(impers)+' impoRotated: '+BoolToStr(imrot));
+				//Log(' SamplingRatioBias: '+FloatToStr(smpratbias)+' SamplesAlphaScale: '+FloatToStr(smpalpscale)+' Red: '+FloatToStr(fr)+' Green: '+FloatToStr(smpsz)+' Blue: '+FloatToStr(light)+' Alpha: '+FloatToStr(ref)+' X: '+FloatToStr(boffx)+' Y: '+FloatToStr(boffy)+' Z: '+FloatToStr(boffz)+' AlphaTreshold: '+FloatToStr(alptresh)+' MinDistance: '+FloatToStr(mindist));
+				
+				for k := 0 to 1 do  // the obstinate system won't behave unless hit twice
+				SetLibActorImpDataByHndByInd(actorHandle, j, fr,smpsz,light,ref,comp,magf,minf,imblend,imalpha,impers,imrot,smpratbias,smpalpscale,bckr,bckg,bckb,bcka,boffx,boffy,boffz,alptresh,mindist);
+			end;
+		end;
+	end;
+end;
+
+function _actor_GetImposterDataByPresetID(const presetID : Integer) : Integer;
+begin
+	const cImposterPresetDataPath = '.\data\actors\imposter_presets.cfg';
+	
+	var pImposterPresetData : Integer = _misc_ParserGetOrCreateByKey('imposter_presets', False);
+	if ParserGetCountByHandle(pImposterPresetData) = 0 then
+		ParserLoadFromFile(cImposterPresetDataPath);
+	pImposterPresetData := ParserSelectByHandleByKey(pImposterPresetData, 'ImposterPresets');
+
+	Result := ParserSelectByHandleByIndex(pImposterPresetData, presetID);
+	if Result = 0 then
+	   Result := ParserSelectByHandleByIndex(pImposterPresetData, 1);
+end;
+
+procedure _actor_CheckSimplifiedGraphics();
+begin
+	const cSimpleGraphicsDataPath = '.\data\actors\simple_graphics.cfg';
+	
+	var pSimpleGraphics : Integer = _misc_ParserGetOrCreateByKey('simple_graphics', False);
+	if ParserGetCountByHandle(pSimpleGraphics) = 0 then
+		ParserLoadFromFile(cSimpleGraphicsDataPath);
+	pSimpleGraphics := ParserSelectByHandleByKey(pSimpleGraphics, 'SimplifiedGraphics');
+	
+	var pImposterActors : Integer = ParserSelectByHandleByKey(pSimpleGraphics, 'ImposterActors');
+	
+	{if gProfile.simplegraphics and (GetProjectOptionAsString(gc_ProjOptionsShaderType)<>'stNone') then
+	begin
+		SetProjectOptionAsString(gc_ProjOptionsShaderType, 'stNone'); // shaders should be disabled with imposters
+	end;}
+	
+	var targetActorName : String;
+	var i, j, k, pActor, actorHandle, count, pPresetData : Integer;
+	for i := 0 to ParserGetCountByHandle(pImposterActors)-1 do
+	begin
+		pActor := ParserSelectByHandleByIndex(pImposterActors, i);
+		targetActorName := ParserGetValueByKeyByHandle(pActor, 'Name');
+				
+		if gProfile.simplegraphics then
+		begin
+			pPresetData := _actor_GetImposterDataByPresetID(ParserGetIntValueByKeyByHandle(pActor, 'PresetID'));
+		end;
+		
+		for j:=0 to GetResourceLODActorLibraryCount-1 do
+		begin
+			var actorName : String = GetResourceLODActorLibraryLibActorNameByIndex(j);
+			
+			if (StrExists(actorName, targetActorName) and (Round(Abs(StrLength(actorName) - StrLength(targetActorName))) < 3)) then
+			begin
+				actorHandle := GetResourceLODActorLibraryLibActorHandleByIndex(j);
+				
+				if gProfile.simplegraphics then
+				begin
+					ProjectLoadLodActor(actorName); // Imposters cannot be modified if the lod actor is not loaded and normally lod actors are loaded when the game object is created, so we have to load every to-be-imposter lodactor beforehand in case they don't exist in game objects yet.
+					_log_Obj('Set Imposter: '+actorName);
+					
+					count := GetLibActorLODActorCollectionCountByHandle(actorHandle);
+					for k := 0 to count-1 do
+					begin
+						_actor_SetImposterDataFromParser(actorHandle, k, pPresetData);
+						if ParserGetCountByHandle(pActor) > 2 then // individual custom data exists
+							_actor_SetImposterDataFromParser(actorHandle, k, pActor);
+					end;
+				end
+				else
+				begin
+					LibActorReloadByHandle(actorHandle); // this makes imposters disappear, needs to be first.
+					LibActorDestroyImposterHandlesByHandle(actorHandle); // Imposters don't disappear with this, but if omitted, there will be access violation and runtime errors when exiting the game.
+				end;
+			end;
+		end;
+	end;
+end;

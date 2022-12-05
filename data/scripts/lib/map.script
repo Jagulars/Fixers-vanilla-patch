@@ -1,0 +1,1011 @@
+//
+// map.script
+//
+
+// _map_SetDefault
+//
+procedure _map_SetDefault(var map : TMap);
+begin
+   map.players := 4;
+   map.difficulty := 0;
+   map.x := 10;
+   map.y := 10;
+   map.typ := 2;
+   map.water := 10;
+   map.hill := 20;
+   map.forest := 20;
+   map.swamp := 20;
+   map.desert := 5;
+   map.deadland := 5;
+   map.isles := 10;
+   map.dissolve := 30;
+   map.neutrals := 20;
+   map.resource := 2;
+   map.site := 2;
+   map.population := 2;
+end;
+
+// _map_SetGameCustomDifficultyOptionsDefault
+//
+procedure _map_SetGameCustomDifficultyOptionsDefault(var advdiff : TDifficulty; bInit : Boolean; diff : Integer);
+begin
+   if (not bInit) then
+   begin
+      var pDifficulty : Integer = ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, diff);
+      if (pDifficulty<>0) then
+      begin
+         advdiff.basediff := diff;
+         advdiff.neutralhp := ParserGetIntValueByKeyByHandle(pDifficulty, 'NeutralHP');
+         advdiff.defenderhp := ParserGetIntValueByKeyByHandle(pDifficulty, 'DefenderHP');
+         advdiff.expmod := (round(100*100/ParserGetIntValueByKeyByHandle(pDifficulty, 'ExpMod')) div 5)*5;
+         advdiff.startgold := ParserGetIntValueByKeyByHandle(pDifficulty, 'StartGold');
+         advdiff.startgem := ParserGetIntValueByKeyByHandle(pDifficulty, 'StartGem');
+         advdiff.goldincomeadd := ParserGetIntValueByKeyByHandle(pDifficulty, 'GoldIncomeAdd');
+         advdiff.gemincomeadd := ParserGetIntValueByKeyByHandle(pDifficulty, 'GemIncomeAdd');
+         advdiff.corruption := diff;
+         advdiff.score := ParserGetIntValueByKeyByHandle(pDifficulty, 'Score');
+      end
+      else
+         bInit := true;
+   end;
+   if (bInit) then
+   begin
+      advdiff.basediff := 3;
+      advdiff.neutralhp := 100;
+      advdiff.defenderhp := 100;
+      advdiff.expmod := 100;
+      advdiff.startgold := 500;
+      advdiff.startgem := 20;
+      advdiff.goldincomeadd := 0;
+      advdiff.gemincomeadd := 0;
+      advdiff.corruption := 3;
+      advdiff.score := 100;
+   end
+end;
+
+
+// _map_MapGeneratorDefault
+//
+procedure _map_MapGeneratorDefault(var mapsettings : TMapSettings; bInit : Boolean);
+begin
+   mapsettings.typ := 0;
+   mapsettings.water := 0.5;
+   mapsettings.hill := 0.5;
+   mapsettings.forest := 0.5;
+   mapsettings.swamp := 0.5;
+   mapsettings.wastelands := 0.5;
+   mapsettings.isles := 0.5;
+   mapsettings.dissolve := 0.5;
+   mapsettings.neutrals := 1;
+   mapsettings.resource := 0.5;
+   mapsettings.site := 0.5;
+   mapsettings.population := 0.5;
+   var i : Integer;
+   if (bInit) then
+   begin
+      mapsettings.players := 0;
+      mapsettings.size := 0;
+      mapsettings.worldrule := 0;
+      for i:=0 to gc_MaxCustomMapPlayer-1 do
+      begin
+         mapsettings.arrplayers[i].id := 0;
+         mapsettings.arrplayers[i].control := 0;
+         mapsettings.arrplayers[i].advdiff.custom := False;
+         _map_SetGameCustomDifficultyOptionsDefault(mapsettings.arrplayers[i].advdiff, False, gProfile.advdiff.basediff);
+         mapsettings.arrplayers[i].control := 0;
+      end;
+      mapsettings.arrplayers[0].advdiff.custom := gProfile.advdiff.custom;
+   end
+   else
+   begin
+      for i:=0 to gc_MaxCustomMapPlayer-1 do
+      _map_SetGameCustomDifficultyOptionsDefault(mapsettings.arrplayers[i].advdiff, False, gProfile.advdiff.basediff);
+      mapsettings.arrplayers[0].advdiff.custom := gProfile.advdiff.custom;
+   end;
+   mapsettings.random := false;
+end;
+
+// _map_CreateGridVertices
+//
+function _map_CreateGridVertices : Integer;
+begin
+   _pars_ParserSelect('GridVertices', gGridVertices);
+   if (gGridVertices.handle=0) then
+       _pars_ParserCreate('GridVertices', gGridVertices)
+   else
+       _pars_ParserClear(gGridVertices);
+   Result := gGridVertices.handle;
+end;
+
+// _map_GetGridVertices
+//
+function _map_GetGridVertices : Integer;
+begin
+   Result := gGridVertices.handle;
+end;
+
+// _map_CreateStratHexCells
+//
+function _map_CreateStratHexCells : Integer;
+begin
+   var machineHandle : Integer = GetMapInitMachineHandle;
+   var machineParser : Integer = ParserSelectStateMachineByHandle(machineHandle);
+   if (machineParser=0) then
+   machineParser := ParserCreateStateMachineByHandle(machineHandle);
+
+   gStratHexCells.handle := ParserSelectByHandleByKey(machineParser, 'StratHexGrid');
+   if (gStratHexCells.handle=0) then
+   gStratHexCells.handle := ParserAddChildByIndex(machineParser, 'StratHexGrid')
+   else
+   ParserClearByHandle(gStratHexCells.handle);
+
+   gStratHexCells.number := ParserGetCountByHandle(gStratHexCells.handle);
+
+   Result := gStratHexCells.handle;
+end;
+
+// _map_GetStratHexCells
+//
+function _map_GetStratHexCells : Integer;
+begin
+   gStratHexCells.handle := ParserSelectByHandleByKey(ParserSelectStateMachineByHandle(GetMapInitMachineHandle), 'StratHexGrid');
+   gStratHexCells.number := ParserGetCountByHandle(gStratHexCells.handle);
+   Result := gStratHexCells.handle;
+end;
+
+// _map_CreateHexCells
+//
+function _map_CreateHexCells : Integer;
+begin
+   var machineHandle : Integer = GetMapInitMachineHandle;
+   var machineParser : Integer = ParserSelectStateMachineByHandle(machineHandle);
+   if (machineParser=0) then
+   machineParser := ParserCreateStateMachineByHandle(machineHandle);
+
+   gHexCells.handle := ParserSelectByHandleByKey(machineParser, 'HexGrid');
+   if (gHexCells.handle=0) then
+   gHexCells.handle := ParserAddChildByIndex(machineParser, 'HexGrid')
+   else
+   ParserClearByHandle(gHexCells.handle);
+
+   gHexCells.number := ParserGetCountByHandle(gHexCells.handle);
+
+   Result := gHexCells.handle;
+end;
+
+// _map_GetHexCells
+//
+function _map_GetHexCells : Integer;
+begin
+   gHexCells.handle := ParserSelectByHandleByKey(ParserSelectStateMachineByHandle(GetMapInitMachineHandle), 'HexGrid');
+   gHexCells.number := ParserGetCountByHandle(gHexCells.handle);
+   Result := gHexCells.handle;
+end;
+
+// _map_GetHexByTNHandle
+//
+function _map_GetHexByTNHandle(tnhandle : Integer) : Integer;
+begin
+   Result := ParserSelectByHandleByIndex(gHexCells.handle, GetTrackNodeIndexByHandle(tnhandle));
+end;
+
+
+function _map_GetBattleHex(posX, posY : Integer) : Integer;
+begin
+   Result := ParserSelectByHandleByIndex(gHexCells.handle, gc_battle_GridSize * posY + posX);
+end;
+
+
+function _map_GetStratHex(posX, posY : Integer) : Integer;
+begin
+   var index : Integer = gGame.map.y * posX + posY; // on map provinces are indexed from top to down first and then from left to right
+   if index >= 0 then
+		Result := ParserSelectByHandleByIndex(gStratHexCells.handle, index)
+	else
+		Result := 0;	  
+end;
+
+
+function _map_GetGridSize() : Integer;
+begin
+	var listIndex : Integer = GetActiveTrackNodeListIndex();
+	if listIndex <> 0 then
+		SetActiveTrackNodeList(0);
+		
+   Result := Round(Sqrt(GetTrackNodeCount));
+	
+	if listIndex <> 0 then
+		SetActiveTrackNodeList(listIndex);
+end;
+
+procedure _map_GetGridCoordDefault(const x, y : Integer; var posX, posY : Float);
+begin
+	if x mod 2 = 0 then
+		 posX := 2 * y
+	else
+		 posX := (2*y + 1);
+
+	posY := Sqrt(3) * x;
+
+	posX := gFloatRegister_MapGridXCoord + posX * Sqrt(3) / 2 * gc_StratHexSize;
+	posY := gFloatRegister_MapGridYCoord + posY * Sqrt(3) / 2 * gc_StratHexSize;
+end;
+
+
+procedure _map_DefaultTrackNodePositions();
+begin
+	var pStratHexCells : Integer = gStratHexCells.handle;
+	var i, tnHandle, pStratHexCell : Integer;
+	var x0, y0 : Float;
+	for i := 0 to ParserGetCountByHandle(pStratHexCells)-1 do
+	begin
+		pStratHexCell := ParserSelectByHandleByIndex(pStratHexCells, i);
+		tnHandle := GetTrackNodeHandleByIndex(i);
+		_map_GetGridCoordDefault(ParserGetIntValueByKeyByHandle(pStratHexCell, 'Y'), ParserGetIntValueByKeyByHandle(pStratHexCell, 'X'), x0, y0); // x and y needs to be swapped here
+		SetTrackNodePositionByHandle(tnHandle, x0, 0, y0);
+	end;
+end;
+
+
+procedure _map_AdjustTrackNodesToProvinces();
+begin
+	var pStratHexCells : Integer = gStratHexCells.handle;
+	var i, tnHandle, pStratHexCell : Integer;
+	var x0, y0 : Float;
+	for i := 0 to ParserGetCountByHandle(pStratHexCells)-1 do
+	begin
+		pStratHexCell := ParserSelectByHandleByIndex(pStratHexCells, i);
+		x0 := ParserGetFloatValueByKeyByHandle(pStratHexCell, 'CenterX');
+		y0 := ParserGetFloatValueByKeyByHandle(pStratHexCell, 'CenterY');
+		tnHandle := GetTrackNodeHandleByIndex(i);
+		SetTrackNodePositionByHandle(tnHandle, x0, 0, y0);
+	end;
+end;
+
+
+procedure _map_GetCenterCoord(var worldX, worldY : Float);
+begin
+   var coord : Integer = Round(Sqrt(ParserGetCountByHandle(gStratHexCells.handle))) div 2;
+   var pCenterProv : Integer = _map_GetStratHex(coord, coord);
+	worldX := ParserGetFloatValueByKeyByHandle(pCenterProv, 'CenterX');
+	worldY := ParserGetFloatValueByKeyByHandle(pCenterProv, 'CenterY');
+end;
+
+// _map_GetPlayersCount
+//
+function _map_GetPlayersCount : Integer;
+begin
+   var machineHandle : Integer = GetMapInitMachineHandle;
+   var machineParser : Integer = ParserSelectStateMachineByHandle(machineHandle);
+   var pCurGame : Integer = ParserSelectByHandleByKey(machineParser, 'CurGame');
+   var pCurGameMap : Integer = ParserSelectByHandleByKey(pCurGame, 'Map');
+   Result := ParserGetIntValueByKeyByHandle(pCurGameMap, 'Players');
+end;
+
+// _map_CopyParserToMapStruct
+//
+procedure _map_CopyParserToMapStruct(parser : Integer; var map : TMap);
+begin
+   map.players := ParserGetIntValueByKeyByHandle(parser, 'Players');
+   map.difficulty := ParserGetIntValueByKeyByHandle(parser, 'Difficulty');
+   map.x := ParserGetIntValueByKeyByHandle(parser, 'X');
+   map.y := ParserGetIntValueByKeyByHandle(parser, 'Y');
+   map.typ := ParserGetIntValueByKeyByHandle(parser, 'Type');
+   map.water := ParserGetIntValueByKeyByHandle(parser, 'Water');
+   map.hill := ParserGetIntValueByKeyByHandle(parser, 'Hill');
+   map.forest := ParserGetIntValueByKeyByHandle(parser, 'Forest');
+   map.swamp := ParserGetIntValueByKeyByHandle(parser, 'Swamp');
+   map.desert := ParserGetIntValueByKeyByHandle(parser, 'Desert');
+   map.deadLand := ParserGetIntValueByKeyByHandle(parser, 'DeadLand');
+   map.isles := ParserGetIntValueByKeyByHandle(parser, 'Isles');
+   map.dissolve := ParserGetIntValueByKeyByHandle(parser, 'Dissolve');
+   map.neutrals := ParserGetIntValueByKeyByHandle(parser, 'Neutrals');
+   map.resource := ParserGetIntValueByKeyByHandle(parser, 'Resource');
+   map.site := ParserGetIntValueByKeyByHandle(parser, 'Site');
+   map.population := ParserGetIntValueByKeyByHandle(parser, 'Population');
+end;
+
+// _map_AssignMapStruct
+//
+procedure _map_AssignMapStruct(var dstMap : TMap; srcMap : TMap);
+begin
+   dstMap.players := srcMap.players;
+   dstMap.difficulty := srcMap.difficulty;
+   dstMap.x := srcMap.x;
+   dstMap.y := srcMap.y;
+   dstMap.typ := srcMap.typ;
+   dstMap.water := srcMap.water;
+   dstMap.hill := srcMap.hill;
+   dstMap.forest := srcMap.forest;
+   dstMap.swamp := srcMap.swamp;
+   dstMap.desert := srcMap.desert;
+   dstMap.deadLand := srcMap.deadLand;
+   dstMap.isles := srcMap.isles;
+   dstMap.dissolve := srcMap.dissolve;
+   dstMap.neutrals := srcMap.neutrals;
+   dstMap.resource := srcMap.resource;
+   dstMap.site := srcMap.site;
+   dstMap.population := srcMap.population;
+end;
+
+// _map_GetPlayerKarma
+//
+function _map_GetPlayerKarma(plHandle : Integer) : Integer;
+begin
+   var profile : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iProfile);
+   var lord : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iLordIndex);
+
+   if profile > 0 then
+   begin
+      var pProfile : Integer = ParserSelectByHandleByIndex(gPrototypeData.players.handle, profile);
+      Result := ParserGetIntValueByKeyByHandle(pProfile, 'Karma');
+   end
+   else
+   begin
+      if lord > 0 then
+      Result := 0
+      else
+      Result := GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iKarma);
+   end;
+end;
+
+// _map_GetAliveHumanPlayers
+//
+function _map_GetAliveHumanPlayers : Integer;
+begin
+   var i : Integer;
+
+   Result := 0;
+   for i := 0 to gGame.map.players-1 do
+   begin
+      var plHandle : Integer = GetPlayerHandleByIndex(i);
+      var cMode : String = GetPlayerControlModeByHandle(plHandle);
+
+      PlayerExecuteStateByHandle(plHandle,'IsInGame');
+      if BoolRegister0 and SameText(cMode, 'cmPlayer') then
+         Result := Result + 1;
+   end;
+end;
+
+procedure _map_RefreshProvinceHUD(uid : Integer);
+begin
+   if uid <> 0 then
+   begin
+      IntRegister0 := uid;
+      GUIExecuteState('vvk.map.UpdateProvinceHUD');
+   end
+   else
+      ErrorLog('_map_RefreshProvinceHUD: NULL UID');
+end;
+
+procedure _map_RefreshProvincesHUDs();
+begin
+   IntRegister0 := 0;
+   GUIExecuteState('vvk.map.UpdateProvinceHUD');
+end;
+
+function _map_GetProvincesPlayer() : Integer;
+begin
+   Result := GetPlayerHandleByName('province.dummy');
+end;
+
+function _map_GetCurrentProvinceHandle() : Integer;
+begin
+   Result := GetGameObjectHandleByIndex(gIntRegister_CurProvinceIndex, GetPlayerHandleByName('province.dummy'));
+end;
+
+procedure _map_ProvDoFadeGameObject(goHandle, dummyHnd : Integer; Time : Float; OnEndReach : String; bFadeIn, destroyGoOnEnd : Boolean);
+begin
+   var effHnd : Integer = EffectCreateWithKey(goHandle, 'TXLifeColorEffect', 'fade', False);
+   var bFreeEffect : Boolean = not destroyGoOnEnd;
+   SetBehaviourBoolProperty(effHnd, 'UseAmbient', False);
+   SetBehaviourBoolProperty(effHnd, 'UseDiffuse', False);
+   SetBehaviourBoolProperty(effHnd, 'UseEmission', False);
+   SetBehaviourBoolProperty(effHnd, 'UseSpecular', False);
+   SetBehaviourBoolProperty(effHnd, 'UseShininess', False);
+   SetBehaviourBoolProperty(effHnd, 'UseTexOffset', False);
+   SetBehaviourBoolProperty(effHnd, 'UseTexScale', False);
+   SetBehaviourBoolProperty(effHnd, 'UseShaderID', False);
+   SetBehaviourBoolProperty(effHnd, 'UseColor', False);
+   SetBehaviourBoolProperty(effHnd, 'UseJustColorIfNoLight', False);
+   SetBehaviourBoolProperty(effHnd, 'UseIgnoreFog', False);
+   SetBehaviourBoolProperty(effHnd, 'UseNoLighting', False);
+   SetBehaviourBoolProperty(effHnd, 'UseCullFace', False);
+   SetBehaviourBoolProperty(effHnd, 'UseAlphaChannel', True);
+   SetBehaviourBoolProperty(effHnd, 'UseBlendMode', True);
+   SetBehaviourBoolProperty(effHnd, 'UseFrontFace', True);
+   SetBehaviourBoolProperty(effHnd, 'UseBackFace', True);
+   SetBehaviourIntProperty(effHnd, 'BlendingMode', 1);
+   SetBehaviourBoolProperty(effHnd, 'RenderDeferred', True);
+   SetBehaviourBoolProperty(effHnd, 'Loop', False);
+   SetBehaviourBoolProperty(effHnd, 'LoopBackward', False);
+   SetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeEffect', bFreeEffect);
+   SetBehaviourBoolProperty(effHnd, 'Enable', True);
+   if (bFadeIn) then
+   begin
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel[0]', 0);
+      SetBehaviourFloatProperty(effHnd, 'Time[0]', Time);
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel[1]', 1);
+      SetBehaviourFloatProperty(effHnd, 'Time[1]', 0);
+   end
+   else
+   begin
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel[0]', 1);
+      SetBehaviourFloatProperty(effHnd, 'Time[0]', Time);
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel[1]', 0);
+      SetBehaviourFloatProperty(effHnd, 'Time[1]', 0);
+   end;
+   SetBehaviourIntProperty(effHnd, 'CurrIndex', 0);
+   if (OnEndReach<>'') then
+   begin
+      SetBehaviourIntProperty(effHnd, 'OnReachedObject', dummyHnd);
+      SetBehaviourStringProperty(effHnd, 'OnEndReachedState', OnEndReach);
+   end;
+   SetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeOwner', destroyGoOnEnd);
+
+   var i : Integer;
+   for i:=GetGameObjectCountChildByHandle(goHandle)-1 downto 0 do
+      _map_ProvDoFadeGameObject(GetGameObjectGOHandleChildByHandle(goHandle, i), dummyHnd, Time, OnEndReach, bFadeIn, destroyGoOnEnd);
+end;
+
+
+function _map_GetNeighbourHexIndexByAngle(const hexIndex : Integer; const angle : Float) : Integer;
+begin
+   Result := -1;
+	
+   var gridSize : Integer = _map_GetGridSize();
+   
+   var pStratHexCells : Integer = gStratHexCells.handle;
+   var hexCount : Integer = ParserGetCountByHandle(pStratHexCells);
+   
+   var cAngle : Float = 60 * Round(angle / 60);
+
+   var j, k : Integer;
+   var curX, curY, curZ : Float;
+   var pStratHexCell : Integer = ParserSelectByHandleByIndex(pStratHexCells, hexIndex);
+   GetTrackNodePositionByIndex(hexIndex, curX, curY, curZ);
+
+   for j := -1 to 1 do
+   begin
+      for k := -1 to 1 do
+      if (j <> 0) or (k <> 0) then
+      begin
+         var indNext : Integer = hexIndex + j * gridSize + k;
+         if (indNext >= 0) and (indNext < hexCount) then
+         begin
+            var nextX, nextY, nextZ : Float;
+            GetTrackNodePositionByIndex(indNext, nextX, nextY, nextZ);
+            var dirX : Float = nextX - curX;
+            var dirY : Float = 0;
+            var dirZ : Float = nextZ - curZ;
+            var x, y, z : Float;
+
+            VectorCross(dirX, dirY, dirZ, -1, 0, 0, x, y, z);
+            var curAngle : Float = VectorAngle(dirX, dirY, dirZ, -1, 0, 0);
+            if y < 0 then
+            curAngle := -curAngle;
+            var deltaAngle : Float = curAngle - cAngle;
+            deltaAngle := deltaAngle - (Round(deltaAngle / 360) * 360);
+
+            var pNextHexCell : Integer = ParserSelectByHandleByIndex(pStratHexCells, indNext);
+            var dist : Float = VectorDistance(curX, 0, curZ, nextX, 0, nextZ);
+            var aDist : Float = Sqrt(3) * gc_StratHexSize;
+
+            if dist < aDist * 1.7 then //aDist + 0.1 then
+            begin
+               if Abs(deltaAngle) < 20 then //< 0.1 then
+               begin
+                  Result := indNext;
+               end;
+            end;
+         end;
+      end;
+   end;
+end;
+
+
+function _map_GetHexNeighbourIntValueByAngle(const ind : Integer; const cAngle : Float; const key : String) : Integer;
+begin
+   var indNeighbour : Integer = _map_GetNeighbourHexIndexByAngle(ind, cAngle);
+   var pNextHexCell : Integer = ParserSelectByHandleByIndex(gStratHexCells.handle, indNeighbour);
+   Result := ParserGetIntValueByKeyByHandle(pNextHexCell, key);
+end;
+
+
+procedure _map_GetVerticesCenter(const pStratHexCell : Integer; var centerX, centerY : Float);
+begin
+	centerX := 0;
+	centerY := 0;
+	
+	var pVertices : Integer = ParserSelectByHandleByKey(pStratHexCell, 'Vertices');
+
+	var i, pVertice : Integer;
+	for i := 0 to 5 do
+	begin
+		pVertice := ParserSelectByHandleByIndex(pVertices, i);
+		centerX := centerX + ParserGetFloatValueByKeyByHandle(pVertice, 'X');
+		centerY := centerY + ParserGetFloatValueByKeyByHandle(pVertice, 'Y');
+	end;
+
+	centerX := centerX / 6;
+	centerY := centerY / 6;
+end;
+
+
+function _map_GetNeighbourByVertices(const pStratHexCell, vertexIndex1, vertexIndex2 : Integer) : Integer;
+begin
+	const cErrMargin : Float = 0.001;
+	
+	Result := 0;
+	
+	var pVertices : Integer = ParserSelectByHandleByKey(pStratHexCell, 'Vertices');
+	var pVertex1 : Integer = ParserSelectByHandleByIndex(pVertices, vertexIndex1);
+	var pVertex2 : Integer = ParserSelectByHandleByIndex(pVertices, vertexIndex2);
+	var x1 : Float = ParserGetFloatValueByKeyByHandle(pVertex1, 'X');
+	var y1 : Float = ParserGetFloatValueByKeyByHandle(pVertex1, 'Y');
+	var x2 : Float = ParserGetFloatValueByKeyByHandle(pVertex2, 'X');
+	var y2 : Float = ParserGetFloatValueByKeyByHandle(pVertex2, 'Y');
+
+	var bFirstMatch, bSecondMatch : Boolean;
+	var x, y : Float;
+	var i, j, pVertice, pNeighbour : Integer;
+	for i := 0 to 5 do
+	begin
+		IntRegister0 := pStratHexCell;
+		IntRegister1 := i;
+		MapExecuteState('map.GetNeighbourHexByIndex');
+		pNeighbour := IntRegister2;
+		if (pNeighbour <> 0) then
+		begin
+			bFirstMatch := False;
+			bSecondMatch := False;
+			
+			pVertices := ParserSelectByHandleByKey(pNeighbour, 'Vertices');
+			for j := 0 to 5 do
+			begin
+				pVertice := ParserSelectByHandleByIndex(pVertices, j);
+				x := ParserGetFloatValueByKeyByHandle(pVertice, 'X');
+				y := ParserGetFloatValueByKeyByHandle(pVertice, 'Y');
+				if (Abs(x - x1) < cErrMargin) and (Abs(y - y1) < cErrMargin) then
+					bFirstMatch := True
+				else
+				if (Abs(x - x2) < cErrMargin) and (Abs(y - y2) < cErrMargin) then
+					bSecondMatch := True;
+			end;
+				
+			if bFirstMatch and bSecondMatch then
+			begin
+				Result := pNeighbour;
+				break;
+			end;
+		end
+		else
+		break;
+	end;
+end;
+
+
+function _map_GetVertexIndex(const hexIndex, vIndex : Integer) : Integer;
+begin
+   Result := -1;
+	
+   var gridSize : Integer = _map_GetGridSize();
+	
+   var indX, indY, ind : Integer;
+   indX := hexIndex div gridSize;
+   indY := hexIndex mod gridSize;
+
+   if indY mod 2 = 0 then
+   begin
+      if (indY > 0) then
+      ind := (indY div 2) * (4 * gridSize + 4) + 2 * indX - 1
+      else
+      ind := (indY div 2) * (4 * gridSize + 4) + 2 * indX;
+   end
+   else
+   ind := (indY div 2) * (4 * gridSize + 4) + 2 * indX + 2 * gridSize + 2;
+
+   var ind1 : Integer = ind + 2 * gridSize + 2;
+
+   if (gridSize mod 2 = 0) and (indY = gridSize-1) then
+   ind1 := ind1 - 1;
+
+   if indY = 0 then
+   ind1 := ind1 - 1;
+
+   case vIndex of
+      0 : Result := ind;
+      1 : Result := ind + 1;
+      2 : Result := ind + 2;
+      3 : Result := ind1 + 2;
+      4 : Result := ind1 + 1;
+      5 : Result := ind1;
+   end;
+end;
+
+function _map_IsTerrainType(const posX, posZ : Float; const terrainType : Integer) : Boolean;
+begin
+   Result := false;
+
+   case terrainType of
+      gc_WaterTerrainType :
+      begin
+			var waterY : Float;
+         //Result := GetWater(GetMapWidth div 2 + Round(posX), GetMapHeight div 2 - Round(posZ));
+         Result := GetWaterExt(posX, posZ, waterY);
+      end;
+      gc_MountainTerrainType :
+      begin
+         var x, y, z : Float;
+         //Result := (GetRayCastIntersectGameObject(posX, 100, posZ, posX, -100, posZ, x, y, z) <> 0);
+         var rad : Float = 5;
+         Result := (GameObjectRayCastByRadius(posX, posZ, 5) > 0);
+      end;
+   end;
+end;
+
+
+procedure _map_GetShorePosition(var terX, terZ, waterX, waterZ : Float);
+begin
+   var posX, posZ : Float;
+
+   while VectorDistance(terX, 0, terZ, waterX, 0, waterZ) > 0.5 do
+   begin
+      posX := (terX + waterX) / 2;
+      posZ := (terZ + waterZ) / 2;
+      if _map_IsTerrainType(posX, posZ, gc_WaterTerrainType) then
+      begin
+         waterX := posX;
+         waterZ := posZ;
+      end
+      else
+      begin
+         terX := posX;
+         terZ := posZ;
+      end;
+   end;
+end;
+
+
+procedure _map_LevelTerrain();
+begin
+   function CalcMapMinMax(var minX, maxX, minY, maxY : Float) : Integer;
+   begin
+      var mapSize : Integer = Round(Sqrt(ParserGetCountByHandle(gStratHexCells.handle)));
+      if (mapSize<=0) then
+      mapSize := 6;
+      minX := -GetMapWidth div 2+8;
+      minY := -GetMapHeight div 2+8;
+      maxX := minX+round(((mapSize+0.5)*gc_StratHexSize*Sqrt(3))/3)*3+6*3; //должно быть кратное 3ем. св¤зано с паттернами краев, что их минимальна¤ длина = 3. ќтступ 6*3, если сделать меньше, начнут выл¤зить waterplane'ы
+      maxY := minY+round(((mapSize*gc_StratHexSize*1.5))/3)*3+6*3;
+      Result := mapSize;
+   end;
+   var minX, maxX, minY, maxY : Float;
+   CalcMapMinMax(minX, maxX, minY, maxY);
+   
+	var tileName : String = 'grass_1';
+   if _worldrule_GetWorldRuleVisualExistByID(3) then
+   begin
+      case _worldrule_GetWorldRuleVisualParams(3,1) of
+			gc_ShardVisualCrystal : tileName := 'sand_5';
+			gc_ShardVisualDesert : tileName := 'sand_2';
+			gc_ShardVisualDead : tileName := 'deadland_3';
+			gc_ShardVisualAutumn : tileName := 'autumn_1';
+			gc_ShardVisualVulcan : tileName := 'deadland_2';
+			gc_ShardVisualIce : tileName := 'grass_1';
+		end;
+	end;
+	var brushIndex : Integer = MapGetTileIndexByTileBlock(tileName);
+   
+   var posX : Integer = Round(minX+maxX) div 2;
+   var posY : Integer = -(Round(minY+maxY) div 2);
+   var radius : Integer = Round(Abs(maxX-minX)) div 2+20;
+   PaintTerrain(posX, posY, brushIndex, 0, 0, false, 6, 0, radius, false, true);
+   PlateauTerrain(posX, posY, False, radius, True);
+end;
+
+
+procedure _map_SetSmoothHeightAroundPoint(const x, z, minHeight, fRadius, fSmoothOffset : Float; const bRaise : Boolean); 
+begin
+   function RoundUp(const fValue : Float) : Integer;
+   begin
+		Result := Floor(fValue);
+		if fValue - Floor(fValue) > 0 then
+			Result := Result+1;
+	end;
+   
+   var height, assignHeight, dist : Float;
+   var fSmoothingDist : Float = fRadius - fSmoothOffset;
+   var i, j, x0, z0 : Integer;
+   var iRadius : Integer = RoundUp(fRadius);
+   for i := -iRadius to iRadius do
+   for j := -iRadius to iRadius do
+   begin
+      dist := VectorDistance(x, 0, z, x+i, 0, z+j);
+      if dist < fRadius then
+      begin
+         x0 := Round(x+i);
+         z0 := Round(z+j);
+         assignHeight := minHeight;
+         if dist >= fSmoothOffset then
+         begin
+            height := GetHeightData(x0, z0);
+            if ((not bRaise) and (height > minHeight)) or (bRaise and (height < minHeight)) then
+               assignHeight := minHeight + ((dist - fSmoothOffset) / fSmoothingDist) * (height - minHeight);
+         end;
+         SetHeightData(x0, z0, assignHeight);
+      end;
+   end;
+end;
+
+procedure _map_ClearWaterFieldsByName(const waterName : String);
+begin
+   var i : Integer;
+   for i := WaterFieldGetCount-1 downto 0 do
+   begin
+      if WaterFieldGetNameByIndex(i) = waterName then
+         WaterFieldDelete(i);
+   end;
+end;
+
+
+procedure _map_ClearDecalsInArea(const x, y, fRadius : Float; const matName : string);
+begin
+   var i, decalHandle : Integer;
+   
+   GetDecalsInArea(Round(x), Round(y), fRadius);
+   var decalCount : Integer = ArrayGetCount;
+   for i := decalCount-1 downto 0 do
+   begin
+      decalHandle := ArrayGetValueByIndex(i);
+      if (matName = '') or StrExists(GetDecalMaterialNameByHandle(decalHandle), matName) then
+         DestroyDecalByHandle(decalHandle);
+   end;
+end;
+
+
+procedure _map_GenerateSimpleMountainPatterns();
+begin
+   var pMachineParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle);
+   var pMountains : Integer = ParserAddChildByIndex(pMachineParser, 'MountainPatterns');
+   
+   var pStratHexCells : Integer = gStratHexCells.handle;
+   
+   var i : Integer;
+   for i := ParserGetCountByHandle(pStratHexCells)-1 downto 0 do
+   begin
+      var pStratHexCell : Integer = ParserSelectByHandleByIndex(pStratHexCells, i);
+      if (ParserGetIntValueByKeyByHandle(pStratHexCell, 'TerrainType') = gc_MountainTerrainType) then
+      begin
+         if (not gMapEditor.enabled) or (gMapEditor.grid[i].enabled) then
+         begin
+            var posX, posY, posZ : Float;
+            GetTrackNodePositionByIndex(i, posX, posY, posZ);
+
+            var patName : String = 'map-hexmountain-1-1';
+            if Random < 0.5 then
+            patName := 'map-hexmountain-1-2';
+
+            var pMountain : Integer = ParserAddChildByIndex(pMountains, '*');
+            ParserSetValueByKeyByHandle(pMountain, 'PatternName', patName);
+            ParserSetFloatValueByKeyByHandle(pMountain, 'PosX', posX);
+            ParserSetFloatValueByKeyByHandle(pMountain, 'PosZ', posZ);
+         end;
+      end;
+   end;
+end;
+
+function _map_CheckSectorValue(const value : Integer) : Integer;
+begin
+   Result := value mod 6;
+end;
+
+
+function _map_GetHexOppositeIndex(const value : Integer) : Integer;
+begin
+   Result := _map_CheckSectorValue(value + 3);
+end;
+
+
+procedure _map_GetHexOutward(centerX, centerY, sector, ring, rowIndex : Integer; var x, y : Integer);
+begin
+   if ring = 0 then
+   begin
+      x := centerX;
+      y := centerY;
+   end
+   else
+   case sector of
+      0 : begin
+         x := centerX - ring + (rowIndex + (centerY mod 2)) div 2; 
+         y := centerY - rowIndex;//left to left-up
+      end;
+      1 : begin 
+         x := centerX - (ring + ((centerY+1) mod 2)) div 2 + rowIndex; 
+         y := centerY - ring;//left-up to right-up
+      end;
+      2 : begin 
+         x := centerX + (ring + rowIndex + (centerY mod 2)) div 2; 
+         y := centerY - ring + rowIndex;//right-up to right
+      end;
+      3 : begin 
+         x := centerX + ring - (rowIndex + ((centerY+1) mod 2)) div 2; 
+         y := centerY + rowIndex;//right to right-down
+      end;
+      4 : begin 
+         x := centerX + (ring + (centerY mod 2)) div 2 - rowIndex; 
+         y := centerY + ring;//right-down to left-down
+      end;
+      5 : begin 
+         x := centerX - (ring + rowIndex + ((centerY+1) mod 2)) div 2; 
+         y := centerY + ring - rowIndex;//left-down to left
+      end;
+		else
+		begin
+         x := -1;
+         y := -1;
+		end;
+   end;
+end;
+
+
+procedure _map_GetNeighbourCoords(index, centerX, centerY : Integer; var x, y : Integer);
+begin
+   case index of
+      0 : begin // left up
+         x := centerX - 1 + centerY mod 2;
+         y := centerY-1;
+      end;
+      1 : begin // right up
+         x := centerX + centerY mod 2; 
+         y := centerY-1;
+      end;
+      2 : begin // right
+         x := centerX + 1; 
+         y := centerY;
+      end;
+      3 : begin // right down
+         x := centerX + centerY mod 2; 
+         y := centerY+1;
+      end;
+      4 : begin // left down
+         x := centerX - 1 + centerY mod 2; 
+         y := centerY+1;
+      end;
+      5 : begin // left
+         x := centerX - 1; 
+         y := centerY;
+      end;
+		else
+		begin
+         x := -1;
+         y := -1;
+		end;
+   end;
+end;
+
+
+function _map_GetFacing(pFromHex, pToHex : Integer) : Integer;
+begin
+   if (pToHex <> pFromHex) and (pFromHex <> 0) and (pToHex <> 0) then
+	begin
+		// 0 - left, 1 - left up, 2 - right up, 3 - right, 4 - right down, 5 - left down
+   
+		var endX : Float = ParserGetFloatValueByKeyByHandle(pFromHex, 'CenterX');
+		var endY : Float = ParserGetFloatValueByKeyByHandle(pFromHex, 'CenterY');
+		var befEndX : Float = ParserGetFloatValueByKeyByHandle(pToHex, 'CenterX');
+		var befEndY : Float = ParserGetFloatValueByKeyByHandle(pToHex, 'CenterY');
+
+		var angle : Float = VectorAngle(-1, 0, 0, endX - befEndX, 0, endY - befEndY);
+
+		var toBottom : Boolean = ParserGetIntValueByKeyByHandle(pFromHex, 'Y') > ParserGetIntValueByKeyByHandle(pToHex, 'Y');
+
+		// resolve conflict angles consistently
+		if (angle > 29.999) and (angle < 30.001) then
+			angle := angle - 1
+		else if (angle > 149.999) and (angle < 150.001) then
+			angle := angle + 1
+		else if (angle > 89.999) and (angle < 90.001) then
+		begin
+			if toBottom then
+				angle := angle + 1 //straight up resolves to right up
+			else
+				angle := angle - 1;  //straight down resolves to left down
+		end;
+
+		var facing : Integer = Round(angle / 60);
+		if toBottom and (facing > 0) then
+			facing := 6 - facing;
+
+		Result := facing;
+	end
+	else
+		Result := -1;
+end;
+
+
+function _map_GetHexByFacing(facing, gridX, gridY : Integer) : Integer;
+begin
+   case facing of
+      0 : begin
+         gridX := gridX - 1;
+      end;
+      1 : begin
+         gridX := gridX - 1 + gridY mod 2;
+         gridY := gridY - 1;
+      end;
+      2 : begin
+         gridX := gridX + gridY mod 2;
+         gridY := gridY - 1;
+      end;
+      3 : begin
+         gridX := gridX + 1;
+      end;
+      4 : begin
+         gridX := gridX + gridY mod 2;
+         gridY := gridY + 1;
+      end;
+      5 : begin
+         gridX := gridX - 1 + gridY mod 2;
+         gridY := gridY + 1;
+      end;
+   end;
+   
+   if (gridX >= 0) and (gridX < gc_battle_GridSize) and (gridY >= 0) and (gridY < gc_battle_GridSize) then
+      Result := _map_GetBattleHex(gridX, gridY)
+   else
+      Result := 0;
+end;
+
+
+function _map_IsItemEnabled(id : Integer) : Boolean;
+begin
+   var pParser : Integer = _misc_ParserGetOrCreateByKey('ban_data', False);
+   Result := not _pars_ExistsByID(ParserSelectByHandleByKey(pParser, 'Items'), id);
+end;
+
+
+function _map_IsSiteEnabled(id : Integer) : Boolean;
+begin
+   var pParser : Integer = _misc_ParserGetOrCreateByKey('ban_data', False);
+   Result := not _pars_ExistsByID(ParserSelectByHandleByKey(pParser, 'Sites'), id);
+end;
+
+
+function _map_IsGuardEnabled(id : Integer) : Boolean;
+begin
+   var pParser : Integer = _misc_ParserGetOrCreateByKey('ban_data', False);
+   Result := not _pars_ExistsByID(ParserSelectByHandleByKey(pParser, 'Guards'), id);
+end;
+
+
+function _map_IsUnitEnabled(id : Integer) : Boolean;
+begin
+   var pParser : Integer = _misc_ParserGetOrCreateByKey('ban_data', False);
+   Result := not _pars_ExistsByID(ParserSelectByHandleByKey(pParser, 'Units'), id);
+end;
+
+
+function _map_IsQuestUnitEnabled(unitID : Integer) : Boolean;
+begin
+   Result := ((unitID > 0) and (unitID < 40)) or ((unitID > 43) and (unitID <= 71)); // only original units, because in Genesis Mode, any reskins or new units may be removed from the game altogether.
+end;
+
+
+function _map_CheckGenesisMode(index : Integer) : Boolean;
+begin
+   var bitFlag : Integer;
+   if index < 2 then
+      bitFlag := index + 1
+   else
+      bitFlag := Round(Pow(2, index));
+   Result := (bitFlag and _sa_GetAsInt(gGame.genesismode, 0)) > 0;
+end;
+
+
+
+_map_MapGeneratorDefault(gMapSettings, True);

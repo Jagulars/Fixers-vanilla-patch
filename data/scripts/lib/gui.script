@@ -1,0 +1,3020 @@
+///
+// gui.script
+//
+
+Log('gui.script');
+
+// private
+   
+   
+// _gui_FindFontInt
+//
+function _gui_FindFontInt(name : String; size : Integer) : Integer;
+begin
+   var i,j : Integer;
+   var idx : Integer = -1;
+   var full_name : String;
+
+   if size = 0 then
+   full_name := name
+   else
+   full_name := name+'.'+IntToStr(size);
+
+   for [main]i:=0 to gc_gui_gamefonts_max_number-1 do
+   begin
+      if gArrGUIGameFonts[i].file_name = '' then
+      break
+      else
+      begin
+         for j := 0 to gc_gui_gamefonts_names_max_number-1 do
+         begin
+            if gArrGUIGameFonts[i].name[j] = '' then
+            break;
+            if SameText(gArrGUIGameFonts[i].name[j],full_name) then
+            begin
+               idx := i;
+               break(main);
+            end;
+         end;
+      end;
+   end;
+
+   if idx = -1 then
+   Log('Font name not found: '+name+', size: '+intToStr(size));
+
+   Result := idx;
+end;
+
+function _gui_ConvertColor8BitToFloat(web : String) : Float;
+begin
+   var c : Float;
+
+   c := StrToInt(web);
+   Result := c/255.0;
+end;
+
+// public
+
+procedure _gui_WebColorToTColor(web : String; var color : TColorRGBA);
+begin
+   var i : Integer;
+
+   if StrLength(web) < 8 then
+   color.a := 1.0
+   else
+   color.a := _gui_ConvertColor8BitToFloat('$'+SubStr(web,1,2));
+
+   for i := 0 to 2 do
+   begin
+      case i of
+         0:
+         begin
+            color.b := _gui_ConvertColor8BitToFloat('$'+SubStr(web,StrLength(web)-2*(i+1)+1,2));
+         end;
+         1:
+         begin
+            color.g := _gui_ConvertColor8BitToFloat('$'+SubStr(web,StrLength(web)-2*(i+1)+1,2));
+         end;
+         2:
+         begin
+            color.r := _gui_ConvertColor8BitToFloat('$'+SubStr(web,StrLength(web)-2*(i+1)+1,2));
+         end;
+      end;
+   end;
+end;
+
+// _gui_ReloadFontsConfig
+//
+procedure _gui_ReloadFontsConfig;
+begin
+   var i,j,idx : Integer;
+
+   Log('Fonts.cfg reloaded.');
+
+   for i:=0 to gc_gui_gamefonts_max_number-1 do
+   begin
+      gArrGUIGameFonts[i].file_name := '';
+   end;
+
+   var pFontsGlobal  : Integer = _misc_ParserGetOrCreateByKey('fonts_cfg',true);
+   var pFonts : Integer;
+   const cFontsFileName = '.\data\gui\fonts.cfg';
+   ParserLoadFromFile(cFontsFileName);
+
+   pFonts := ParserSelectByHandleByKey(pFontsGlobal, 'GameFonts');
+
+   for i := 0 to ParserGetCountByHandle(pFonts)-1 do
+   begin
+      var pFont : Integer = ParserSelectByHandleByIndex(pFonts, i);
+      var pFontStyle : Integer;
+      gArrGUIGameFonts[i].file_name := ParserGetValueByKeyByHandle(pFont, 'FontName');
+      pFontStyle := ParserSelectByHandleByKey(pFont, 'Name');
+      for j := 0 to ParserGetCountByHandle(pFontStyle)-1 do
+      begin
+         gArrGUIGameFonts[i].name[j] := ParserGetValueByIndexByHandle(pFontStyle,j);
+      end;
+      gArrGUIGameFonts[i].name[ParserGetCountByHandle(pFontStyle)] := '';
+   end;
+
+   pFonts := ParserSelectByHandleByKey(pFontsGlobal, 'GameFontsIDs');
+
+   for i := 0 to gc_gui_gamefonts_max_ids_number-1 do
+   begin
+      if i < ParserGetCountByHandle(pFonts) then
+      idx := _gui_FindFontInt(ParserGetValueByIndexByHandle(pFonts, i),0)
+      else
+      idx := _gui_FindFontInt('Menu_Text',0);
+
+      if idx = -1 then
+      idx := 0;
+
+      gArrGUIGameFontsID[i] := gArrGUIGameFonts[idx].file_name;
+   end;
+
+   pFonts := ParserSelectByHandleByKey(pFontsGlobal, 'GameFontsColorIDs');
+
+   for i := 0 to gc_gui_gamefonts_max_color_ids_number-1 do
+   begin
+      if i < ParserGetCountByHandle(pFonts) then
+      begin
+         _gui_WebColorToTColor(ParserGetValueByIndexByHandle(pFonts, i),gArrGUIGameFontsColorID[i]);
+         //         Log('Font color '+IntToStr(i)+' A:'+FloatToStr(gArrGUIGameFontsColorID[i].a)+' R:'+FloatToStr(gArrGUIGameFontsColorID[i].r)+' G:'+FloatToStr(gArrGUIGameFontsColorID[i].g)+' B:'+FloatToStr(gArrGUIGameFontsColorID[i].b));
+      end
+      else
+      begin
+         gArrGUIGameFontsColorID[i].r := 1.0;
+         gArrGUIGameFontsColorID[i].g := 1.0;
+         gArrGUIGameFontsColorID[i].b := 1.0;
+         gArrGUIGameFontsColorID[i].a := 1.0;
+      end;
+   end;
+   ParserFreeByHandle(pFontsGlobal);
+end;
+
+// _gui_GetFont
+//
+function _gui_GetFont(gui_section : Integer; font_name : String; font_size : Integer; font_attributes : String; var font_handle : String) : Boolean;
+begin
+   var name : String;
+   var idx : Integer = -1;
+   var fs : Integer = font_size;
+   var counter : Integer;
+   var i : Integer;
+
+   case gui_section of
+      gc_gui_fontsection_menu:
+      begin
+         name := 'Menu';
+      end;
+      gc_gui_fontsection_astral:
+      begin
+         name := 'Astral';
+      end;
+      gc_gui_fontsection_strategy:
+      begin
+         name := 'Strategy';
+      end;
+      gc_gui_fontsection_tactics:
+      begin
+         name := 'Tactics';
+      end;
+      else  // gc_gui_fontsection_default:
+      begin
+         name := 'Default';
+      end;
+   end;
+
+   name := name + '_' + font_name;
+
+   if font_attributes <> '' then
+   begin
+      idx := GetDelimiterStringCount(font_attributes,gc_gui_DelimiterChar,gc_gui_QuoteChar);
+
+      name := name + '_';
+      for i:=0 to idx-1 do
+      begin
+         name := name + GetDelimiterStringByIndex(font_attributes,gc_gui_DelimiterChar,gc_gui_QuoteChar,i);
+         if i <> (idx-1) then
+         name := name + '_';
+      end;
+   end;
+
+   if fs < 0 then
+   counter := 1
+   else
+   counter := -1;
+
+   while fs <> 0 do
+   begin
+      idx := _gui_FindFontInt(name,fs);
+      if idx <> -1 then
+      break;
+      fs := fs + counter;
+   end;
+
+   if idx = -1 then
+   idx := _gui_FindFontInt(name,fs);
+
+   if idx = -1 then
+   begin
+      Result := false;
+      idx := 0;
+   end
+   else
+   Result := true;
+
+   font_handle := gArrGUIGameFonts[idx].file_name;
+end;
+
+// _gui_ConvertTableKeyToText
+//
+procedure _gui_ConvertTableKeyToText(var outText : String);
+begin
+   //convert 'tableID|keyID' to text
+   var tmpText : String = outText;
+   var no : Integer = _sa_GetNumSafe(tmpText);
+
+   if (no>=2) then
+   begin
+      var tableID,keyID : String;
+
+      _sa_Get(tmpText,0,tableID);
+      _sa_Get(tmpText,1,keyID);
+
+      if (tableID<>'') and (keyID<>'') then
+      begin
+         outText := GetLocaleTableListItemByID(tableID, keyID);
+         if (outText='') then
+            outText := tmpText;
+      end;
+   end;
+end;
+
+
+procedure _gui_CopyColor(source : TColorRGBA; var dest : TColorRGBA);
+begin
+   dest.r := source.r; 
+   dest.g := source.g; 
+   dest.b := source.b; 
+   dest.a := source.a; 
+end;
+
+
+procedure _gui_GetColorByName(colorName : String; var color : TColorRGBA);
+begin
+   case colorName of
+      'Normal' : _gui_CopyColor(gc_gui_fontcolor_Normal, color);
+      'Normal Dark' : _gui_CopyColor(gc_gui_fontcolor_NormalDark, color);
+      'Normal White' : _gui_CopyColor(gc_gui_fontcolor_NormalWhite, color);
+      'Header' : _gui_CopyColor(gc_gui_fontcolor_Header, color);
+      'Header Red' : _gui_CopyColor(gc_gui_fontcolor_HeaderRed, color);
+      'Header Dark' : _gui_CopyColor(gc_gui_fontcolor_HeaderDark, color);
+      'Active' : _gui_CopyColor(gc_gui_fontcolor_Active, color);
+      'Hover' : _gui_CopyColor(gc_gui_fontcolor_Hover, color);
+      'Yellow' : _gui_CopyColor(gc_gui_fontcolor_Yellow, color);
+      'Green' : _gui_CopyColor(gc_gui_fontcolor_Green, color);
+      'Red' : _gui_CopyColor(gc_gui_fontcolor_Red, color);
+      'Brown' : _gui_CopyColor(gc_gui_fontcolor_Brown, color);
+      'Gray' : _gui_CopyColor(gc_gui_fontcolor_Gray, color);
+      'Black' : _gui_CopyColor(gc_gui_fontcolor_Black, color);
+      'Rarity 2' : _gui_CopyColor(gc_gui_fontcolor_Rarity2, color);
+      'Rarity 3' : _gui_CopyColor(gc_gui_fontcolor_Rarity3, color);
+      'Rarity 4' : _gui_CopyColor(gc_gui_fontcolor_Rarity4, color);
+      'Rarity 5' : _gui_CopyColor(gc_gui_fontcolor_Rarity5, color);
+      'Rarity 6' : _gui_CopyColor(gc_gui_fontcolor_Rarity6, color);
+      'Attention' : _gui_CopyColor(gc_gui_fontcolor_Attention, color);
+      'Info' : _gui_CopyColor(gc_gui_fontcolor_Info, color);
+      'Extra Info' : _gui_CopyColor(gc_gui_fontcolor_ExtraInfo, color);
+      'Warning' : _gui_CopyColor(gc_gui_fontcolor_Warning, color);
+      else _gui_CopyColor(gc_gui_fontcolor_Normal, color);
+   end;
+end;
+
+// _gui_CreateDummy
+//
+function _gui_CreateDummy(elementName : String; parent : Integer; hAlign, vAlign : String; posX, posY : Integer; width, height : Integer; tag : Integer) : Integer;
+begin
+   var funcElementHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcElementHandle = 0) or GetGUIElementVisible(funcElementHandle) then
+      funcElementHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', tag, parent);
+   
+   SetGUIElementMaterial(funcElementHandle, gc_gui_material_blank_0);
+   SetGUIElementAlign(FuncElementHandle, hAlign, vAlign);
+   SetGUIElementAllPositionRect(FuncElementHandle, posX, posY, width, height);
+   SetGUIElementVisible(FuncElementHandle, true);
+   Result := FuncElementHandle;
+end;
+
+// _gui_CreateImage
+//
+function _gui_CreateImage(elementName : String; parent : Integer; material : String; hAlign, vAlign : String; posX, posY : Integer; width, height : Integer; Tag : Integer) : Integer;
+begin
+   var funcImageHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcImageHandle = 0) or GetGUIElementVisible(funcImageHandle) then
+      funcImageHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', tag, parent);
+   
+   SetGUIElementAlign(funcImageHandle, hAlign, vAlign);
+   SetGUIElementMaterial(funcImageHandle, material);
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   if (material<>gc_gui_material_blank_0) then
+   begin
+      if (iWidth=0) then iWidth := GetGUITextureWidth(material);
+      if (iHeight=0) then iHeight := GetGUITextureHeight(material);
+      if (iWidth=0) and (iHeight=0) then
+      ErrorLog('_gui_CreateImage Error material = ' + material);
+   end;
+   SetGUIElementAllPositionRect(funcImageHandle, posX, posY, iWidth, iHeight);
+   SetGUIAllowEvents(funcImageHandle, False, False, False);
+   SetGUIElementVisible(funcImageHandle, true);
+   Result := funcImageHandle;
+end;
+
+// _gui_CreateImageSimple
+//
+function _gui_CreateImageSimple(elementName : String; parent : Integer; material : String; hAlign, vAlign : String; posX, posY : Integer) : Integer;
+begin
+   var funcImageHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcImageHandle = 0) or GetGUIElementVisible(funcImageHandle) then
+      funcImageHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, parent);
+   
+   SetGUIElementAlign(funcImageHandle, hAlign, vAlign);
+   SetGUIElementMaterial(funcImageHandle, material);
+   SetGUIElementAllPositionRect(funcImageHandle, posX, posY, GetGUITextureWidth(material), GetGUITextureHeight(material));
+   SetGUIAllowEvents(funcImageHandle, False, False, False);
+   SetGUIElementVisible(funcImageHandle, true);
+   Result := funcImageHandle;
+end;
+
+// _gui_CreateText
+//
+function _gui_CreateText(elementName : String; parent : Integer; text : String; hAlign, vAlign : String; posX, posY, width, height : Integer; texthAlign, textvAlign, font : String; colorR, colorG, colorB, ColorA : Float) : Integer;
+begin		
+   var funcBtnHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcBtnHandle = 0) or GetGUIElementVisible(funcBtnHandle) then
+      funcBtnHandle := AddNewElementByClassNameParent(elementName, 'TOSWBaseGuiTextControl', 0, parent);
+   //convert 'tableID|keyID' to text
+   var tmpText : String = text;
+   var scale : Float;
+
+   if (IsDelimiterCharExists(text, gc_gui_DelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(text, gc_gui_DelimiterChar, gc_gui_QuoteChar);
+      if (delimiterStringCount>=2) then
+      begin
+         var tableID : String = GetDelimiterStringByIndex(text, gc_gui_DelimiterChar, gc_gui_QuoteChar, 0);
+         var keyID : String = GetDelimiterStringByIndex(text, gc_gui_DelimiterChar, gc_gui_QuoteChar, 1);
+         if (tableID<>'') and (keyID<>'') then
+         begin
+            var sTmpText : String = GetLocaleTableListItemByID(tableID, keyID);
+            if (sTmpText<>'') then
+            tmpText := sTmpText;
+         end;
+      end;
+   end;
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   if (iWidth=0) or (iHeight=0) then
+   begin
+      var tmpWidth : Integer;
+      var tmpHeight : Integer;
+      GetGUIElementFontTextFormatRect(font, tmpText, tmpWidth, tmpHeight);
+      //if (width=0) and (not SameText(texthalign, 'halMiddle')) then
+      //width := tmpWidth;
+      //if (height=0) and (not SameText(textvalign, 'valMiddle')) then
+      //height := tmpHeight;
+      //
+      //Try this smart calucalation of width/height for middle align, when user didn't set custom width/height
+      //
+      if (iWidth=0) then
+      begin
+         if (not SameText(texthalign, 'halMiddle')) then
+         iWidth := tmpWidth
+         else
+         begin
+            iWidth := tmpWidth;
+            posX := posX - (iWidth div 2);
+         end;
+      end;
+      if (iHeight=0) then
+      begin
+         if (not SameText(textvalign, 'valMiddle')) then
+         iHeight := tmpHeight
+         else
+         begin
+            iHeight := tmpHeight;
+            posY := posY - (iHeight div 2);
+         end;
+      end;
+
+      if (text<>'') and ((iWidth=0) and (iHeight=0)) then
+      ErrorLog('_gui_CreateText Error width or height = 0');
+   end;
+   SetGUIElementFont(funcBtnHandle, font);
+   SetGUIElementTextAlign(funcBtnHandle, texthAlign, textvAlign, 0, 0);
+   SetGUIElementColor(funcBtnHandle, colorR, colorG, colorB, colorA);
+   SetGUIElementColorAttention(funcBtnHandle,gc_gui_fontcolor_Attention.r,gc_gui_fontcolor_Attention.g,gc_gui_fontcolor_Attention.b,gc_gui_fontcolor_Attention.a);
+   SetGUIElementColorInfo(funcBtnHandle,gc_gui_fontcolor_Info.r,gc_gui_fontcolor_Info.g,gc_gui_fontcolor_Info.b,gc_gui_fontcolor_Info.a);
+   SetGUIElementColorExtraInfo(funcBtnHandle,gc_gui_fontcolor_ExtraInfo.r,gc_gui_fontcolor_ExtraInfo.g,gc_gui_fontcolor_ExtraInfo.b,gc_gui_fontcolor_ExtraInfo.a);
+   SetGUIElementColorWarning(funcBtnHandle,gc_gui_fontcolor_Warning.r,gc_gui_fontcolor_Warning.g,gc_gui_fontcolor_Warning.b,gc_gui_fontcolor_Warning.a);
+   SetGUIElementAlign(funcBtnHandle, hAlign, vAlign);
+   SetGUIElementText(funcBtnHandle, tmpText);
+   SetGUIElementTextFormatted(funcBtnHandle, True);
+   SetGUIElementAbsScaled(funcBtnHandle, True);
+   scale := _gui_RootWindowGetScale(parent);
+   SetGUIElementAllPositionRect(funcBtnHandle, posX, posY, round(iWidth*scale), round(iHeight*scale));
+   SetGUIElementVisible(funcBtnHandle, true);
+   Result := funcBtnHandle;
+end;
+
+// _gui_CreateTextShadow
+//
+function _gui_CreateTextShadow(elementName : String; parent : Integer; text : String; hAlign, vAlign : String; posX, posY, width, height : Integer; texthAlign, textvAlign : String; font : String; colorR, colorG, colorB, ColorA : Float; alignXOff, alignYOff : Integer; sxOff, syOff : Integer; allowEvents : Boolean; scolorR, scolorG, scolorB, scolorA : Float) : Integer;
+begin
+   var shadowElmHandle : Integer = GetGUIElementIndexByNameParent(elementName+'_shadow', parent);
+   if (shadowElmHandle = 0) or GetGUIElementVisible(shadowElmHandle) then
+      shadowElmHandle := AddNewElementByClassNameParent(elementName+'_shadow', 'TOSWBaseGuiTextControl', 0, parent);
+   
+   var funcElmHandle : Integer = GetGUIElementIndexByNameParent(elementName, shadowElmHandle);
+   if (funcElmHandle = 0) or GetGUIElementVisible(funcElmHandle) then
+      funcElmHandle := AddNewElementByClassNameParent(elementName, 'TOSWBaseGuiTextControl', 0, shadowElmHandle);
+   
+   //convert 'tableID|keyID' to text
+   var tmpText : String = text;
+   var scale : Float;
+
+   if (IsDelimiterCharExists(text, gc_gui_DelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(text, gc_gui_DelimiterChar, gc_gui_QuoteChar);
+      if (delimiterStringCount>=2) then
+      begin
+         var tableID : String = GetDelimiterStringByIndex(text, gc_gui_DelimiterChar, gc_gui_QuoteChar, 0);
+         var keyID : String = GetDelimiterStringByIndex(text, gc_gui_DelimiterChar, gc_gui_QuoteChar, 1);
+         if (tableID<>'') and (keyID<>'') then
+         begin
+            var sTmpText : String = GetLocaleTableListItemByID(tableID, keyID);
+            if (sTmpText<>'') then
+            tmpText := sTmpText;
+         end;
+      end;
+   end;
+
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+
+   if (iWidth=0) or (iHeight=0) then
+   begin
+      var tmpWidth : Integer;
+      var tmpHeight : Integer;
+      GetGUIElementFontTextFormatRect(font, tmpText, tmpWidth, tmpHeight);
+      if (iWidth=0) then
+      begin
+         if (not SameText(texthalign, 'halMiddle')) then
+         iWidth := tmpWidth
+         else
+         begin
+            iWidth := tmpWidth;
+            posX := posX - (iWidth div 2);
+         end;
+      end;
+      if (iHeight=0) then
+      begin
+         if (not SameText(textvalign, 'valMiddle')) then
+         iHeight := tmpHeight
+         else
+         begin
+            iHeight := tmpHeight;
+            posY := posY - (iHeight div 2);
+         end;
+      end;
+
+      if (text<>'') and ((iWidth=0) and (iHeight=0)) then
+      ErrorLog('_gui_CreateText Error width or height = 0');
+   end;
+
+   scale := _gui_RootWindowGetScale(parent);
+
+   // setup shadow
+   SetGUIElementFont(shadowElmHandle, font);
+   SetGUIElementTextAlign(shadowElmHandle, texthAlign, textvAlign, alignXOff, alignYOff);
+   SetGUIElementColor(shadowElmHandle, scolorR, scolorG, scolorB, scolorA);
+   SetGUIElementAlign(shadowElmHandle, hAlign, vAlign);
+   SetGUIElementText(shadowElmHandle, tmpText);
+   SetGUIElementTextFormatted(shadowElmHandle, True);
+   SetGUIElementAbsScaled(shadowElmHandle, True);
+   SetGUIElementAllPositionRect(shadowElmHandle, posX+sxOff, posY+syOff, round(iWidth*scale), round(iHeight*scale));
+   SetGUIAllowEvents(shadowElmHandle, False, False, False); // shadow always allow events false
+   SetGUIElementVisible(shadowElmHandle, true);
+
+   // setup main element
+   SetGUIElementFont(funcElmHandle, font);
+   SetGUIElementTextAlign(funcElmHandle, texthAlign, textvAlign, alignXOff, alignYOff);
+   SetGUIElementColor(funcElmHandle, colorR, colorG, colorB, colorA);
+   SetGUIElementColorAttention(funcElmHandle, 1, 1, 1, 1);
+   SetGUIElementColorInfo(funcElmHandle, 0, 1, 0, 1);
+   SetGUIElementColorExtraInfo(funcElmHandle, 0, 0, 1, 1);
+   SetGUIElementColorWarning(funcElmHandle, 1, 1, 0, 1);
+   SetGUIElementAlign(funcElmHandle, 'halParentLeft', 'valParentTop');
+   SetGUIElementText(funcElmHandle, tmpText);
+   SetGUIElementTextFormatted(funcElmHandle, True);
+   SetGUIElementAbsScaled(funcElmHandle, True);
+   SetGUIElementAllPositionRect(funcElmHandle, -sxOff, -syOff, round(iWidth*scale), round(iHeight*scale));
+   SetGUIAllowEvents(funcElmHandle, allowEvents, False, False);
+   SetGUIElementVisible(funcElmHandle, true);
+
+   Result := shadowElmHandle; // result shadow, cause it is parent
+end;
+
+// _gui_CreateButton
+//
+function _gui_CreateButton(elementName : String; parent : Integer; buttonName, material : String; hAlign, vAlign : String; posX, posY, width, height : Integer; pressState : String; hint : String; tag : Integer) : Integer;
+begin
+   if buttonName = '' then buttonName := 'btn.dummy';
+   
+   var funcBtnHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcBtnHandle = 0) or GetGUIElementVisible(funcBtnHandle) then
+      funcBtnHandle := AddNewElementParent(buttonName, elementName, tag, parent);
+   
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   if (iWidth=0) then
+   iWidth := GetGUITextureWidth(material+'.normal');
+   if (iHeight=0) then
+   iHeight := GetGUITextureHeight(material+'.normal');
+   SetGUIElementAllPositionRect(funcBtnHandle, posX, posY, iWidth, iHeight);
+   SetGUIElementAlign(funcBtnHandle, hAlign, vAlign);
+   SetGUIElementLogicPositionRect(funcBtnHandle, posX, posY, iWidth, iHeight);
+   SetGUIAllowEvents(funcBtnHandle, True, False, False);
+   SetGUIElementPressState(funcBtnHandle, pressState);
+   SetGUIElementHoverEnabled(funcBtnHandle, true);
+   SetGUIElementEnabled(funcBtnHandle, true);
+   SetGUIElementHint(funcBtnHandle, hint);
+   SetGUIElementVisibleProperties(funcBtnHandle, 'UpProperty', material + '.normal', 0, 0, 0, 0, -1, 0.5, 0.5, 0.5, 1);
+   SetGUIElementVisibleProperties(funcBtnHandle, 'HoverProperty', material + '.hover', 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   SetGUIElementVisibleProperties(funcBtnHandle, 'DownProperty', material + '.pressed', 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   SetGUIElementVisibleProperties(funcBtnHandle, 'DisableProperty', material + '.disabled', 0, 0, 0, 0, -1, 0.5, 0.5, 0.5, 1);
+   SetGUIElementVisibleProperties(funcBtnHandle, 'CheckOnProperty', material + '.checkon', 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   SetGUIElementVisible(funcBtnHandle, True);
+   Result := funcBtnHandle;
+end;
+
+// _gui_CreateButtonFromCollection
+//
+function _gui_CreateButtonFromCollection(elementName : String; parent : Integer; buttonName : String; hAlign, vAlign : String; posX, posY : Integer; pressState : String;  tag : Integer) : Integer;
+begin
+   var funcBtnHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcBtnHandle = 0) or GetGUIElementVisible(funcBtnHandle) then
+      funcBtnHandle := AddNewElementParent(buttonName, elementName, tag, parent);
+   
+   SetGUIElementPressState(funcBtnHandle, pressState);
+   SetGUIElementAlign(funcBtnHandle, hAlign, vAlign);
+   SetGUIElementPosition(funcBtnHandle, posX, posY);
+   SetGUIElementVisible(funcBtnHandle, True);
+
+   Result := funcBtnHandle;
+end;
+
+// _gui_GetOrCreateElement
+//
+function _gui_GetOrCreateElement(elementName : String; parent : Integer; hAlign, vAlign : String; posX, posY, width, height, tag : Integer) : Integer;
+begin
+   var elmParentHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if elmParentHandle = 0 then
+      elmParentHandle := _gui_CreateDummy(ElementName, Parent, hAlign, vAlign, posX, posY, width, height, Tag)
+   else
+   if (not _gui_IsRecycledElement(_gui_RootWindowGetBase(elmParentHandle))) then
+      RemoveGUIChildren(elmParentHandle);
+   SetGUIElementVisible(elmParentHandle, True);
+   Result := elmParentHandle;
+end;
+
+// _gui_GetOrCreateElementExt
+//
+function _gui_GetOrCreateElementExt(elementName : String; parent : Integer; hAlign, vAlign : String; posX, posY, width, height, tag : Integer) : Integer;
+begin
+   var elmParentHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if elmParentHandle = 0 then
+      elmParentHandle := _gui_CreateDummy(ElementName, Parent, hAlign, vAlign, posX, posY, width, height, tag)
+   else
+   begin
+      if (not _gui_IsRecycledElement(_gui_RootWindowGetBase(elmParentHandle))) then
+         RemoveGUIChildren(elmParentHandle);
+      SetGUIElementAlign(elmParentHandle, hAlign, vAlign);
+      SetGUIElementPositionRect(elmParentHandle, posX, posY, width, height);
+   end;
+   SetGUIElementVisible(elmParentHandle, True);
+   Result := elmParentHandle;
+end;
+
+// _gui_GetOrCreateElementExtAsImage
+//
+function _gui_GetOrCreateElementExtAsImage(elementName : String; parent : Integer; hAlign, vAlign : String; posX, posY, width, height, tag : Integer) : Integer;
+begin
+   var elmParentHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   if elmParentHandle = 0 then
+   begin
+      elmParentHandle := _gui_CreateImage(ElementName, Parent, gc_gui_material_blank_0, hAlign, vAlign, posX, posY, iWidth, iHeight, tag);
+      if (iWidth=0) then // needed to force 0 size, cause createimage will restore 0 to real texture size
+      SetGUIElementWidth(elmParentHandle, 0);
+      if (iHeight=0) then
+      SetGUIElementHeight(elmParentHandle, 0);
+   end
+   else
+   begin
+      if (not _gui_IsRecycledElement(_gui_RootWindowGetBase(elmParentHandle))) then
+         RemoveGUIChildren(elmParentHandle);
+      SetGUIElementAlign(elmParentHandle, hAlign, vAlign);
+      SetGUIElementAllPositionRect(elmParentHandle, posX, posY, iWidth, iHeight);
+   end;
+   SetGUIElementVisible(elmParentHandle, True);
+   Result := elmParentHandle;
+end;
+
+// _gui_FadeElement
+//
+procedure _gui_FadeElement(elmHandle : Integer; fadeTime : Float; fadeIn, fadeChildren, destroyParent : Boolean);
+begin
+   var modFadeTime : Float;
+   var curUserBlend : Float = GetGUIElementUserBlend(elmHandle);
+
+   if (curUserBlend<1) and (curUserBlend>0) then
+      modFadeTime := 1/curUserBlend
+   else
+      modFadeTime := 1;
+
+   IntRegister0 := elmHandle;
+   if fadeIn then
+      IntRegister1 := 0
+   else
+      IntRegister1 := 1;
+   FloatRegister0 := fadeTime*modFadeTime;
+   GUIExecuteState('VVK.FadeWindow');
+end;
+
+// _gui_TileScaleElementToSize
+//
+procedure _gui_TileScaleElementToSize(const elmHandle : Integer; const sizeX, sizeY : Integer);
+begin
+   var fScaleX, fScaleY : Float = 1;
+   var elmWidth, elmHeight : Integer;
+   if (sizeX<>0) then
+   begin
+      elmWidth := GetGUIElementWidth(elmHandle);
+      fScaleX := sizeX/elmWidth;
+      SetGUIElementWidth(elmHandle, sizeX);
+   end;
+   if (sizeY<>0) then
+   begin
+      elmHeight := GetGUIElementHeight(elmHandle);
+      fScaleY := sizeY/elmHeight;
+      SetGUIElementHeight(elmHandle, sizeY);
+   end;
+   if (sizeX<0) then fScaleX := -fScaleX;
+   if (sizeY<0) then fScaleY := -fScaleY;
+   SetGUIElementTileScales(elmHandle, fScaleX, fScaleY);
+end;
+
+// _gui_CreateTileScaleImage
+//
+function _gui_CreateTileScaleImage(elementName : String; parent : Integer; material : String; hAlign, vAlign : String; posX, posY : Integer; width, height : Integer; Tag : Integer) : Integer;
+begin
+   var funcImageHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcImageHandle = 0) or GetGUIElementVisible(funcImageHandle) then
+      funcImageHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', tag, parent);
+   
+   SetGUIElementAlign(funcImageHandle, hAlign, vAlign);
+   SetGUIElementMaterial(funcImageHandle, material);
+   SetGUIAllowEvents(funcImageHandle, False, False, False);
+
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   var elmWidth : Integer = GetGUITextureWidth(material);
+   var fScaleX, fScaleY : Float = 1;
+   if (iWidth<>0) then
+      fScaleX := iWidth/elmWidth
+   else
+      iWidth := elmWidth;
+   var elmHeight : Integer = GetGUITextureHeight(material);
+   if (iHeight<>0) then
+      fScaleY := iHeight/elmHeight
+   else
+      iHeight := elmHeight;
+   if (iWidth<0) then fScaleX := -fScaleX;
+   if (iHeight<0) then fScaleY := -fScaleY;
+
+   SetGUIElementTileScales(funcImageHandle, fScaleX, fScaleY);
+   SetGUIElementAllPositionRect(funcImageHandle, posX, posY, iWidth, iHeight);
+   SetGUIElementVisible(funcImageHandle, True);
+   Result := funcImageHandle;
+end;
+
+// _gui_CreateScrollLayer
+//
+function _gui_CreateScrollLayer(parent : Integer; materialName, hAlign, vAlign : String; posX, posY, width, height : Integer) : Integer;
+begin
+   Result := _gui_CreateTileScaleImage('', parent, materialName, hAlign, vAlign, posX, posY, width, height, 0);
+end;
+
+// _gui_CreateLargeWindow
+//
+function _gui_CreateLargeWindow(parent : Integer; elementName, hAlign, vAlign : String; posX, posY, sizeX, sizeY : Integer; modal : Boolean) : Integer;
+begin
+   procedure ResizeTextureToWidth(elmHandle : Integer; elementName : String; width : Integer);
+   begin
+      var elmBackgroundHandle : Integer = GetGUIElementIndexByNameParent('material', elmHandle);
+      if (elmBackgroundHandle<>0) then
+      begin
+         var texWidth : Integer = GetGUITextureWidth(GetGUIElementMaterial(elmBackgroundHandle));
+         if (width>texWidth) then
+            SetGUIElementWidth(elmBackgroundHandle, width);
+      end;
+   end;
+
+   var elmMyParent : Integer;
+   if (parent=0) or (modal) then
+      elmMyParent := _gui_GetLayerI()
+   else
+      elmMyParent := parent;
+   //var elmParentHandle : Integer = GetGUIElementIndexByNameParent(elementName, elmMyParent);
+   //if (elmParentHandle<>0) then
+   //DestroyGUIElement(elmParentHandle);
+   var elmParentHandle : Integer = _gui_GetOrCreateElementExtAsImage(elementName, elmMyParent, hAlign, vAlign, posX, posY, sizeX, sizeY, 0);
+   var elmBackgroundHandle : Integer = _gui_GetOrCreateElementExtAsImage('background', elmParentHandle, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   var elmFrameHandle : Integer = _gui_GetOrCreateElementExtAsImage('frame', elmParentHandle, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   if (modal) then
+      _gui_RootWindowAdd(elmParentHandle,cRootWindowModal);
+
+   var elmHandle : Integer = _gui_CreateImage('eventlayer', elmBackgroundHandle, gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   SetGUIAllowEvents(elmHandle, True, False, False);
+   elmHandle := _gui_CreateScrollLayer(elmBackgroundHandle, 'common.window.background', 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY);
+   ResizeTextureToWidth(elmHandle, 'material', sizeX);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.constructor.left.edge', 'halParentLeft', 'valParentTop', -GetGUITextureWidth('gamepanel03.constructor.left.edge'), 204, 0, sizeY-204-55);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.constructor.right.edge', 'halParentRight', 'valParentTop', 0, 204, 0, sizeY-204-55);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.constructor.top.edge', 'halParentLeft', 'valParentTop', 11, -8, sizeX-11*2, 0);
+   _gui_TileScaleElementToSize(elmHandle, sizeX-11*2, 0);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.constructor.bottom.edge', 'halParentLeft', 'valParentBottom', 54, 0, sizeX-54*2, 0);
+   _gui_TileScaleElementToSize(elmHandle, sizeX-11*2, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.constructor.corner.top.left', 'halParentLeft', 'valParentTop', -32, -49, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.constructor.corner.top.right', 'halParentRight', 'valParentTop', -12, -49, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.constructor.corner.bottom.left', 'halParentLeft', 'valParentBottom', -28, 23-GetGUITextureHeight('gamepanel03.constructor.corner.bottom.left'), 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.constructor.corner.bottom.right', 'halParentRight', 'valParentBottom', 28-GetGUITextureWidth('gamepanel03.constructor.corner.bottom.right'), 23-GetGUITextureHeight('gamepanel03.constructor.corner.bottom.right'), 0, 0, 0);
+
+   // Top tileable decor
+   var i : Integer;
+   var topDecorWidth : Integer = GetGUITextureWidth('gamepanel03.constructor.top.decor.left')-34;
+   for i:=0 to (((sizeX div 2)-11) div topDecorWidth)-2 do
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.constructor.top.decor.left', 'halParentLeft', 'valParentTop', 10+i*topDecorWidth, -26, 0, 0, 0);
+   for i:=0 to (((sizeX div 2)-11) div topDecorWidth)-2 do
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.constructor.top.decor.right', 'halParentRight', 'valParentTop', -10-i*topDecorWidth-GetGUITextureWidth('gamepanel03.constructor.top.decor.right'), -26, 0, 0, 0);
+
+   // Header
+   var elmHeaderHandle : Integer = _gui_CreateImage('header', elmParentHandle, 'element.header.strip.544', 'halParentMiddle', 'valParentTop', 0, 29-GetGUITextureHeight('element.header.strip.544'), 0, 0, 0);
+
+   // output
+   Result := elmParentHandle;
+end;
+
+// _gui_GetHerbColorByIndex
+//
+procedure _gui_GetHerbColorByIndex(index : Integer; var cr, cg, cb : Float);
+begin
+   case index of
+   -1 : begin cr := 0; cg := 0; cb := 0; end;
+   0 : begin cr := 239; cg := 43; cb := 22; end;
+   1 : begin cr := 45; cg := 45; cb := 233; end;
+   2 : begin cr := 11; cg := 126; cb := 22; end;
+   3 : begin cr := 0; cg := 0; cb := 0; end;
+   4 : begin cr := 255; cg := 255; cb := 255; end;
+   5 : begin cr := 226; cg := 244; cb := 46; end;
+   6 : begin cr := 101; cg := 3; cb := 170; end;
+   7 : begin cr := 76; cg := 237; cb := 18; end;
+   8 : begin cr := 254; cg := 135; cb := 29; end;
+   9 : begin cr := 106; cg := 63; cb := 25; end;
+   10 : begin cr := 96; cg := 250; cb := 79; end;
+   11 : begin cr := 247; cg := 81; cb := 233; end;
+   12 : begin cr := 72; cg := 126; cb := 98; end;
+   13 : begin cr := 113; cg := 23; cb := 5; end;
+   14 : begin cr := 20; cg := 5; cb := 113; end;
+   15 : begin cr := 97; cg := 102; cb := 24; end;
+   end;
+   cr := cr/255;
+   cg := cg/255;
+   cb := cb/255;
+end;
+
+// _gui_GetHerbHDRColorByIndex
+//
+procedure _gui_GetHerbHDRColorByIndex(index : Integer; var cr, cg, cb : Float);
+begin
+   case index of
+   -1 : begin cr := 0; cg := 0; cb := 0; end;
+   0 : begin cr := 150; cg := 18; cb := 0; end;
+   1 : begin cr := 0; cg := 80; cb := 255; end;
+   2 : begin cr := 0; cg := 104; cb := 14; end;
+   3 : begin cr := 12; cg := 12; cb := 12; end;
+   4 : begin cr := 145; cg := 145; cb := 145; end;
+   5 : begin cr := 170; cg := 140; cb := 0; end;
+   6 : begin cr := 105; cg := 3; cb := 99; end;
+   7 : begin cr := 80; cg := 145; cb := 0; end;
+   8 : begin cr := 178; cg := 99; cb := 0; end;
+   9 : begin cr := 80; cg := 45; cb := 0; end;
+   10 : begin cr := 0; cg := 128; cb := 50; end;
+   11 : begin cr := 190; cg := 40; cb := 85; end;
+   12 : begin cr := 36; cg := 83; cb := 55; end;
+   13 : begin cr := 105; cg := 0; cb := 0; end;
+   14 : begin cr := 0; cg := 36; cb := 136; end;
+   15 : begin cr := 50; cg := 60; cb := 0; end;
+   end;
+   cr := cr/255;
+   cg := cg/255;
+   cb := cb/255;
+end;
+
+// _gui_CreateHerb
+//
+function _gui_CreateHerb(elmName : String; parentElement, sign, color1, color2 : Integer; hAlign, vAlign : String; posX, posY : Integer) : Integer;
+begin
+   var cr, cg, cb, ca : Float = 1;
+   var elmHerbHandle : Integer = _gui_CreateImage(elmName, parentElement, 'shield.color.'+IntToStr(color1), hAlign, vAlign, posX, posY, 0, 0, 0);
+   if (sign>-2) and (color1 <> color2) then //-2 - no sign, -1 - random sign
+   begin
+      var elmHandle : Integer = _gui_CreateImage('', elmHerbHandle, 'herb.sign.'+IntToStr(sign), 'halParentMiddle', 'valParentTop', 0, 6, 38, 44, 0);
+      _gui_GetHerbColorByIndex(color2, cr, cg, cb);
+      SetGUIElementUserColor(elmHandle, cr, cg, cb, 0.85);
+      SetGUIElementUseUserColor(elmHandle, True);
+   end;
+   Result := elmHerbHandle;
+end;
+
+// _gui_GetBorderPaletteColorByIndex
+//
+procedure _gui_GetBorderPaletteColorByIndex(index : Integer; var cr, cg, cb : Float);
+begin
+   var hex : String = 'ffffff';
+   case index of
+      0  : hex := 'c30f01';
+      1  : hex := '0022ff';
+      2  : hex := '097600';
+      3  : hex := 'c20178';
+      4  : hex := '006887';
+      5  : hex := 'f57200';
+      6  : hex := '01ce28';
+      7  : hex := '662400';
+      8  : hex := '00a1ff';
+      9  : hex := 'ff3737';
+      10 : hex := 'bd47ff';
+      11 : hex := '46ad37';
+      12 : hex := 'b1ad00';
+      13 : hex := '518d8e';
+      14 : hex := '8257ff';
+      15 : hex := '651078';
+   end;
+   FormatHexToColor3(hex, cr, cg, cb);
+end;
+
+// _gui_CreateFrameBorder
+//
+function _gui_CreateFrameBorder(elementName : String; parent : Integer; hAlign, vAlign : String; posX, posY : Integer; width, height : Integer) : Integer;
+begin
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   var elmParentHandle : Integer = _gui_CreateImage(elementName, parent, gc_gui_material_blank_0, hAlign, vAlign, posX, posY, iWidth, iHeight, 0);
+   SetGUIElementWidth(elmParentHandle, iWidth);  // to force zero width, when needed
+   SetGUIElementHeight(elmParentHandle, iHeight); // to force zero height, when needed
+   var elmHandle : Integer;
+   if (iWidth=0) or (iHeight=0) then
+   begin
+      if (iWidth>0) then
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.horizontal', 'halParentLeft', 'valParentTop', 0, -4, iWidth, 0)
+      else
+      if (iHeight>0) then
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.vertical', 'halParentLeft', 'valParentTop', -4, 0, 0, iHeight);
+   end
+   else
+   begin
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.horizontal', 'halParentLeft', 'valParentTop', 0, -4, iWidth, 0);
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.horizontal', 'halParentLeft', 'valParentBottom', 0, 0, iWidth, 0);
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.vertical', 'halParentLeft', 'valParentTop', -4, 0, 0, iHeight);
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.vertical', 'halParentRight', 'valParentTop', 0, 0, 0, iHeight);
+   end;
+   elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentLeft', 'valParentTop', -5, -5, 0, 0, 0);
+   if (iHeight>0) then
+   elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentLeft', 'valParentBottom', -5, -1, 0, 0, 0);
+   if (iWidth>0) then
+   begin
+      elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentRight', 'valParentTop', -1, -5, 0, 0, 0);
+      if (iHeight>0) then
+      elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentRight', 'valParentBottom', -1, -1, 0, 0, 0);
+   end;
+   Result := elmParentHandle;
+end;
+
+// _gui_CreateFrameBorderExt
+//
+function _gui_CreateFrameBorderExt(elementName : String; parent : Integer; hAlign, vAlign : String; posX, posY : Integer; width, height : Integer; bDrawBackground : Boolean) : Integer;
+begin
+   procedure ResizeTextureToWidth(elmHandle : Integer; elementName : String; width : Integer);
+   begin
+      var elmBackgroundHandle : Integer = GetGUIElementIndexByNameParent('material', elmHandle);
+      if (elmBackgroundHandle<>0) then
+      begin
+         var texWidth : Integer = GetGUITextureWidth(GetGUIElementMaterial(elmBackgroundHandle));
+         if (width>texWidth) then
+            SetGUIElementWidth(elmBackgroundHandle, width);
+      end;
+   end;
+
+   var iWidth : Integer = width;
+   var iHeight : Integer = height;
+   var elmParentHandle : Integer = _gui_CreateImage(elementName, parent, gc_gui_material_blank_0, hAlign, vAlign, posX, posY, iWidth, iHeight, 0);
+   SetGUIElementWidth(elmParentHandle, iWidth);  // to force zero width, when needed
+   SetGUIElementHeight(elmParentHandle, iHeight); // to force zero height, when needed
+
+   var elmHandle : Integer;
+
+   if (bDrawBackground) then
+   begin
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.window.background', 'halParentLeft', 'valParentTop', 0, 0, iWidth, iHeight);
+      ResizeTextureToWidth(elmHandle, 'material', iWidth);
+   end;
+
+   if (iWidth=0) or (iHeight=0) then
+   begin
+      if (iWidth>0) then
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.horizontal', 'halParentLeft', 'valParentTop', 0, -4, iWidth, 0)
+      else
+      if (iHeight>0) then
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.vertical', 'halParentLeft', 'valParentTop', -4, 0, 0, iHeight);
+   end
+   else
+   begin
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.horizontal', 'halParentLeft', 'valParentTop', 0, -4, iWidth, 0);
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.horizontal', 'halParentLeft', 'valParentBottom', 0, 0, iWidth, 0);
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.vertical', 'halParentLeft', 'valParentTop', -4, 0, 0, iHeight);
+      elmHandle := _gui_CreateScrollLayer(elmParentHandle, 'common.wood.border.vertical', 'halParentRight', 'valParentTop', 0, 0, 0, iHeight);
+   end;
+   elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentLeft', 'valParentTop', -5, -5, 0, 0, 0);
+   if (iHeight>0) then
+   elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentLeft', 'valParentBottom', -5, -1, 0, 0, 0);
+   if (iWidth>0) then
+   begin
+      elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentRight', 'valParentTop', -1, -5, 0, 0, 0);
+      if (iHeight>0) then
+      elmHandle := _gui_CreateImage('', elmParentHandle, 'common.wood.frame.corner', 'halParentRight', 'valParentBottom', -1, -1, 0, 0, 0);
+   end;
+   Result := elmParentHandle;
+end;
+
+// _gui_ShowQuestionDialog
+//
+// if first char of accept or cancel state is '#' then this is a command, not a state
+function _gui_ShowQuestionDialogWithFade(text, eventAcceptState : String; btnAcceptTag : Integer; eventCancelState : String; btnCancelTag : Integer; bDrawDragonHeader, bOnlyCloseBtn : Boolean; fade_flags : Integer; wnd_name : String) : Integer;
+begin
+   var tmpText : String = text;
+
+   _gui_ConvertTableKeyToText(tmpText);
+   StringRegister0 := tmpText;
+   StringRegister1 := eventAcceptState;
+   IntRegister0 := btnAcceptTag;
+   StringRegister2 := eventCancelState;
+   IntRegister1 := btnCancelTag;
+   IntRegister2 := fade_flags;
+   BoolRegister0 := bDrawDragonHeader;
+   BoolRegister1 := bOnlyCloseBtn;
+   StringRegister3 := wnd_name;
+   GUIExecuteState('ShowQuestionDialog');
+   Result := IntRegister0;
+end;
+
+function _gui_ShowQuestionDialog(text, eventAcceptState : String; btnAcceptTag : Integer; eventCancelState : String; btnCancelTag : Integer; bDrawDragonHeader, bOnlyCloseBtn : Boolean) : Integer;
+begin
+   Result := _gui_ShowQuestionDialogWithFade(text,eventAcceptState,btnAcceptTag,eventCancelState,btnCancelTag,bDrawDragonHeader,bOnlyCloseBtn,$f,'');
+end;
+
+// _gui_CreateCommonWindow
+//
+function _gui_CreateCommonWindow(textHeader_i, text_i, elementName : String; hAlign, vAlign : String; posX_e, posY_e, width, height : Integer; DoModal, doDrawCloseBtn, doDrawDragonHeader : Boolean; style : Integer; bringToFront : Boolean) : Integer;
+begin
+   var top : Integer = _gui_GetLayerI();
+   var baseElmHandle: Integer = 0;
+   if (elementName='') then
+      elementName := 'common_window_noname';
+
+   //if (elementName<>'') then
+   baseElmHandle := GetGUIElementIndexByNameParent(ElementName, top);
+   if (baseElmHandle=0) then
+   begin
+      baseElmHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, top);
+      SetGUIElementMaterial(baseElmHandle, gc_gui_material_blank_0);
+   end
+   else
+   begin
+      if not _gui_IsRecycledElement(baseElmHandle) then
+         RemoveGUIChildren(baseElmHandle);
+   end;
+   SetGUIElementAlign(baseElmHandle, hAlign, vAlign);
+   SetGUIElementAllPositionRect(baseElmHandle, posX_e, posY_e, width, height);
+   SetGUIElementVisible(baseElmHandle, True);
+
+   if (bringToFront) then
+      _gui_RootWindowAddA(baseElmHandle);
+
+   var textHeader, text : String;
+   if (IsDelimiterCharExists(textHeader_i, gc_gui_DelimiterChar)) and (GetDelimiterStringCount(textHeader_i, gc_gui_DelimiterChar, gc_gui_QuoteChar)>=2) then
+      textHeader := GetLocaleTableListItemByID(GetDelimiterStringByIndex(textHeader_i, gc_gui_DelimiterChar, gc_gui_QuoteChar, 0), GetDelimiterStringByIndex(textHeader_i, gc_gui_DelimiterChar, gc_gui_QuoteChar, 1))
+   else
+      textHeader := textHeader_i;
+
+   if (IsDelimiterCharExists(text_i, gc_gui_DelimiterChar)) and (GetDelimiterStringCount(text_i, gc_gui_DelimiterChar, gc_gui_QuoteChar)>=2) then
+      text := GetLocaleTableListItemByID(GetDelimiterStringByIndex(text_i, gc_gui_DelimiterChar, gc_gui_QuoteChar, 0), GetDelimiterStringByIndex(text_i, gc_gui_DelimiterChar, gc_gui_QuoteChar, 1))
+   else
+      text := text_i;
+
+   // VVK - merged with CreateCommonWindow state
+   var posX, posY : Integer = 0;
+   var sizeX : Integer = GetGUIElementWidth(baseElmHandle);
+   var sizeY : Integer = GetGUIElementHeight(baseElmHandle);
+   var textWidth, textHeight : Integer;
+
+   const cBlackFontR = 0.09375*0;
+   const cBlackFontG = 0.109375*0;
+   const cBlackFontB = 0.09765625*0;
+   const cRedFontR = 0.8;//0.75;
+   const cRedFontG = 0.1;//0.05;
+   const cRedFontB = 0;//0.01;
+
+   const koef : Float = 1;
+   var cBlackFontShadowR : Float = 1-0.005;
+   var cBlackFontShadowG : Float = 1-0.005;
+   var cBlackFontShadowB : Float = 1-0.05;
+   const cHeaderRedShadowR = 1*koef;
+   const cHeaderRedShadowG = 1*koef;
+   const cHeaderRedShadowB = 1*koef;
+
+   if (sizeX=0) then
+   begin
+      if (style=6) then
+      sizeX := 339
+      else
+      if (style=5) then
+      sizeX := 339
+      else
+      sizeX := 272; //272 - width of default prov windows
+   end;
+
+   var fontHandle : String;
+   _gui_GetFont(gc_gui_fontsection_strategy,'Text',gc_gui_fontsize_default,'',fontHandle);
+
+   if (sizeY=0) then
+   begin
+      var textWraped : String;
+      if (style=4) then
+      sizeY:= 45 // 60
+      else
+      sizeY:= 72;
+
+      textWraped := GetGUIWrappedTextFormatByFont(fontHandle, text, sizeX-sizeY);
+      GetGUIElementFontTextFormatRect(fontHandle, textWraped, textWidth, textHeight);
+
+      sizeY := textHeight+84;
+
+      if (style=5) then
+      sizeY := sizeY+78;
+   end;
+
+   if StrExists(vAlign, 'Middle') then
+   posX := posX-(sizeX div 2);
+   if StrExists(hAlign, 'Middle') then
+   posY := posY-(sizeY div 2);
+
+   var elmImageHandle, elmBtnHandle, elmTextHandle, elmGuiLayer : Integer;
+   var elmParentHandle : Integer = _gui_GetOrCreateElementExtAsImage('common_window', baseElmHandle, 'halParentLeft', 'valParentTop', posX, posY, sizeX, sizeY, 0);
+
+   if (doModal) then
+   begin
+      SetGUIElementPressState(elmParentHandle, 'VVK.CloseOneButtonWindow');
+      _gui_RootWindowAddM(baseElmHandle);
+   end;
+
+   case style of
+      6 : // tactics tooltip
+      begin
+         elmGuiLayer := GetGUIElementIndexByNameParent('scroll_layer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('scroll_layer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, 1, 1);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+
+         var leftOffset : Integer = 0;
+         var rightOffset : Integer = 0;
+         var topOffset : Integer = 0;
+         var bottomOffset : Integer = 0;
+
+         elmImageHandle := _gui_CreateImageSimple('background_image', elmGuiLayer, 'common.tooltip.new.background', 'halParentLeft', 'valParentTop', leftOffset, topOffset);
+         SetGUIElementUserBlend(elmImageHandle, 0.75);
+         if (sizeX>523) then
+         SetGUIElementWidth(elmImageHandle, sizeX-(leftOffset+rightOffset));
+         if (sizeX>522) then
+         SetGUIElementHeight(elmImageHandle, sizeY-(topOffset+bottomOffset));
+
+         //var elmTileBackgroundHandle : Integer = _gui_CreateImage('', elmParentHandle, 'common.tooltip.new.tile', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(elmParentHandle), GetGUIElementHeight(elmParentHandle), 0);
+         //SetGUIElementUserBlend(elmTileBackgroundHandle, 0.75);
+         var elmWindowHandle : Integer = _gui_CreateImage('size_dummy', elmParentHandle, 'misc.blank.black.alpha.0', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(elmParentHandle), GetGUIElementHeight(elmParentHandle), 0);
+
+         var iBkgHandle : Integer = GetGUIElementIndexByNameParent('background', elmParentHandle);
+         if (iBkgHandle = 0) or GetGUIElementVisible(iBkgHandle) then
+            iBkgHandle := AddNewElementByClassNameParent('background', 'TXGuiBackground', 400, elmParentHandle);
+         SetGUIElementVisible(iBkgHandle, true);
+         SetGUIElementAlign(iBkgHandle, 'halParentLeft', 'valParentTop');
+
+         var cBackgroundTileOffset : Integer = 64;
+         SetGUIElementBackgroundSideOffset(iBkgHandle, cBackgroundTileOffset);
+         SetGUIElementBackgroundCornerOffset(iBkgHandle, cBackgroundTileOffset);
+         //SetGUIElementBackgroundMaterial(iBkgHandle,  0, 'common.tooltip.new.tile');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  0, gc_gui_material_blank_0);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  1, 'common.tooltip.new.border.left');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  2, 'common.tooltip.new.border.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  3, 'common.tooltip.new.border.right');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  4, 'common.tooltip.new.border.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -1, 'common.tooltip.new.corner.left.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -2, 'common.tooltip.new.corner.right.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -3, 'common.tooltip.new.corner.right.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -4, 'common.tooltip.new.corner.left.bottom');
+
+         if (sizeX=cBackgroundTileOffset) then
+         sizeX := sizeX+1;
+         if (sizeY=cBackgroundTileOffset) then
+         sizeY := sizeY+1;
+         SetGUIElementAllPositionRect(iBkgHandle, cBackgroundTileOffset div 2, cBackgroundTileOffset div 2, sizeX-cBackgroundTileOffset, sizeY-cBackgroundTileOffset);
+
+         // -------------------------
+         // Description text with scroll
+         //elmImageHandle := _gui_CreateImage('', iBkgHandle, 'misc.blank.black.alpha.1', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(iBkgHandle), GetGUIElementHeight(iBkgHandle), 0);
+         //var textHeaderMarginLeft : Integer = 3;
+         //var textHeaderMarginRight : Integer = 3;
+         var textHeaderMarginTop : Integer = 8;//5;
+
+         var textMarginTop : Integer = 2;//-2;
+         var textMarginBot : Integer = 5;
+
+         var textMarginLeft : Integer = 7;
+         var textMarginRight : Integer = 14;
+         var textWidth1, textHeight1 : Integer = 0;
+         var textPosX : Integer;
+
+         var cHeaderTextFont : String;
+         _gui_GetFont(gc_gui_fontsection_tactics,'Tooltip',gc_gui_fontsize_large,'',cHeaderTextFont); // NormalL
+         if (textHeader<>'') then
+         begin
+            GetGUIElementFontTextFormatRect(cHeaderTextFont, textHeader, textWidth1, textHeight1);
+            textPosX := textMarginLeft;
+         end;
+
+         var cTextFont : String;
+         _gui_GetFont(gc_gui_fontsection_tactics,'Tooltip',gc_gui_fontsize_default,'',cTextFont); // NormalS
+         textPosX := textMarginLeft;
+         var textWraped : String = GetGUIWrappedTextFormatByFont(cTextFont, text, sizeX-textPosX);
+         var textWidth2, textHeight2 : Integer = 0;
+         GetGUIElementFontTextFormatRect(cTextFont, textWraped, textWidth2, textHeight2);
+
+         var maxTextWidth : Integer = Max(textWidth1, textWidth2);
+         var newSizeX, newSizeY : Integer;
+         if (text='') and (textHeader='') then
+         begin
+            newSizeX := sizeX;
+            newSizeY := sizeY;
+         end
+         else
+         begin
+            newSizeX := textMarginLeft+maxTextWidth+3+textMarginRight;
+            newSizeY := textHeaderMarginTop+textMarginTop+textHeight1+textHeight2+textMarginBot;
+            if newSizeY<32 then
+            newSizeY := 32;
+         end;
+         SetGUIElementWidth(iBkgHandle, newSizeX-cBackgroundTileOffset);
+         SetGUIElementHeight(iBkgHandle, newSizeY-cBackgroundTileOffset);
+         SetGUIElementWidth(elmWindowHandle, newSizeX);
+         SetGUIElementHeight(elmWindowHandle, newSizeY);
+
+         //this is needed to force recalc event and make scroll cutting work
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, newSizeX-1, newSizeY-1);
+         SetGUIElementWidth(elmGuiLayer, newSizeX);
+         SetGUIElementHeight(elmGuiLayer, newSizeY);
+         //this is needed to force recalc event and make scroll cutting work
+
+         var tPosX, tPosY : Integer;
+
+         if (textHeader<>'') then
+         begin
+            var yOff : Integer = 0;
+            if (text='') then
+            yOff := 0;
+            elmTextHandle := _gui_CreateText('header_shadow', elmWindowHandle, textHeader, 'halParentLeft', 'valParentTop', textPosX+1, textHeaderMarginTop+1+yOff, newSizeX, newSizeY, 'halLeft', 'valTop', cHeaderTextFont, 1, 1, 1, 0.2);
+            elmTextHandle := _gui_CreateText('header_text', elmWindowHandle, textHeader, 'halParentLeft', 'valParentTop', textPosX+0, textHeaderMarginTop+yOff, newSizeX, newSizeY, 'halLeft', 'valTop', cHeaderTextFont, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+            tPosX := textPosX;
+            tposY := textHeaderMarginTop+textHeight1+textMarginTop;
+         end
+         else
+         begin
+            tPosX := textPosX;
+            tposY := textMarginTop+5;
+         end;
+         if (text<>'') then
+         begin
+            elmTextHandle := _gui_CreateText('text_shadow', elmWindowHandle, textWraped, 'halParentLeft', 'valParentTop', tPosX+1, tposY+1, textWidth2, newSizeY, 'halLeft', 'valTop',  cTextFont, 1, 1, 1, 0.2);
+            elmTextHandle := _gui_CreateText('text', elmWindowHandle, textWraped, 'halParentLeft', 'valParentTop', tPosX, tposY, textWidth2, newSizeY, 'halLeft', 'valTop',  cTextFont, gc_gui_fontcolor_HeaderDarkR, gc_gui_fontcolor_HeaderDarkG, gc_gui_fontcolor_HeaderDarkB, 1);
+         end;
+         if (gIntRegister_CurGameMode=gc_GameModeTactics) then
+         var elmMouseIcon : Integer = _gui_CreateImage('mouse_icon', elmWindowHandle, 'mouse.right.btn.icon.11x13', 'halParentLeft', 'valParentTop', newSizeX+3-18, newSizeY-17, 11, 13, 0);
+      end;
+      5 : // strategy level - attacking party assesment by hero
+      begin
+         var leftOffset : Integer = 6;
+         var rightOffset : Integer = 5;
+         var topOffset : Integer = 6;
+         var bottomOffset : Integer = 4;
+
+         elmGuiLayer := GetGUIElementIndexByNameParent('scroll_layer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('scroll_layer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, sizeX-rightOffset, sizeY);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+
+         elmImageHandle := _gui_CreateImage('background_image', elmGuiLayer, 'common.window.background', 'halParentLeft', 'valParentTop', leftOffset, topOffset, 0, 0, 0);
+         if (sizeX>1035) then
+         SetGUIElementWidth(elmImageHandle, sizeX-(leftOffset+rightOffset));
+         if (sizeY>1034) then
+         SetGUIElementHeight(elmImageHandle, sizeY-(topOffset+bottomOffset));
+
+         SetGUIElementWidth(elmGuiLayer, sizeX+1);
+         SetGUIElementHeight(elmGuiLayer, sizeY+1);
+
+         var iBkgHandle : Integer = GetGUIElementIndexByNameParent('common_window_bkg', elmParentHandle);
+         if (iBkgHandle = 0) or GetGUIElementVisible(iBkgHandle) then
+            iBkgHandle := AddNewElementByClassNameParent('common_window_bkg', 'TXGuiBackground', 400, elmParentHandle);
+         SetGUIElementVisible(iBkgHandle, true);
+         SetGUIElementAlign(iBkgHandle, 'halParentLeft', 'valParentTop');
+
+         SetGUIElementBackgroundSideOffset(iBkgHandle, 128-66);
+         SetGUIElementBackgroundCornerOffset(iBkgHandle, 128-66);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  0, gc_gui_material_blank_0);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  1, 'common.window.border.left');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  2, 'common.window.border.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  3, 'common.window.border.right');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  4, 'common.window.border.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -1, 'common.window.corner.left.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -2, 'common.window.corner.right.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -3, 'common.window.corner.right.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -4, 'common.window.corner.left.bottom');
+         SetGUIElementAllPositionRect(iBkgHandle, 0, 0, sizeX, sizeY);
+
+         // Description text with scroll
+         var textXOffset : Integer = 0;
+         var textYOffset : Integer = 0;
+         textYOffset := 64;
+         elmGuiLayer := GetGUIElementIndexByNameParent('textLayer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('textLayer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 6, 21+textYOffset, sizeX-12, sizeY-67);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+         var elmVScroll : Integer = GetGUIElementVScroll(elmGuiLayer);
+         SetGUIElementAlign(elmVScroll, 'halParentLeft', 'valParentTop');
+         SetGUIElementMaterialOffset(elmVScroll, 0, 0);
+         SetGUIElementAllPositionRect(elmVScroll, sizeX-40, 0, 30, sizeY-67);
+
+         SetGUIElementMaterial(elmVScroll, 'map.dialog.scroller.tile');
+         SetGUIScrollButtonSource(elmVScroll, 0, 'map.dialog.scroller.up', true);
+         SetGUIScrollButtonSource(elmVScroll, 2, 'map.dialog.scroller.down', true);
+         SetGUIScrollButtonSource(elmVScroll, 1, 'map.dialog.scroller.slider', true);
+
+         var fontHandle, fontHandleH : String;
+         _gui_GetFont(gc_gui_fontsection_menu,'DialogLegend',gc_gui_fontsize_default,'',fontHandle); // NormalL
+         _gui_GetFont(gc_gui_fontsection_menu,'DialogLegend',gc_gui_fontsize_large,'',fontHandleH); // HeaderM
+
+         var textWraped : String = GetGUIWrappedTextFormatByFont(fontHandle, text, sizeX-45); //-72
+
+         GetGUIElementFontTextFormatRect(fontHandle, textWraped, textWidth, textHeight);
+         posX := 0;
+         posY := 0;
+         if textHeight <= GetGUIElementHeight(elmGuiLayer) then
+         begin
+            //textHeight := GetGUIElementHeight(elmGuiLayer);
+            SetGUIScrollEnabled(elmGuiLayer, false);
+            SetGUIElementEnabled(elmGuiLayer, false);
+            SetGUIElementEnabled(elmVScroll, false);
+
+            //textWraped := GetGUIWrappedTextFormatByFont(fontHandle, text, sizeX-45); //-30
+            //GetGUIElementFontTextFormatRect(fontHandle, textWraped, textWidth, textHeight);
+         end
+         else
+         begin
+            textXOffset := -8;
+         end;
+         SetGUIElementHeight(elmGuiLayer, textHeight);
+         elmTextHandle := _gui_CreateText('', elmGuiLayer, textWraped, 'halParentMiddle', 'valParentMiddle', textXOffset, 0, textWidth, textHeight, 'halMiddle', 'valMiddle', fontHandle, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+
+         var goHandle : Integer = GetGameObjectHandleByIndex(gIntRegister_MapCurHeroIndex, _gv_GetCurrentPlayerHandle());
+         if (goHandle<>0) then
+         begin
+            var pGoHandle : Integer = ParserSelectGameObject(goHandle);
+            var portrait : String = ParserGetValueByKeyByHandle(pGoHandle, 'Portrait');
+            elmImageHandle := _gui_CreateImage('map_heropanel_portrait' , elmParentHandle, portrait, 'halParentMiddle', 'valParentTop', -1, 23-1, 89, 89, 0);
+         end;
+
+         elmImageHandle := _gui_CreateImage('', elmParentHandle, 'gamepanel02.portrait.frame', 'halParentMiddle', 'valParentTop', 0, -12, 0, 0, 0);
+         //elmImageHandle := _gui_CreateImage('', elmParentHandle, 'gamepanel02.portrait.frame', 'halParentMiddle', 'valParentTop', 0, -12, 0, 0, 0);
+
+         if (doDrawDragonHeader) and (textHeader<>'') then
+         ErrorLog('CreateCommonWindow conflict, doDrawDragonHeader=true and textHeader<>NULL')
+         else
+         if (doDrawDragonHeader) then
+         begin
+            elmImageHandle := _gui_CreateImageSimple('header', elmParentHandle, 'common.window.header.dragon', 'halParentLeft', 'valParentTop', (sizeX div 2)-(GetGUITextureWidth('common.window.header.dragon') div 2), -52);
+         end
+         else
+         if (textHeader<>'') then
+         begin
+            elmImageHandle := _gui_CreateImage('header', elmParentHandle, 'common.window.header', 'halParentLeft', 'valParentTop', (sizeX div 2)-(GetGUITextureWidth('common.window.header') div 2), -52, 0, 0, 0);
+            elmTextHandle := _gui_CreateText('header_text', elmParentHandle, textHeader, 'halParentMiddle', 'valParentTop', 0, -15, 238, 36, 'halMiddle', 'valMiddle', fontHandleH, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+         end;
+
+         if (doDrawCloseBtn) then
+         begin
+            const cBtnCloseYOffset = -15;
+            var elmSizeX, elmSizeY : Integer;
+            elmSizeX := 128;
+            elmSizeY := 52;
+            elmImageHandle := _gui_CreateImageSimple('', elmParentHandle, 'mainpanel.btnplace.with.frame', 'halParentLeft', 'valParentTop', (sizeX div 2)-(elmSizeX div 2), sizeY-(elmSizeY div 2)+cBtnCloseYOffset);
+
+            const cAcceptBtnTag = 101;
+            elmSizeX := 51;
+            elmSizeY := 51;
+            elmBtnHandle := _gui_CreateButton('common_window_accept', elmParentHandle, '', 'map.radialhero.btn.move.cancel', 'halParentLeft', 'valParentTop', (sizeX div 2)-(elmSizeX div 2), sizeY-(elmSizeY div 2)+cBtnCloseYOffset, elmSizeX, elmSizeY, 'VVK.CloseOneButtonWindow', '', cAcceptBtnTag);
+         end;
+      end;
+      4 : // tactics hero upgrade window
+      begin
+         var leftOffset : Integer = 6;
+         var rightOffset : Integer = 5;
+         var topOffset : Integer = 6;
+         var bottomOffset : Integer = 4;
+
+         var fontHandle, fontHandleH : String;
+         _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_default,'',fontHandle);
+         _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_large,'',fontHandleH);
+
+         //if (style=4) then
+         sizeY := sizeY-16;
+
+         elmGuiLayer := GetGUIElementIndexByNameParent('scroll_layer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('scroll_layer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, sizeX-rightOffset, sizeY);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+
+         elmImageHandle := _gui_CreateImageSimple('background', elmGuiLayer, 'common.window.background', 'halParentLeft', 'valParentTop', leftOffset, topOffset);
+         if (sizeX>1035) then
+         SetGUIElementWidth(elmImageHandle, sizeX-(leftOffset+rightOffset));
+         if (sizeY>1034) then
+         SetGUIElementHeight(elmImageHandle, sizeY-(topOffset+bottomOffset));
+
+         SetGUIElementWidth(elmGuiLayer, sizeX+1);
+         SetGUIElementHeight(elmGuiLayer, sizeY+1);
+
+         var iBkgHandle : Integer = GetGUIElementIndexByNameParent('common_window_bkg', elmParentHandle);
+         if (iBkgHandle = 0) or GetGUIElementVisible(iBkgHandle) then
+            iBkgHandle := AddNewElementByClassNameParent('common_window_bkg', 'TXGuiBackground', 400, elmParentHandle);
+         SetGUIElementVisible(iBkgHandle, true);
+         SetGUIElementAlign(iBkgHandle, 'halParentLeft', 'valParentTop');
+
+         SetGUIElementBackgroundSideOffset(iBkgHandle, 128-66);
+         SetGUIElementBackgroundCornerOffset(iBkgHandle, 128-66);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  0, gc_gui_material_blank_0);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  1, 'common.window.border.left');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  2, 'common.window.border.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  3, 'common.window.border.right');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  4, 'common.window.border.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -1, 'common.window.corner.left.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -2, 'common.window.corner.right.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -3, 'common.window.corner.right.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -4, 'common.window.corner.left.bottom');
+         SetGUIElementAllPositionRect(iBkgHandle, 0, 0, sizeX, sizeY);
+
+         //if (style=4) then
+         sizeY := sizeY+16;
+
+         // Description text with scroll
+         var textXOffset : Integer = 0;
+         var textYOffset : Integer = 0;
+         //if (textHeader<>'') then
+         //textYOffset := 10;
+
+         //if (style=4) then
+         //sizeX := sizeX-45;
+
+         elmGuiLayer := GetGUIElementIndexByNameParent('textLayer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('textLayer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 5, 21+textYOffset, sizeX, sizeY-67-textYOffset);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+         var elmVScroll : Integer = GetGUIElementVScroll(elmGuiLayer);
+         SetGUIElementAlign(elmVScroll, 'halParentLeft', 'valParentTop');
+         SetGUIElementMaterialOffset(elmVScroll, 0, 0);
+         SetGUIElementAllPositionRect(elmVScroll, sizeX-40, 0, 30, sizeY-67-textYOffset);
+
+         SetGUIElementMaterial(elmVScroll, 'map.dialog.scroller.tile');
+         SetGUIScrollButtonSource(elmVScroll, 0, 'map.dialog.scroller.up', true);
+         SetGUIScrollButtonSource(elmVScroll, 2, 'map.dialog.scroller.down', true);
+         SetGUIScrollButtonSource(elmVScroll, 1, 'map.dialog.scroller.slider', true);
+
+         var textWraped : String;
+         //textWraped = GetGUIWrappedTextFormatByFont(fontHandle, text, sizeX-72+12);
+         //GetGUIElementFontTextFormatRect(fontHandle, textWraped, textWidth, textHeight);
+         posX := 0;
+         posY := 0;
+         //if textHeight <= GetGUIElementHeight(elmGuiLayer) then
+         //begin
+            //textHeight := GetGUIElementHeight(elmGuiLayer);
+            SetGUIScrollEnabled(elmGuiLayer, false);
+            SetGUIElementEnabled(elmGuiLayer, false);
+            SetGUIElementEnabled(elmVScroll, false);
+
+            textWraped := GetGUIWrappedTextFormatByFont(fontHandle, text, sizeX-45);
+            GetGUIElementFontTextFormatRect(fontHandle, textWraped, textWidth, textHeight);
+         //end
+         //else
+         //begin
+         //   textXOffset := -8;
+         //end;
+         SetGUIElementHeight(elmGuiLayer, textHeight);
+
+         if (textHeader<>'') then
+         begin
+            elmTextHandle := _gui_CreateText('', elmGuiLayer, textHeader, 'halParentLeft', 'valParentTop', textXOffset+15, 0-12+10, textWidth, textHeight, 'halMiddle', 'valTop', fontHandleH, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+            var w, h : Integer;
+            GetGUIElementFontTextFormatRect(fontHandle, textHeader, w, h);
+            elmTextHandle := _gui_CreateText('', elmGuiLayer, textWraped, 'halParentLeft', 'valParentTop', textXOffset+15, h+5-12+10, textWidth, textHeight, 'halLeft', 'valMiddle', fontHandle, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+         end
+         else
+         elmTextHandle := _gui_CreateText('', elmGuiLayer, textWraped, 'halParentMiddle', 'valParentMiddle', textXOffset, 0, textWidth, textHeight, 'halLeft', 'valMiddle', fontHandle, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+
+         _gui_FadeElement(elmParentHandle, gc_gui_FadeTime0_2, true, true, true);
+      end;
+      3 : // castle tooltips
+      begin
+         elmGuiLayer := GetGUIElementIndexByNameParent('scroll_layer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('scroll_layer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, 1, 1);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+
+         var leftOffset : Integer = 0;
+         var rightOffset : Integer = 0;
+         var topOffset : Integer = 0;
+         var bottomOffset : Integer = 0;
+
+         elmImageHandle := _gui_CreateImageSimple('background_image', elmGuiLayer, 'common.tooltip.new.background', 'halParentLeft', 'valParentTop', leftOffset, topOffset);
+         SetGUIElementUserBlend(elmImageHandle, 0.75);
+         if (sizeX>523) then
+         SetGUIElementWidth(elmImageHandle, sizeX-(leftOffset+rightOffset));
+         if (sizeY>522) then
+         SetGUIElementHeight(elmImageHandle, sizeY-(topOffset+bottomOffset));
+
+         //var elmTileBackgroundHandle : Integer = _gui_CreateImage('', elmParentHandle, 'common.tooltip.new.tile', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(elmParentHandle), GetGUIElementHeight(elmParentHandle), 0);
+         //SetGUIElementUserBlend(elmTileBackgroundHandle, 0.75);
+         var elmWindowHandle : Integer = _gui_CreateImage('size_dummy', elmParentHandle, 'misc.blank.black.alpha.0', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(elmParentHandle), GetGUIElementHeight(elmParentHandle), 0);
+
+         var iBkgHandle : Integer = GetGUIElementIndexByNameParent('background', elmParentHandle);
+         if (iBkgHandle = 0) or GetGUIElementVisible(iBkgHandle) then
+            iBkgHandle := AddNewElementByClassNameParent('background', 'TXGuiBackground', 400, elmParentHandle);
+         SetGUIElementVisible(iBkgHandle, true);
+         SetGUIElementAlign(iBkgHandle, 'halParentLeft', 'valParentTop');
+
+         var cBackgroundTileOffset : Integer = 64;
+         SetGUIElementBackgroundSideOffset(iBkgHandle, cBackgroundTileOffset);
+         SetGUIElementBackgroundCornerOffset(iBkgHandle, cBackgroundTileOffset);
+         //SetGUIElementBackgroundMaterial(iBkgHandle,  0, 'common.tooltip.new.tile');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  0, gc_gui_material_blank_0);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  1, 'common.tooltip.new.border.left');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  2, 'common.tooltip.new.border.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  3, 'common.tooltip.new.border.right');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  4, 'common.tooltip.new.border.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -1, 'common.tooltip.new.corner.left.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -2, 'common.tooltip.new.corner.right.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -3, 'common.tooltip.new.corner.right.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -4, 'common.tooltip.new.corner.left.bottom');
+
+         if (sizeX=cBackgroundTileOffset) then
+         sizeX := sizeX+1;
+         if (sizeY=cBackgroundTileOffset) then
+         sizeY := sizeY+1;
+         SetGUIElementAllPositionRect(iBkgHandle, cBackgroundTileOffset div 2, cBackgroundTileOffset div 2, sizeX-cBackgroundTileOffset, sizeY-cBackgroundTileOffset);
+
+         // -------------------------
+         // Description text with scroll
+         //elmImageHandle := _gui_CreateImage('', iBkgHandle, 'misc.blank.black.alpha.1', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(iBkgHandle), GetGUIElementHeight(iBkgHandle), 0);
+         var imgMarginX : Integer = 4;
+         var imgMarginTop : Integer = 0;
+         var imgMarginBot : Integer = 2;
+         var imgSize : Integer = 114 div 3;
+
+         IntRegister0 := gIntRegister_CastleUnderCursorBuildID;
+         MapExecuteState('GetInnerBuildParserByID');
+         var pBuilding : Integer = IntRegister1;
+         var icon : Integer = 0;
+         if (pBuilding<>0) then
+         icon := ParserGetIntValueByKeyByHandle(pBuilding, 'Icon');
+         elmImageHandle := _gui_CreateImage('', elmWindowHandle, 'icon.building.' + IntToStr(icon), 'halParentLeft', 'valParentTop', imgMarginX, imgMarginTop, imgSize, imgSize, 0);
+
+         var textMarginLeft : Integer = 5;
+         var textMarginRight : Integer = 7;
+         var textWidth1, textHeight1 : Integer = 0;
+         var textPadding : Integer = 0;
+         var textPosX : Integer;
+         var cTextFont,cTextFontH  : String;
+         _gui_GetFont(gc_gui_fontsection_menu,'Tooltip',gc_gui_fontsize_default,'',cTextFont); // NormalL
+         _gui_GetFont(gc_gui_fontsection_menu,'Tooltip',gc_gui_fontsize_large,'',cTextFontH); // NormalL
+
+         if (textHeader<>'') then
+         begin
+            GetGUIElementFontTextFormatRect(cTextFontH, textHeader, textWidth1, textHeight1);
+            textPosX := imgMarginX+GetGUIElementWidth(elmImageHandle)+textMarginLeft;
+         end;
+
+         textPosX := imgMarginX+GetGUIElementWidth(elmImageHandle)+textMarginLeft;
+         var textWraped : String = GetGUIWrappedTextFormatByFont(cTextFont, text, sizeX-textPosX);
+         var textWidth2, textHeight2 : Integer = 0;
+         GetGUIElementFontTextFormatRect(cTextFont, textWraped, textWidth2, textHeight2);
+
+         var maxTextWidth : Integer = Max(textWidth1, textWidth2);
+         var newSizeX : Integer = imgMarginX+imgSize+textMarginLeft+maxTextWidth+3+textMarginRight;
+         var newSizeY : Integer = imgMarginTop+imgSize+imgMarginBot;
+         SetGUIElementWidth(iBkgHandle, newSizeX-cBackgroundTileOffset);
+         SetGUIElementHeight(iBkgHandle, newSizeY-cBackgroundTileOffset);
+         SetGUIElementWidth(elmWindowHandle, newSizeX);
+         SetGUIElementHeight(elmWindowHandle, newSizeY);
+
+         //this is needed to force recalc event and make scroll cutting work
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, newSizeX-1, newSizeY-1);
+         SetGUIElementWidth(elmGuiLayer, newSizeX);
+         SetGUIElementHeight(elmGuiLayer, newSizeY);
+         //this is needed to force recalc event and make scroll cutting work
+
+         var textMarginTop : Integer = 0;
+         var tPosX, tPosY : Integer;
+         if (textHeader<>'') then
+         begin
+            elmTextHandle := _gui_CreateText('', elmWindowHandle, textHeader, 'halParentLeft', 'valParentTop', textPosX+1, textMarginTop-textPadding+1, textWidth1, newSizeY, 'halLeft', 'valMiddle', cTextFontH, 1, 1, 1, 0.2);
+            elmTextHandle := _gui_CreateText('', elmWindowHandle, textHeader, 'halParentLeft', 'valParentTop', textPosX, textMarginTop-textPadding, textWidth1, newSizeY, 'halLeft', 'valMiddle', cTextFontH, gc_gui_fontcolor_HeaderDarkR, gc_gui_fontcolor_HeaderDarkG, gc_gui_fontcolor_HeaderDarkB, 1);
+            tPosX := textPosX;
+            tposY := textMarginTop+textPadding+1;
+         end
+         else
+         begin
+            tPosX := textPosX;
+            tposY := 1;
+         end;
+         elmTextHandle := _gui_CreateText('', elmWindowHandle, textWraped, 'halParentLeft', 'valParentTop', tPosX+1, tposY+1, textWidth2, newSizeY, 'halLeft', 'valMiddle', cTextFont, 1, 1, 1, 0.2);
+         elmTextHandle := _gui_CreateText('', elmWindowHandle, textWraped, 'halParentLeft', 'valParentTop', tPosX, tposY, textWidth2, newSizeY, 'halLeft', 'valMiddle', cTextFont, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+      end;
+      2 : // province tooltip
+      begin
+         elmGuiLayer := GetGUIElementIndexByNameParent('scroll_layer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('scroll_layer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, 1, 1);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+
+         var leftOffset : Integer = 0;
+         var rightOffset : Integer = 0;
+         var topOffset : Integer = 0;
+         var bottomOffset : Integer = 0;
+
+         elmImageHandle := _gui_CreateImageSimple('background_image', elmGuiLayer, 'common.tooltip.new.background', 'halParentLeft', 'valParentTop', leftOffset, topOffset);
+         SetGUIElementUserBlend(elmImageHandle, 0.75);
+         if (sizeX>523) then
+         SetGUIElementWidth(elmImageHandle, sizeX-(leftOffset+rightOffset));
+         if (sizeY>522) then
+         SetGUIElementHeight(elmImageHandle, sizeY-(topOffset+bottomOffset));
+
+         //var elmTileBackgroundHandle : Integer = _gui_CreateImage('', elmParentHandle, 'common.tooltip.new.tile', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(elmParentHandle), GetGUIElementHeight(elmParentHandle), 0);
+         //SetGUIElementUserBlend(elmTileBackgroundHandle, 0.75);
+         var elmWindowHandle : Integer = _gui_CreateImage('size_dummy', elmParentHandle, 'misc.blank.black.alpha.0', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(elmParentHandle), GetGUIElementHeight(elmParentHandle), 0);
+
+         var iBkgHandle : Integer = GetGUIElementIndexByNameParent('background', elmParentHandle);
+         if (iBkgHandle = 0) or GetGUIElementVisible(iBkgHandle) then
+            iBkgHandle := AddNewElementByClassNameParent('background', 'TXGuiBackground', 400, elmParentHandle);
+         SetGUIElementVisible(iBkgHandle, true);
+         SetGUIElementAlign(iBkgHandle, 'halParentLeft', 'valParentTop');
+
+         var cBackgroundTileOffset : Integer = 64;
+         SetGUIElementBackgroundSideOffset(iBkgHandle, cBackgroundTileOffset);
+         SetGUIElementBackgroundCornerOffset(iBkgHandle, cBackgroundTileOffset);
+         //SetGUIElementBackgroundMaterial(iBkgHandle,  0, 'common.tooltip.new.tile');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  0, gc_gui_material_blank_0);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  1, 'common.tooltip.new.border.left');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  2, 'common.tooltip.new.border.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  3, 'common.tooltip.new.border.right');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  4, 'common.tooltip.new.border.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -1, 'common.tooltip.new.corner.left.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -2, 'common.tooltip.new.corner.right.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -3, 'common.tooltip.new.corner.right.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -4, 'common.tooltip.new.corner.left.bottom');
+
+         if (sizeX=cBackgroundTileOffset) then
+         sizeX := sizeX+1;
+         if (sizeY=cBackgroundTileOffset) then
+         sizeY := sizeY+1;
+         SetGUIElementAllPositionRect(iBkgHandle, cBackgroundTileOffset div 2, cBackgroundTileOffset div 2, sizeX-cBackgroundTileOffset, sizeY-cBackgroundTileOffset);
+
+         // -------------------------
+         // Description text with scroll
+         //elmImageHandle := _gui_CreateImage('', iBkgHandle, 'misc.blank.black.alpha.1', 'halParentLeft', 'valParentTop', 0, 0, GetGUIElementWidth(iBkgHandle), GetGUIElementHeight(iBkgHandle), 0);
+         var imgMarginX : Integer = 4;
+         var imgMarginTop : Integer = 0;
+         var imgMarginBot : Integer = 2;
+         var imgSize : Integer = 33;
+         elmImageHandle := _gui_CreateImage('', elmWindowHandle, 'icon.building.' + IntToStr(40), 'halParentLeft', 'valParentTop', imgMarginX, imgMarginTop, imgSize, imgSize, 0);
+
+         var textMarginLeft : Integer = 4;
+         var textMarginRight : Integer = 5;
+         var textWidth1, textHeight1 : Integer = 0;
+         var textPadding : Integer = 7;
+         var textPosX : Integer;
+         var cTextFont,cTextFontH  : String;
+         _gui_GetFont(gc_gui_fontsection_strategy,'Tooltip',gc_gui_fontsize_default,'',cTextFont);
+         _gui_GetFont(gc_gui_fontsection_strategy,'Tooltip',gc_gui_fontsize_large,'',cTextFontH);
+
+         if (textHeader<>'') then
+         begin
+            GetGUIElementFontTextFormatRect(cTextFontH, textHeader, textWidth1, textHeight1);
+            textPosX := imgMarginX+GetGUIElementWidth(elmImageHandle)+textMarginLeft;
+         end;
+
+         textPosX := imgMarginX+GetGUIElementWidth(elmImageHandle)+textMarginLeft;
+         var textWraped : String = GetGUIWrappedTextFormatByFont(cTextFont, text, sizeX-textPosX);
+         var textWidth2, textHeight2 : Integer = 0;
+         GetGUIElementFontTextFormatRect(cTextFont, textWraped, textWidth2, textHeight2);
+
+         var maxTextWidth : Integer = Max(textWidth1, textWidth2);
+         var newSizeX : Integer = imgMarginX+imgSize+textMarginLeft+maxTextWidth+3+textMarginRight+9;
+         var newSizeY : Integer = imgMarginTop+imgSize+imgMarginBot+2;
+         SetGUIElementWidth(iBkgHandle, newSizeX-cBackgroundTileOffset);
+         SetGUIElementHeight(iBkgHandle, newSizeY-cBackgroundTileOffset);
+         SetGUIElementWidth(elmWindowHandle, newSizeX);
+         SetGUIElementHeight(elmWindowHandle, newSizeY);
+
+         //this is needed to force recalc event and make scroll cutting work
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, newSizeX-1, newSizeY-1);
+         SetGUIElementWidth(elmGuiLayer, newSizeX);
+         SetGUIElementHeight(elmGuiLayer, newSizeY);
+         //this is needed to force recalc event and make scroll cutting work
+
+         var textMarginTop : Integer = 0;
+         var tPosX, tPosY : Integer;
+         if (textHeader<>'') then
+         begin
+            elmTextHandle := _gui_CreateText('', elmWindowHandle, textHeader, 'halParentLeft', 'valParentTop', textPosX+1, textMarginTop-textPadding+1, textWidth1, newSizeY, 'halLeft', 'valMiddle', cTextFontH, 1, 1, 1, 0.2);
+            elmTextHandle := _gui_CreateText('', elmWindowHandle, textHeader, 'halParentLeft', 'valParentTop', textPosX, textMarginTop-textPadding, textWidth1, newSizeY, 'halLeft', 'valMiddle', cTextFontH, gc_gui_fontcolor_HeaderDarkR, gc_gui_fontcolor_HeaderDarkG, gc_gui_fontcolor_HeaderDarkB, 1);
+            tPosX := textPosX;
+            tposY := textMarginTop+textPadding+1;
+         end
+         else
+         begin
+            tPosX := textPosX;
+            tposY := 1;
+         end;
+         elmTextHandle := _gui_CreateText('', elmWindowHandle, textWraped, 'halParentLeft', 'valParentTop', tPosX+1, tposY+1, textWidth2, newSizeY, 'halLeft', 'valMiddle', cTextFont, 1, 1, 1, 0.2);
+         elmTextHandle := _gui_CreateText('', elmWindowHandle, textWraped, 'halParentLeft', 'valParentTop', tPosX, tposY, textWidth2, newSizeY, 'halLeft', 'valMiddle', cTextFont, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+      end;
+      else // general dialog window
+      begin
+         var leftOffset : Integer = 6;
+         var rightOffset : Integer = 5;
+         var topOffset : Integer = 6;
+         var bottomOffset : Integer = 4;
+
+         elmGuiLayer := GetGUIElementIndexByNameParent('scroll_layer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('scroll_layer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 0, sizeX-rightOffset, sizeY);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+
+         elmImageHandle := _gui_CreateImage('background', elmGuiLayer, 'common.window.background', 'halParentLeft', 'valParentTop', leftOffset, topOffset, 0, 0, 0);
+         if (sizeX>1035) then
+         SetGUIElementWidth(elmImageHandle, sizeX-(leftOffset+rightOffset));
+         if (sizeY>1034) then
+         SetGUIElementHeight(elmImageHandle, sizeY-(topOffset+bottomOffset));
+
+         SetGUIElementWidth(elmGuiLayer, sizeX+1);
+         SetGUIElementHeight(elmGuiLayer, sizeY+1);
+
+         var iBkgHandle : Integer = GetGUIElementIndexByNameParent('common_window_bkg', elmParentHandle);
+         if (iBkgHandle = 0) or GetGUIElementVisible(iBkgHandle) then
+            iBkgHandle := AddNewElementByClassNameParent('common_window_bkg', 'TXGuiBackground', 400, elmParentHandle);
+         SetGUIElementVisible(iBkgHandle, true);
+         SetGUIElementAlign(iBkgHandle, 'halParentLeft', 'valParentTop');
+
+         SetGUIElementBackgroundSideOffset(iBkgHandle, 128-66);
+         SetGUIElementBackgroundCornerOffset(iBkgHandle, 128-66);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  0, gc_gui_material_blank_0);
+         SetGUIElementBackgroundMaterial(iBkgHandle,  1, 'common.window.border.left');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  2, 'common.window.border.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  3, 'common.window.border.right');
+         SetGUIElementBackgroundMaterial(iBkgHandle,  4, 'common.window.border.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -1, 'common.window.corner.left.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -2, 'common.window.corner.right.top');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -3, 'common.window.corner.right.bottom');
+         SetGUIElementBackgroundMaterial(iBkgHandle, -4, 'common.window.corner.left.bottom');
+         SetGUIElementAllPositionRect(iBkgHandle, 0, 0, sizeX, sizeY);
+
+         // Description text with scroll
+         var textXOffset : Integer = 0;
+         var textYOffset : Integer = 0;
+         if (textHeader<>'') then
+         textYOffset := 16;
+         elmGuiLayer := GetGUIElementIndexByNameParent('textLayer', elmParentHandle);
+         if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+            elmGuiLayer := AddNewElementByClassNameParent('textLayer', 'TXGuiLayer', 0, elmParentHandle);
+         SetGUIElementVisible(elmGuiLayer, true);
+         SetGUIElementAlign(elmGuiLayer, 'halParentLeft', 'valParentTop');
+         SetGUIElementAllPositionRect(elmGuiLayer, 0, 21+textYOffset, sizeX, sizeY-67);
+         SetGUIElementMaterial(elmGuiLayer, 'misc.blank.black.alpha.0');
+         SetGUIScrollEnabled(elmGuiLayer, True);
+         var elmVScroll : Integer = GetGUIElementVScroll(elmGuiLayer);
+         SetGUIElementAlign(elmVScroll, 'halParentLeft', 'valParentTop');
+         SetGUIElementMaterialOffset(elmVScroll, 0, 0);
+         SetGUIElementAllPositionRect(elmVScroll, sizeX-40, 0, 30, sizeY-67);
+
+         SetGUIElementMaterial(elmVScroll, 'map.dialog.scroller.tile');
+         SetGUIScrollButtonSource(elmVScroll, 0, 'map.dialog.scroller.up', true);
+         SetGUIScrollButtonSource(elmVScroll, 2, 'map.dialog.scroller.down', true);
+         SetGUIScrollButtonSource(elmVScroll, 1, 'map.dialog.scroller.slider', true);
+
+         var cTextFont,cTextFontH  : String;
+         _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_default,'',cTextFont);
+         _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_largest,'',cTextFontH);
+
+         var textWraped : String = GetGUIWrappedTextFormatByFont(cTextFont, text, sizeX-72);
+         GetGUIElementFontTextFormatRect(cTextFont, textWraped, textWidth, textHeight);
+         posX := 0;
+         posY := 0;
+         if textHeight <= GetGUIElementHeight(elmGuiLayer) then
+         begin
+            //textHeight := GetGUIElementHeight(elmGuiLayer);
+            SetGUIScrollEnabled(elmGuiLayer, false);
+            SetGUIElementEnabled(elmGuiLayer, false);
+            SetGUIElementEnabled(elmVScroll, false);
+
+            textWraped := GetGUIWrappedTextFormatByFont(cTextFont, text, sizeX-30);
+            GetGUIElementFontTextFormatRect(cTextFont, textWraped, textWidth, textHeight);
+         end
+         else
+         begin
+            textXOffset := -8;
+         end;
+         SetGUIElementHeight(elmGuiLayer, textHeight);
+         elmTextHandle := _gui_CreateText('', elmGuiLayer, textWraped, 'halParentMiddle', 'valParentMiddle', textXOffset, 0, textWidth, textHeight, 'halMiddle', 'valMiddle', cTextFont, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+
+         if (doDrawDragonHeader) and (textHeader<>'') then
+         ErrorLog('CreateCommonWindow conflict, doDrawDragonHeader=true and textHeader<>NULL')
+         else
+         if (doDrawDragonHeader) then
+         begin
+            elmImageHandle := _gui_CreateImageSimple('header', elmParentHandle, 'common.window.header.dragon', 'halParentLeft', 'valParentTop', (sizeX div 2)-(GetGUITextureWidth('common.window.header.dragon') div 2), -52);
+         end
+         else
+         if (textHeader<>'') then
+         begin
+            elmImageHandle := _gui_CreateImageSimple('header', elmParentHandle, 'common.window.header', 'halParentLeft', 'valParentTop', (sizeX div 2)-(GetGUITextureWidth('common.window.header') div 2), -52);
+            elmTextHandle := _gui_CreateText('header_text', elmParentHandle, textHeader, 'halParentMiddle', 'valParentTop', 0, -15, 238, 36, 'halMiddle', 'valMiddle', cTextFontH, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+         end;
+
+         if (doDrawCloseBtn) then
+         begin
+            const cBtnCloseYOffset = -15;
+            var elmSizeX, elmSizeY : Integer;
+            elmSizeX := 128;
+            elmSizeY := 52;
+            elmImageHandle := _gui_CreateImageSimple('', elmParentHandle, 'mainpanel.btnplace.with.frame', 'halParentLeft', 'valParentTop', (sizeX div 2)-(elmSizeX div 2), sizeY-(elmSizeY div 2)+cBtnCloseYOffset);
+
+            const cAcceptBtnTag = 101;
+            elmSizeX := 51;
+            elmSizeY := 51;
+            elmBtnHandle := _gui_CreateButton('common_window_accept', elmParentHandle, '', 'map.radialhero.btn.move.cancel', 'halParentLeft', 'valParentTop', (sizeX div 2)-(elmSizeX div 2), sizeY-(elmSizeY div 2)+cBtnCloseYOffset, elmSizeX, elmSizeY, 'VVK.CloseOneButtonWindow', '', cAcceptBtnTag);
+         end;
+
+         _gui_FadeElement(elmParentHandle, gc_gui_FadeTime0_2, true, true, true);
+         //ExecuteState('GUIInvokeMouseMove'); // will hang when enter site element
+      end;
+   end;
+
+   //OUTPUT
+   Result:= elmParentHandle;
+   //
+end;
+
+// _gui_ScaleTextToFit
+//
+function _gui_ScaleTextToFit(text : String; max_width : Integer; sizes_to_match : Integer; var width : Integer; var height : Integer; var font: String) : Integer;
+begin
+   var fontHandle : String;
+   var idx : Integer;
+   var sizes_array : array [0..gc_gui_max_sizes_number-1] of Integer;
+   var w,h :Integer;
+
+   sizes_array[0] := gc_gui_fontsize_small;
+   sizes_array[1] := gc_gui_fontsize_default;
+   sizes_array[2] := gc_gui_fontsize_large;
+
+   idx := sizes_to_match;
+
+   while idx > 0 do
+   begin
+      _gui_GetFont(gc_gui_fontsection_strategy,'Text',sizes_array[idx-1],'',fontHandle);
+
+      GetGUIElementFontTextFormatRect(fontHandle, text, w, h);
+      if (w <= max_width) then
+      break;
+      idx := idx - 1;
+   end;
+
+   font := fontHandle;
+   width := w;
+   height := h;
+
+   Result := idx;
+end;
+
+// _gui_CreateCheckBox
+//
+function _gui_CreateCheckBox(elmName : String; parent : Integer; bChecked : Boolean; text, hAlign, vAlign : String; posX, posY : Integer; eventState, hint : String; tag : Integer) : Integer;
+begin
+   var tmpText : String = text;
+   _gui_ConvertTableKeyToText(tmpText);
+   var elmParentHandle : Integer = _gui_CreateButton(elmName, parent, '', 'common.checkbox', hAlign, vAlign, posX, posY, 0, 0, eventState, hint, tag);
+   SetGUIElementChecked(elmParentHandle, bChecked);
+   SetGUIElementTextAlign(elmParentHandle, 'halLeft', 'valMiddle', 0, 0);
+   SetGUIElementText(elmParentHandle, tmpText);
+   SetGUIElementTextFormatted(elmParentHandle, True);
+   var fontHandle : String;
+   _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_default,'',fontHandle);
+   SetGUIElementFont(elmParentHandle, fontHandle);
+   var xOff : Integer = 164;
+   var yOff : Integer = 0;
+   var txOff : Integer = 4;
+   var tyOff : Integer = -1;
+   SetGUIElementLogicRect(elmParentHandle, 182, 23);
+   SetGUIElementVisibleProperties(elmParentHandle, 'UpProperty', 'common.checkbox.normal', xOff, yOff, txOff, tyOff, -1, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+   SetGUIElementVisibleProperties(elmParentHandle, 'HoverProperty', 'common.checkbox.hover', xOff, yOff, txOff, tyOff, 6, gc_gui_fontcolor_NormalR*1.25, gc_gui_fontcolor_NormalG*1.25, gc_gui_fontcolor_NormalB*1.25, 1);
+   SetGUIElementVisibleProperties(elmParentHandle, 'DownProperty', 'common.checkbox.pressed', xOff, yOff, txOff, tyOff, 6, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+   SetGUIElementVisibleProperties(elmParentHandle, 'DisableProperty', 'common.checkbox.disabled', xOff, yOff, txOff, tyOff, -1, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+   SetGUIElementVisibleProperties(elmParentHandle, 'CheckOnProperty', 'common.checkbox.checkon', xOff, yOff, txOff, tyOff, 6, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+   SetGUIElementAbsScaled(elmParentHandle, True);
+   Result := elmParentHandle;
+end;
+
+// _gui_GetFadeStarted
+//
+function _gui_GetFadeStarted(elmHandle : Integer) : Boolean;
+begin
+   Result := False;
+   if (GetGUIElementFadeStarted(elmHandle)) then
+   Result := True
+   else
+   begin
+      var elmParentHnd : Integer = GetGUIElementParentByIndex(elmHandle);
+      if (elmParentHnd<>0) and (elmParentHnd <> _gui_GetLayerI()) then
+      begin
+         if (_gui_GetFadeStarted(elmParentHnd)) then
+         Result := True;
+      end;
+   end;
+end;
+
+// _gui_PreloadFonts
+//
+procedure _gui_PreloadFonts(elmPreloaderHandle : Integer; posX, posY, sizeX, sizeY : Integer);
+begin
+   var i : Integer;
+   for i:=0 to gc_gui_gamefonts_max_number-1 do
+   begin
+      if gArrGUIGameFonts[i].file_name = '' then
+      break;
+      if gArrGUIGameFonts[i].file_name <> 'none' then
+      begin
+         Log('Font preloaded: '+gArrGUIGameFonts[i].file_name);
+         _gui_CreateText('', elmPreloaderHandle, '1', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 'halLeft', 'valTop', gArrGUIGameFonts[i].file_name, 0, 0, 0, 0);
+      end;
+   end;
+end;
+
+// _gui_PreloadGUITextures
+//
+procedure _gui_PreloadGUITextures(const top : Integer);
+begin
+   var elmPreloaderHandle : Integer = AddNewElementByClassNameParent('preloader', 'TOSWImageGuiControl', 0, top);
+
+   var sizeX, sizeY : Integer = 16;
+   var posX, posY : Integer = -64; // �� �������
+   // astral
+   _gui_CreateImage('', elmPreloaderHandle, 'astral.beforebattle.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // gamepanel01
+   _gui_CreateImage('', elmPreloaderHandle, 'castle.garrison.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // gamepanel02
+   _gui_CreateImage('', elmPreloaderHandle, 'map.prov.herolist.buttonframe', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // gamepanel03
+   _gui_CreateImage('', elmPreloaderHandle, 'gamepanel03.switchweapon.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // gamepanel04
+   _gui_CreateImage('', elmPreloaderHandle, 'gamepanel04.unitparam.leader', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // map.mainpanel
+   _gui_CreateImage('', elmPreloaderHandle, 'map.mainpanel.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // common.tooltip
+   _gui_CreateImage('', elmPreloaderHandle, 'common.tooltip.corner.top.left', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // map.heropanel
+   _gui_CreateImage('', elmPreloaderHandle, 'map.heropanel.exp.meter', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // map.illustrations1
+   _gui_CreateImage('', elmPreloaderHandle, 'map.illustration.1', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // map.illustrations2
+   _gui_CreateImage('', elmPreloaderHandle, 'map.illustration.55', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // map.illustrations3
+   _gui_CreateImage('', elmPreloaderHandle, 'dialog.portrait.commander.1', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // map.castle.buildings
+   _gui_CreateImage('', elmPreloaderHandle, 'castle.building.mainpanel.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // iconspack.01
+   _gui_CreateImage('', elmPreloaderHandle, 'icon.ability.0', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // iconspack.02
+   _gui_CreateImage('', elmPreloaderHandle, 'icon.unit.4', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // iconspack.03
+   _gui_CreateImage('', elmPreloaderHandle, 'icon.building.0', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // iconspack.04
+   _gui_CreateImage('', elmPreloaderHandle, 'icon.site.1', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // common.window.background (non atlas)
+   _gui_CreateImage('', elmPreloaderHandle, 'common.window.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // common.tooltip.background (non atlas)
+   _gui_CreateImage('', elmPreloaderHandle, 'common.tooltip.background', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // loadingscreen01
+   //_gui_CreateImage('', elmPreloaderHandle, 'loading.1', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // loadingscreen02
+   //_gui_CreateImage('', elmPreloaderHandle, 'loading.4', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+   // tempshell
+   _gui_CreateImage('', elmPreloaderHandle, 'tempshell.journal.normal', 'halLeft', 'valTop', posX, posY, sizeX, sizeY, 0);
+
+   // Preload fonts
+   _gui_PreloadFonts(elmPreloaderHandle, posX, posY, sizeX, sizeY);
+   GUIPrepareLoad();
+   _gui_FadeElement(elmPreloaderHandle, gc_gui_FadeTime0_2, False, True, true);
+end;
+
+// _gui_GetDelimiterValueByIndex
+//
+procedure _gui_GetDelimiterValueByIndex(const inText : String; index : Integer; var outValue : String);
+begin
+   outValue := '';
+   if (IsDelimiterCharExists(inText, gc_gui_DelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(inText, gc_gui_DelimiterChar, gc_gui_QuoteChar);
+      if (index<delimiterStringCount) then
+      outValue := GetDelimiterStringByIndex(inText, gc_gui_DelimiterChar, gc_gui_QuoteChar, index)
+      else
+      ErrorLog('_gui_GetDelimiterValueByIndex : Index out of range');
+   end;
+end;
+
+// _gui_GetDelimiterIntValueByIndex
+//
+function _gui_GetDelimiterIntValueByIndex(const inText : String; index : Integer) : Integer;
+begin
+   Result := 0;
+   if (IsDelimiterCharExists(inText, gc_gui_DelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(inText, gc_gui_DelimiterChar, gc_gui_QuoteChar);
+      if (index<delimiterStringCount) then
+      Result := StrToInt(GetDelimiterStringByIndex(inText, gc_gui_DelimiterChar, gc_gui_QuoteChar, index))
+      else
+      ErrorLog('_gui_GetDelimiterIntValueByIndex : Index out of range');
+   end;
+end;
+
+// _gui_GetDelimiterBoolValueByIndex
+//
+function _gui_GetDelimiterBoolValueByIndex(const inText : String; index : Integer) : Boolean;
+begin
+   Result := False;
+   if (IsDelimiterCharExists(inText, gc_gui_DelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(inText, gc_gui_DelimiterChar, gc_gui_QuoteChar);
+      if (index<delimiterStringCount) then
+      Result := StrToBool(GetDelimiterStringByIndex(inText, gc_gui_DelimiterChar, gc_gui_QuoteChar, index))
+      else
+      ErrorLog('_gui_GetDelimiterBoolValueByIndex : Index out of range');
+   end;
+end;
+
+// _gui_AlignQuestionDialog
+//
+procedure _gui_AlignQuestionDialog(bhAlignMiddle, bvAlignMiddle : Boolean; baseWidth, baseHeight : Integer; bDoubleWidth, bInvokeMouseMove : Boolean);
+begin
+   var hAlign, vAlign : String;
+   if (bhAlignMiddle) then
+      hAlign := 'halParentMiddle'
+   else
+      hAlign := 'halParentLeft';
+   if (bvAlignMiddle) then
+      vAlign := 'valParentMiddle'
+   else
+      vAlign := 'valParentBottom';
+
+   var elmQuestionWindow : Integer = _gui_GetWindow(cQuestionDialogWindowName);
+   var width : Integer = GetGUIElementWidth(elmQuestionWindow);
+   var height : Integer = GetGUIElementHeight(elmQuestionWindow);
+   var iBaseWidth : Integer = baseWidth;
+   var iBaseHeight : Integer = baseHeight;
+   if (bDoubleWidth) then
+      iBaseWidth := 640*2;
+   if (not bhAlignMiddle) then
+   begin
+      var newPosX : Integer = (iBaseWidth-width) div 2;
+      if (newPosX<10) then
+         newPosX := 10;
+      SetGUIElementPositionX(elmQuestionWindow, newPosX);
+   end;
+   if (not bvAlignMiddle) then
+      SetGUIElementPositionY(elmQuestionWindow, (-iBaseHeight-height) div 2);
+
+   SetGUIElementAlign(elmQuestionWindow, hAlign, vAlign);
+   if (bInvokeMouseMove) then
+      GUIExecuteState('GUIInvokeMouseMove');
+end;
+
+// _gui_DelayExecuteStateOneInstance
+//
+function _gui_DelayExecuteStateOneInstance(const stateName : String; const fTime : Float) : Boolean;
+begin
+   var delayIndex : Integer = GUIDelayTimeExecFind(stateName);
+   if (delayIndex>=0) then
+   begin
+      Result := True;
+      GUIDelayTimeExecDelete(delayIndex, False);
+   end
+   else
+   Result := False;
+   GUIDelayTimeExecAdd(stateName, fTime, True);
+end;
+
+// _gui_PlaySound
+//
+function _gui_PlaySound(const libName, sndName : String) : Integer;
+begin
+   var sndTag : Integer = GetGUIIntValue('SoundTag');
+   sndTag := sndTag+1;
+   SetGUIIntValue('SoundTag', sndTag);
+   var sndHnd : Integer = SndGetOrCreateSound(sndTag, libName, GetSoundManagerListenerHandle);
+   SetSndSoundPlaying(False, sndHnd);
+   SetSndSoundSourceName(sndName, sndHnd);
+   SetSndSoundPlaying(True, sndHnd);
+   Result := sndHnd;
+end;
+
+// _gui_CreateSmallWindow
+//
+function _gui_CreateSmallWindow(parent : Integer; elementName, hAlign, vAlign : String; posX, posY, sizeX, sizeY : Integer; modal : Boolean) : Integer;
+begin
+   procedure ResizeTextureToWidth(elmHandle : Integer; elementName : String; width : Integer);
+   begin
+      var elmBackgroundHandle : Integer = GetGUIElementIndexByNameParent('material', elmHandle);
+      if (elmBackgroundHandle<>0) then
+      begin
+         var texWidth : Integer = GetGUITextureWidth(GetGUIElementMaterial(elmBackgroundHandle));
+         if (width>texWidth) then
+         SetGUIElementWidth(elmBackgroundHandle, width);
+      end;
+   end;
+
+   var elmMyParent : Integer;
+   if (parent=0) or (modal) then
+   elmMyParent := _gui_GetLayer(cInterfaceLayer)
+   else
+   elmMyParent := parent;
+   var elmParentHandle : Integer = _gui_GetOrCreateElementExtAsImage(elementName, elmMyParent, hAlign, vAlign, posX, posY, sizeX, sizeY, 0);
+   var elmBackgroundHandle : Integer = _gui_GetOrCreateElementExtAsImage('background', elmParentHandle, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   var elmFrameHandle : Integer = _gui_GetOrCreateElementExtAsImage('frame', elmParentHandle, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   if (modal) then
+   begin
+      _gui_RootWindowAdd(elmParentHandle,cRootWindowModal);
+   end;
+
+   var elmHandle : Integer = _gui_CreateImage('', elmBackgroundHandle, gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   SetGUIAllowEvents(elmHandle, True, False, False);
+   elmHandle := _gui_CreateScrollLayer(elmBackgroundHandle, 'common.window.background', 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY);
+   ResizeTextureToWidth(elmHandle, 'material', sizeX);
+
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.snapshot.border.top', 'halParentLeft', 'valParentTop', 0, -11, sizeX, 0);
+   _gui_TileScaleElementToSize(elmHandle, sizeX, 0);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.snapshot.border.bottom', 'halParentLeft', 'valParentBottom', 0, 0, sizeX, 0);
+   _gui_TileScaleElementToSize(elmHandle, sizeX, 0);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.snapshot.border.left', 'halParentLeft', 'valParentTop', -11, 0, 0, sizeY);
+   _gui_TileScaleElementToSize(elmHandle, 0, sizeY);
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'gamepanel03.snapshot.border.right', 'halParentRight', 'valParentTop', 0, 0, 0, sizeY);
+   _gui_TileScaleElementToSize(elmHandle, 0, sizeY);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.decor.top', 'halParentMiddle', 'valParentTop', 0, -3-GetGUITextureHeight('gamepanel03.snapshot.decor.top'), 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.decor.bottom', 'halParentMiddle', 'valParentBottom', 0, 3, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.decor.left', 'halParentLeft', 'valParentMiddle', -GetGUITextureWidth('gamepanel03.snapshot.decor.left'), 0, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.decor.right', 'halParentRight', 'valParentMiddle', 0, 0, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.corner.top.left', 'halParentLeft', 'valParentTop', -18, -33, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.corner.top.right', 'halParentRight', 'valParentTop', -48, -33, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.corner.bottom.left', 'halParentLeft', 'valParentBottom', -18, -12, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'gamepanel03.snapshot.corner.bottom.right', 'halParentRight', 'valParentBottom', -48, -12, 0, 0, 0);
+
+   Result := elmParentHandle;
+end;
+
+// _gui_CreateTooltipWindow
+//
+function _gui_CreateTooltipWindow(parent : Integer; elementName, hAlign, vAlign : String; posX, posY, sizeX, sizeY : Integer; modal : Boolean) : Integer;
+begin
+   procedure ResizeTextureToWidth(elmHandle : Integer; elementName : String; width : Integer);
+   begin
+      var elmBackgroundHandle : Integer = GetGUIElementIndexByNameParent('material', elmHandle);
+      if (elmBackgroundHandle<>0) then
+      begin
+         var texWidth : Integer = GetGUITextureWidth(GetGUIElementMaterial(elmBackgroundHandle));
+         if (width>texWidth) then
+         SetGUIElementWidth(elmBackgroundHandle, width);
+      end;
+   end;
+
+   var elmMyParent : Integer;
+   if (parent=0) or (modal) then
+   elmMyParent := _gui_GetLayerI()
+   else
+   elmMyParent := parent;
+
+   var elmParentHandle : Integer = _gui_GetOrCreateElementExtAsImage(elementName, elmMyParent, hAlign, vAlign, posX, posY, sizeX, sizeY, 0);
+   var elmBackgroundHandle : Integer = _gui_GetOrCreateElementExtAsImage('background', elmParentHandle, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   var elmFrameHandle : Integer = _gui_GetOrCreateElementExtAsImage('frame', elmParentHandle, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   if (modal) then
+   _gui_RootWindowAdd(elmParentHandle,cRootWindowModal);
+
+   var elmHandle : Integer = _gui_CreateImage('eventlayer', elmBackgroundHandle, gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY, 0);
+   SetGUIAllowEvents(elmHandle, True, False, False);
+   elmHandle := _gui_CreateScrollLayer(elmBackgroundHandle, 'common.tooltip.new.background', 'halParentLeft', 'valParentTop', 0, 0, sizeX, sizeY);
+   ResizeTextureToWidth(elmHandle, 'material', sizeX);
+   if (sizeY>63) then
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'common.tooltip.new.border.left', 'halParentLeft', 'valParentTop', -33, 31, 0, sizeY-63);
+   if (sizeY>63) then
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'common.tooltip.new.border.right', 'halParentRight', 'valParentTop', -32, 31, 0, sizeY-63);
+   if (sizeX>63) then
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'common.tooltip.new.border.top', 'halParentLeft', 'valParentTop', 31, -33, sizeX-63, 0);
+   //_gui_TileScaleElementToSize(elmHandle, sizeX-32, 0);
+   if (sizeX>63) then
+   elmHandle := _gui_CreateScrollLayer(elmFrameHandle, 'common.tooltip.new.border.bottom', 'halParentLeft', 'valParentBottom', 31, -32, sizeX-63, 0);
+   //_gui_TileScaleElementToSize(elmHandle, sizeX-11*2, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'common.tooltip.new.corner.left.top', 'halParentLeft', 'valParentTop', -33, -33, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'common.tooltip.new.corner.right.top', 'halParentRight', 'valParentTop', -32, -33, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'common.tooltip.new.corner.left.bottom', 'halParentLeft', 'valParentBottom', -33, -32, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmFrameHandle, 'common.tooltip.new.corner.right.bottom', 'halParentRight', 'valParentBottom', -32, -32, 0, 0, 0);
+
+   // output
+   Result := elmParentHandle;
+end;
+
+// _gui_CreateBlinkElement
+//
+function _gui_CreateBlinkElement(elementName : String; parent : Integer; matName : String; bElementIsParent : Boolean; xOff, yOff, width, height : Integer) : Integer;
+begin
+   var elmHandle : Integer = 0;
+
+   Result := 0;
+   // common matName values : gc_gui_material_blink_btn_round, gc_gui_material_blink_btn_square
+
+   if (parent<>0) then
+   begin
+      var tmpWidth : Integer;
+      var tmpHeight : Integer;
+
+      if (width<>0) then
+      tmpWidth := width
+      else
+      tmpWidth := GetGUITextureWidth(matName);
+
+      if (height<>0) then
+      tmpHeight := height
+      else
+      tmpHeight := GetGUITextureHeight(matName);
+
+      if (bElementIsParent) then
+      begin
+         elmHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, parent);
+         SetGUIElementAlign(elmHandle, 'halParentLeft', 'valParentTop');
+         SetGUIElementMaterial(elmHandle, matName);
+         SetGUIAllowEvents(elmHandle, False, False, False);
+         SetGUIElementAllPositionRect(elmHandle, xOff, yOff, tmpWidth, tmpHeight);
+      end
+      else
+      begin
+         var posX, posY : Integer = 0;
+         GUIInvalidateParentPositions(parent);
+         GetGUIElementAlignPosition(parent, posX, posY);
+         posX := posX+xOff;
+         posY := posY+yOff;
+
+         var top : Integer = _gui_GetLayerI();
+         var elmBlinkerParent : Integer = GetGUIElementIndexByNameParent('blinker_top', top);
+         if (elmBlinkerParent=0) then
+         begin
+            elmBlinkerParent := AddNewElementByClassNameParent('blinker_top', 'TOSWDummyGuiControl', 0, top);
+            SetGUIElementAlign(elmBlinkerParent, 'halParentLeft', 'valParentTop');
+         end;
+         _gui_RootWindowAddExt(elmBlinkerParent,cRootWindowTop,cRootWindowAttrHighest,0,'');
+         SetGUIElementAllPositionRect(elmBlinkerParent, 0, 0, GetViewerWidth(), GetViewerHeight());
+         SetGUIElementVisible(elmBlinkerParent, true);
+
+         elmHandle := GetGUIElementIndexByNameParent(elementName, elmBlinkerParent);
+         if (elmHandle=0) then
+         begin
+            elmHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, elmBlinkerParent);
+            SetGUIElementAlign(elmHandle, 'halLeft', 'valTop');
+            SetGUIElementMaterial(elmHandle, matName);
+            SetGUIAllowEvents(elmHandle, False, False, False);
+         end;
+         SetGUIElementAllPositionRect(elmHandle, posX, posY, tmpWidth, tmpHeight);
+      end;
+
+      if (elmHandle <> 0) and (not _gui_GetFadeStarted(elmHandle)) then
+      begin
+         SetGUIElementVisible(elmHandle, True);
+
+         SetGUIElementFadeStart(elmHandle, false);
+         SetGUIElementFadeAutoDestroy(elmHandle, false);
+         SetGUIElementFadeInEnabled(elmHandle, true);
+         SetGUIElementFadeOutEnabled(elmHandle, true);
+         SetGUIElementFreezeEnabled(elmHandle, true);
+         SetGUIElementFadeCount(elmHandle, 10000);
+         SetGUIElementFadingTimes(elmHandle, 0.85, 0);
+         SetGUIElementFadeStart(elmHandle, true);
+      end;
+      Result := elmHandle;
+   end
+   else
+   ErrorLog('_gui_CreateBlinkRound, wrong parent');
+end;
+
+// _gui_RemoveBlinkElement
+//
+function _gui_RemoveBlinkElement(elementName : String; var flag : Boolean) : Boolean;
+begin
+   var elmHandle : Integer = _gui_GetWindow('blinker_top.'+elementName);
+   if (elmHandle<>0) then
+   begin
+      RemoveGUIElement(elmHandle);
+      flag := false;
+      Result := True;
+   end
+   else
+   Result := False;
+end;
+
+// _gui_BoolToInt
+//
+function _gui_BoolToInt(value : Boolean) : Integer;
+begin
+   if (value) then
+   Result := 1
+   else
+   Result := 0;
+end;
+
+// _gui_IntToBool
+//
+function _gui_IntToBool(value : Integer) : Boolean;
+begin
+   if (value=1) then
+   Result := True
+   else
+   Result := False;
+
+   if (value<>0) and (value<>1) then
+   ErrorLog('IntToBool : unknown value='+IntToStr(value));
+end;
+
+// _gui_ClampingMouseToScreen
+//
+procedure _gui_ClampingMouseToScreen;
+begin
+   if gProfile.clampingmouse and IsEngine then
+   begin
+      var sw : Integer = GUIGetScreenWidth;
+      var sh : Integer = GUIGetScreenHeight;
+
+      var x0, y0 : Integer;
+      GUIGetCursorPos(x0, y0);
+
+      var x1 : Integer = x0;
+      var y1 : Integer = y0;
+
+      if (x1<=0) then x1:=0;
+      if (x1>=sw-1) then x1:=sw-1;
+      if (y1<=0) then y1:=0;
+      if (y1>=sh-1) then y1:=sh-1;
+
+      if (x0<>x1) or (y0<>y1) then
+      GUISetCursorPos(x1, y1);
+   end;
+end;
+
+// _gu i_FixFogMode
+//
+procedure _gui_FixFogMode();
+begin
+   if (SameText(GetProjectOptionAsString('HDRType'), 'htNone')) and (GetFogEnable) then
+   SetFogEnable(False)
+   else
+   if (not SameText(GetProjectOptionAsString('HDRType'), 'htNone')) and (not GetFogEnable) then
+   SetFogEnable(True);
+end;
+
+// _gui_UpdateSettingsLowest
+//
+procedure _gui_UpdateSettingsLowest(value : Boolean);
+begin
+   if (value) then
+   begin
+      if (gIntRegister_CurGameMode=gc_GameModeTactics) or (gIntRegister_GUICurCastleMode=1) then
+      begin
+         if (DecalManagerGetDecalMaxDist<>gc_Settings_LowestDecalMaxDist) then
+         DecalManagerSetDecalMaxDist(gc_Settings_LowestDecalMaxDist);
+      end
+      else
+      begin
+         if (DecalManagerGetDecalMaxDist<>gc_Settings_LowestDecalMinDist) then
+         DecalManagerSetDecalMaxDist(gc_Settings_LowestDecalMinDist);
+      end;
+   end
+   else
+   begin
+      if (DecalManagerGetDecalMaxDist<>gc_Settings_LowestDecalMaxDist) then
+      DecalManagerSetDecalMaxDist(gc_Settings_LowestDecalMaxDist);
+   end;
+   //if (GetSkyDomeVisible()=value) then
+   //   SetSkyDomeVisible(not value);
+end;
+
+// _gui_RecalcSettingsLowest
+//
+procedure _gui_RecalcSettingsLowest(value : Boolean);
+begin
+   _gui_UpdateSettingsLowest(value);
+
+   var i : Integer;
+   var k : Integer;
+   for k:=0 to 1 do
+   for i:=0 to GetResourceLODActorLibraryCount-1 do
+   begin
+      var actorName : String = GetResourceLODActorLibraryLibActorNameByIndex(i);
+      var actorHnd : Integer = GetResourceLODActorLibraryLibActorHandleByIndex(i);
+      case actorName of
+         'shard_edge1_1', 'shard_edge1_2', 'shard_edge1_3', 'shard_edge1_4', 'shard_edge1_5', 'shard_edge1_6', 'shard_edge1_7', 'shard_edge1_8', 'shard_edge2_1', 'shard_edge2_2', 'shard_edge3_1', 'shard_edge3_2'
+         , 'housing' : begin
+            if (value) then
+            begin
+               var j, m : Integer;
+               var count : Integer = GetLibActorLODActorCollectionCountByHandle(actorHnd);
+               for j:=0 to count-1 do
+               begin
+                  var lodCount : Integer = GetLibActorLODActorCollectionCountLODByHandleByIndex(actorHnd, j);
+                  for m:=0 to lodCount-1 do
+                  begin
+                     var minDist : Float = GetLibActorLODActorCollectionDistanceMinByHandleByIndex(actorHnd, j, m);
+                     var maxDist : Float = GetLibActorLODActorCollectionDistanceMaxByHandleByIndex(actorHnd, j, m);
+                     if (m=0) then
+                     SetLibActorLODActorCollectionDistanceMinMaxByHandleByIndex(actorHnd, j, m, 0, 0)
+                     else
+                     SetLibActorLODActorCollectionDistanceMinMaxByHandleByIndex(actorHnd, j, m, 0, 1000);
+                  end;
+               end;
+            end
+            else
+            begin
+               LibActorReloadByHandle(actorHnd);
+            end;
+         end;
+         'edgeroots', 'bones', 'boat', 'stump', 'shell', 'ship', 'boulder', 'stones', 'reefs', 'seadebris', 'agava1', 'agava2', 'burdock', 'bush', 'fern', 'fern_f', 'flower', 'flower1', 'garden', 'grass1', 'grass2', 'haystack', 'lily1', 'lily2', 'lily3', 'lily4', 'lily5', 'mushroom1', 'mushroom2', 'mushroom3', 'mushroom4', 'mushroom5', 'mushroom6', 'reed', 'root', 'swamproot', 'waterplant' : begin
+            if (value) then
+            begin
+               var shaderID, shaderIDNoBones, shaderIDIM : Integer;
+               var matDisableInIMMode, noRenderInIMMode : Boolean;
+               var minDist, maxDist, minDistIM, maxDistIM : Float;
+               GetLibActorShaderLODDataByHandleByIndex(actorHnd, 0, shaderID, shaderIDNoBones, shaderIDIM, matDisableInIMMode, noRenderInIMMode, minDist, maxDist, minDistIM, maxDistIM);
+               shaderID := -1;
+               shaderIDNoBones := -1;
+               shaderIDIM := -2;
+               matDisableInIMMode := False;
+               noRenderInIMMode := True;
+               minDist := 0;
+               maxDist := 0;
+               minDistIM := 0;
+               maxDistIM := 0;
+               SetLibActorShaderLODDataByHandleByIndex(actorHnd, 0, shaderID, shaderIDNoBones, shaderIDIM, matDisableInIMMode, noRenderInIMMode, minDist, maxDist, minDistIM, maxDistIM);
+               SetLibActorDistanceMaxByHandle(actorHnd, 0);
+            end
+            else
+            begin
+               LibActorReloadByHandle(actorHnd);
+            end;
+            //LibActorRequestPoolsByHandle(actorHnd);
+         end;
+         'fir', 'leaftree', 'maple', 'oak', 'pine', 'palm', 'poplar', 'swampbush', 'waterplant', 'swamptreedead', 'swamptreeleaves', 'wilow', 'elftree', 'deadtree'
+         : begin
+            if (value) then
+            begin
+               var shaderID, shaderIDNoBones, shaderIDIM : Integer;
+               var matDisableInIMMode, noRenderInIMMode : Boolean;
+               var minDist, maxDist, minDistIM, maxDistIM : Float;
+               GetLibActorShaderLODDataByHandleByIndex(actorHnd, 0, shaderID, shaderIDNoBones, shaderIDIM, matDisableInIMMode, noRenderInIMMode, minDist, maxDist, minDistIM, maxDistIM);
+               shaderID := -1;
+               shaderIDNoBones := -1;
+               shaderIDIM := -2;
+               matDisableInIMMode := False;
+               noRenderInIMMode := True;
+               minDist := 0;
+               maxDist := 0;
+               minDistIM := 0;
+               maxDistIM := 0;
+               SetLibActorShaderLODDataByHandleByIndex(actorHnd, 0, shaderID, shaderIDNoBones, shaderIDIM, matDisableInIMMode, noRenderInIMMode, minDist, maxDist, minDistIM, maxDistIM);
+
+               var j : Integer;
+               for j:=0 to GetLibActorLODActorCollectionCountByHandle(actorHnd)-1 do
+               begin
+                  var impostered : Boolean = GetLibActorLODActorCollectionImpostoredByHandleByIndex(actorHnd, j);
+                  if (not impostered) then
+                  SetLibActorLODActorCollectionImpostoredByHandleByIndex(actorHnd, j, True);
+
+                  var fr, smpsz, light, ref, comp, magf, minf : Integer;
+                  var imblend, imalpha, impers, imrot : Boolean;
+                  var smpratbias, smpalpscale, bckr, bckg, bckb, bcka, boffx, boffy, boffz, alptresh, mindist : Float;
+                  GetLibActorImpDataByHndByInd(actorHnd, j, fr,smpsz,light,ref,comp,magf,minf,imblend,imalpha,impers,imrot,smpratbias,smpalpscale,bckr,bckg,bckb,bcka,boffx,boffy,boffz,alptresh,mindist);
+
+                  fr := 0;
+                  smpsz := 128;
+                  light := 2;
+                  //Samples
+                  //Coronas *
+                  smpratbias := 1.5;
+                  smpalpscale := 1;
+                  bckr := 0;
+                  bckg := 0;
+                  bckb := 0;
+                  bcka := 0;
+                  boffx := 0;
+                  boffy := -20;
+                  boffz := 0;
+                  alptresh := 0.3;
+                  mindist := 0;
+
+                  ref := 0;
+                  comp := 4;
+                  magf := 1;
+                  minf := 5;
+
+                  imblend := False;
+                  imalpha := True;
+                  impers := True;
+                  imrot := True;
+
+                  SetLibActorImpDataByHndByInd(actorHnd, j, fr,smpsz,light,ref,comp,magf,minf,imblend,imalpha,impers,imrot,smpratbias,smpalpscale,bckr,bckg,bckb,bcka,boffx,boffy,boffz,alptresh,mindist);
+               end;
+               //LibActorRequestPoolsByHandle(actorHnd);
+            end
+            else
+            begin
+               LibActorReloadByHandle(actorHnd);
+            end;
+         end;
+      end;
+   end;
+end;
+
+// _gui_SetProjectOptionsHDRType
+//
+procedure _gui_SetProjectOptionsHDRType(sValue : String);
+begin
+   if (GetProjectOptionAsString(gc_ProjOptionsHDRType)<>sValue) then
+   begin
+      if (sValue='htNone') then
+      SetProjectOptionAsString(gc_ProjOptionsHDRType, 'htNone')
+      else
+      begin
+         ViewerBufferRender;
+         SetProjectOptionAsString(gc_ProjOptionsHDRType, gVideoSettingsTmp.hdrtype);
+      end;
+      _gui_FixFogMode;
+   end;
+end;
+
+procedure _gui_DoRestrictOffsetHint(elmHandle,elmY,elmH : Integer);
+begin
+   var sizeElmHnd : Integer = GetGUIElementIndexByNameParent('size_dummy', elmHandle);
+
+   if (sizeElmHnd<>0) then
+   begin
+      var mX, mY : Integer;
+      var xOff, yOff : Integer = 0;
+      GetGUICurrentMouseCoord(mX, mY);
+      if (GetGUICursorByIndex()=6) then
+      begin
+         xOff := 40;
+         yOff := 80;
+      end
+      else
+      begin
+         xOff := 34;
+         yOff := 73;
+      end;
+
+      var realW : Integer = GetGUIElementWidth(sizeElmHnd);
+      var realH : Integer = GetGUIElementHeight(sizeElmHnd);
+      var restrictLeftOff : Integer = (mX+xOff)-45;
+      var restrictRightOff : Integer = GetViewerWidth()-(mX+xOff+realW)+24;
+      var restrictBottomOff : Integer;
+
+      if (elmY>(GetViewerHeight()-64)) and ((elmY+elmH)>(GetViewerHeight()-64)) then
+         restrictBottomOff := GetViewerHeight-(mY+yOff+realH)-22
+      else
+         restrictBottomOff := GetViewerHeight-(mY+yOff+realH)+26;
+
+      var restrictXOff, restrictYOff : Integer = 0;
+      if (restrictRightOff<0) then
+         restrictXOff := restrictRightOff;
+      if (restrictBottomOff<0) then
+         restrictYOff := restrictBottomOff;
+      if (restrictLeftOff<0) then
+         restrictXOff := -restrictLeftOff;
+
+      //added 120820
+      var posY : Integer = 0;
+      if (elmY>(GetViewerHeight-64)) and ((elmY+elmH)>(GetViewerHeight-64)) and (restrictYOff+yOff<0) then
+         posY := mY+yOff+restrictYOff
+      else
+         if ((elmY+yOff+realH)>GetViewerHeight) then
+            posY := elmY-realH+26+(mY-elmY)
+         else
+            posY := mY+yOff+restrictYOff;
+
+      SetGUIElementPositionX(elmHandle, mX+xOff+restrictXOff);
+      SetGUIElementPositionY(elmHandle, posY);
+   end;
+end;
+
+function _gui_CreateListBoxMiddleExt(const sName: String; const parent : Integer; itemsCount, inMaxUnscrollCount : Integer; x, y, width: Integer; eventState : String;hAlign : String): Integer;
+begin
+   var TmpHandle,elmHandle,width : Integer;
+   var maxUnscrollCount : Integer = inMaxUnscrollCount;
+   var cListBoxFont, ha: String;
+
+   if hAlign = '' then
+      ha := 'halParentMiddle'
+   else
+      ha := hAlign;
+
+   if (inMaxUnscrollCount<=0) then
+      maxUnscrollCount := itemsCount;
+
+   if width = 0 then
+      width := 164;
+
+   // - setup combobox
+   _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_small,'',cListBoxFont);
+
+   Result := GetGUIElementIndexByNameParent(sName, parent);
+   if (Result <> 0) then
+   RemoveGUIElement(Result);
+   //if (Result = 0) or GetGUIElementVisible(Result) then
+      Result := AddNewElementByClassNameParent(sName, 'TXGuiComboBox', 0, parent);
+   
+   //SetGUIElementVisible(Result, true);
+   SetGUIElementCursorByName(Result, 'crHand');
+   SetGUIElementPressState(Result, eventState);
+   SetGUIElementFont(Result, cListBoxFont);
+   SetGUIElementColor(Result, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+   SetGUIElementTextAlign(Result, 'halMiddle', 'valMiddle', 0, -1);
+   SetGUIElementAlign(Result, ha, 'valParentTop');
+   SetGUIElementPosition(Result, x, y+3-3);
+   SetGUIElementLogicRect(Result, width, 32+4);
+   SetGUIElementRect(Result, width, 32+4);
+   SetGUIElementMaterial(Result, 'common.slider.middle');
+
+   SetGUIListBoxSelectedMaterialName(Result, 'gamepanel03.combobox.line.selected'); // selected
+   SetGUIListBoxRowHeight(Result, GetGUIElementFontHeight(cListBoxFont) + 4);
+   SetGUIListBoxVisibleRows(Result, maxUnscrollCount);
+
+   SetGUIListBoxMouseTrack(Result, 3); // 1 - only text change color on hover, 2 - only material appears, 3 - text and material on hover
+   SetGUIListBoxMouseTrackMaterialName(Result, 'gamepanel03.combobox.line.hover'); // hover
+   SetGUIListBoxMouseTrackFontColor(Result, gc_gui_fontcolor_NormalR*1.25, gc_gui_fontcolor_NormalG*1.25, gc_gui_fontcolor_NormalB*1.25, 1);
+
+   // - setup combobox list
+   TmpHandle := GetGUIComboBoxListBoxHandle(Result);
+   SetGUIElementCursorByName(TmpHandle, 'crHand');
+   SetGUIElementAlign(TmpHandle, 'halParentMiddle', 'valParentTop');
+   SetGUIElementFont(TmpHandle, cListBoxFont);
+   SetGUIElementColor(TmpHandle, gc_gui_fontcolor_NormalR, gc_gui_fontcolor_NormalG, gc_gui_fontcolor_NormalB, 1);
+   SetGUIElementTextAlign(TmpHandle, 'halMiddle', 'valMiddle', 0, -5);
+   SetGUIElementMaterial(TmpHandle, 'common.window.background');
+   SetGUIElementAllPositionRect(TmpHandle, 0, GetGUIElementLogicHeight(Result)-6+4, GetGUIElementLogicWidth(Result)-14*2+24, (GetGUIElementFontHeight(cListBoxFont)+4)*(Min(itemsCount, maxUnscrollCount)) + 12);
+
+   // - setup scroller
+   if inMaxUnscrollCount >= 0 then
+   begin
+      var elmVScroll : Integer = GetGUIListBoxScrollerHandle(TmpHandle);
+
+      SetGUIElementMaterialOffset(elmVScroll, 0, 0);
+      SetGUIElementAllPositionRect(elmVScroll, 8, 0, 28, GetGUIElementHeight(TmpHandle));
+      SetGUIElementMaterial(elmVScroll, 'map.dialog.scroller.tile');
+      SetGUIScrollButtonSource(elmVScroll, 0, 'map.dialog.scroller.up', true);
+      SetGUIScrollButtonSource(elmVScroll, 2, 'map.dialog.scroller.down', true);
+      SetGUIScrollButtonSource(elmVScroll, 1, 'map.dialog.scroller.slider', true);
+   end;
+
+   _gui_CreateImage('icon', Result, 'gamepanel03.combobox.icon.normal', 'halParentRight', 'valParentTop', -17, 10, 0, 0, 0);
+
+   elmHandle := _gui_CreateImage('decor_left', Result, 'gamepanel03.combobox.decor.left', 'halParentLeft', 'valParentTop', -6-32, -4, 0, 0, 0);
+   SetGUIElementUserBlend(elmHandle, 0.5);
+   elmHandle := _gui_CreateImage('decor_right', Result, 'gamepanel03.combobox.decor.right', 'halParentLeft', 'valParentTop', -5+GetGUIElementWidth(Result), -4, 0, 0, 0);
+   SetGUIElementUserBlend(elmHandle, 0.5);
+end;
+
+function _gui_CreateListBoxMiddle(const sName: String; const parent : Integer; itemsCount, inMaxUnscrollCount : Integer; x, y: Integer; eventState : String): Integer;
+begin
+   Result := _gui_CreateListBoxMiddleExt(sName,parent,itemsCount,inMaxUnscrollCount,x,y,0,eventState,'');
+end;
+
+function _gui_CreateListBoxLeft(const sName: String; const parent : Integer; itemsCount: Integer; x, y: Integer; eventState : String): Integer;
+begin
+   Result := _gui_CreateListBoxMiddleExt(sName,parent,itemsCount,-1,x,y,0,eventState,'halParentLeft');
+end;
+
+function _gui_CreateListBox(const sName: String; const parent : Integer; itemsCount: Integer; x, y: Integer; eventState : String): Integer;
+begin
+   Result := _gui_CreateListBoxMiddleExt(sName,parent,itemsCount,-1,x,y,0,eventState,'');
+end;
+
+// _gui_InputBoxSetupNumCharFilter
+//
+procedure _gui_InputBoxSetupStrCharFilter(elmInputBox : Integer; bPickTextChild : Boolean; sCustomFilterString : String);
+begin
+   var elmTextInputBox : Integer;
+   if (bPickTextChild) then
+   elmTextInputBox := GetGUIElementIndexByNameParent('text', elmInputBox)
+   else
+   elmTextInputBox := elmInputBox;
+   var text : String = GetGUIElementText(elmTextInputBox);
+   var sFilterString : String = sCustomFilterString;
+   SetGUIElementEditFilter(elmTextInputBox, sFilterString);
+end;
+
+// _gui_InputBoxSetupNumCharFilter
+//
+procedure _gui_InputBoxSetupNumCharFilter(elmInputBox : Integer; bPickTextChild, bNegative : Boolean);
+begin
+   var elmTextInputBox : Integer;
+   if (bPickTextChild) then
+   elmTextInputBox := GetGUIElementIndexByNameParent('text', elmInputBox)
+   else
+   elmTextInputBox := elmInputBox;
+   var text : String = GetGUIElementText(elmTextInputBox);
+   log(text);
+   var sFilterString : String = gc_gui_charfilter_numeric;
+   if (bNegative) then
+   sFilterString := '-'+sFilterString;
+   SetGUIElementEditFilter(elmTextInputBox, sFilterString);
+end;
+
+
+function _gui_CreateTextStrip(elementName : String; parent : Integer; text, hAlign, vAlign : String; posX, posY : Integer) : Integer;
+begin
+   var fontHandle : String;
+   _gui_GetFont(gc_gui_fontsection_strategy,'Text',gc_gui_fontsize_default,'',fontHandle);
+   
+   var elmStripHandle : Integer = _gui_CreateImage(elementName, parent, 'element.strip.240', hAlign, vAlign, posX, posY, 0, 0, 0);
+   var elmTextHandle : Integer = _gui_CreateText('text', elmStripHandle, text, 'halParentLeft', 'valParentTop', -1, -4, GetGUIElementWidth(elmStripHandle), GetGUIElementHeight(elmStripHandle), 'halMiddle', 'valMiddle', fontHandle, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+   Result := elmStripHandle;
+end;
+
+
+function _gui_CreateSmallTextStrip(elementName : String; parent : Integer; text, hAlign, vAlign : String; posX, posY : Integer) : Integer;
+begin
+   var fontHandle : String;
+   _gui_GetFont(gc_gui_fontsection_strategy,'Text',gc_gui_fontsize_default,'',fontHandle);
+   
+   var elmStripHandle : Integer = _gui_CreateImage(elementName, parent, 'element.strip.148', hAlign, vAlign, posX, posY, 0, 0, 0);
+   var elmTextHandle : Integer = _gui_CreateText('text', elmStripHandle, text, 'halParentLeft', 'valParentTop', 0, -2, GetGUIElementWidth(elmStripHandle), GetGUIElementHeight(elmStripHandle), 'halMiddle', 'valMiddle', fontHandle, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+   Result := elmStripHandle;
+end;
+
+
+function _gui_CreateLargeTextStrip(elementName : String; parent : Integer; text, hAlign, vAlign : String; posX, posY : Integer) : Integer;
+begin
+   var fontHandle : String;
+   _gui_GetFont(gc_gui_fontsection_strategy,'Text',gc_gui_fontsize_default,'',fontHandle);
+   
+   var elmStripHandle : Integer = _gui_CreateImage(elementName, parent, 'element.strip.341', hAlign, vAlign, posX, posY, 0, 0, 0);
+   var elmTextHandle : Integer = _gui_CreateText('text', elmStripHandle, text, 'halParentLeft', 'valParentTop', 0, -3, GetGUIElementWidth(elmStripHandle), GetGUIElementHeight(elmStripHandle), 'halMiddle', 'valMiddle', fontHandle, gc_gui_fontcolor_HeaderRedR, gc_gui_fontcolor_HeaderRedG, gc_gui_fontcolor_HeaderRedB, 1);
+   Result := elmStripHandle;
+end;
+
+
+function _gui_CreateSlider(SliderID : String; inValue : Float; text : String; parentElement : Integer; hAlign, vAlign : String; posX, posY : Integer; eventState, hint : String; tPosX, tPosY : Integer; thAlign, tvAlign, font : String; r, g, b, a : Float) : Integer;
+begin
+   var value : Float = Clamp(inValue, 0, 1);
+   var sliderWidth : Integer = 240;
+   var elmSliderHandle : Integer = _gui_CreateImage('slider', parentElement, gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', posX, posY, sliderWidth, 45, 0);
+   SetGUIElementPressState(elmSliderHandle, eventState); // used outside
+   SetGUIElementStringTag(elmSliderHandle, sliderID);
+   var elmHandle : Integer = _gui_CreateImage('', elmSliderHandle, 'common.slider.left.end', 'halParentLeft', 'valParentTop', 0, 0, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmSliderHandle, 'common.slider.right.end', 'halParentLeft', 'valParentTop', sliderWidth-GetGUITextureWidth('common.slider.right.end'), 0, 0, 0, 0);
+   elmHandle := _gui_CreateScrollLayer(elmSliderHandle, 'common.slider.middle', 'halParentLeft', 'valParentTop', GetGUITextureWidth('common.slider.left.end'), 0, sliderWidth-GetGUITextureWidth('common.slider.left.end')-GetGUITextureWidth('common.slider.right.end'), 0);
+   SetGUIAllowEvents(elmHandle, True, False, False);
+   SetGUIElementHint(elmHandle, hint);
+   var sliderSlideWidth : Integer = sliderWidth-46;
+   elmHandle := _gui_CreateImage('', elmSliderHandle, 'common.slider.slide.left.end', 'halParentLeft', 'valParentTop', 24, 35, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmSliderHandle, 'common.slider.slide.right.end', 'halParentLeft', 'valParentTop', 23+sliderSlideWidth-GetGUITextureWidth('common.slider.slide.right.end')-1, 35, 0, 0, 0);
+   elmHandle := _gui_CreateScrollLayer(elmSliderHandle, 'common.slider.slide.middle', 'halParentLeft', 'valParentTop', 23+GetGUITextureWidth('common.slider.slide.left.end'), 36, sliderSlideWidth-GetGUITextureWidth('common.slider.slide.left.end')-GetGUITextureWidth('common.slider.slide.right.end'), 0);
+   var elmBtnHandle : Integer = _gui_CreateButton('lineSlider', elmSliderHandle, '', gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', GetGUIElementPositionX(elmHandle), 32, GetGUIElementWidth(elmHandle), 12, eventState, '', 0);
+   var elmSliderBtnHandle : Integer = _gui_CreateButton('btnSlider', elmSliderHandle, '', 'common.slider.btn', 'halParentLeft', 'valParentTop', 0, 26, 0, 0, eventState, hint, 0);
+   var sliderXOffset : Integer = 34;
+   sliderWidth := sliderWidth-97;
+   SetGUIElementPositionX(elmSliderBtnHandle, sliderXOffset+round(value*sliderWidth));
+   var elmSliderText : Integer = _gui_CreateText('textSlider', elmSliderHandle, text, 'halParentLeft', 'valParentTop', tPosX, tPosY, sliderWidth, 35, thAlign, tvAlign, font, r, g, b, a);
+   Result := elmSliderHandle;
+end;
+
+
+function _gui_ModifySliderValueByMouseCoord(elmSliderHandle : Integer) : Float;
+begin
+   Result := 0;
+   var x, y : Integer;
+   GUIInvalidateParentPositions(elmSliderHandle);
+   GetGUIElementAlignPosition(elmSliderHandle, x, y);
+   var sliderWidth : Integer = GetGUIElementWidth(elmSliderHandle)-97;
+   var sliderXOffset : Integer = 34;
+   var minPosX : Integer = x+sliderXOffset;
+   var maxPosX : Integer = minPosX+sliderWidth;
+   var mX, my : Integer;
+   GetGUICurrentMouseCoord(mX, mY);
+   mX := mX-GetIntValueByName('SliderElementDragX');
+   var value : Float;
+   if mX<=minPosX then
+      value := 0
+   else
+   begin
+      if mX>=maxPosX then
+         value := 1
+      else
+         value := ((mX-minPosX)/(maxPosX-minPosX));
+   end;
+   var elmSliderBtnHandle : Integer = GetGUIElementIndexByNameParent('btnSlider', elmSliderHandle);
+   SetGUIElementPositionX(elmSliderBtnHandle, sliderXOffset+round(value*sliderWidth));
+   Result := value;
+end;
+
+
+procedure _gui_SetSliderText(elmSliderHandle : Integer; text : String);
+begin
+   var elmSliderText : Integer = GetGUIElementIndexByNameParent('textSlider', elmSliderHandle);
+   var tmpText : String = text;
+   const cDelimiterChar = 124; // 124 == |
+   const cQuoteChar = 34; // 34 == "
+   if (IsDelimiterCharExists(text, cDelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(text, cDelimiterChar, cQuoteChar);
+      if (delimiterStringCount>=2) then
+      begin
+         var tableID : String = GetDelimiterStringByIndex(text, cDelimiterChar, cQuoteChar, 0);
+         var keyID : String = GetDelimiterStringByIndex(text, cDelimiterChar, cQuoteChar, 1);
+         if (tableID<>'') and (keyID<>'') then
+         begin
+            var sTmpText : String = GetLocaleTableListItemByID(tableID, keyID);
+            if (sTmpText<>'') then
+            tmpText := sTmpText;
+         end;
+      end;
+   end;
+   SetGUIElementText(elmSliderText, tmpText);
+   SetGUIElementTextFormatted(elmSliderText, True);
+end;
+
+
+function _gui_CreateSimpleSlider(SliderID : String; inValue : Float; parentElement : Integer; hAlign, vAlign : String; posX, posY : Integer; eventState : String) : Integer;
+begin
+   posX := posX-24;
+   var value : Float = Clamp(inValue, 0, 1);
+   var sliderWidth : Integer = 240;
+   var sliderSlideWidth : Integer = sliderWidth-46;
+   var elmSliderHandle : Integer = _gui_CreateImage('slider', parentElement, gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', posX, posY, sliderWidth, 45, 0);
+   SetGUIElementPressState(elmSliderHandle, eventState); // used outside
+   SetGUIElementStringTag(elmSliderHandle, sliderID);
+   var elmHandle : Integer = _gui_CreateImage('', elmSliderHandle, 'common.slider.slide.left.end', 'halParentLeft', 'valParentTop', 24, 35, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmSliderHandle, 'common.slider.slide.right.end', 'halParentLeft', 'valParentTop', 23+sliderSlideWidth-GetGUITextureWidth('common.slider.slide.right.end')-1, 35, 0, 0, 0);
+   elmHandle := _gui_CreateScrollLayer(elmSliderHandle, 'common.slider.slide.middle', 'halParentLeft', 'valParentTop', 23+GetGUITextureWidth('common.slider.slide.left.end'), 36, sliderSlideWidth-GetGUITextureWidth('common.slider.slide.left.end')-GetGUITextureWidth('common.slider.slide.right.end'), 0);
+   var elmBtnHandle : Integer = _gui_CreateButton('lineSlider', elmSliderHandle, '', gc_gui_material_blank_0, 'halParentLeft', 'valParentTop', GetGUIElementPositionX(elmHandle), 32, GetGUIElementWidth(elmHandle), 12, eventState, '', 0);
+   var elmSliderBtnHandle : Integer = _gui_CreateButton('btnSlider', elmSliderHandle, '', 'common.slider.btn', 'halParentLeft', 'valParentTop', 0, 26, 0, 0, eventState, '', 0);
+   var sliderXOffset : Integer = 34;
+   sliderSlideWidth := sliderWidth-97;
+   SetGUIElementPositionX(elmSliderBtnHandle, sliderXOffset+round(value*sliderSlideWidth));
+   Result := elmSliderHandle;
+end;
+
+
+function _gui_CreateIntSlider(SliderID : String; parentElement : Integer; hAlign, vAlign : String; posX, posY, sliderWidth : Integer; eventState, hint : String; tPosX, tPosY : Integer; thAlign, tvAlign, font : String; r, g, b, a : Float) : Integer;
+begin
+   var elmSliderHandle : Integer = _gui_CreateImage('slider', parentElement, gc_gui_material_blank_0, hAlign, vAlign, posX, posY, sliderWidth, 45, 0);
+   SetGUIElementPressState(elmSliderHandle, eventState); // used outside
+   SetGUIElementStringTag(elmSliderHandle, sliderID);
+   var elmHandle : Integer = _gui_CreateImage('', elmSliderHandle, 'common.slider.left.end', 'halParentLeft', 'valParentTop', 0, 0, 0, 0, 0);
+   elmHandle := _gui_CreateImage('', elmSliderHandle, 'common.slider.right.end', 'halParentLeft', 'valParentTop', sliderWidth-GetGUITextureWidth('common.slider.right.end'), 0, 0, 0, 0);
+   elmHandle := _gui_CreateScrollLayer(elmSliderHandle, 'common.slider.middle', 'halParentLeft', 'valParentTop', GetGUITextureWidth('common.slider.left.end'), 0, sliderWidth-GetGUITextureWidth('common.slider.left.end')-GetGUITextureWidth('common.slider.right.end'), 0);
+   SetGUIAllowEvents(elmHandle, True, False, False);
+   SetGUIElementHint(elmHandle, hint);
+   var elmBtnArrowLeftHandle : Integer = _gui_CreateButton('arrowSliderLeft', elmSliderHandle, '', 'common.scroller.left', 'halParentLeft', 'valParentTop', -6, -4, 0, 0, eventState, hint, 0);
+   var elmBtnArrowRightHandle : Integer = _gui_CreateButton('arrowSliderRight', elmSliderHandle, '', 'common.scroller.right', 'halParentLeft', 'valParentTop', -6+sliderWidth-31, -4, 0, 0, eventState, hint, 0);
+   var elmSliderText : Integer = _gui_CreateText('textSlider', elmSliderHandle, '', 'halParentLeft', 'valParentTop', tPosX, tPosY, sliderWidth-97, 35, thAlign, tvAlign, font, r, g, b, a);
+   Result := elmSliderHandle;
+end;
+
+
+function _gui_SetSliderIntValue(elmSliderHandle : Integer; value, maxValue : Integer; text : String; cycle : Boolean) : Integer;
+begin
+   Result := 0;
+   var elmSliderText : Integer = GetGUIElementIndexByNameParent('textSlider', elmSliderHandle);
+   if (cycle) then
+   begin
+      if (value>=maxValue) then
+      value := 0
+      else
+      if (value<0) then
+      value := maxValue-1;
+   end;
+   const cDelimiterChar = 124; // 124 == |
+   const cQuoteChar = 34; // 34 == "
+   var tmpText : String = text;
+   if (IsDelimiterCharExists(text, cDelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(text, cDelimiterChar, cQuoteChar);
+      if (delimiterStringCount>=2) then
+      begin
+         var tableID : String = GetDelimiterStringByIndex(text, cDelimiterChar, cQuoteChar, 0);
+         var keyID : String = GetDelimiterStringByIndex(text, cDelimiterChar, cQuoteChar, 1);
+         if (tableID<>'') and (keyID<>'') then
+         begin
+            var sTmpText : String = GetLocaleTableListItemByID(tableID, keyID);
+            if (sTmpText<>'') then
+            tmpText := sTmpText;
+         end;
+      end;
+   end;
+   SetGUIElementText(elmSliderText, tmpText);
+   SetGUIElementTextFormatted(elmSliderText, True);
+
+   // Update arrows
+   if (not cycle) then
+   begin
+      var elmBtnArrowLeftHandle : Integer = GetGUIElementIndexByNameParent('arrowSliderLeft', elmSliderHandle);
+      var elmBtnArrowRightHandle : Integer = GetGUIElementIndexByNameParent('arrowSliderRight', elmSliderHandle);
+      if (value<=0) and GetGUIElementEnabled(elmBtnArrowLeftHandle) then
+      SetGUIElementEnabled(elmBtnArrowLeftHandle, False);
+      if (value>0) and (not GetGUIElementEnabled(elmBtnArrowLeftHandle)) then
+      SetGUIElementEnabled(elmBtnArrowLeftHandle, True);
+      if (value>=(maxValue-1)) and GetGUIElementEnabled(elmBtnArrowRightHandle) then
+      SetGUIElementEnabled(elmBtnArrowRightHandle, False);
+      if (value<(maxValue-1)) and (not GetGUIElementEnabled(elmBtnArrowRightHandle)) then
+      SetGUIElementEnabled(elmBtnArrowRightHandle, True);
+   end;
+   Result := value;
+end;
+
+
+function _gui_CreateSimpleIntSlider(SliderID : String; parentElement : Integer; hAlign, vAlign : String; posX, posY, sliderWidth : Integer; eventState, hint : String; btnStyle : Integer) : Integer;
+begin
+   var elmSliderHandle : Integer = _gui_CreateImage('slider', parentElement, gc_gui_material_blank_0, hAlign, vAlign, posX, posY, sliderWidth, 45, 0);
+   SetGUIElementPressState(elmSliderHandle, eventState); // used outside
+   SetGUIElementStringTag(elmSliderHandle, sliderID);
+   if (btnStyle=1) then
+   begin
+      var elmBtnArrowLeftHandle : Integer = _gui_CreateButton('arrowSliderLeft', elmSliderHandle, '', 'gamepanel01.btn.arrow.left', 'halParentLeft', 'valParentTop', -GetGUITextureWidth('gamepanel01.btn.arrow.left.normal'), 0, 0, 0, eventState, '', 0);
+      var elmBtnArrowRightHandle : Integer = _gui_CreateButton('arrowSliderRight', elmSliderHandle, '', 'gamepanel01.btn.arrow.right', 'halParentRight', 'valParentTop', {-GetGUITextureWidth('gamepanel01.btn.arrow.right')}0, 0, 0, 0, eventState, '', 0);
+   end
+   else
+   begin
+      var elmBtnArrowLeftHandle : Integer = _gui_CreateButton('arrowSliderLeft', elmSliderHandle, '', 'common.scroller.left', 'halParentLeft', 'valParentTop', -6, -4, 0, 0, eventState, hint, 0);
+      var elmBtnArrowRightHandle : Integer = _gui_CreateButton('arrowSliderRight', elmSliderHandle, '', 'common.scroller.right', 'halParentLeft', 'valParentTop', -6+sliderWidth-31, -4, 0, 0, eventState, hint, 0);
+   end;
+   Result := elmSliderHandle;
+end;
+
+{procedure _gui_GetElementAlignment(hAlign, vAlign : String; var alignment : TElementAlign);
+begin
+   if SameText(hAlign, 'halMiddle') and SameText(vAlign, 'valMiddle') then
+      alignment := gc_gui_align_middle
+   else
+   if SameText(hAlign, 'halLeft') and SameText(vAlign, 'valTop') then
+      alignment := gc_gui_align_lt
+   else
+   if SameText(hAlign, 'halLeft') and SameText(vAlign, 'valMiddle') then
+      alignment := gc_gui_align_lm
+   else
+   if SameText(hAlign, 'halRight') and SameText(vAlign, 'valBottom') then
+      alignment := gc_gui_align_rb
+   else
+   if SameText(hAlign, 'halRight') and SameText(vAlign, 'valMiddle') then
+      alignment := gc_gui_align_rm
+   else
+   if SameText(hAlign, 'halRight') and SameText(vAlign, 'valTop') then
+      alignment := gc_gui_align_rt
+   else
+   if SameText(hAlign, 'halMiddle') and SameText(vAlign, 'valTop') then
+      alignment := gc_gui_align_mt
+   else
+   if SameText(hAlign, 'halMiddle') and SameText(vAlign, 'valBottom') then
+      alignment := gc_gui_align_mb
+   else
+   if SameText(hAlign, 'halParentLeft') and SameText(vAlign, 'valParentTop') then
+      alignment := gc_gui_align_parent_lt
+   else
+   if SameText(hAlign, 'halParentLeft') and SameText(vAlign, 'valParentMiddle') then
+      alignment := gc_gui_align_parent_lm
+   else
+   if SameText(hAlign, 'halParentLeft') and SameText(vAlign, 'valParentBottom') then
+      alignment := gc_gui_align_parent_lb
+   else
+   if SameText(hAlign, 'halParentMiddle') and SameText(vAlign, 'valParentTop') then
+      alignment := gc_gui_align_parent_mt
+   else
+   if SameText(hAlign, 'halParentRight') and SameText(vAlign, 'valParentTop') then
+      alignment := gc_gui_align_parent_rt
+   else
+   if SameText(hAlign, 'halParentRight') and SameText(vAlign, 'valParentBottom') then
+      alignment := gc_gui_align_parent_rb
+   else
+   if SameText(hAlign, 'halParentRight') and SameText(vAlign, 'valParentMiddle') then
+      alignment := gc_gui_align_parent_rm
+   else
+   if SameText(hAlign, 'halParentMiddle') and SameText(vAlign, 'valParentBottom') then
+      alignment := gc_gui_align_parent_mb
+   else
+      alignment := gc_gui_align_parent_m;
+end;}
+
+function _gui_GetWindowParserByName(name : String) : Integer;
+begin
+   Result := 0;
+   
+   var i, pWindow : Integer;
+   for i := 0 to ParserGetCountByHandle(gWindows.handle)-1 do
+   begin
+      pWindow := ParserSelectByHandleByIndex(gWindows.handle, i);
+      if SameText(ParserGetValueByKeyByHandle(pWindow, 'Name'), name) then
+      begin
+         Result := pWindow;
+         break;
+      end;
+   end;
+end;
+	  
+procedure _gui_CreateAstralChatButton(parentHandle, posX, posY : Integer);
+begin
+   const cBtnOpenChatTag = 104;
+   var material : String = 'map.hideminimap.background';
+   var elmOpenButton : Integer = _gui_CreateImage('room_open_chat_button', parentHandle, material, 'halParentRight', 'valParentTop', posX, posY, GetGUITextureWidth(material), GetGUITextureHeight(material), 0);
+   var elmBtnHandle : Integer = _gui_CreateButton('btnRoomOpen', elmOpenButton, '', 'gamepanel03.btn.sort.down', 'halParentMiddle', 'valParentMiddle', 0, 0, 0, 0, 'EventAstralChat', 'menu|astral_chat', cBtnOpenChatTag);
+   SetGUIElementUserBlend(elmOpenButton, 0.8);
+end;
+
+
+_gui_ReloadFontsConfig();
+	  

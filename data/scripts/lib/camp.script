@@ -1,0 +1,409 @@
+//
+// camp.script
+//
+
+// _camp_player_Clear
+//
+procedure _camp_player_Clear(var campPlayer : TCampPlayer);
+begin
+   var common : Integer = _misc_ParserGetOrCreateByKey('Common',false);
+   var commonInnerBuildings : Integer = ParserSelectByHandleByKey(common, 'InnerBuildings.InnerBuildings');
+
+   var i : Integer;
+   var commonInnerBuildingsCount : Integer = ParserGetCountByHandle(commonInnerBuildings);
+   if (commonInnerBuildingsCount>gc_MaxCampPlayerBuild) then
+   begin
+      commonInnerBuildingsCount := gc_MaxCampPlayerBuild;
+      ErrorLog('error _camp_player_Clear : maximum limit to the size of an array TCampPlayer.arrbuilds[gc_MaxCampPlayerBuild]');
+   end;
+
+   for i:=1 to commonInnerBuildingsCount-1 do
+   begin
+      var commonInnerBuilding : Integer = ParserSelectByHandleByIndex(commonInnerBuildings, i);
+      var level : Integer = ParserGetIntValueByKeyByHandle(commonInnerBuilding, 'Level');
+      if (level>0) then
+          campPlayer.arrbuilds[i] := 0
+      else
+          campPlayer.arrbuilds[i] := 1;
+   end;
+
+   campPlayer.firstmeet := false;
+   campPlayer.shardmeet := false;
+   campPlayer.ingame := true;
+   campPlayer.treaty := 0;
+   campPlayer.treaty1 :=0;
+   campPlayer.energybonus := 0;
+   campPlayer.energypenalty := 0;
+   campPlayer.energylose := 0;
+   campPlayer.energydrain := 0;
+   campPlayer.sizebonus := 0;
+   campPlayer.score := 0;
+   campPlayer.mapscore := 0;
+   campPlayer.questscore := 0;
+   campPlayer.dipscore := 0;
+   campPlayer.killscore := 0;
+   campPlayer.ipprofile := 0;
+   campPlayer.mainshard := -1;
+   campPlayer.human := false;
+   campPlayer.lord := false;
+   campPlayer.buildadded := false;
+end;
+
+// _camp_player_GetAttitude
+//
+function _camp_player_GetAttitude(campPlayer : TCampPlayer) : Integer;
+begin
+   var i : Integer;
+   Result := campPlayer.arrAttitude[0];
+
+   var sensitivity : Integer = 100;
+   var pPlayer : Integer = ParserSelectByHandleByIndex(gPrototypeData.players.handle, campPlayer.ipProfile);
+   if (pPlayer <> 0) and gProfile.improvedai then
+      sensitivity := ParserGetIntValueByKeyByHandle(pPlayer, 'Sensitivity');
+
+   if sensitivity <= 0 then
+      Result := 0
+   else
+   begin
+      Result := Result * sensitivity div 100;
+      
+      if campPlayer.karma >= 20 then
+         Result := Result + (gCampaign.arrCampPlayers[0].karma div 10) * (campPlayer.karma div 10) div 5;
+
+      if campPlayer.karma <= -20 then
+         Result := Result + (gCampaign.arrCampPlayers[0].karma div 10) * (campPlayer.karma div 10) div 10;
+
+      if (Abs(gCampaign.arrCampPlayers[0].karma) < 20) and (Abs(campPlayer.karma) < 20) then
+         Result := Result + 5 - Round(Abs(gCampaign.arrCampPlayers[0].karma - campPlayer.karma)) div 10;
+
+      for i := 1 to gc_MaxCampPlayer-1 do
+         if (i <> campPlayer.ipProfile) and gCampaign.arrCampPlayers[i].inGame then
+            Result := Result + (gCampaign.arrCampPlayers[i].arrAttitude[0] div 10) * (campPlayer.arrAttitude[i] div 50);
+   end;
+end;
+
+// _camp_player_GetEnergyIncome
+//
+function _camp_player_GetEnergyIncome(campPlayer : TCampPlayer) : Integer;
+begin
+   var ind : Integer = campPlayer.ipProfile;
+   Result := 0;
+   var i : Integer;
+
+   for i := 0 to gc_MaxShards-1 do
+   if gShards[i].ipPlayer = ind then
+   Result := Result + gShards[i].income;
+
+   Result := Result - (Result * campPlayer.energyLose) div 100;
+   Result := Result - campPlayer.energyDrain;
+
+   if Result < 0 then
+   Result := 0;
+end;
+
+// _camp_player_IsBuildingAllowed
+//
+function _camp_player_IsBuildingAllowed(campPlayer : TCampPlayer; buildID : Integer) : Integer;
+begin
+   var pInnerBuildings : Integer = gPrototypeData.innerBuildings.handle;
+   var pInnerBuilding : Integer = ParserSelectByHandleByIndex(pInnerBuildings, buildID);
+   var level : Integer = ParserGetIntValueByKeyByHandle(pInnerBuilding, 'Level');
+   var i : Integer;
+
+   if (level < 1) or (campPlayer.arrBuilds[buildID] > 0) then
+   Result := 2
+   else
+   begin
+      Result := 1;
+      var pReqBuildings : Integer = ParserSelectByHandleByKey(pInnerBuilding, 'RequiredBuildings');
+
+      for i := ParserGetCountByHandle(pReqBuildings)-1 downto 0 do
+      begin
+         var pReqBuilding : Integer = ParserSelectByHandleByIndex(pReqBuildings, i);
+         var rBuildID : Integer = ParserGetIntValueByKeyByHandle(pReqBuilding, 'BuildingID');
+
+         if _camp_player_IsBuildingAllowed(campPlayer, rBuildID) < 2 then
+         Result := 0;
+      end;
+   end;
+end;
+
+// _camp_player_AddBuild
+//
+procedure _camp_player_AddBuild(var campPlayer : TCampPlayer);
+begin
+   var i, j : Integer;
+   var minLevel : Integer = 20;
+
+   var pInnerBuildings : Integer = gPrototypeData.innerBuildings.handle;
+   var pPlayers : Integer = gPrototypeData.players.handle;
+   var pPlayer : Integer = ParserSelectByHandleByIndex(pPlayers, campPlayer.ipProfile);
+   var pPlBuildings : Integer = ParserSelectByHandleByKey(pPlayer, 'Buildings');
+
+   if campPlayer.ipProfile < 16 then
+   begin
+      for i := ParserGetCountByHandle(pPlBuildings)-1 downto 0 do
+      begin
+         var pPlBuilding : Integer = ParserSelectByHandleByIndex(pPlBuildings, i);
+         var buildID : Integer = ParserGetIntValueByKeyByHandle(pPlBuilding, 'BuildingID');
+
+         var pInnerBuilding : Integer = ParserSelectByHandleByIndex(pInnerBuildings, buildID);
+         var buildLevel : Integer = ParserGetIntValueByKeyByHandle(pInnerBuilding, 'Level');
+
+         if (campPlayer.arrBuilds[buildID] = 0) and (buildLevel < minLevel) then
+         minLevel := buildLevel;
+      end;
+   end;
+
+   _rand_ClearRoll;
+   var count : Integer = 0;
+   for i := 0 to ParserGetCountByHandle(pInnerBuildings)-1 do
+   begin
+      var pInnerBuilding : Integer = ParserSelectByHandleByIndex(pInnerBuildings, i);
+
+      if _camp_player_IsBuildingAllowed(campPlayer, i) = 1 then
+      begin
+         gArrRollerN[count] := i;
+         gArrRollerP[count] := 10;
+
+         if campPlayer.ipProfile < 16 then
+         begin
+            for j := ParserGetCountByHandle(pPlBuildings)-1 downto 0 do
+            begin
+               var pPlBuilding : Integer = ParserSelectByHandleByIndex(pPlBuildings, j);
+               var buildID : Integer = ParserGetIntValueByKeyByHandle(pPlBuilding, 'BuildingID');
+
+               if buildID = i then
+               gArrRollerP[count] := gArrRollerP[count] + 100
+               else
+               begin
+                  var pPlInnerBuilding : Integer = ParserSelectByHandleByIndex(pInnerBuildings, buildID);
+                  var level : Integer = ParserGetIntValueByKeyByHandle(pPlInnerBuilding, 'Level');
+
+                  IntRegister0 := i;
+                  IntRegister1 := buildID;
+                  MapExecuteState('map.IsParentBuilding');
+                  var parent : Integer = IntRegister2;
+
+                  if (level = minLevel) and (parent > 0) then
+                  gArrRollerP[count] := gArrRollerP[count] + 20;
+               end;
+            end;
+
+            var plKarma : Integer = ParserGetIntValueByKeyByHandle(pPlayer, 'Karma');
+            if plKarma <> 0 then
+            begin
+               var pBuildAbilities : Integer = ParserSelectByHandleByKey(pInnerBuilding, 'Abilities');
+               for j := ParserGetCountByHandle(pBuildAbilities)-1 downto 0 do
+               begin
+                  var pBuildAbility : Integer = ParserSelectByHandleByIndex(pBuildAbilities, j);
+                  if ParserGetIntValueByKeyByHandle(pBuildAbility, 'AbilityID') = 46 then
+                  begin
+                     var buildKarma : Integer = ParserGetIntValueByKeyByHandle(pBuildAbility, 'Param1');
+
+                     if buildKarma * plKarma > 0 then
+                     gArrRollerP[count] := gArrRollerP[count] * 2
+                     else
+                     gArrRollerP[count] := gArrRollerP[count] div 3;
+                  end;
+               end;
+            end;
+         end;
+
+         count := count + 1;
+      end;
+   end;
+
+   if count > 0 then
+   begin
+      var pick : Integer = _rand_Roll(false);
+      campPlayer.arrBuilds[pick] := 1;
+   end;
+end;
+
+// _camp_player_GetWorldSize
+//
+function _camp_player_GetWorldSize(campPlayer : TCampPlayer) : Integer;
+begin
+   var i : Integer;
+   var main : Integer = campPlayer.mainshard;
+   Result := campPlayer.sizeBonus;
+   
+   if campPlayer.human then
+   begin
+      for i := 0 to gc_MaxShards-1 do
+      if (i <> main) and (gShards[i].ipPlayer = 0) then
+      Result := Result + 1;
+   end
+   else
+   begin
+      var buildCount : Integer = 0;
+      for i := 0 to gc_MaxCampPlayerBuild-1 do
+      if campPlayer.arrBuilds[i] > 0 then
+      begin
+         var pInnerBuilding : Integer = ParserSelectByHandleByIndex(gPrototypeData.innerBuildings.handle, i);
+         var level : Integer = ParserGetIntValueByKeyByHandle(pInnerBuilding, 'Level');
+         
+         if level > 0 then
+         buildCount := buildCount + 1;
+      end;
+      
+      Result := buildCount div 3 - Result;
+   end;
+end;
+
+// _camp_CampaignClear
+//
+procedure _camp_CampaignClear;
+begin
+   gCampaign.currentTurn := 0;
+   gCampaign.activeShard := -1;
+   gCampaign.activePlayer := 0;
+   gCampaign.activeLord := 0;
+   gCampaign.difficulty := 0;
+   gCampaign.maxShards := 0;
+   gCampaign.timeBonus := 0;
+   gCampaign.reserv := 0;
+   gCampaign.finished := false;
+   var i : Integer;
+
+   for i := 0 to gc_MaxCampaignJournal-1 do
+   gCampaign.arrJournals[i] := 0;
+
+   gCampaign.arrJournals[980] := -1;
+
+   var pCampDiff : Integer = ParserSelectByHandleByIndex(gPrototypeData.campDifficulties.handle, gProfile.difficulty);
+   var turnLimit : Integer = ParserGetIntValueByKeyByHandle(pCampDiff, 'TurnLimit');
+   gCampaign.turnLimit := turnLimit;
+   gCampaign.minDifficulty := gProfile.difficulty;
+
+   for i := 0 to gc_MaxCampaignDialog-1 do
+   gCampaign.arrDialogs[i] := 0;
+
+   for i := 0 to gc_MaxDialogAllowed do
+   gCampaign.arrDialogs[i] := 1;
+
+   for i := 0 to gc_MaxCampaignItem-1 do
+   gCampaign.arrItems[i] := 0;
+
+   for i := 0 to gc_MaxCampaignQuest-1 do
+   begin
+      gCampaign.arrQuests[i].questIndex := 0;
+      gCampaign.arrQuests[i].status := 0;
+      gCampaign.arrQuests[i].provIndex := 0;
+      gCampaign.arrQuests[i].siteIndex := 0;
+   end;
+
+   for i := 0 to gc_MaxCampaignEvent-1 do
+   gCampaign.arrEvents[i] := 0;
+end;
+
+// _camp_AddEvent
+//
+procedure _camp_AddEvent(index : Integer);
+begin
+   var i : Integer;
+   var f : Boolean = false;
+
+   for i := 0 to gc_MaxCampaignEvent-1 do
+   if gCampaign.arrEvents[i] = index then
+   begin
+      f := true;
+      break;
+   end;
+
+   if not f then
+   begin
+      for i := 0 to gc_MaxCampaignEvent-1 do
+      if gCampaign.arrEvents[i] = 0 then
+      begin
+         gCampaign.arrEvents[i] := index;
+         break;
+      end;
+   end;
+end;
+
+// _camp_NoEvents
+//
+function _camp_NoEvents : Boolean;
+begin
+   var i : Integer;
+   Result := true;
+
+   for i := 0 to gc_MaxCampaignEvent-1 do
+   if gCampaign.arrEvents[i] > 0 then
+   begin
+      Result := false;
+      break;
+   end;
+end;
+
+// _camp_tutorial_Init
+//
+procedure _camp_tutorial_Init;
+begin
+   gTutorial.init := true;
+   gTutorial.mode := true;
+   gTutorial.map := false;
+   gTutorial.move := 1;
+   gTutorial.trade := 0;
+   gTutorial.hire := 0;
+   gTutorial.library := 0;
+   gTutorial.repair := 0;
+   gTutorial.build := 0;
+   gTutorial.mercenary := 0;
+   gTutorial.garrison := 0;
+   gTutorial.scroll := 0;
+   gTutorial.egg := 0;
+   gTutorial.castles := 0;
+   gTutorial.ritualHero := 0;
+   gTutorial.ritualProv := 0;
+   gTutorial.ritualCast := 0;
+   gTutorial.death := 0;
+   gTutorial.hero := 0;
+   gTutorial.population := 0;
+   gTutorial.resource := 0;
+   gTutorial.groups := 0;
+   gTutorial.spellRank := 0;
+   gTutorial.unitRank := 0;
+   gTutorial.task := 0;
+   gTutorial.provBuild := 0;
+   gTutorial.provGuard := 0;
+   gTutorial.turn := 0;
+   gTutorial.battle := 1;
+   gTutorial.site := -1;
+   gTutorial.stamina := 1;
+   gTutorial.ranged := 1;
+   gTutorial.heal := 1;
+   gTutorial.morale := 1;
+   gTutorial.ammo := 1;
+   gTutorial.orc := 1;
+   gTutorial.fortify := 0;
+   gTutorial.magic := 1;
+   gTutorial.bonus := 0;
+   gTutorial.alchemy := 0;
+   gTutorial.corrupt := 0;
+   gTutorial.quest := 0;
+   gTutorial.castleDefence := 0;
+   gTutorial.diplomacy := 0;
+   gTutorial.noDip := 0;
+   gTutorial.dipTrade := 0;
+   gTutorial.exchange := 0;
+   gTutorial.war := 0;
+   gTutorial.peace := 0;
+   gTutorial.union := 0;
+   gTutorial.broken := 1;
+   gTutorial.squadMorale := 0;
+   gTutorial.lostShard := 0;
+   gTutorial.defendWorld := 0;
+   gTutorial.defendCastle := 0;
+   gTutorial.unitPrice := 0;
+   gTutorial.add1 := 0;
+   gTutorial.add2 := 0;
+   gTutorial.deliver := 0;
+   gTutorial.advancedmode := 0;
+   gTutorial.buildrank := 0;
+   gTutorial.buyUnit := false;
+   gTutorial.learnSpell := false;
+   gTutorial.buyItem := false;
+end;

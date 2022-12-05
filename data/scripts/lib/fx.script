@@ -1,0 +1,1852 @@
+//
+// fx.script
+
+// fly text
+procedure _fx_FlyTextInit();
+begin
+   const cFlyTextFileName = '.\data\game\var\flytext.cfg';
+
+   var p : Integer = _misc_ParserGetOrCreateByKey('flytext_cfg',true);
+
+   if ParserLoadFromFileByHandle(p,cFlyTextFileName) then
+   begin
+      gPrototypeData.flytextpars := ParserSelectByHandleByKey(p, 'FlyText');
+      gPrototypeData.flytextstyles := ParserSelectByHandleByKey(p, 'FlyTextStyles');
+   end
+   else
+   begin
+      ErrorLogI('flytext.cfg not found.');
+      gPrototypeData.flytextpars := 0;
+      gPrototypeData.flytextstyles := 0;
+   end;
+end;
+
+function _fx_FlyTextGetParserByID(ft_id : Integer) : Integer;
+begin
+   Result := 0;
+   if (ft_id >= 0) then
+   begin
+      var i,p : Integer;
+
+      for i := 0 to ParserGetCountByHandle(gPrototypeData.flytextpars)-1 do
+      begin
+         p := ParserSelectByHandleByIndex(gPrototypeData.flytextpars,i);
+         if ft_id = ParserGetIntValueByKeyByHandle(p,'ID') then
+         begin
+            Result := p;
+            break;
+         end;
+      end;
+      // check for general parser
+      if (Result = 0) and (ft_id <> (ft_id and $ff000000)) then
+      begin
+         ft_id := ft_id and $ff000000;
+         for i := 0 to ParserGetCountByHandle(gPrototypeData.flytextpars)-1 do
+         begin
+            p := ParserSelectByHandleByIndex(gPrototypeData.flytextpars,i);
+            if ft_id = ParserGetIntValueByKeyByHandle(p,'ID') then
+            begin
+               Result := p;
+               break;
+            end;
+         end;
+      end;
+   end;
+end;
+
+function _fx_FlyTextGetPriorityByID(ft_id : Integer) : Integer;
+begin
+   Result := ParserGetIntValueByKeyByHandle(_fx_FlyTextGetParserByID(ft_id),'Priority');
+end;
+
+function _fx_FlyTextStyleGetParserByID(fts_id : Integer) : Integer;
+begin
+   if (fts_id >= 0) and (fts_id < ParserGetCountByHandle(gPrototypeData.flytextstyles)) then
+      Result := ParserSelectByHandleByIndex(gPrototypeData.flytextstyles, fts_id)
+   else
+      Result := 0;
+end;
+
+// _fx_CreateAlphaFadeEffect
+//
+procedure _fx_CreateAlphaFadeEffect(const goHnd : Integer; const time, startAlpha, endAlpha : Float; const effKey : String);
+begin
+   var effHnd : Integer = GetEffectByKey(goHnd, effKey); //GetEffectByClassName
+   if (effHnd=0) then
+   begin
+      effHnd := EffectCreateWithKey(goHnd, 'TXLifeColorEffect', effKey, False); // EffectCreate
+      SetBehaviourBoolProperty(effHnd, 'UseAmbient', False);
+      SetBehaviourBoolProperty(effHnd, 'UseDiffuse', False);
+      SetBehaviourBoolProperty(effHnd, 'UseEmission', False);
+      SetBehaviourBoolProperty(effHnd, 'UseSpecular', False);
+      SetBehaviourBoolProperty(effHnd, 'UseShininess', False);
+      SetBehaviourBoolProperty(effHnd, 'UseTexOffset', False);
+      SetBehaviourBoolProperty(effHnd, 'UseTexScale', False);
+      SetBehaviourBoolProperty(effHnd, 'UseShaderID', False);
+      SetBehaviourBoolProperty(effHnd, 'UseColor', False);
+      SetBehaviourBoolProperty(effHnd, 'UseJustColorIfNoLight', False);
+      SetBehaviourBoolProperty(effHnd, 'UseIgnoreFog', False);
+      SetBehaviourBoolProperty(effHnd, 'UseNoLighting', False);
+      SetBehaviourBoolProperty(effHnd, 'UseCullFace', False);
+      SetBehaviourBoolProperty(effHnd, 'UseAlphaChannel', True);
+      SetBehaviourBoolProperty(effHnd, 'UseBlendMode', True);
+      SetBehaviourBoolProperty(effHnd, 'UseFrontFace', True);
+      SetBehaviourBoolProperty(effHnd, 'UseBackFace', True);
+      //TBlendingMode = (bmOpaque, bmTransparency, bmAdditive, bmAlphaTest50, bmAlphaTest100, bmModulate);
+      SetBehaviourIntProperty(effHnd, 'BlendingMode', 1{bmTransparency});
+      SetBehaviourBoolProperty(effHnd, 'RenderDeferred', True);
+      SetBehaviourBoolProperty(effHnd, 'Loop', False);
+      SetBehaviourBoolProperty(effHnd, 'LoopBackward', False);
+      SetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeEffect', False);
+      SetBehaviourBoolProperty(effHnd, 'Enable', True);
+      SetBehaviourFloatProperty(effHnd, 'DeltaTime', 0);
+
+      //SetBehaviourStringProperty(effHnd, 'Clear', '');
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel[0]', startAlpha);
+      SetBehaviourFloatProperty(effHnd, 'Time[0]', time);
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel[1]', endAlpha);
+      SetBehaviourFloatProperty(effHnd, 'Time[1]', 0);
+
+      SetBehaviourIntProperty(effHnd, 'CurrIndex', 0);
+   end
+   else
+   //if (GetBehaviourFloatProperty(effHnd, 'AlphaChannel[0]')<>1) then
+   if (GetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeEffect')) then
+   begin
+      var count : Integer = GetBehaviourIntProperty(effHnd, 'Count');
+      var currIndex : Integer = GetBehaviourIntProperty(effHnd, 'CurrIndex');
+      var nextIndex : Integer = GetBehaviourIntProperty(effHnd, 'NextIndex');
+      var deltaTime : Float = GetBehaviourFloatProperty(effHnd, 'DeltaTime');
+      var currAlphaChannel : Float = GetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(currIndex)+']');
+      var nextAlphaChannel : Float = GetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(nextIndex)+']');
+      var lerpAlphaChannel : Float = Lerp(currAlphaChannel, nextAlphaChannel, deltaTime);
+
+      SetBehaviourFloatProperty(effHnd, 'Time['+IntToStr(currIndex)+']', 0);
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(nextIndex)+']', lerpAlphaChannel);
+
+      SetBehaviourFloatProperty(effHnd, 'Time['+IntToStr(count-1)+']', time);
+
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(count)+']', endAlpha);
+      SetBehaviourFloatProperty(effHnd, 'Time['+IntToStr(count)+']', 0);
+
+      SetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeEffect', False);
+   end;
+end;
+
+// _fx_DestroyAlphaFadeEffect
+//
+function _fx_DestroyAlphaFadeEffect(const goHnd : Integer; time, startAlpha : Float; const effKey : String) : Boolean;
+begin
+   //GetEffectByClassName
+   var effHnd : Integer = GetEffectByKey(goHnd, effKey);
+   if (effHnd<>0) and (not GetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeEffect')) then
+   begin
+      var count : Integer = GetBehaviourIntProperty(effHnd, 'Count');
+      var currIndex : Integer = GetBehaviourIntProperty(effHnd, 'CurrIndex');
+      var nextIndex : Integer = GetBehaviourIntProperty(effHnd, 'NextIndex');
+      var deltaTime : Float = GetBehaviourFloatProperty(effHnd, 'DeltaTime');
+      var currAlphaChannel : Float = GetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(currIndex)+']');
+      var nextAlphaChannel : Float = GetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(nextIndex)+']');
+      var lerpAlphaChannel : Float = Lerp(currAlphaChannel, nextAlphaChannel, deltaTime);
+
+      SetBehaviourFloatProperty(effHnd, 'Time['+IntToStr(currIndex)+']', 0);
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(nextIndex)+']', lerpAlphaChannel);
+
+      SetBehaviourFloatProperty(effHnd, 'Time['+IntToStr(count-1)+']', time);
+
+      SetBehaviourStringProperty(effHnd, 'Add', '');
+      SetBehaviourFloatProperty(effHnd, 'AlphaChannel['+IntToStr(count)+']', startAlpha);
+      SetBehaviourFloatProperty(effHnd, 'Time['+IntToStr(count)+']', 0);
+
+      SetBehaviourBoolProperty(effHnd, 'OnEndReachedFreeEffect', True);
+
+      Result := True;
+   end
+   else
+   Result := False;
+end;
+
+// _fx_CreateAlphaFadeEffectAroundUnit
+//
+procedure _fx_CreateAlphaFadeEffectAroundUnit(const unitHnd, justPlayerHnd, justRaceTag : Integer; getPositionOfUnit : Boolean; const unitX, unitZ, radius : Float; const minTime, maxTime, startAlpha, minEndAlpha, maxEndAlpha : Float; const effKey : String);
+begin
+   var i : Integer;
+   //var playerHnd : Integer = GetGameObjectPlayerHandleByHandle(unitHnd);
+   var groupHnd : Integer = _obj_GetOrCreateGroupByUnit(unitHnd);
+   var posUnitX : Float = unitX;
+   var posUnitZ : Float = unitZ;
+   if getPositionOfUnit then
+   begin
+      posUnitX := GetGameObjectPositionXByHandle(unitHnd);
+      posUnitZ := GetGameObjectPositionZByHandle(unitHnd);
+   end;
+   GetGameObjectsInRadius(posUnitX, posUnitZ, radius, false, true, justPlayerHnd, justRaceTag, 0, false, false, false, false, false, false);
+   for i:=0 to GetGameObjectListCount-1 do
+   begin
+      var goHnd  : Integer = GetGameObjectListByIndex(i);
+      var goPosX : Float = GetGameObjectPositionXByHandle(goHnd);
+      var goPosZ : Float = GetGameObjectPositionZByHandle(goHnd);
+      var goDist : Float = VectorDistance(posUnitX, 0, posUnitZ, goPosX, 0, goPosZ);
+      if (goDist<radius) then
+      begin
+         var lerpf : Float = goDist/radius;
+         var alpha : Float = Clamp(Lerp(minEndAlpha, maxEndAlpha, lerpf), minEndAlpha, maxEndAlpha);
+         var time : Float = Lerp(minTime, maxTime, lerpf);
+         GroupAddGameObjectByHandle(groupHnd, goHnd);
+         _fx_CreateAlphaFadeEffect(goHnd, time, startAlpha, alpha, effKey);
+      end;
+   end;
+end;
+
+// _fx_DestroyAlphaFadeEffectAroundUnit
+//
+procedure _fx_DestroyAlphaFadeEffectAroundUnit(const unitHnd : Integer; const time, startAlpha : Float; const effKey : String);
+begin
+   var i : Integer;
+   var groupHnd : Integer = _obj_GetGroupHandleByName(GetGameObjectPlayerHandleByHandle(unitHnd), IntToStr(GetGameObjectUniqueIdByHandle(unitHnd)));
+   var groupNum : Integer = GetGroupCountGameObjectsByHandle(groupHnd);
+   for i:=0 to groupNum-1 do
+   begin
+      var goHnd : Integer = GetGroupGOHandleByGOIndexByHandle(groupHnd, i);
+      _fx_DestroyAlphaFadeEffect(goHnd, time, startAlpha, effKey);
+   end;
+   GroupClearGameObjectsByHandle(groupHnd);
+end;
+
+// _fx_IsTacticalEnvironment
+//
+function _fx_IsTacticalEnvironment(const goHnd : Integer) : Boolean;
+begin
+   var i : Integer;
+   var baseName : String = GetGameObjectBaseNameByHandle(goHnd);
+   var arrBaseNameAsSame : array[0..10] of String;
+
+   arrBaseNameAsSame[0] := 'oak';
+   arrBaseNameAsSame[1] := 'fir';
+   arrBaseNameAsSame[2] := 'maple';
+   arrBaseNameAsSame[3] := 'leaftree';
+   arrBaseNameAsSame[4] := 'deadtree';
+   arrBaseNameAsSame[5] := 'pine';
+   arrBaseNameAsSame[6] := 'swamptreedead';
+   arrBaseNameAsSame[7] := 'swamptreeleaves';
+   arrBaseNameAsSame[8] := 'willow';
+   arrBaseNameAsSame[9] := 'waterplant';
+   arrBaseNameAsSame[10] := '';
+
+   Result := False;
+
+   i := 0;
+   while (arrBaseNameAsSame[i] <> '') do
+   begin
+      if (SameText(baseName, arrBaseNameAsSame[i])) then
+      begin
+         Result := True;
+         break;
+      end;
+      i := i + 1;
+   end;
+
+   if (not Result) then
+   begin
+      var arrBaseNameAsExists : array[0..4] of String;
+
+      arrBaseNameAsExists[0] := 'mount';
+      arrBaseNameAsExists[1] := 'volcano';
+      arrBaseNameAsExists[2] := 'rock';
+      arrBaseNameAsExists[3] := 'palm';
+      arrBaseNameAsExists[4] := '';
+
+      i := 0;
+      while (arrBaseNameAsExists[i] <> '') do
+      begin
+         if (StrExists(baseName, arrBaseNameAsExists[i])) then
+         begin
+            Result := True;
+            break;
+         end;
+         i := i + 1;
+      end;
+   end;
+end;
+
+// _fx_HideEnvironmentAroundTacticalUnit
+//
+procedure _fx_HideEnvironmentAroundTacticalUnit(const unitHnd : Integer);
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+   begin
+      var i : Integer;
+
+      var envPlayerHnd : Integer = GetPlayerHandleByName(gc_AlphaFade_PlayerName);
+
+      var groupHnd : Integer = _obj_GetOrCreateGroupByUnit(unitHnd);
+      var posUnitX : Float = GetGameObjectPositionXByHandle(unitHnd);
+      var posUnitZ : Float = GetGameObjectPositionZByHandle(unitHnd);
+      GetGameObjectsInRadius(posUnitX, posUnitZ, gc_AlphaFade_Radius, false, true, envPlayerHnd, -1, 0, false, false, false, false, false, false);
+      for i:=0 to GetGameObjectListCount-1 do
+      begin
+         var goHnd  : Integer = GetGameObjectListByIndex(i);
+         var goPosX : Float = GetGameObjectPositionXByHandle(goHnd);
+         var goPosZ : Float = GetGameObjectPositionZByHandle(goHnd);
+         var goDist : Float = VectorDistance(posUnitX, 0, posUnitZ, goPosX, 0, goPosZ);
+         if (goDist<gc_AlphaFade_Radius) and (_fx_IsTacticalEnvironment(goHnd)) then
+         begin
+            var lerpf : Float = goDist/gc_AlphaFade_Radius;
+            var alpha : Float = Clamp(Lerp(gc_AlphaFade_EndMinAlpha, gc_AlphaFade_EndMaxAlpha, lerpf), gc_AlphaFade_EndMinAlpha, gc_AlphaFade_EndMaxAlpha);
+            var time : Float = Lerp(gc_AlphaFade_MinTime, gc_AlphaFade_MaxTime, lerpf);
+            GroupAddGameObjectByHandle(groupHnd, goHnd);
+            _fx_CreateAlphaFadeEffect(goHnd, time, gc_AlphaFade_StartAlpha, alpha, gc_AlphaFade_KeyName);
+         end;
+      end;
+   end;
+end;
+
+// _fx_ShowEnvironmentAroundTacticalUnit
+//
+procedure _fx_ShowEnvironmentAroundTacticalUnit(const unitHnd : Integer);
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+      _fx_DestroyAlphaFadeEffectAroundUnit(unitHnd, gc_AlphaFade_MaxTime, gc_AlphaFade_StartAlpha, gc_AlphaFade_KeyName);
+end;
+
+// _fx_ShowEnvironmentAroundTacticalDeadUnit
+//
+procedure _fx_ShowEnvironmentAroundTacticalDeadUnit(const unitHnd : Integer);
+begin
+   //if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+   //begin
+   _fx_DestroyAlphaFadeEffectAroundUnit(unitHnd, gc_AlphaFade_MaxTime, gc_AlphaFade_StartAlpha, gc_AlphaFade_KeyName);
+   RemoveGroupByHandle(_obj_GetGroupHandleByName(GetGameObjectPlayerHandleByHandle(unitHnd), IntToStr(GetGameObjectUniqueIdByHandle(unitHnd))));
+   //end;
+end;
+
+{function _fx_CreateFlyText(targetGOHandle, _uid, iType, iValue : Integer) : Integer;
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+   begin
+      const cPlName = 'particles.battle';
+      const cRaceName = 'misc';
+      const cBaseName = 'flytext';
+      const cYOffset = 0.15;
+      var posX, posY, posZ : Float;
+      var bbX, bbY, bbZ : Float;
+      var tpCount,plHandle,goHandle,grHandle,tuid : Integer;
+
+      GetGameObjectAxisAlignedDimensionsByHandle(targetGOHandle, bbX, bbY, bbZ);
+      tpCount := GetGameObjectTrackPointCountByHandle(targetGOHandle);
+      if (tpCount>0) then
+          GetGameObjectTrackPointCoordsByIndexByHandle(targetGOHandle, tpCount-1, posX, posY, posZ)
+      else
+      begin
+         posX := GetGameObjectPositionXByHandle(targetGOHandle);
+         posZ := GetGameObjectPositionZByHandle(targetGOHandle);
+      end;
+      posY := RayCastHeight(posX, posZ);
+      plHandle := _plr_GetOrCreatePlayer(cPlName, cRaceName, 'cmPlayer', false);
+      goHandle := _obj_GetInvisibleOrCreate(plHandle, cRaceName, cBaseName, posX, posY+cYOffset+bbZ, posZ);
+      if targetGOHandle <> 0 then
+         tuid := GetGameObjectUniqueIdByHandle(targetGOHandle)
+      else
+         tuid := 0;
+      SetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_iValue, iValue);
+      SetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_iType, iType);
+      SetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_TUID, tuid);
+      //grHandle := _obj_GetOrCreateGroupByName(plHandle, 'flytext.'+IntToStr(uid));
+      grHandle := _obj_GetOrCreateGroupByName(plHandle,'flytext.VVK.'+IntToStr(tuid));
+      GroupAddGameObjectByHandle(grHandle, goHandle);
+      Result := goHandle;
+   end
+   else
+       Result := 0;
+end;}
+
+function _fx_CreateFlyText_VVK(thd, ftext_cat, ftext_id, val : Integer) : Integer;
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) and (thd <> 0) and (gProfile.battle_flytext > 0) then
+   begin
+      const cPlName = 'particles.battle';
+      const cRaceName = 'misc';
+      const cBaseName = 'flytext';
+      const cYOffset = 0.15;
+
+      var txt_id,tuid,tp : Integer;
+
+      Result := 0;
+      txt_id := ((ftext_cat and gc_flytext_CategoryMask) shl gc_flytext_CategoryShift) or ftext_id;
+      tp := _fx_FlyTextGetParserByID(txt_id);
+      if tp <> 0 then
+      begin
+         var pfx : String;
+
+         if gProfile.battle_flytext = 1 then pfx := '_2'
+         else pfx := '_1';
+         tuid := ParserGetIntValueByKeyByHandle(tp,'Attr'+pfx);
+         if ((tuid and gc_flytext_AttrValue) = 0) or ((tuid and gc_flytext_AttrSkipZero) = 0) or (val <> 0) then
+         begin
+            if (ParserGetIntValueByKeyByHandle(tp,'StyleP'+pfx) <> 0) and (ParserGetIntValueByKeyByHandle(tp,'StyleN'+pfx) <> 0) then
+            begin
+               var posX, posY, posZ, hexY, cY : Float;
+               var bbX, bbY, bbZ : Float;
+               var tpCount,plHandle,goHandle,grHandle : Integer;
+
+               GetGameObjectAxisAlignedDimensionsByHandle(thd, bbX, bbY, bbZ);
+               tpCount := GetGameObjectTrackPointCountByHandle(thd);
+               if (tpCount>0) then
+                   GetGameObjectTrackPointCoordsByIndexByHandle(thd, tpCount-1, posX, posY, posZ)
+               else
+               begin
+                  posX := GetGameObjectPositionXByHandle(thd);
+                  posZ := GetGameObjectPositionZByHandle(thd);
+               end;
+               posY := RayCastHeight(posX, posZ);
+               plHandle := _plr_GetOrCreatePlayer(cPlName, cRaceName, 'cmPlayer', false);
+               hexY := ParserGetFloatValueByKeyByHandle(ParserSelectByHandleByIndex(_map_GetHexCells(),gc_battle_GridSize), 'CenterY');
+               if hexY > posZ then
+                  cY := bbZ
+               else
+                  cY := cYOffset+bbZ;
+               goHandle := _obj_GetInvisibleOrCreate(plHandle, cRaceName, cBaseName, posX, posY+cY, posZ);
+               tuid := GetGameObjectUniqueIdByHandle(thd);
+               SetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_iValue, val );
+               SetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_iType, txt_id);
+               SetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_TUID, tuid);
+               grHandle := _obj_GetOrCreateGroupByName(plHandle,'flytext.VVK.'+IntToStr(tuid));
+               GroupAddGameObjectByHandle(grHandle, goHandle);
+               Result := goHandle;
+            end;
+         end;
+      end;
+   end;
+end;
+
+procedure _fx_StartFlyText_VVK(delayTime : Float);
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+   begin
+      const cPlName = 'particles.battle';
+      const cRaceName = 'misc';
+
+      var plHandle : Integer = _plr_GetOrCreatePlayer(cPlName, cRaceName, 'cmPlayer', false);
+      var count,gh,j,i,p,goHandle : Integer;
+      var gn : String;
+
+      for j:=0 to CountGroupByHandle(plHandle)-1 do
+      begin
+         gh := GetGRHandleByPlayerHandleByIndex(plHandle, j);
+         gn := GetGroupNameByHandle(gh);
+         if StrExists(gn,'flytext.VVK') then
+         begin
+            count := GetGroupCountGameObjectsByHandle(gh);
+            ArrayClear();
+            for i:=0 to count-1 do
+            begin
+               goHandle := GetGroupGOHandleByGOIndexByHandle(gh, i);
+               p := _fx_FlyTextGetPriorityByID(GetGameObjectIntValueIndByHandle(gh, gc_stack_flytext_iType));
+               ArrayPushValue((p shl $10) or (i and $ff));
+            end;
+            ArraySort(false);
+
+            for i := 0 to ArrayGetCount()-1 do
+            begin
+               p := ArrayGetValueByIndex(i) and $ff;
+               goHandle := GetGroupGOHandleByGOIndexByHandle(gh,p);
+               GameObjectDelayExecuteStateByHandle(goHandle, 'StartFly', delayTime+i*gc_flytext_fLevelDeltaTime);
+            end;
+            RemoveGroupByHandle(gh);
+         end;
+      end;
+   end;
+end;
+
+// _fx_StartFlyText
+//
+//procedure _fx_StartFlyText(uid : Integer; delayTime : Float);
+//begin
+//   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+//   begin
+      {const cPlName = 'particles.battle';
+      const cRaceName = 'misc';
+      var plHandle : Integer = _plr_GetOrCreatePlayer(cPlName, cRaceName, 'cmPlayer', false);
+      var grHandle : Integer = _obj_GetOrCreateGroupByName(plHandle, 'flytext.'+IntToStr(uid));
+      var count : Integer = GetGroupCountGameObjectsByHandle(grHandle);
+
+      if (count>0) then
+      begin
+         var i,p,goHandle : Integer;
+
+         ArrayClear();
+         for i:=0 to count-1 do
+         begin
+            goHandle := GetGroupGOHandleByGOIndexByHandle(grHandle, i);
+            p := _fx_FlyTextGetPriorityByID(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_iType));
+            ArrayPushValue((p shl $10) or (i and $ff));
+         end;
+         ArraySort(false);
+
+         for i := 0 to ArrayGetCount()-1 do
+         begin
+            p := ArrayGetValueByIndex(i) and $ff;
+            goHandle := GetGroupGOHandleByGOIndexByHandle(grHandle,p);
+            GameObjectDelayExecuteStateByHandle(goHandle, 'StartFly', delayTime+i*0.65);
+         end;}
+         {var maxLevel : Integer = 20;
+         var level : Integer = 0;
+         var i : Integer;
+         for i:=0 to maxLevel-1 do
+         begin
+            var bNextLevel : Boolean = False;
+            var tmpType : Integer = 0;
+            case i of
+               0 : tmpType := gc_flytext_iSpellID;
+               1 : tmpType := gc_flytext_iAbilityResistance;
+               2 : tmpType := gc_flytext_iAbilityMarch;
+               3 : tmpType := gc_flytext_iAbilityCollectAmmo;
+               4 : tmpType := gc_flytext_iAbilityNecrophagy;
+               5 : tmpType := gc_flytext_iAbilityPetrification;
+               6 : tmpType := gc_flytext_iAbilityWeb;
+               7 : tmpType := gc_flytext_iAbilityCrushingBlow;
+               8 : tmpType := gc_flytext_iAbilityRoundAttack;
+               9 : tmpType := gc_flytext_iAbilityBrokenWeapon;
+               10 : tmpType := gc_flytext_iAbilityBrokenArmor;
+               11 : tmpType := gc_flytext_iLife;
+               12 : tmpType := gc_flytext_iStamina;
+               13 : tmpType := gc_flytext_iMoral;
+               14 : tmpType := gc_flytext_iHeal;
+               15 : tmpType := gc_flytext_iAbilityScared;
+               16 : tmpType := gc_flytext_iAbilityPanic;
+               17 : tmpType := gc_flytext_iAbilityBerserk;
+               18 : tmpType := gc_flytext_iAbilityBolo;
+               19 : tmpType := gc_flytext_iAbilityLunge;
+            end;
+            var j : Integer;
+            for j:=0 to GetGroupCountGameObjectsByHandle(grHandle)-1 do
+            begin
+               var goHandle : Integer = GetGroupGOHandleByGOIndexByHandle(grHandle, j);
+               var typ : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_flytext_iType);
+               if (typ=tmpType) then
+               begin
+                  bNextLevel := True;
+                  GameObjectDelayExecuteStateByHandle(goHandle, 'StartFly', delayTime+level*0.65);
+               end;
+            end;
+            if (bNextLevel) then
+               level := level+1;
+         end;}
+      {end;
+      RemoveGroupByHandle(grHandle);}
+//      uid := 0;
+//   end;
+//end;
+
+// _fx_FindFXHandleByID
+//
+function _fx_FindFXHandleByID(const parentHandle : Integer; hierarchy : Boolean; id : Integer) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for i:=0 to GetGameObjectCountChildByHandle(parentHandle)-1 do
+   begin
+      var childHandle : Integer = GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      var childRaceName : String = GetGameObjectRaceNameByHandle(childHandle);
+      var childBaseName : String = GetGameObjectBaseNameByHandle(childHandle);
+      if (SameText('misc', childRaceName)) and (SameText('fx', childBaseName)) and (GetGameObjectIntValueIndByHandle(childHandle, gc_GOStack_fx_id)=id) then
+      begin
+         Result := childHandle;
+         break;
+      end
+      else
+      if (hierarchy) then
+      Result := _fx_FindFXHandleByID(childHandle, hierarchy, id);
+      if (Result<>0) then break;
+   end;
+end;
+
+// _fx_ClearFX
+//
+procedure _fx_ClearFX(const parentHandle : Integer; hierarchy, immediately : Boolean);
+begin
+   var i : Integer;
+   for i:=GetGameObjectCountChildByHandle(parentHandle)-1 downto 0 do
+   begin
+      var childHandle : Integer = GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      var childRaceName : String = GetGameObjectRaceNameByHandle(childHandle);
+      var childBaseName : String = GetGameObjectBaseNameByHandle(childHandle);
+      if (SameText('misc', childRaceName)) and (SameText('fx', childBaseName)) then
+      begin
+         if gc_RecycleFX then
+            _obj_Recycle(childHandle)
+         else
+         if (immediately) then
+            GameObjectDestroyByHandle(childHandle)
+         else
+            AddObjectToDestroyList(childHandle);
+      end
+      else
+      begin
+         if (hierarchy) then
+            _fx_ClearFX(childHandle, hierarchy, immediately);
+      end;
+   end;
+end;
+
+// _fx_ClearSafeFX
+//
+procedure _fx_ClearSafeFX(const parentHandle : Integer; hierarchy, immediately : Boolean);
+begin
+   var i : Integer;
+   for i:=GetGameObjectCountChildByHandle(parentHandle)-1 downto 0 do
+   begin
+      var childHandle : Integer = GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      var childRaceName : String = GetGameObjectRaceNameByHandle(childHandle);
+      var childBaseName : String = GetGameObjectBaseNameByHandle(childHandle);
+      if (SameText('misc', childRaceName)) and (SameText('fx', childBaseName)) then
+      begin
+         if gc_RecycleFX then
+            _obj_Recycle(childHandle)
+         else
+         begin
+            GameObjectExecuteStateByHandle(childHandle, 'DoCleanSafe');
+            if (immediately) then
+               GameObjectDestroyByHandle(childHandle)
+            else
+               AddObjectToDestroyList(childHandle);
+         end;
+      end
+      else
+      begin
+         if (hierarchy) then
+            _fx_ClearSafeFX(childHandle, hierarchy, immediately);
+      end;
+   end;
+end;
+
+// _fx_ClearFXByID
+//
+procedure _fx_ClearFXByID(const parentHandle, id : Integer; hierarchy, immediately : Boolean);
+begin
+   var i : Integer;
+   for i:=GetGameObjectCountChildByHandle(parentHandle)-1 downto 0 do
+   begin
+      var childHandle : Integer = GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      var childRaceName : String = GetGameObjectRaceNameByHandle(childHandle);
+      var childBaseName : String = GetGameObjectBaseNameByHandle(childHandle);
+      if (SameText('misc', childRaceName)) and (SameText('fx', childBaseName)) and (GetGameObjectIntValueIndByHandle(childHandle, gc_GOStack_fx_id)=id) then
+      begin
+         if gc_RecycleFX then
+            _obj_Recycle(childHandle)
+         else
+         if (immediately) then
+            GameObjectDestroyByHandle(childHandle)
+         else
+            AddObjectToDestroyList(childHandle);
+      end
+      else
+      begin
+         if (hierarchy) then
+            _fx_ClearFXByID(childHandle, id, hierarchy, immediately);
+      end;
+   end;
+end;
+
+
+// _fx_GetIDByNodeName
+//
+function _fx_GetIDByNodeName(nodeName : String) : Integer;
+begin
+   const cParserKeyNodes = 'nodes';
+   
+   Result := 0;
+   
+   if (gIntRegister_fxTree_RootHandle=0) then
+   ExecuteState('DoLibLoad');
+   
+   if (gIntRegister_fxTree_RootHandle<>0) then
+   begin
+      var nodesHandle : Integer = ParserSelectByHandleByKey(gIntRegister_fxTree_RootHandle, cParserKeyNodes);
+      
+      var i, node : Integer;
+      for i := 0 to ParserGetCountByHandle(nodesHandle)-1 do
+      begin
+         node := ParserSelectByHandleByIndex(nodesHandle, i);
+         if SameText(ParserGetValueByKeyByHandle(node, 'name'), nodeName) then
+         begin
+            Result := i;
+            break;
+         end;
+      end;
+   end;
+end;
+
+
+procedure _fx_DoNextNode(fxHnd : Integer; nodeName : String);
+begin
+   if (fxHnd<>0) then
+   begin
+      SetGameObjectValueIndByHandle(fxHnd, gc_GOStack_fx_nextNode, nodeName);
+      SetGameObjectIntValueIndByHandle(fxHnd, gc_GOStack_fx_nodeTarget, 0);
+      SetGameObjectFloatValueIndByHandle(fxHnd, gc_GOStack_fx_coordTargetX, 0);
+      SetGameObjectFloatValueIndByHandle(fxHnd, gc_GOStack_fx_coordTargetY, 0);
+      SetGameObjectFloatValueIndByHandle(fxHnd, gc_GOStack_fx_coordTargetZ, 0);
+      SetGameObjectFloatValueIndByHandle(fxHnd, gc_GOStack_fx_sleepTime, 0);
+      GameObjectExecuteStateByHandle(fxHnd, 'DoNextNode');
+   end;
+end;
+
+
+// _fx_GetOrCreateFXByID
+//
+function _fx_GetOrCreateFXByID(goHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float; id : Integer) : Integer;
+begin
+   if (goHnd<>0) then
+   begin
+      Result := _fx_FindFXHandleByID(goHnd, false, id);
+      if (Result=0) then
+      begin
+         gStringRegister_fxTree_NodeName := nodeName;
+         gIntRegister_fxTree_NodeTarget := nodeTarget;
+         gFloatRegister_fxTree_CoordTargetX := coordTargetX;
+         gFloatRegister_fxTree_CoordTargetY := coordTargetY;
+         gFloatRegister_fxTree_CoordTargetZ := coordTargetZ;
+         gFloatRegister_fxTree_SleepTime := sleepTime;
+         Result := _obj_ChildGetInvisibleOrCreate(goHnd, 'misc', 'fx');
+         SetGameObjectIntValueIndByHandle(Result, gc_GOStack_fx_id, id);
+      end
+      else
+      begin
+         SetGameObjectValueIndByHandle(Result, gc_GOStack_fx_nextNode, nodeName);
+         SetGameObjectIntValueIndByHandle(Result, gc_GOStack_fx_nodeTarget, nodeTarget);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_coordTargetX, coordTargetX);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_coordTargetY, coordTargetY);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_coordTargetZ, coordTargetZ);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_sleepTime, sleepTime);
+         //SetGameObjectIntValueIndByHandle(Result, gc_GOStack_fx_id, id);
+         GameObjectExecuteStateByHandle(Result, 'DoNextNode');
+      end;
+   end
+   else
+   begin
+      var plHnd : Integer = _plr_GetOrCreatePlayer(gc_fxTree_parsName, 'misc', 'cmPC', false);
+      gStringRegister_fxTree_NodeName := nodeName;
+      gIntRegister_fxTree_NodeTarget := nodeTarget;
+      gFloatRegister_fxTree_CoordTargetX := coordTargetX;
+      gFloatRegister_fxTree_CoordTargetY := coordTargetY;
+      gFloatRegister_fxTree_CoordTargetZ := coordTargetZ;
+      gFloatRegister_fxTree_SleepTime := sleepTime;
+      Result := _obj_GetInvisibleOrCreate(plHnd, 'misc', 'fx', coordTargetX, coordTargetY, coordTargetZ);
+      SetGameObjectIntValueIndByHandle(Result, gc_GOStack_fx_id, id);
+   end;
+end;
+
+// _fx_GetOrCreateFX
+//
+function _fx_GetOrCreateFX(goHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float) : Integer;
+begin
+   if (goHnd<>0) then
+   begin
+      Result := _obj_FindChildHandle(goHnd, false, 'misc', 'fx', '');
+      if (Result=0) then
+      begin
+         gStringRegister_fxTree_NodeName := nodeName;
+         gIntRegister_fxTree_NodeTarget := nodeTarget;
+         gFloatRegister_fxTree_CoordTargetX := coordTargetX;
+         gFloatRegister_fxTree_CoordTargetY := coordTargetY;
+         gFloatRegister_fxTree_CoordTargetZ := coordTargetZ;
+         gFloatRegister_fxTree_SleepTime := sleepTime;
+         Result := _obj_ChildGetInvisibleOrCreate(goHnd, 'misc', 'fx');
+      end
+      else
+      begin
+         SetGameObjectValueIndByHandle(Result, gc_GOStack_fx_nextNode, nodeName);
+         SetGameObjectIntValueIndByHandle(Result, gc_GOStack_fx_nodeTarget, nodeTarget);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_coordTargetX, coordTargetX);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_coordTargetY, coordTargetY);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_coordTargetZ, coordTargetZ);
+         SetGameObjectFloatValueIndByHandle(Result, gc_GOStack_fx_sleepTime, sleepTime);
+         GameObjectExecuteStateByHandle(Result, 'DoNextNode');
+      end;
+   end
+   else
+   begin
+      var plHnd : Integer = _plr_GetOrCreatePlayer(gc_fxTree_parsName, 'misc', 'cmPC', false);
+      gStringRegister_fxTree_NodeName := nodeName;
+      gIntRegister_fxTree_NodeTarget := nodeTarget;
+      gFloatRegister_fxTree_CoordTargetX := coordTargetX;
+      gFloatRegister_fxTree_CoordTargetY := coordTargetY;
+      gFloatRegister_fxTree_CoordTargetZ := coordTargetZ;
+      gFloatRegister_fxTree_SleepTime := sleepTime;
+      Result := _obj_GetInvisibleOrCreate(plHnd, 'misc', 'fx', coordTargetX, coordTargetY, coordTargetZ);
+   end;
+end;
+
+// _fx_CreateFX
+//
+function _fx_CreateFX(goHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float) : Integer;
+begin
+   Result := 0; 
+   
+   if (not gBoolRegister_Loading) or (not gc_RecycleFX) then // can't allow creation of new objects before the recycle player is loaded. Otherwise, each load will create a new recycling player or objects.
+   begin
+      gStringRegister_fxTree_NodeName := nodeName;
+      gIntRegister_fxTree_NodeTarget := nodeTarget;
+      gFloatRegister_fxTree_CoordTargetX := coordTargetX;
+      gFloatRegister_fxTree_CoordTargetY := coordTargetY;
+      gFloatRegister_fxTree_CoordTargetZ := coordTargetZ;
+      gFloatRegister_fxTree_SleepTime := sleepTime;
+
+      if (goHnd<>0) then
+      begin
+         //Log('_fx_CreateFX '+nodeName);
+         Result := _obj_ChildGetInvisibleOrCreate(goHnd, 'misc', 'fx');
+      end
+      else
+      begin
+         var plHnd : Integer = _plr_GetOrCreatePlayer(gc_fxTree_parsName, 'misc', 'cmPC', false);
+         Result := _obj_GetInvisibleOrCreate(plHnd, 'misc', 'fx', coordTargetX, coordTargetY, coordTargetZ);
+      end;
+
+      gStringRegister_fxTree_NodeName := '';
+      gIntRegister_fxTree_NodeTarget := 0;
+      gFloatRegister_fxTree_CoordTargetX := 0;
+      gFloatRegister_fxTree_CoordTargetY := 0;
+      gFloatRegister_fxTree_CoordTargetZ := 0;
+      gFloatRegister_fxTree_SleepTime := 0;
+   end;
+end;
+
+// _fx_GetOrCreateFXToFindChildByID
+//
+function _fx_GetOrCreateFXToFindChildByID(parentHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float; id : Integer; hierarchy : Boolean; raceName, baseName, customName : String) : Integer;
+begin
+   if (parentHnd<>0) then
+   begin
+      var childHnd : Integer = _obj_FindChildHandle(parentHnd, hierarchy, raceName, baseName, customName);
+      if (childHnd<>0) then
+      Result := _fx_GetOrCreateFXByID(childHnd, nodeName, nodeTarget, coordTargetX, coordTargetY, coordTargetZ, sleepTime, id)
+      else
+      Result := 0;
+   end
+   else
+   Result := 0;
+end;
+
+// _fx_GetOrCreateFXToFindChild
+//
+function _fx_GetOrCreateFXToFindChild(parentHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float; hierarchy : Boolean; raceName, baseName, customName : String) : Integer;
+begin
+   if (parentHnd<>0) then
+   begin
+      var childHnd : Integer = _obj_FindChildHandle(parentHnd, hierarchy, raceName, baseName, customName);
+      if (childHnd<>0) then
+      Result := _fx_GetOrCreateFX(childHnd, nodeName, nodeTarget, coordTargetX, coordTargetY, coordTargetZ, sleepTime)
+      else
+      Result := 0;
+   end
+   else
+   Result := 0;
+end;
+
+// _fx_CreateFXToFindChild
+//
+function _fx_CreateFXToFindChild(parentHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float; hierarchy : Boolean; raceName, baseName, customName : String) : Integer;
+begin
+   if (parentHnd<>0) then
+   begin
+      var childHnd : Integer = _obj_FindChildHandle(parentHnd, hierarchy, raceName, baseName, customName);
+      if (childHnd<>0) then
+      Result := _fx_CreateFX(childHnd, nodeName, nodeTarget, coordTargetX, coordTargetY, coordTargetZ, sleepTime)
+      else
+      Result := 0;
+   end
+   else
+   Result := 0;
+end;
+
+// _fx_UnloadLibFX
+//
+procedure _fx_UnloadLibFX;
+begin
+   gIntRegister_fxTree_RootHandle := 0;
+end;
+
+// _fx_LoadLibFX
+//
+procedure _fx_LoadLibFX;
+begin
+   gIntRegister_fxTree_RootHandle := _misc_ParserGetOrCreateByKey(gc_fxTree_parsName,true);
+   ParserLoadFromFile(gc_fxTree_fileName);
+   gBoolRegister_fxTree_Loaded := (gIntRegister_fxTree_RootHandle<>0);
+end;
+
+// _fx_GetLibNodeByName
+//
+function _fx_GetLibNodeByName(nodeName : String) : Integer;
+begin
+   if (gIntRegister_fxTree_RootHandle=0) then
+   _fx_LoadLibFX;
+   if (gIntRegister_fxTree_RootHandle<>0) then
+   Result := _misc_GetParserChildByKeyValue(ParserSelectByHandleByKey(gIntRegister_fxTree_RootHandle, 'nodes'), 'name', nodeName)
+   else
+   Result := 0;
+end;
+
+// _fx_SetTransformationStruct
+//
+procedure _fx_SetTransformationStruct(goHnd, transformationStruct : Integer);
+begin
+   if (transformationStruct<>0) and (ParserGetCountByHandle(transformationStruct)>0) then
+   begin
+      var useAbsolutePosition : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(transformationStruct, 'useAbsolutePosition', false);
+
+      var initialPositionStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'initialPosition');
+      var positionDispersion : Float = _misc_ParserGetFloatValueByKeyByHandleDef(transformationStruct, 'positionDispersion', 0);
+      var positionDispersionRangeStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'positionDispersionRange');
+      var positionAbsolute : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(transformationStruct, 'positionAbsolute', false);
+
+      var useAbsoluteScale : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(transformationStruct, 'useAbsoluteScale', false);
+
+      var initialScaleStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'initialScale');
+      var scaleDispersion : Float = _misc_ParserGetFloatValueByKeyByHandleDef(transformationStruct, 'scaleDispersion', 0);
+      var scaleDispersionRangeStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'scaleDispersionRange');
+      var scaleAbsolute : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(transformationStruct, 'scaleAbsolute', false);
+
+      var selfMatrixStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'selfMatrix');
+      if (selfMatrixStruct<>0) then
+      begin
+         var useIdentityMatrix : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(selfMatrixStruct, 'useIdentityMatrix', GetGameObjectUseIdentityMatrix(goHnd));
+         var useNoChildrenRecTransformationChanged : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(selfMatrixStruct, 'useNoChildrenRecTransformationChanged', GetGameObjectUseNoChildrenRecTransformationChanged(goHnd));
+         if (useIdentityMatrix<>GetGameObjectUseIdentityMatrix(goHnd)) then
+         SetGameObjectUseIdentityMatrix(goHnd, useIdentityMatrix);
+         if (useNoChildrenRecTransformationChanged<>GetGameObjectUseNoChildrenRecTransformationChanged(goHnd)) then
+         SetGameObjectUseNoChildrenRecTransformationChanged(goHnd, useNoChildrenRecTransformationChanged);
+      end;
+
+      var parentMatrixStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'parentMatrix');
+      if (parentMatrixStruct<>0) and (not GetGameObjectIsParent(goHnd)) then
+      begin
+         var goParentHnd : Integer = GetGameObjectParentHandle(goHnd);
+         var useIdentityMatrix : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(parentMatrixStruct, 'useIdentityMatrix', GetGameObjectUseIdentityMatrix(goParentHnd));
+         var useNoChildrenRecTransformationChanged : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(parentMatrixStruct, 'useNoChildrenRecTransformationChanged', GetGameObjectUseNoChildrenRecTransformationChanged(goParentHnd));
+         if (useIdentityMatrix<>GetGameObjectUseIdentityMatrix(goParentHnd)) then
+         SetGameObjectUseIdentityMatrix(goParentHnd, useIdentityMatrix);
+         if (useNoChildrenRecTransformationChanged<>GetGameObjectUseNoChildrenRecTransformationChanged(goParentHnd)) then
+         SetGameObjectUseNoChildrenRecTransformationChanged(goParentHnd, useNoChildrenRecTransformationChanged);
+      end;
+
+      var rootMatrixStruct : Integer = ParserSelectByHandleByKey(transformationStruct, 'rootMatrix');
+      if (rootMatrixStruct<>0) and (not GetGameObjectIsParent(goHnd)) then
+      begin
+         var goRootHnd : Integer = GetGameObjectRootHandleByHandle(goHnd);
+         var useIdentityMatrix : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(rootMatrixStruct, 'useIdentityMatrix', GetGameObjectUseIdentityMatrix(goRootHnd));
+         var useNoChildrenRecTransformationChanged : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(rootMatrixStruct, 'useNoChildrenRecTransformationChanged', GetGameObjectUseNoChildrenRecTransformationChanged(goRootHnd));
+         if (useIdentityMatrix<>GetGameObjectUseIdentityMatrix(goRootHnd)) then
+         SetGameObjectUseIdentityMatrix(goRootHnd, useIdentityMatrix);
+         if (useNoChildrenRecTransformationChanged<>GetGameObjectUseNoChildrenRecTransformationChanged(goRootHnd)) then
+         SetGameObjectUseNoChildrenRecTransformationChanged(goRootHnd, useNoChildrenRecTransformationChanged);
+      end;
+
+      var rollAngle : String = ParserGetValueByKeyByHandle(transformationStruct, 'rollAngle');
+      if (rollAngle<>'') then
+      SetGameObjectRollAngleByHandle(goHnd, StrToFloat(rollAngle));
+      var turnAngle : String = ParserGetValueByKeyByHandle(transformationStruct, 'turnAngle');
+      if (turnAngle<>'') then
+      SetGameObjectTurnAngleByHandle(goHnd, StrToFloat(turnAngle));
+      var pitchAngle : String = ParserGetValueByKeyByHandle(transformationStruct, 'pitchAngle');
+      if (pitchAngle<>'') then
+      SetGameObjectPitchAngleByHandle(goHnd, StrToFloat(pitchAngle));
+
+      var setupIdentityRecTransformation : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(transformationStruct, 'setupIdentityRecTransformation', false);
+      var rootSetupIdentityRecTransformation : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(transformationStruct, 'rootSetupIdentityRecTransformation', false);
+
+      var initialPositionX, initialPositionY, initialPositionZ : Float = 0;
+      if (initialPositionStruct<>0) then
+      begin
+         initialPositionX := ParserGetFloatValueByKeyByHandle(initialPositionStruct, 'X');
+         initialPositionY := ParserGetFloatValueByKeyByHandle(initialPositionStruct, 'Y');
+         initialPositionZ := ParserGetFloatValueByKeyByHandle(initialPositionStruct, 'Z');
+      end;
+      var positionDispersionRangeX, positionDispersionRangeY, positionDispersionRangeZ : Float = 0;
+      if (positionDispersionRangeStruct<>0) then
+      begin
+         positionDispersionRangeX := ParserGetFloatValueByKeyByHandle(positionDispersionRangeStruct, 'X');
+         positionDispersionRangeY := ParserGetFloatValueByKeyByHandle(positionDispersionRangeStruct, 'Y');
+         positionDispersionRangeZ := ParserGetFloatValueByKeyByHandle(positionDispersionRangeStruct, 'Z');
+      end;
+      var positionX, positionY, positionZ : Float = 0;
+      _misc_DispersionRange(positionX, positionY, positionZ, initialPositionX, initialPositionY, initialPositionZ, positionDispersion, positionDispersionRangeX, positionDispersionRangeY, positionDispersionRangeZ);
+      if (initialPositionStruct<>0) then
+      begin
+         if (useAbsolutePosition) then
+         begin
+            if positionAbsolute then
+            SetGameObjectAbsolutePositionByHandle(goHnd, positionX, positionY, positionZ)
+            else
+            begin
+               var ax, ay, az : Float;
+               _obj_GetGameObjectAbsolutePosition(goHnd, ax, ay, az, true);
+               SetGameObjectAbsolutePositionByHandle(goHnd, ax+positionX, ay+positionY, az+positionZ);
+            end;
+         end
+         else
+         begin
+            if positionAbsolute then
+            SetGameObjectPositionByHandle(goHnd, positionX, positionY, positionZ)
+            else
+            //GetGameObjectTLFTransformedPositionZByHandle();
+            SetGameObjectPositionByHandle(goHnd, GetGameObjectPositionXByHandle(goHnd)+positionX, GetGameObjectPositionYByHandle(goHnd)+positionY, GetGameObjectPositionZByHandle(goHnd)+positionZ);
+         end;
+      end;
+
+      var initialScaleX, initialScaleY, initialScaleZ : Float = 1;
+      if (initialScaleStruct<>0) then
+      begin
+         initialScaleX := ParserGetFloatValueByKeyByHandle(initialScaleStruct, 'X');
+         initialScaleY := ParserGetFloatValueByKeyByHandle(initialScaleStruct, 'Y');
+         initialScaleZ := ParserGetFloatValueByKeyByHandle(initialScaleStruct, 'Z');
+      end;
+      var scaleDispersionRangeX, scaleDispersionRangeY, scaleDispersionRangeZ : Float = 0;
+      if (scaleDispersionRangeStruct<>0) then
+      begin
+         scaleDispersionRangeX := ParserGetFloatValueByKeyByHandle(scaleDispersionRangeStruct, 'X');
+         scaleDispersionRangeY := ParserGetFloatValueByKeyByHandle(scaleDispersionRangeStruct, 'Y');
+         scaleDispersionRangeZ := ParserGetFloatValueByKeyByHandle(scaleDispersionRangeStruct, 'Z');
+      end;
+      var scaleX, scaleY, scaleZ : Float = 0;
+      _misc_DispersionRangeForScale(scaleX, scaleY, scaleZ, initialScaleX, initialScaleY, initialScaleZ, scaleDispersion, scaleDispersionRangeX, scaleDispersionRangeY, scaleDispersionRangeZ);
+      if (initialScaleStruct<>0) then
+      begin
+         if scaleAbsolute then
+         SetGameObjectScaleByHandle(goHnd, scaleX, scaleY, scaleZ)
+         else
+         if useAbsoluteScale then
+         begin
+            var x, y, z : Float;
+            GetGameObjectAbsoluteScaleByHandle(goHnd, x, y, z);
+            SetGameObjectScaleByHandle(goHnd, x*scaleX, y*scaleY, z*scaleZ);
+         end
+         else
+         SetGameObjectScaleByHandle(goHnd, GetGameObjectScaleXByHandle(goHnd)*scaleX, GetGameObjectScaleYByHandle(goHnd)*scaleY, GetGameObjectScaleZByHandle(goHnd)*scaleZ);
+      end;
+
+      if (setupIdentityRecTransformation) then
+      GameObjectSetupIdentityRecTransformationByHandle(goHnd);
+      if (rootSetupIdentityRecTransformation) then
+      GameObjectRootSetupIdentityRecTransformationByHandle(goHnd);
+   end;
+end;
+
+// _fx_SetStateMachineStruct
+//
+procedure _fx_SetStateMachineStruct(goHnd, statemachineStruct : Integer);
+begin
+   if (statemachineStruct<>0) and (ParserGetCountByHandle(statemachineStruct)>0) then
+   begin
+      var interval : Integer = _misc_ParserGetIntValueByKeyByHandleDef(statemachineStruct, 'interval', GetGameObjectStateMachineIntervalByHandle(goHnd));
+      var active : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(statemachineStruct, 'active', GetGameObjectStateMachineActiveByHandle(goHnd));
+      var executeState : String = ParserGetValueByKeyByHandle(statemachineStruct, 'executeState');
+      var delayCancel : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(statemachineStruct, 'delayCancel', false);
+      var delayState : String = ParserGetValueByKeyByHandle(statemachineStruct, 'delayState');
+      var delayTime : Float = _misc_ParserGetFloatValueByKeyByHandleDef(statemachineStruct, 'delayTime', 0);
+      var switchState : String = ParserGetValueByKeyByHandle(statemachineStruct, 'switchState');
+      var stackStructChild : Integer = ParserSelectByHandleByKey(statemachineStruct, 'stack');
+      var destroyState : String = ParserGetValueByKeyByHandle(statemachineStruct, 'destroyState');
+      var destroyNode : String = ParserGetValueByKeyByHandle(statemachineStruct, 'destroyNode');
+
+      var i : Integer;
+      for i:=0 to ParserGetCountByHandle(stackStructChild)-1 do
+      begin
+         var variable : Integer = ParserSelectByHandleByIndex(stackStructChild, i);
+         var key : String = ParserGetKeyName(variable);
+         var value : String = ParserGetValueByIndexByHandle(stackStructChild, i);
+         SetGameObjectValueByHandle(goHnd, key, value);
+      end;
+
+      if (interval<>GetGameObjectStateMachineIntervalByHandle(goHnd)) then
+      SetGameObjectStateMachineIntervalByHandle(goHnd, interval);
+
+      if (active<>GetGameObjectStateMachineActiveByHandle(goHnd)) then
+      SetGameObjectStateMachineActiveByHandle(goHnd, active);
+
+      if (executeState<>'') then
+      GameObjectExecuteStateByHandle(goHnd, executeState);
+
+      if (delayCancel) then
+      GameObjectCancelDelayExecuteStateByHandle(goHnd);
+
+      if (delayState<>'') and (delayTime>0) then
+      GameObjectDelayExecuteStateByHandle(goHnd, delayState, delayTime);
+
+      if (switchState<>'') then
+      GameObjectSwitchToStateByHandle(goHnd, switchState);
+
+      if (destroyState<>'') and (not SameText(destroyState, GetGameObjectOnStateDestroyByHandle(goHnd))) then
+      SetGameObjectOnStateDestroyByHandle(goHnd, destroyState);
+      // TODO :
+      //destroyNode
+   end;
+end;
+
+// _fx_SetPropertiesStruct
+//
+procedure _fx_SetPropertiesStruct(goHnd, propStruct : Integer);
+begin
+   if (propStruct<>0) and (ParserGetCountByHandle(propStruct)>0) then
+   begin
+      var propRaceName : String = ParserGetValueByKeyByHandle(propStruct, 'raceName');
+      var propBaseName : String = ParserGetValueByKeyByHandle(propStruct, 'baseName');
+      var propPlayerName : String = ParserGetValueByKeyByHandle(propStruct, 'playerName');
+      var propCustomName : String = ParserGetValueByKeyByHandle(propStruct, 'customName');
+
+      var propRandomNamesStruct : Integer = ParserSelectByHandleByKey(propStruct, 'randomNames');
+      if (propRandomNamesStruct<>0) and (ParserGetCountByHandle(propRandomNamesStruct)>0) then
+      begin
+         var propRandomNamesInd : Integer = Floor(Random*ParserGetCountByHandle(propRandomNamesStruct));
+         var propRandomNamesChild : Integer = ParserSelectByHandleByIndex(propRandomNamesStruct, propRandomNamesInd);
+         propRaceName := ParserGetValueByKeyByHandle(propRandomNamesChild, 'raceName');
+         propBaseName := ParserGetValueByKeyByHandle(propRandomNamesChild, 'baseName');
+         propPlayerName := ParserGetValueByKeyByHandle(propRandomNamesChild, 'playerName');
+         propCustomName := ParserGetValueByKeyByHandle(propRandomNamesChild, 'customName');
+      end;
+
+      if (propRaceName<>'') and (propBaseName<>'') then
+      begin
+         var currRaceName : String = GetGameObjectRaceNameByHandle(goHnd);
+         var currBaseName : String = GetGameObjectBaseNameByHandle(goHnd);
+         if (not (SameText(currBaseName, propBaseName))) and (not (SameText(currRaceName, propRaceName))) then
+         SetGameObjectVisualPropertiesByHandle(goHnd, propRaceName, propBaseName);
+      end;
+
+      if (propPlayerName<>'') then
+      begin
+         var currPlayerName : String = GetGameObjectPlayerNameByHandle(goHnd);
+         if (not (SameText(currPlayerName, propPlayerName))) then
+         begin
+            var propPlayerHandle : Integer = _plr_GetOrCreatePlayer(propPlayerName, 'misc', 'cmPC', false);
+            if (propPlayerHandle<>0) then
+            SetGameObjectPlayerHandleByHandle(goHnd, propPlayerHandle);
+         end;
+      end;
+
+      if (propCustomName<>'') then
+      begin
+         var currCustomName : String = GetGameObjectCustomNameByHandle(goHnd);
+         if (not (SameText(currCustomName, propCustomName))) then
+         SetGameObjectCustomNameByHandle(goHnd, propCustomName);
+      end;
+   end;
+end;
+
+procedure _fx_SetRenderStruct(goHnd, renderStruct : Integer);
+begin
+   if (renderStruct<>0) and (ParserGetCountByHandle(renderStruct)>0) then
+   begin
+      var renderShaderID : Integer = ParserGetIntValueByKeyByHandle(renderStruct, 'shaderID');
+      var renderUniform1fStruct : Integer = ParserSelectByHandleByKey(renderStruct, 'uniform1f');
+      var renderUniform1fCount : Integer = ParserGetCountByHandle(renderUniform1fStruct);
+      var renderUniform4fStruct : Integer = ParserSelectByHandleByKey(renderStruct, 'uniform4f');
+      var renderUniform4fCount : Integer = ParserGetCountByHandle(renderUniform4fStruct);
+      var renderLodActorName : String = ParserGetValueByKeyByHandle(renderStruct, 'lodActorName');
+      var renderMeshName : String = ParserGetValueByKeyByHandle(renderStruct, 'meshName');
+      var renderMaterialName : String = ParserGetValueByKeyByHandle(renderStruct, 'materialName');
+      var renderRandomNamesStruct : Integer = ParserSelectByHandleByKey(renderStruct, 'randomNames');
+      if (renderRandomNamesStruct<>0) and (ParserGetCountByHandle(renderRandomNamesStruct)>0) then
+      begin
+         var renderRandomNamesInd : Integer = Floor(Random*ParserGetCountByHandle(renderRandomNamesStruct));
+         var renderRandomNamesChild : Integer = ParserSelectByHandleByIndex(renderRandomNamesStruct, renderRandomNamesInd);
+         renderLodActorName := ParserGetValueByKeyByHandle(renderRandomNamesChild, 'lodActorName');
+         renderMeshName := ParserGetValueByKeyByHandle(renderRandomNamesChild, 'meshName');
+         renderMaterialName := ParserGetValueByKeyByHandle(renderRandomNamesChild, 'materialName');
+      end;
+      var renderVisible : Boolean = ParserGetBoolValueByKeyByHandle(renderStruct, 'visible');
+
+      if (renderLodActorName<>'') then
+      begin
+         var currLodActorName : String = GetGameObjectLODActorNameByHandle(goHnd);
+         if (not (SameText(currLodActorName, renderLodActorName))) then
+         SetGameObjectLODActorNameByHandle(goHnd, renderLodActorName);
+      end;
+
+      if (renderMeshName<>'') then
+      begin
+         var currMeshName : String = GameObjectGetActorNameByHandle(goHnd);
+         if (not (SameText(currMeshName, renderMeshName))) then
+         SetGameObjectActorNameByHandle(goHnd, renderMeshName);
+      end;
+
+      if (renderMaterialName<>'') then
+      begin
+         var currMaterialName : String = GetGameObjectMaterialNameByHandle(goHnd);
+         if (not (SameText(currMaterialName, renderMaterialName))) then
+         SetGameObjectMaterialNameByHandle(goHnd, renderMaterialName);
+      end;
+
+      // TODO : shaderID
+      //if (ParserGetValueByKeyByHandle(renderStruct, 'shaderID')<>'') then
+      //begin
+      //end;
+
+      if (renderUniform1fStruct<>0) and (renderUniform1fCount>0) then
+      begin
+         var i : Integer;
+         for i:=0 to renderUniform1fCount-1 do
+         begin
+            var renderUniform1fStructChild : Integer = ParserSelectByHandleByIndex(renderUniform1fStruct, i);
+            var renderUniform1fIndex : Integer = ParserGetIntValueByKeyByHandle(renderUniform1fStructChild, 'index');
+            var renderUniform1fValue : Float = ParserGetFloatValueByKeyByHandle(renderUniform1fStructChild, 'value');
+            var renderUniform1fRandomStruct : Integer = ParserSelectByHandleByKey(renderUniform1fStructChild, 'random');
+            if (renderUniform1fRandomStruct<>0) and (ParserGetCountByHandle(renderUniform1fRandomStruct)>0) then
+            begin
+               var renderUniform1fRandomInd : Integer = Floor(Random*ParserGetCountByHandle(renderUniform1fRandomStruct));
+               renderUniform1fValue := ParserGetFloatValueByIndexByHandle(renderUniform1fRandomStruct, renderUniform1fRandomInd);
+            end;
+            var renderUniform1fChild : Boolean = ParserGetBoolValueByKeyByHandle(renderUniform1fStructChild, 'child');
+            SetGameObjectUniform1f(goHnd, renderUniform1fIndex, renderUniform1fValue, renderUniform1fChild);
+         end;
+      end;
+
+      if (renderUniform4fStruct<>0) and (renderUniform4fCount>0) then
+      begin
+         var i : Integer;
+         for i:=0 to renderUniform4fCount-1 do
+         begin
+            var renderUniform4fStructChild : Integer = ParserSelectByHandleByIndex(renderUniform4fStruct, i);
+            var renderUniform4fIndex : Integer = ParserGetIntValueByKeyByHandle(renderUniform4fStructChild, 'index');
+            var renderUniform4fValue : Integer = ParserSelectByHandleByKey(renderUniform4fStructChild, 'value');
+            var renderUniform4fValueX : Float = ParserGetFloatValueByKeyByHandle(renderUniform4fValue, 'X');
+            var renderUniform4fValueY : Float = ParserGetFloatValueByKeyByHandle(renderUniform4fValue, 'Y');
+            var renderUniform4fValueZ : Float = ParserGetFloatValueByKeyByHandle(renderUniform4fValue, 'Z');
+            var renderUniform4fValueW : Float = ParserGetFloatValueByKeyByHandle(renderUniform4fValue, 'W');
+            var renderUniform4fRandomStruct : Integer = ParserSelectByHandleByKey(renderUniform4fStructChild, 'random');
+            if (renderUniform4fRandomStruct<>0) and (ParserGetCountByHandle(renderUniform4fRandomStruct)>0) then
+            begin
+               var renderUniform4fRandomInd : Integer = Floor(Random*ParserGetCountByHandle(renderUniform4fRandomStruct));
+               var renderUniform4fRandomChild : Integer = ParserSelectByHandleByIndex(renderUniform4fRandomStruct, renderUniform4fRandomInd);
+               renderUniform4fValueX := ParserGetFloatValueByKeyByHandle(renderUniform4fRandomChild, 'X');
+               renderUniform4fValueY := ParserGetFloatValueByKeyByHandle(renderUniform4fRandomChild, 'Y');
+               renderUniform4fValueZ := ParserGetFloatValueByKeyByHandle(renderUniform4fRandomChild, 'Z');
+               renderUniform4fValueW := ParserGetFloatValueByKeyByHandle(renderUniform4fRandomChild, 'W');
+            end;
+            var renderUniform4fChild : Boolean = ParserGetBoolValueByKeyByHandle(renderUniform4fStructChild, 'child');
+            SetGameObjectUniform4f(goHnd, renderUniform4fIndex, renderUniform4fValueX, renderUniform4fValueY, renderUniform4fValueZ, renderUniform4fValueW, renderUniform4fChild);
+         end;
+      end;
+
+      if (ParserGetValueByKeyByHandle(renderStruct, 'visible')<>'') then
+      begin
+         var currVisible : Boolean = GetGameObjectVisibleByHandle(goHnd);
+         if (currVisible<>renderVisible) then
+         SetGameObjectVisibleByHandle(goHnd, renderVisible);
+      end;
+   end;
+end;
+
+// _fx_SetEffectsStruct
+//
+procedure _fx_SetEffectsStruct(parentHnd, nodeTarget, effectsStruct : Integer);
+begin
+   procedure DestroyEffectHierarchy(parentHnd : Integer; className, keyName : String);
+   begin
+      var i : Integer;
+      for i:=0 to GetGameObjectCountChildByHandle(parentHnd)-1 do
+      begin
+         var childHnd : Integer = GetGameObjectGOHandleChildByHandle(parentHnd, i);
+         var effHnd : Integer = 0;
+         if (keyName<>'') then
+         begin
+            effHnd := GetEffectByKey(childHnd, keyName);
+            while (effHnd<>0) do
+            begin
+               BehaviourDestroy(effHnd);
+               effHnd := GetEffectByKey(childHnd, keyName);
+            end;
+         end
+         else
+         if (className<>'') then
+         begin
+            effHnd := GetEffectByClassName(childHnd, className);
+            while (effHnd<>0) do
+            begin
+               BehaviourDestroy(effHnd);
+               effHnd := GetEffectByClassName(childHnd, className)
+            end;
+         end;
+         DestroyEffectHierarchy(childHnd, className, keyName);
+      end;
+   end;
+
+   procedure CreateEffectFXSourceHierarchy(parentHnd : Integer; libSourceName, libManagerName, keyName : String; effectStruct : Integer);
+   begin
+      var i : Integer;
+      for i:=0 to GetGameObjectCountChildByHandle(parentHnd)-1 do
+      begin
+         var childHnd : Integer = GetGameObjectGOHandleChildByHandle(parentHnd, i);
+         var effHnd : Integer = 0;
+         if (libSourceName<>'') then
+         effHnd := GameObjectGetOrCreateEffectFXSourceByHandle(childHnd, libSourceName, keyName)
+         else
+         if (libManagerName<>'') then
+         effHnd := GameObjectGetOrCreateEffectFXManagerByHandle(childHnd, libManagerName, keyName);
+         if (effHnd=0) then
+         begin
+            if (libSourceName<>'') then
+            ErrorLog('error at fx.script _fx_SetEffectsStruct : CreateEffectFXSourceHierarchy libSourceName '+libSourceName)
+            else
+            if (libManagerName<>'') then
+            ErrorLog('error at fx.script _fx_SetEffectsStruct : CreateEffectFXSourceHierarchy libManagerName '+libManagerName)
+            else
+            ErrorLog('error at fx.script _fx_SetEffectsStruct : CreateEffectFXSourceHierarchy');
+         end;
+         SetBehaviourPropertiesFromParserByHandle(effHnd, effectStruct);
+         CreateEffectFXSourceHierarchy(childHnd, libSourceName, libManagerName, keyName, effectStruct);
+      end;
+   end;
+
+   procedure CreateEffectHierarchy(parentHnd : Integer; className, keyName : String; uniq : Boolean; effectStruct : Integer);
+   begin
+      var i : Integer;
+      for i:=0 to GetGameObjectCountChildByHandle(parentHnd)-1 do
+      begin
+         var childHnd : Integer = GetGameObjectGOHandleChildByHandle(parentHnd, i);
+         var effHnd : Integer = 0;
+         if (keyName='') then
+         effHnd := EffectCreate(childHnd, className, uniq, false)
+         else
+         effHnd := EffectCreateWithKey(childHnd, className, keyName, false);
+         if (effHnd=0) then
+         ErrorLog('error at fx.script _fx_SetEffectsStruct : CreateEffectHierarchy className '+className);
+         SetBehaviourPropertiesFromParserByHandle(effHnd, effectStruct);
+         CreateEffectHierarchy(childHnd, className, keyName, uniq, effectStruct);
+      end;
+   end;
+
+   if (effectsStruct<>0) and (ParserGetCountByHandle(effectsStruct)>0) then
+   begin
+      var i : Integer;
+      for i:=0 to ParserGetCountByHandle(effectsStruct)-1 do
+      begin
+         var goHnd : Integer = parentHnd;
+         var effectStruct : Integer = ParserSelectByHandleByIndex(effectsStruct, i);
+         var setupFor : String = ParserGetValueByKeyByHandle(effectStruct, 'setupFor');
+         if SameText(setupFor, 'forParent') then
+         begin
+            if (not GetGameObjectIsParent(parentHnd)) then
+            goHnd := GetGameObjectParentHandle(parentHnd)
+            else
+            goHnd := parentHnd;
+         end
+         else
+         if SameText(setupFor, 'forRoot') then
+         goHnd := GetGameObjectRootHandleByHandle(parentHnd)
+         else
+         if SameText(setupFor, 'forTarget') then
+         goHnd := nodeTarget
+         else
+         goHnd := parentHnd;
+         var libraryEffect : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(effectStruct, 'LibraryEffect', false);
+         var libSourceName : String = ParserGetValueByKeyByHandle(effectStruct, 'LibSourceName');
+         var libManagerName : String = ParserGetValueByKeyByHandle(effectStruct, 'LibManagerName');
+         var className : String = ParserGetValueByKeyByHandle(effectStruct, 'className');
+         var name : String = ParserGetValueByKeyByHandle(effectStruct, 'name'); // key
+         var uniq : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(effectStruct, 'uniq', true);
+         var destroy : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(effectStruct, 'destroy', false);
+         var hierarchy : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(effectStruct, 'hierarchy', false);
+         if (destroy) then
+         begin
+            var effHnd : Integer = 0;
+            if (name<>'') then
+            begin
+               effHnd := GetEffectByKey(goHnd, name);
+               while (effHnd<>0) do
+               begin
+                  BehaviourDestroy(effHnd);
+                  effHnd := GetEffectByKey(goHnd, name);
+               end;
+            end
+            else
+            if (className<>'') then
+            begin
+               effHnd := GetEffectByClassName(goHnd, className);
+               while (effHnd<>0) do
+               begin
+                  BehaviourDestroy(effHnd);
+                  effHnd := GetEffectByClassName(goHnd, className);
+               end;
+            end;
+            if (hierarchy) then
+            DestroyEffectHierarchy(goHnd, className, name);
+         end
+         else
+         if (libraryEffect) then
+         begin
+            var effHnd : Integer = 0;
+            if (libSourceName<>'') then
+            effHnd := GameObjectGetOrCreateEffectFXSourceByHandle(goHnd, libSourceName, name)
+            else
+            if (libManagerName<>'') then
+            effHnd := GameObjectGetOrCreateEffectFXManagerByHandle(goHnd, libManagerName, name);
+            if (effHnd=0) then
+            begin
+               if (libSourceName<>'') then
+               ErrorLog('error at fx.script _fx_SetEffectsStruct : GameObjectGetOrCreateEffectFXSourceByHandle libSourceName '+libSourceName)
+               else
+               if (libManagerName<>'') then
+               ErrorLog('error at fx.script _fx_SetEffectsStruct : GameObjectGetOrCreateEffectFXManagerByHandle libManagerName '+libManagerName)
+               else
+               ErrorLog('error at fx.script _fx_SetEffectsStruct : GameObjectGetOrCreateEffectFXManagerByHandle');
+            end;
+            SetBehaviourPropertiesFromParserByHandle(effHnd, effectStruct);
+            if (hierarchy) then
+            CreateEffectFXSourceHierarchy(goHnd, libSourceName, libManagerName, name, effectStruct);
+         end
+         else
+         if (className<>'') then
+         begin
+            var effHnd : Integer = 0;
+            if (name='') then
+            effHnd := EffectCreate(goHnd, className, uniq, false)
+            else
+            effHnd := EffectCreateWithKey(goHnd, className, name, false);
+            if (effHnd=0) then
+            ErrorLog('error at fx.script _fx_SetEffectsStruct : EffectCreate className '+className);
+            SetBehaviourPropertiesFromParserByHandle(effHnd, effectStruct);
+            if (hierarchy) then
+            CreateEffectHierarchy(goHnd, className, name, uniq, effectStruct);
+         end;
+      end;
+   end;
+end;
+
+// _fx_SetBehavioursStruct
+//
+procedure _fx_SetBehavioursStruct(parentHnd, nodeTarget, behavioursStruct : Integer);
+begin
+   if (behavioursStruct<>0) and (ParserGetCountByHandle(behavioursStruct)>0) then
+   begin
+      var i : Integer;
+      for i:=0 to ParserGetCountByHandle(behavioursStruct)-1 do
+      begin
+         var behaviourStruct : Integer = ParserSelectByHandleByIndex(behavioursStruct, i);
+         var goHnd : Integer = parentHnd;
+         var setupFor : String = ParserGetValueByKeyByHandle(behaviourStruct, 'setupFor');
+         if SameText(setupFor, 'forParent') then
+         begin
+            if (not GetGameObjectIsParent(parentHnd)) then
+            goHnd := GetGameObjectParentHandle(parentHnd)
+            else
+            goHnd := parentHnd;
+         end
+         else
+         if SameText(setupFor, 'forRoot') then
+            goHnd := GetGameObjectRootHandleByHandle(parentHnd)
+         else
+         begin
+            if SameText(setupFor, 'forTarget') then
+               goHnd := nodeTarget
+            else
+               goHnd := parentHnd;
+         end;
+         var className : String = ParserGetValueByKeyByHandle(behaviourStruct, 'className');
+         var name : String = ParserGetValueByKeyByHandle(behaviourStruct, 'name'); // key
+         var uniq : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(behaviourStruct, 'uniq', true);
+         var destroy : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(behaviourStruct, 'destroy', false);
+         //var direct : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(behaviourStruct, 'direct', false);
+         if (destroy) then
+         begin
+            var behHnd : Integer = 0;
+            if (name<>'') then
+            begin
+               behHnd := GetBehaviourByKey(goHnd, name);
+               while (behHnd<>0) do
+               begin
+                  BehaviourDestroy(behHnd);
+                  behHnd := GetBehaviourByKey(goHnd, name);
+               end;
+            end
+            else
+            if (className<>'') then
+            begin
+               behHnd := GetBehaviourByClassName(goHnd, className);
+               while (behHnd<>0) do
+               begin
+                  BehaviourDestroy(behHnd);
+                  behHnd := GetBehaviourByClassName(goHnd, className);
+               end;
+            end;
+         end
+         else
+         if (className<>'') then
+         begin
+            var behHnd : Integer = 0;
+            if (name='') then
+               behHnd := BehaviourCreate(goHnd, className, uniq, false)
+            else
+               behHnd := BehaviourCreateWithKey(goHnd, className, name, false);
+            if (behHnd=0) then
+               ErrorLogI('error at fx.script _fx_SetBehavioursStruct : BehaviourCreate className '+className);
+            SetBehaviourPropertiesFromParserByHandle(behHnd, behaviourStruct);
+         end;
+      end;
+   end;
+end;
+
+// _fx_SetObjectsStruct
+//
+procedure _fx_SetObjectsStruct(parentHnd, nodeTarget, objectsStruct : Integer);
+begin
+   if (objectsStruct<>0) and (ParserGetCountByHandle(objectsStruct)>0) then
+   begin
+      var i : Integer;
+      for i:=0 to ParserGetCountByHandle(objectsStruct)-1 do
+      begin
+         var objectStruct : Integer = ParserSelectByHandleByIndex(objectsStruct, i);
+         var goHnd : Integer = parentHnd;
+         var setupFor : String = ParserGetValueByKeyByHandle(objectsStruct, 'setupFor');
+         if SameText(setupFor, 'forParent') then
+         begin
+            if (not GetGameObjectIsParent(parentHnd)) then
+               goHnd := GetGameObjectParentHandle(parentHnd)
+            else
+               goHnd := parentHnd;
+         end
+         else
+         begin
+            if SameText(setupFor, 'forRoot') then
+               goHnd := GetGameObjectRootHandleByHandle(parentHnd)
+            else
+            begin
+               if SameText(setupFor, 'forTarget') then
+                  goHnd := nodeTarget
+               else
+                  goHnd := parentHnd;
+            end;
+         end;
+
+         var goParentHnd : Integer = 0;
+         if (not GetGameObjectIsParent(goHnd)) then
+            goParentHnd := GetGameObjectParentHandle(goHnd)
+         else
+            goParentHnd := goHnd;
+         var goRootHnd : Integer = GetGameObjectRootHandleByHandle(goHnd);
+
+         var getOrCreate : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getOrCreate', false);
+         var justCreate : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'justCreate', false);
+         var justGet : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'justGet', false);
+
+         var getAsOwnedObject : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsOwnedObject', false);
+         var getAsChildOfSelf : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfSelf', false);
+         var getAsChildOfParent : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfParent', false);
+         var getAsChildOfRoot : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfRoot', false);
+         var getAsChildOfTarget : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfTarget', false);
+         var getAsChildOfHierarchySelf : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfHierarchySelf', false);
+         var getAsChildOfHierarchyParent : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfHierarchyParent', false);
+         var getAsChildOfHierarchyRoot : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfHierarchyRoot', false);
+         var getAsChildOfHierarchyTarget : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsChildOfHierarchyTarget', false);
+         var getAsParentOfScene : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'getAsParentOfScene', false);
+
+         var createAsOwnedObject : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'createAsOwnedObject', false);
+         var createAsChildOfSelf : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'createAsChildOfSelf', false);
+         var createAsChildOfParent : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'createAsChildOfParent', false);
+         var createAsChildOfRoot : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'createAsChildOfRoot', false);
+         var createAsChildOfTarget : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'createAsChildOfTarget', false);
+         var createAsParentOnScene : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'createAsParentOfScene', false);
+
+         var raceName : String = ParserGetValueByKeyByHandle(objectStruct, 'raceName');
+         var baseName : String = ParserGetValueByKeyByHandle(objectStruct, 'baseName');
+         var playerName : String = ParserGetValueByKeyByHandle(objectStruct, 'playerName');
+         var customName : String = ParserGetValueByKeyByHandle(objectStruct, 'customName');
+
+         var posInitX : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posInitX', 0);
+         var posInitY : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posInitY', 0);
+         var posInitZ : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posInitZ', 0);
+
+         var tmpx, tmpy, tmpz : Float = 0;
+         if (createAsParentOnScene) then
+            _obj_GetGameObjectAbsolutePosition(goHnd, tmpx, tmpy, tmpz, true)
+         else
+            _obj_GetGameObjectLocalPosition(goHnd, tmpx, tmpy, tmpz, true);
+         posInitX := posInitX + tmpx;
+         posInitY := posInitY + tmpy;
+         posInitZ := posInitZ + tmpz;
+
+         var posDisp : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posDisp', 0);
+         var posRangeX : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posRangeX', 0);
+         var posRangeY : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posRangeY', 0);
+         var posRangeZ : Float = _misc_ParserGetFloatValueByKeyByHandleDef(objectStruct, 'posRangeZ', 0);
+
+         var createMinCount : Integer = _misc_ParserGetIntValueByKeyByHandleDef(objectStruct, 'createMinCount', 1);
+         var createMaxCount : Integer = _misc_ParserGetIntValueByKeyByHandleDef(objectStruct, 'createMaxCount', 1);
+         var createCurCount : Integer = Round(Random*(createMaxCount-createMinCount))+createMinCount;
+
+         var destroy : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'destroy', false);
+
+         var setToTargetSelf : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'setToTargetSelf', false);
+         var setToStateTargetObjectSelf : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'setToStateTargetObjectSelf', false);
+         var setToStateTargetObjectParent : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'setToStateTargetObjectParent', false);
+         var setToStateTargetObjectRoot : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'setToStateTargetObjectRoot', false);
+         var setToStateTargetObjectTarget : Boolean = _misc_ParserGetBoolValueByKeyByHandleDef(objectStruct, 'setToStateTargetObjectTarget', false);
+
+         var properties : Integer = ParserSelectByHandleByKey(objectStruct, 'properties');
+         var render : Integer = ParserSelectByHandleByKey(objectStruct, 'render');
+         var transformation : Integer = ParserSelectByHandleByKey(objectStruct, 'transformation');
+         //var animation : Integer = ParserSelectByHandleByKey(objectStruct, 'animation');
+         //var trackpoint : Integer = ParserSelectByHandleByKey(objectStruct, 'trackpoint');
+         var statemachine : Integer = ParserSelectByHandleByKey(objectStruct, 'statemachine');
+         //var collision : Integer = ParserSelectByHandleByKey(objectStruct, 'collision');
+         //var behavioursAsOwned : Boolean = ParserGetBoolValueByKeyByHandleDef(objectStruct, 'behavioursAsOwned', false);
+         var behaviours : Integer = ParserSelectByHandleByKey(objectStruct, 'behaviours');
+         //var effectsAsOwned : Boolean = ParserGetBoolValueByKeyByHandleDef(objectStruct, 'effectsAsOwned', false);
+         var effects : Integer = ParserSelectByHandleByKey(objectStruct, 'effects');
+         //var misc : Integer = ParserSelectByHandleByKey(objectStruct, 'misc');
+
+         var wasCreated : Boolean = false;
+         var objectHandle : Integer = 0;
+         var objectParent : Integer = 0;
+         if (justGet) or (getOrCreate) then
+         begin
+            if (getAsChildOfSelf) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(goHnd, false, raceName, baseName, playerName, customName);
+            if (getAsChildOfParent) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(goParentHnd, false, raceName, baseName, playerName, customName);
+            if (getAsChildOfRoot) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(goRootHnd, false, raceName, baseName, playerName, customName);
+            if (getAsChildOfTarget) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(nodeTarget, false, raceName, baseName, playerName, customName);
+            if (getAsChildOfHierarchySelf) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(goHnd, true, raceName, baseName, playerName, customName);
+            if (getAsChildOfHierarchyParent) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(goParentHnd, true, raceName, baseName, playerName, customName);
+            if (getAsChildOfHierarchyRoot) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(goRootHnd, true, raceName, baseName, playerName, customName);
+            if (getAsChildOfHierarchyTarget) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(nodeTarget, true, raceName, baseName, playerName, customName);
+            if (getAsParentOfScene) and (objectHandle=0) then
+               objectHandle := _obj_GetObjectHandleByData(0, false, raceName, baseName, playerName, customName);
+         end;
+
+         if (objectHandle=0) and ((getOrCreate) or (justCreate)) then
+         begin
+            if (createAsChildOfSelf) then
+               objectParent := goHnd
+            else
+            begin
+               if (createAsChildOfParent) then
+                  objectParent := goParentHnd
+               else
+               begin
+                  if (createAsChildOfRoot) then
+                     objectParent := goRootHnd
+                  else
+                  begin
+                     if (createAsChildOfTarget) then
+                        objectParent := nodeTarget
+                     else
+                        objectParent := 0;
+                  end;
+               end;
+            end;
+
+            var createIndex : Integer;
+            for createIndex:=0 to createCurCount-1 do
+            begin
+               var x, y, z : Float = 0;
+               _misc_DispersionRange(x, y, z, posInitX, posInitY, posInitZ, posDisp, posRangeX, posRangeY, posRangeZ);
+               //var plHnd : Integer = GetPlayerHandleByName(playerName);
+               //if (plHnd=0) then
+               if (objectParent<>0) then
+                  objectHandle := _obj_ChildGetInvisibleOrCreate(objectParent, raceName, baseName)
+               else
+                  objectHandle := _obj_GetInvisibleOrCreate(GetPlayerHandleByName(playerName), raceName, baseName, x, y, z);
+               SetGameObjectCustomNameByHandle(objectHandle, customName);
+               SetGameObjectPositionByHandle(objectHandle, x, y, z);
+
+               if (objectHandle=0) then
+                  ErrorLogI('CreateGameObject error at fx.script function _fx_SetObjectsStruct')
+               else
+               begin
+                  wasCreated := true;
+                  //poolObject
+                  //destroy
+                  if (setToTargetSelf) then
+                  SetIntValueByIndex(gc_GOStack_fx_nodeTarget, objectHandle);
+                  if (setToStateTargetObjectSelf) then
+                     SetGameObjectSTOHandleByHandle(goHnd{parentHnd}, objectHandle);
+                  if (setToStateTargetObjectParent) then
+                     SetGameObjectSTOHandleByHandle(goParentHnd, objectHandle);
+                  if (setToStateTargetObjectRoot) then
+                     SetGameObjectSTOHandleByHandle(goRootHnd, objectHandle);
+                  if (setToStateTargetObjectTarget) then
+                     SetGameObjectSTOHandleByHandle(nodeTarget, objectHandle);
+                  _fx_SetPropertiesStruct(objectHandle, properties);
+                  _fx_SetRenderStruct(objectHandle, render);
+                  _fx_SetTransformationStruct(objectHandle, transformation);
+                  //SetAnimationStruct(objectHandle, objectHandle, animation);
+                  //SetTrackpointStruct(objectHandle, objectHandle, 0, 0, 0, trackpoint);
+                  _fx_SetStateMachineStruct(objectHandle, statemachine);
+                  //SetCollisionStruct(objectHandle, collision);
+                  //behavioursAsOwned
+                  _fx_SetBehavioursStruct(objectHandle, nodeTarget, behaviours);
+                  //effectsAsOwned
+                  _fx_SetEffectsStruct(objectHandle, nodeTarget, effects);
+                  //SetMiscStruct(objectHandle, objectHandle, misc);
+               end;
+            end;
+         end
+         else
+         if (objectHandle<>0) {and (not wasCreated)} then
+         begin
+            if (setToStateTargetObjectSelf) then
+               SetGameObjectSTOHandleByHandle(goHnd{parentHnd}, objectHandle);
+            if (setToStateTargetObjectParent) then
+               SetGameObjectSTOHandleByHandle(goParentHnd, objectHandle);
+            if (setToStateTargetObjectRoot) then
+               SetGameObjectSTOHandleByHandle(goRootHnd, objectHandle);
+            if (setToStateTargetObjectTarget) then
+               SetGameObjectSTOHandleByHandle(nodeTarget, objectHandle);
+            _fx_SetPropertiesStruct(objectHandle, properties);
+            _fx_SetRenderStruct(objectHandle, render);
+            _fx_SetTransformationStruct(objectHandle, transformation);
+            //SetAnimationStruct(objectHandle, objectHandle, animation);
+            //SetTrackpointStruct(objectHandle, objectHandle, 0, 0, 0, trackpoint);
+            _fx_SetStateMachineStruct(objectHandle, statemachine);
+            //SetCollisionStruct(objectHandle, collision);
+            //behavioursAsOwned
+            _fx_SetBehavioursStruct(objectHandle, nodeTarget, behaviours);
+            //effectsAsOwned
+            _fx_SetEffectsStruct(objectHandle, nodeTarget, effects);
+            //SetMiscStruct(objectHandle, objectHandle, misc);
+         end;
+      end;
+   end;
+end;
+
+// _fx_RunNodeFXTree
+//
+procedure _fx_RunNodeFXTree(parentHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float);
+begin
+   if (parentHnd<>0) and (nodeName<>'') then
+   begin
+      if (gIntRegister_fxTree_RootHandle=0) then
+         _fx_LoadLibFX();
+      var nodeHandle : Integer = _fx_GetLibNodeByName(nodeName);
+      if (nodeHandle<>0) then
+      begin
+         //gStringRegister_fxTree_NodeName := nodeName;
+         //gIntRegister_fxTree_NodeTarget := nodeTarget;
+         //gFloatRegister_fxTree_CoordTargetX := coordTargetX;
+         //gFloatRegister_fxTree_CoordTargetY := coordTargetY;
+         //gFloatRegister_fxTree_CoordTargetZ := coordTargetZ;
+         //gFloatRegister_fxTree_SleepTime := sleepTime;
+         //
+         // objects
+         //
+         var objectsStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'objects');
+         if (objectsStruct<>0) and (ParserGetCountByHandle(objectsStruct)>0) then
+            _fx_SetObjectsStruct(parentHnd, nodeTarget, objectsStruct);
+         //
+         // properties
+         //
+         var propStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'properties');
+         if (propStruct<>0) and (ParserGetCountByHandle(propStruct)>0) then
+            _fx_SetPropertiesStruct(parentHnd, propStruct);
+         //
+         // render
+         //
+         var renderStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'render');
+         if (renderStruct<>0) and (ParserGetCountByHandle(renderStruct)>0) then
+            _fx_SetRenderStruct(parentHnd, renderStruct);
+         //
+         // statemachine
+         //
+         var statemachineStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'statemachine');
+         if (statemachineStruct<>0) and (ParserGetCountByHandle(statemachineStruct)>0) then
+            _fx_SetStateMachineStruct(parentHnd, statemachineStruct);
+         //
+         // transformation
+         //
+         var transformationStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'transformation');
+         if (transformationStruct<>0) and (ParserGetCountByHandle(transformationStruct)>0) then
+            _fx_SetTransformationStruct(parentHnd, transformationStruct);
+         //
+         // behaviours
+         //
+         var behavioursStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'behaviours');
+         if (behavioursStruct<>0) and (ParserGetCountByHandle(behavioursStruct)>0) then
+            _fx_SetBehavioursStruct(parentHnd, nodeTarget, behavioursStruct);
+         //
+         // effects
+         //
+         var effectsStruct : Integer = ParserSelectByHandleByKey(nodeHandle, 'effects');
+         if (effectsStruct<>0) and (ParserGetCountByHandle(effectsStruct)>0) then
+            _fx_SetEffectsStruct(parentHnd, nodeTarget, effectsStruct);
+
+         //gStringRegister_fxTree_NodeName := '';
+         //gIntRegister_fxTree_NodeTarget := 0;
+         //gFloatRegister_fxTree_CoordTargetX := 0;
+         //gFloatRegister_fxTree_CoordTargetY := 0;
+         //gFloatRegister_fxTree_CoordTargetZ := 0;
+         //gFloatRegister_fxTree_SleepTime := 0;
+      end;
+   end;
+end;
+
+// _fx_RunNodeFXTreeToFindChild
+//
+procedure _fx_RunNodeFXTreeToFindChild(parentHnd : Integer; nodeName : String; nodeTarget : Integer; coordTargetX, coordTargetY, coordTargetZ, sleepTime : Float; hierarchy : Boolean; raceName, baseName, customName : String);
+begin
+   var childHnd : Integer = _obj_FindChildHandle(parentHnd, hierarchy, raceName, baseName, customName);
+   if (childHnd<>0) then
+      _fx_RunNodeFXTree(childHnd, nodeName, nodeTarget, coordTargetX, coordTargetY, coordTargetZ, sleepTime);
+end;
+
+// _fx_RunNodeFX
+//
+procedure _fx_RunNodeFX(parentHnd : Integer; nodeName : String);
+begin
+   _fx_RunNodeFXTree(parentHnd, nodeName, 0, 0, 0, 0, 0);
+end;
+
+// _fx_RunNodeFXToFindChild
+//
+procedure _fx_RunNodeFXToFindChild(parentHnd : Integer; nodeName : String; hierarchy : Boolean; raceName, baseName, customName : String);
+begin
+   _fx_RunNodeFXTreeToFindChild(parentHnd, nodeName, 0, 0, 0, 0, 0, hierarchy, raceName, baseName, customName);
+end;
+
+// _fx_SetVisibleFX
+//
+procedure _fx_SetVisibleFX(const parentHandle : Integer; hierarchy, visible : Boolean);
+begin
+   var i : Integer;
+
+   for i:=GetGameObjectCountChildByHandle(parentHandle)-1 downto 0 do
+   begin
+      var childHandle : Integer = GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      var childRaceName : String = GetGameObjectRaceNameByHandle(childHandle);
+      var childBaseName : String = GetGameObjectBaseNameByHandle(childHandle);
+      if (SameText('misc', childRaceName)) and (SameText('fx', childBaseName)) then
+         SetGameObjectVisibleByHandle(childHandle, visible)
+      else
+      begin
+         if (hierarchy) then
+            _fx_SetVisibleFX(childHandle, hierarchy, visible);
+      end;
+   end;
+end;
+
+// _fx_GetFlyTextSpeedMod
+//
+function _fx_GetFlyTextSpeedMod() : Float;
+begin
+   var speedMod : Float = _misc_CalcBattleSpeedModified(1);
+   if speedMod > gc_battle_speed_max then
+      speedMod := gc_battle_speed_max;
+   speedMod := speedMod / 2;
+   speedMod := Sqrt(speedMod);
+   
+   Result := speedMod;
+end;
+
+_fx_FlyTextInit();
+

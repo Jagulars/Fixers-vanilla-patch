@@ -1,0 +1,1928 @@
+
+procedure _sys_CopyRect( src : TRectangle; var dst : TRectangle);
+begin
+   dst.pos.x := src.pos.x;
+   dst.pos.y := src.pos.y;
+   dst.size.w := src.size.w;
+   dst.size.h := src.size.h;
+end;
+
+procedure _sys_FillRect( var dst : TRectangle; x,y,w,h : Integer);
+begin
+   dst.pos.x := x;
+   dst.pos.y := y;
+   dst.size.w := w;
+   dst.size.h := h;
+end;
+
+function _sys_InsideRect(rect : TRectangle;x,y : Integer) : Boolean;
+begin
+   if (x >= rect.pos.x) and (y >= rect.pos.y) and (x < (rect.pos.x+rect.size.w)) and (y < (rect.pos.y+rect.size.h)) then
+      Result := True
+   else
+      Result := False;
+end;
+
+procedure _gui_ConvertInterfaceAlignToString(align : Integer; va : Boolean;var a_str: String);
+begin
+   case align of
+      1: // right,bottom
+      begin
+         if va then
+            a_str := 'valBottomHeight'
+         else
+            a_str := 'halRightWidth';
+      end;
+      2: // middle
+      begin
+         if va then
+            a_str := 'valMiddle'
+         else
+            a_str := 'halMiddle';
+      end;
+      8: // parent left,top
+      begin
+         if va then
+            a_str := 'valParentTop'
+         else
+            a_str := 'halParentLeft';
+      end;
+      9: // parent right, bottom
+      begin
+         if va then
+            a_str := 'valParentBottom'
+         else
+            a_str := 'halParentRight';
+      end;
+      10: // parent middle
+      begin
+         if va then
+            a_str := 'valParentMiddle'
+         else
+            a_str := 'halParentMiddle';
+      end;
+      else // left, top
+      begin
+         if va then
+            a_str := 'valTop'
+         else
+            a_str := 'halLeft';
+      end;
+   end;
+end;
+
+// here is the trick: if the alpha of the color with index of 4 is zero, then we will use only lower 2 bits as a color index in GetInterfaceElement call!
+procedure _gui_ReloadInterfaceDataConfig();
+begin
+   const cFileName = '.\data\gui\interface.cfg';
+
+   var i,j: Integer;
+   var ax,ay : Integer;
+   var pInterface  : Integer = _misc_ParserGetOrCreateByKey('interface_cfg',true);
+   var pElems,pElem,use_4_colors,no : Integer;
+
+   for i:=0 to gc_gui_interface_max_windows_number-1 do
+      gArr_gui_if_window_data[i].window_name := ' ';
+
+   ParserLoadFromFileByHandle(pInterface,cFileName);
+   use_4_colors := 0;
+   no := ParserGetCountByHandle(pInterface);
+
+   for i := 0 to no-1 do
+   begin
+      pElems := ParserSelectByHandleByIndex(pInterface, i);
+      gArr_gui_if_window_data[i].window_name := ParserGetKeyName(pElems);
+      Log('Element Data Index: '+IntToStr(i)+', Name: '+gArr_gui_if_window_data[i].window_name);
+
+      pElem := ParserSelectByHandleByKey(pElems, 'FontColors');
+      if pElem > 0 then
+      begin
+         for j := 0 to ParserGetCountByHandle(pElem)-1 do
+         begin
+            if j > 7 then
+               break;
+            _gui_WebColorToTColor(ParserGetValueByIndexByHandle(pElem,j),gArr_gui_if_window_data[i].colors[j]);
+         end;
+      end
+      else
+      begin
+         for j := 0 to 7 do
+         begin
+            gArr_gui_if_window_data[i].colors[j].a := gArrGUIGameFontsColorID[j].a;
+            gArr_gui_if_window_data[i].colors[j].r := gArrGUIGameFontsColorID[j].r;
+            gArr_gui_if_window_data[i].colors[j].g := gArrGUIGameFontsColorID[j].g;
+            gArr_gui_if_window_data[i].colors[j].b := gArrGUIGameFontsColorID[j].b;
+         end;
+      end;
+      if gArr_gui_if_window_data[i].colors[4].a = 0 then
+         use_4_colors := 1
+      else
+         use_4_colors := 0;
+
+      j := gc_gui_if_base_window_id;
+      while j > 0 do
+      begin
+         pElem := ParserSelectByHandleByKey(pElems, 'Element_'+IntToStr(j));
+         if pElem > 0 then
+         begin
+            gArr_gui_if_window_data[i].e[j].p.pos.x := ParserGetIntValueByKeyByHandle(pElem, 'X');
+            gArr_gui_if_window_data[i].e[j].p.pos.y := ParserGetIntValueByKeyByHandle(pElem, 'Y');
+            gArr_gui_if_window_data[i].e[j].p.size.w := ParserGetIntValueByKeyByHandle(pElem, 'DX');
+            gArr_gui_if_window_data[i].e[j].p.size.h := ParserGetIntValueByKeyByHandle(pElem, 'DY');
+            gArr_gui_if_window_data[i].e[j].scalable := ParserGetIntValueByKeyByHandle(pElem, 'Scale');
+
+            gArr_gui_if_window_data[i].e[j].p_raw.pos.x := gArr_gui_if_window_data[i].e[j].p.pos.x;
+            gArr_gui_if_window_data[i].e[j].p_raw.pos.y := gArr_gui_if_window_data[i].e[j].p.pos.y;
+            gArr_gui_if_window_data[i].e[j].p_raw.size.w := gArr_gui_if_window_data[i].e[j].p.size.w;
+            gArr_gui_if_window_data[i].e[j].p_raw.size.h := gArr_gui_if_window_data[i].e[j].p.size.h;
+
+            ax := ParserGetIntValueByKeyByHandle(pElem, 'AlignX');
+            ay := ParserGetIntValueByKeyByHandle(pElem, 'AlignY');
+
+            gArr_gui_if_window_data[i].e[j].align_raw := ((ay shl 4) or ax);
+
+            if j <> gc_gui_if_base_window_id then
+            begin
+               ax := (ax or 8);
+               ay := (ay or 8);
+               if (ax=2) or (ax=10) then
+                  gArr_gui_if_window_data[i].e[j].p.pos.x := 0;
+               if (ay=2) or (ay=10) then
+                  gArr_gui_if_window_data[i].e[j].p.pos.y := 0;
+               if ax=9 then
+                  gArr_gui_if_window_data[i].e[j].p.pos.x := -1*(gArr_gui_if_window_data[i].e[gc_gui_if_base_window_id].p.size.w - gArr_gui_if_window_data[i].e[j].p.pos.x);
+               if ay=9 then
+                  gArr_gui_if_window_data[i].e[j].p.pos.y := -1*(gArr_gui_if_window_data[i].e[gc_gui_if_base_window_id].p.size.h - gArr_gui_if_window_data[i].e[j].p.pos.y);
+            end;
+
+            _gui_ConvertInterfaceAlignToString(ax,False,gArr_gui_if_window_data[i].e[j].align.h);
+            _gui_ConvertInterfaceAlignToString(ay,True,gArr_gui_if_window_data[i].e[j].align.v);
+            gArr_gui_if_window_data[i].e[j].font_index := ParserGetIntValueByKeyByHandle(pElem, 'Font');
+            gArr_gui_if_window_data[i].e[j].font_handle := gArrGUIGameFontsID[gArr_gui_if_window_data[i].e[j].font_index];
+
+            ax := ParserGetIntValueByKeyByHandle(pElem, 'Color');
+
+            gArr_gui_if_window_data[i].e[j].color_index := ax;
+            if use_4_colors <> 0 then ax := ax and 3;
+            gArr_gui_if_window_data[i].e[j].color.a := gArr_gui_if_window_data[i].colors[ax].a;
+            gArr_gui_if_window_data[i].e[j].color.r := gArr_gui_if_window_data[i].colors[ax].r;
+            gArr_gui_if_window_data[i].e[j].color.g := gArr_gui_if_window_data[i].colors[ax].g;
+            gArr_gui_if_window_data[i].e[j].color.b := gArr_gui_if_window_data[i].colors[ax].b;
+         end
+         else
+         begin
+            gArr_gui_if_window_data[i].e[j].p.pos.x := -200000;
+            gArr_gui_if_window_data[i].e[j].p.pos.y := -200000;
+            gArr_gui_if_window_data[i].e[j].p.size.w := 1;
+            gArr_gui_if_window_data[i].e[j].p.size.h := 1;
+         end;
+         j := j - 1;
+      end;
+   end;
+
+   Log('Interface.cfg reloaded. Elements updated: '+IntToStr(no));
+   ParserFreeByHandle(pInterface);
+end;
+
+function _gui_IsInterfaceValidHandles(handle : Integer; element_id : Integer) : Boolean;
+begin
+   Result := False;
+   if (element_id >= 0) and (element_id < gc_gui_interface_max_elements_number) and (handle >= 0) and (handle < gc_gui_interface_max_windows_number) then
+   begin
+      if (gArr_gui_if_window_data[handle].window_name <> ' ') and  (gArr_gui_if_window_data[handle].e[element_id].p.pos.x <> -200000) then
+         Result := True;
+   end;
+end;
+
+function _gui_GetInterfaceWindowHandle(name : String) : Integer;
+begin
+   var i : Integer;
+
+   Result := -1;
+
+   for i:=0 to gc_gui_interface_max_windows_number-1 do
+   begin
+      if gArr_gui_if_window_data[i].window_name = name then
+      begin
+         Result := i;
+         break;
+      end;
+   end;
+end;
+
+function _gui_GetInterfaceWindowColor(handle : Integer; color_idx : Integer; var color : TColorRGBA) : Boolean;
+begin
+   if (_gui_IsInterfaceValidHandles(handle,gc_gui_if_base_window_id)) and (color_idx < gc_gui_interface_max_colors_number+1) then
+   begin
+      Result := True;
+      color.a := gArr_gui_if_window_data[handle].colors[color_idx].a;
+      color.r := gArr_gui_if_window_data[handle].colors[color_idx].r;
+      color.g := gArr_gui_if_window_data[handle].colors[color_idx].g;
+      color.b := gArr_gui_if_window_data[handle].colors[color_idx].b;
+      if (color_idx=4) and (color.a=0) then color.a := 1.0;
+   end
+   else
+   begin
+      color.a := 1;
+      color.r := 1;
+      color.g := 1;
+      color.b := 1;
+      Result := False;
+   end;
+end;
+
+function _gui_GetInterfaceElementRect(handle : Integer; element_id : Integer; var rect : TRectangle) : Boolean;
+begin
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      Result := True;
+      rect.pos.x := gArr_gui_if_window_data[handle].e[element_id].p.pos.x;
+      rect.pos.y := gArr_gui_if_window_data[handle].e[element_id].p.pos.y;
+      rect.size.w := gArr_gui_if_window_data[handle].e[element_id].p.size.w;
+      rect.size.h := gArr_gui_if_window_data[handle].e[element_id].p.size.h;
+   end
+   else
+   begin
+      Result := False;
+      rect.pos.x := 0;
+      rect.pos.y := 0;
+      rect.size.w := 1;
+      rect.size.h := 1;
+   end;
+end;
+
+function _gui_GetInterfaceElementRectRaw(handle : Integer; element_id : Integer; var rect : TRectangle) : Boolean;
+begin
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      Result := True;
+      rect.pos.x := gArr_gui_if_window_data[handle].e[element_id].p_raw.pos.x;
+      rect.pos.y := gArr_gui_if_window_data[handle].e[element_id].p_raw.pos.y;
+      rect.size.w := gArr_gui_if_window_data[handle].e[element_id].p_raw.size.w;
+      rect.size.h := gArr_gui_if_window_data[handle].e[element_id].p_raw.size.h;
+   end
+   else
+   begin
+      Result := False;
+      rect.pos.x := 0;
+      rect.pos.y := 0;
+      rect.size.w := 1;
+      rect.size.h := 1;
+   end;
+end;
+
+function _gui_GetInterfaceElementFont(handle : Integer; element_id : Integer; var font_handle : String) : Boolean;
+begin
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      Result := True;
+      font_handle := gArr_gui_if_window_data[handle].e[element_id].font_handle;
+   end
+   else
+   begin
+      Result := False;
+      font_handle := gArrGUIGameFonts[0].file_name;
+   end;
+end;
+
+function _gui_GetInterfaceElementFontColor(handle : Integer; element_id : Integer; var font_color : TColorRGBA) : Boolean;
+begin
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      Result := True;
+      font_color.r := gArr_gui_if_window_data[handle].e[element_id].color.r;
+      font_color.g := gArr_gui_if_window_data[handle].e[element_id].color.g;
+      font_color.b := gArr_gui_if_window_data[handle].e[element_id].color.b;
+      font_color.a := gArr_gui_if_window_data[handle].e[element_id].color.a;
+   end
+   else
+   begin
+      Result := False;
+      font_color.r := 0;
+      font_color.g := 0;
+      font_color.b := 0;
+      font_color.a := 0;
+   end;
+end;
+
+function _gui_GetInterfaceElementAlign(handle : Integer; element_id : Integer; var align : TElementAlign) : Boolean;
+begin
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      Result := True;
+      align.h := gArr_gui_if_window_data[handle].e[element_id].align.h;
+      align.v := gArr_gui_if_window_data[handle].e[element_id].align.v;
+   end
+   else
+   begin
+      Result := False;
+      align.h := 'halLeft';
+      align.v := 'valTop';
+   end;
+end;
+
+function _gui_IsInterfaceElementScaleable(handle : Integer; element_id : Integer) : Boolean;
+begin
+   Result := False;
+
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      if gArr_gui_if_window_data[handle].e[element_id].scalable <> 0 then
+         Result := True;
+   end;
+end;
+
+function _gui_GetInterfaceElement(handle : Integer; element_id : Integer; var elem : TInterfaceElementData) : Boolean;
+begin
+   if _gui_IsInterfaceValidHandles(handle,element_id) then
+   begin
+      Result := True;
+
+      _gui_GetInterfaceElementRect(handle,element_id,elem.p);
+      _gui_GetInterfaceElementRectRaw(handle,element_id,elem.p_raw);
+      if _gui_IsInterfaceElementScaleable(handle,element_id) then
+         elem.scalable := 1
+      else
+         elem.scalable := 0;
+      _gui_GetInterfaceElementFontColor(handle,element_id,elem.color);
+      _gui_GetInterfaceElementFont(handle,element_id,elem.font_handle);
+      _gui_GetInterfaceElementAlign(handle,element_id,elem.align);
+      elem.font_index := gArr_gui_if_window_data[handle].e[element_id].font_index;
+      elem.color_index := gArr_gui_if_window_data[handle].e[element_id].color_index;
+      elem.align_raw := gArr_gui_if_window_data[handle].e[element_id].align_raw;
+   end
+   else
+   begin
+		//ErrorLogI('_gui_IsInterfaceValidHandles, invalid handle: '+IntToStr(handle)+', element name: '+gArr_gui_if_window_data[handle].window_name+', element ID: '+IntToStr(element_id)+', pos x: '+IntToStr(gArr_gui_if_window_data[handle].e[element_id].p.pos.x));
+      Result := False;
+      elem.p.pos.x := 0;
+      elem.p.pos.y := 0;
+      elem.p.size.w := 1;
+      elem.p.size.h := 1;
+      elem.p_raw.pos.x := 0;
+      elem.p_raw.pos.y := 0;
+      elem.p_raw.size.w := 1;
+      elem.p_raw.size.h := 1;
+      elem.scalable := 0;
+      elem.color.r := 0;
+      elem.color.g := 0;
+      elem.color.b := 0;
+      elem.color.a := 0;
+      elem.font_index := 0;
+      elem.color_index := 0;
+      elem.align_raw := 0;
+      elem.align.h := 'halLeft';
+      elem.align.v := 'valTop';
+      _gui_GetInterfaceElementFont(handle,element_id,elem.font_handle);
+   end;
+end;
+
+// org_id = -1 - offset calculated from 0 or window width (right_corner) to top pos of elem_id
+// elem_id = -1 - offset calculated from bottom pos of elem_id to 0 or window width (right_corner)
+function _gui_ie_GetOffsetX(handle,org_id,elem_id : Integer;right_corner : Boolean) : Integer;
+begin
+   if elem_id = -1 then
+   begin
+      Result := (gArr_gui_if_window_data[handle].e[org_id].p_raw.pos.x+gArr_gui_if_window_data[handle].e[org_id].p_raw.size.w);
+      if right_corner then
+         Result := Result - gArr_gui_if_window_data[handle].e[gc_gui_if_base_window_id].p_raw.size.w;
+   end
+   else
+   begin
+      if org_id = -1 then
+      begin
+         Result := gArr_gui_if_window_data[handle].e[elem_id].p_raw.pos.x;
+         if right_corner then
+            Result := Result - gArr_gui_if_window_data[handle].e[gc_gui_if_base_window_id].p_raw.size.w;
+      end
+      else
+      begin
+         Result := gArr_gui_if_window_data[handle].e[org_id].p_raw.pos.x-gArr_gui_if_window_data[handle].e[elem_id].p_raw.pos.x;
+         if right_corner then
+            Result := Result - gArr_gui_if_window_data[handle].e[elem_id].p_raw.size.w;
+      end;
+   end;
+end;
+
+function _gui_ie_GetOffsetY(handle,org_id,elem_id : Integer;right_corner : Boolean) : Integer;
+begin
+   if elem_id = -1 then
+   begin
+      Result := (gArr_gui_if_window_data[handle].e[org_id].p_raw.pos.y+gArr_gui_if_window_data[handle].e[org_id].p_raw.size.h);
+      if right_corner then
+         Result := Result - gArr_gui_if_window_data[handle].e[gc_gui_if_base_window_id].p_raw.size.h;
+   end
+   else
+   begin
+      if org_id = -1 then
+      begin
+         Result := gArr_gui_if_window_data[handle].e[elem_id].p_raw.pos.y;
+         if right_corner then
+            Result := Result - gArr_gui_if_window_data[handle].e[gc_gui_if_base_window_id].p_raw.size.h;
+      end
+      else
+      begin
+         Result := gArr_gui_if_window_data[handle].e[org_id].p_raw.pos.y-gArr_gui_if_window_data[handle].e[elem_id].p_raw.pos.y;
+         if right_corner then
+            Result := Result - gArr_gui_if_window_data[handle].e[elem_id].p_raw.size.h;
+      end;
+   end;
+end;
+
+function _gui_CreateText_VVK(elementName : String; parent : Integer; text : String; align : TElementAlign; pos : TRectangle; text_align : TElementAlign; font_handle : String; color : TColorRGBA) : Integer;
+begin
+   var funcBtnHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcBtnHandle = 0) or GetGUIElementVisible(funcBtnHandle) then
+      funcBtnHandle := AddNewElementByClassNameParent(elementName, 'TOSWBaseGuiTextControl', 0, parent);
+	  
+   var w,h : Integer;
+   var tmpText : String = text;
+
+   if (IsDelimiterCharExists(text, gc_gui_DelimiterChar)) then
+   begin
+      var delimiterStringCount : Integer = GetDelimiterStringCount(text, gc_gui_DelimiterChar, gc_gui_QuoteChar);
+      if (delimiterStringCount>=2) then
+      begin
+         var tableID : String = GetDelimiterStringByIndex(text, gc_gui_DelimiterChar, gc_gui_QuoteChar, 0);
+         var keyID : String = GetDelimiterStringByIndex(text, gc_gui_DelimiterChar, gc_gui_QuoteChar, 1);
+         if (tableID<>'') and (keyID<>'') then
+         begin
+            var sTmpText : String = GetLocaleTableListItemByID(tableID, keyID);
+            if (sTmpText<>'') then
+               tmpText := sTmpText;
+         end;
+      end;
+   end;
+
+   w := pos.size.w;
+   h := pos.size.h;
+   if (pos.size.w=0) or (pos.size.h=0) then
+   begin
+      var tmpWidth : Integer;
+      var tmpHeight : Integer;
+      GetGUIElementFontTextFormatRect(font_handle, tmpText, tmpWidth, tmpHeight);
+      if w = 0 then
+         w := tmpWidth;
+      if h = 0 then
+         h := tmpHeight;
+   end;
+
+   SetGUIElementFont(funcBtnHandle, font_handle);
+   SetGUIElementTextAlign(funcBtnHandle, text_align.h, text_align.v, 0, 0);
+   SetGUIElementTextFormatted(funcBtnHandle,true);
+   SetGUIElementColor(funcBtnHandle, color.r, color.g, color.b, color.a);
+   SetGUIElementColorAttention(funcBtnHandle,gc_gui_fontcolor_Attention.r,gc_gui_fontcolor_Attention.g,gc_gui_fontcolor_Attention.b,gc_gui_fontcolor_Attention.a);
+   SetGUIElementColorInfo(funcBtnHandle,gc_gui_fontcolor_Info.r,gc_gui_fontcolor_Info.g,gc_gui_fontcolor_Info.b,gc_gui_fontcolor_Info.a);
+   SetGUIElementColorExtraInfo(funcBtnHandle,gc_gui_fontcolor_ExtraInfo.r,gc_gui_fontcolor_ExtraInfo.g,gc_gui_fontcolor_ExtraInfo.b,gc_gui_fontcolor_ExtraInfo.a);
+   SetGUIElementColorWarning(funcBtnHandle,gc_gui_fontcolor_Warning.r,gc_gui_fontcolor_Warning.g,gc_gui_fontcolor_Warning.b,gc_gui_fontcolor_Warning.a);
+   SetGUIElementAlign(funcBtnHandle, align.h, align.v);
+   SetGUIElementText(funcBtnHandle, tmpText);
+   SetGUIElementAllPositionRect(funcBtnHandle, pos.pos.x, pos.pos.y, w, h);
+   SetGUIElementVisible(funcBtnHandle, true);
+   Result := funcBtnHandle;
+end;
+
+function _gui_CreateButton_VVK(elementName : String; parent : Integer; buttonName, material : String; align : TElementAlign; pos : TRectangle; pressState : String; hint : String; tag : Integer) : Integer;
+begin
+   var w,h : Integer;
+   var funcBtnHandle : Integer;
+   var property_names : array [0..5] of String;
+   var i : Integer;
+   var temp_str : String;
+
+   w := pos.size.w;
+   h := pos.size.h;
+
+   if buttonName = '' then
+      buttonName := 'btn.dummy';
+
+   funcBtnHandle := AddNewElementParent(buttonName, elementName, tag, parent);
+   temp_str := material+'.normal';
+   if GetGUITextureWidth(temp_str) = 0 then
+      temp_str := material;
+
+   if (w=0) then
+      w := GetGUITextureWidth(temp_str);
+   if (h=0) then
+      h := GetGUITextureHeight(temp_str);
+
+   property_names[0] := temp_str;
+   property_names[1] := material+'.hover';
+   property_names[2] := material+'.pressed';
+   property_names[3] := material+'.disabled';
+   property_names[4] := material+'.checkon';
+
+   for i:=1 to 4 do
+   begin
+      if GetGUITextureWidth(property_names[i]) = 0 then
+         property_names[i] := property_names[0];
+   end;
+
+   SetGUIElementAllPositionRect(funcBtnHandle, pos.pos.x, pos.pos.y, w, h);
+   SetGUIElementAlign(funcBtnHandle, align.h, align.v);
+   SetGUIElementLogicPositionRect(funcBtnHandle, pos.pos.x, pos.pos.y, w, h);
+
+   if tag <> 0 then
+      SetGUIAllowEvents(funcBtnHandle, True, False, False);
+
+   if pressState <> '' then
+      SetGUIElementPressState(funcBtnHandle, pressState);
+
+   SetGUIElementHint(funcBtnHandle, hint);
+
+// !! 6 is the cursor index!!!
+   i := 0;
+   SetGUIElementVisibleProperties(funcBtnHandle, 'UpProperty', property_names[i], 0, 0, 0, 0, -1, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(funcBtnHandle, 'HoverProperty', property_names[i], 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(funcBtnHandle, 'DownProperty', property_names[i], 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(funcBtnHandle, 'DisableProperty', property_names[i], 0, 0, 0, 0, -1, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(funcBtnHandle, 'CheckOnProperty', property_names[i], 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+
+   SetGUIElementHoverEnabled(funcBtnHandle, true);
+   SetGUIElementEnabled(funcBtnHandle, true);
+   SetGUIElementMaterial(funcBtnHandle, property_names[i]);
+
+   Result := funcBtnHandle;
+end;
+
+function _gui_CreateButtonFromTemplate_VVK(elementName : String; parent : Integer; templateName : String; align : TElementAlign; pos : TElementPos; pressState : String; hint : String; tag : Integer) : Integer;
+begin
+   var bhd : Integer = AddNewElementParent(templateName, elementName, tag, parent);
+
+   SetGUIElementPressState(bhd,pressState);
+   SetGUIElementAlign(bhd, align.h, align.v);
+   SetGUIElementPosition(bhd,pos.x,pos.y);
+   SetGUIElementVisible(bhd, True);
+   SetGUIElementHint(bhd,hint);
+
+   Result := bhd;
+end;
+
+function _gui_CreateTextButton_VVK(elementName : String; parent : Integer; buttonName, material : String; align : TElementAlign; pos : TRectangle; pressState : String; hint : String; tag : Integer; text : String; text_align : TElementAlign; font_handle : String; color : TColorRGBA) : Integer;
+begin
+   var whd : Integer;
+
+   whd := _gui_CreateButton_VVK(elementName,parent,buttonName,material,align,pos,pressState,hint,tag);
+   if whd <> 0 then
+   begin
+      var tmp_pos : TRectangle;
+
+      _sys_fillRect(tmp_pos,0,0,GetGUIElementWidth(whd),GetGUIElementHeight(whd));
+      _gui_CreateText_VVK(elementName+'_text',whd,text,gc_gui_align_parent_lt,tmp_pos,text_align,font_handle,color);
+   end;
+
+   Result := whd;
+end;
+
+procedure _gui_ReskinButton_VVK(whd : Integer; material : String;scale_material : Boolean);
+begin
+   var w,h : Integer;
+   var property_names : array [0..5] of String;
+   var i : Integer;
+   var temp_str : String;
+
+   temp_str := material+'.normal';
+   if GetGUITextureWidth(temp_str) = 0 then
+      temp_str := material;
+
+   if (scale_material) then
+   begin
+      w := GetGUITextureWidth(temp_str);
+      h := GetGUITextureHeight(temp_str);
+   end;
+
+   property_names[0] := temp_str;
+   property_names[1] := material+'.hover';
+   property_names[2] := material+'.pressed';
+   property_names[3] := material+'.disabled';
+   property_names[4] := material+'.checkon';
+
+   for i:=1 to 4 do
+   begin
+      if GetGUITextureWidth(property_names[i]) = 0 then
+         property_names[i] := property_names[0];
+   end;
+
+   if scale_material then
+   begin
+      SetGUIElementWidth(whd, w);
+      SetGUIElementHeight(whd, h);
+   end;
+
+// !! 6 is the cursor index!!!
+   i := 0;
+   SetGUIElementVisibleProperties(whd, 'UpProperty', property_names[i], 0, 0, 0, 0, -1, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(whd, 'HoverProperty', property_names[i], 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(whd, 'DownProperty', property_names[i], 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(whd, 'DisableProperty', property_names[i], 0, 0, 0, 0, -1, 0.5, 0.5, 0.5, 1);
+   i := i + 1;
+   SetGUIElementVisibleProperties(whd, 'CheckOnProperty', property_names[i], 0, 0, 0, 0, 6, 0.5, 0.5, 0.5, 1);
+end;
+
+function _gui_CreateImage_VVK(elementName : String; parent : Integer; material : String; Align : TElementAlign; box : TRectangle) : Integer;
+begin
+   var funcImageHandle : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (funcImageHandle = 0) or GetGUIElementVisible(funcImageHandle) then
+      funcImageHandle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, parent);
+	  
+   var w,h : Integer;
+
+   SetGUIElementAlign(funcImageHandle, Align.h, Align.v);
+   SetGUIElementMaterial(funcImageHandle, material);
+
+   if box.size.w = 0 then
+      w := GetGUITextureWidth(material)
+   else
+      w := box.size.w;
+
+   if box.size.h = 0 then
+      h := GetGUITextureHeight(material)
+   else
+      h := box.size.h;
+
+   SetGUIElementAllPositionRect(funcImageHandle, box.pos.x, box.pos.y, w, h);
+   SetGUIAllowEvents(funcImageHandle, False, False, False);
+   SetGUIElementVisible(funcImageHandle, true);
+   Result := funcImageHandle;
+end;
+
+function _gui_CreateImageSlice_VVK(elementName : String; parent : Integer; material : String; Align : TElementAlign; box : TRectangle) : Integer;
+begin
+   var whd : Integer = GetGUIElementIndexByNameParent(elementName, parent);
+   if (whd = 0) or GetGUIElementVisible(whd) then
+      whd := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, parent);
+
+   var w,h : Integer;
+   var sx,sy : Float;
+
+   if box.size.w = 0 then
+   begin
+      w := GetGUITextureWidth(material);
+      sx := 1.0;
+   end
+   else
+   begin
+      w := box.size.w;
+      sx := abs(box.size.w / GetGUITextureWidth(material));
+   end;
+
+   if box.size.h = 0 then
+   begin
+      h := GetGUITextureHeight(material);
+      sy := 1.0;
+   end
+   else
+   begin
+      h := box.size.h;
+      sy := abs(box.size.h / GetGUITextureHeight(material));
+   end;
+
+   SetGUIElementAlign(whd, Align.h, Align.v);
+   SetGUIElementMaterial(whd, material);
+   SetGUIElementTileScales(whd,sx,sy);
+   SetGUIElementAllPositionRect(whd, box.pos.x, box.pos.y, w, h);
+   SetGUIAllowEvents(whd,False, False, False);
+   SetGUIElementVisible(whd, true);
+   Result := whd;
+end;
+
+function _gui_CreateScrollLayer_VVK(parent : Integer; Align : TElementAlign; box : TRectangle; elementName : String) : Integer;
+begin
+   var elmGuiLayer,elmHandle : Integer;
+
+   elmGuiLayer := GetGUIElementIndexByNameParent(elementName, parent);
+   if (elmGuiLayer = 0) or GetGUIElementVisible(elmGuiLayer) then
+      elmGuiLayer := AddNewElementByClassNameParent(elementName, 'TXGuiLayer', 0, parent);
+   
+   SetGUIScrollEnabled(elmGuiLayer, True);
+
+   SetGUIElementMaterial(elmGuiLayer, gc_gui_material_blank_0);
+
+   SetGUIElementAlign(elmGuiLayer, Align.h, Align.v);
+   SetGUIElementAllPositionRect(elmGuiLayer, box.pos.x, box.pos.y, box.size.w, box.size.h);
+   // somehow we should set inner scroll layer height by one pixel larger per EG instructions ??
+   SetGUIElementWidth(elmGuiLayer, box.size.w+1);
+   SetGUIElementHeight(elmGuiLayer, box.size.h+1);
+   SetGUIElementVisible(elmGuiLayer, True);
+
+   Result := elmGuiLayer;
+end;
+
+procedure _gui_TileTexture_VVK(parent : Integer; materialName : String; size : TElementSize; elementBase : String);
+begin
+   var tdx,tdy,i,j,no,th,dx,dy : Integer;
+   var box : TRectangle;
+   var ename : String;
+
+   dx := GetGUITextureWidth(materialName);
+   dy := GetGUITextureHeight(materialName);
+   //Log(materialName+' W: '+IntToStr(dx)+' H: '+IntToStr(dy));
+   tdx := (size.w+dx-1) div dx;
+   tdy := (size.h+dy-1) div dy;
+
+   box.pos.y := 0;
+   box.size.w := 0;
+   box.size.h := 0;
+   no := 0;
+   for i := 0 to tdy-1 do
+   begin
+      box.pos.x := 0;
+      for j := 0 to tdx-1 do
+      begin
+         if elementBase <> '' then
+            ename := elementBase+'_'+IntToStr(no)
+         else
+            ename := '';
+         //Log('     X: '+IntToStr(box.pos.x)+' Y: '+IntToStr(box.pos.y));
+         th := _gui_CreateImage_VVK(ename, parent, materialName, gc_gui_align_parent_lt,box);
+         //SetGUIElementVisible(th, True);
+         box.pos.x := box.pos.x + dx;
+         no := no + 1;
+      end;
+      box.pos.y := box.pos.y + dy;
+   end;
+end;
+
+// flags:
+// &0x100 - do not create background, &0xf - do not create corners (ltrb), &0xf0 - do not create frames (ltrb)
+function _gui_CreateScalableWindowExt_VVK(elementName : String; parent : Integer; Align : TElementAlign; box : TRectangle; template_name : String;create_flags: Integer) : Integer;
+begin
+   const cCornersOffset = $1e;
+   const cBordersOffset = $1d;
+
+   var elem_d : TInterfaceElementData;
+   var co,bo : TElementSize;
+   var pos : TRectangle;
+   var name_lt,name_rt,name_rb,name_lb,temp_str : String;
+   var scroll_w,scroll_h,temp_handle,if_data_handle,bkg_handle : Integer;
+
+   if (elementName<>'') then
+      bkg_handle := GetGUIElementIndexByNameParent(elementName, parent)
+   else
+      bkg_handle := 0;
+   
+   if bkg_handle = 0 then
+   begin
+      bkg_handle := AddNewElementByClassNameParent(elementName, 'TOSWImageGuiControl', 0, parent);
+      SetGUIElementMaterial(bkg_handle, gc_gui_material_blank_0);
+   end
+   else
+   begin
+      if not _gui_IsRecycledElement(bkg_handle) then
+         RemoveGUIChildren(bkg_handle);
+   end;
+
+   SetGUIElementAlign(bkg_handle, Align.h, Align.v);
+   SetGUIElementAllPositionRect(bkg_handle, box.pos.x, box.pos.y, box.size.w, box.size.h);
+
+   if ((create_flags and $100) = 0) then
+   begin
+      temp_str := template_name+'.tile';
+      co.w := GetGUITextureWidth(temp_str);
+      co.h := GetGUITextureWidth(temp_str);
+	Assert(co.w > 0, elementName+' _gui_CreateScalableWindowExt_VVK texture width: '+IntToStr(co.w)+', name: '+temp_str);
+      _sys_FillRect(pos,0,0,box.size.w,box.size.h);
+      if (co.w >= box.size.w) and (co.h >= box.size.h) then
+         temp_handle := _gui_CreateImageSlice_VVK('background_tiles',bkg_handle,temp_str,gc_gui_align_parent_lt,pos)
+      else
+      begin
+         Log('[GUI] Warning: Scrollable layer used for background of window '+elementName);
+         temp_handle :=_gui_CreateScrollLayer_VVK(bkg_handle,gc_gui_align_parent_lt,pos,'background_tiles');
+         _gui_TileTexture_VVK(temp_handle,temp_str,pos.size,'background');
+      end;
+   end;
+
+   if_data_handle := _gui_GetInterfaceWindowHandle(template_name+'_offsets');
+	Assert(if_data_handle >= 0, elementName+' _gui_CreateScalableWindowExt_VVK if_data_handle not found, name: '+template_name+'_offsets');
+
+   name_lt := template_name + '.corner.left.top';
+   name_rt := template_name + '.corner.right.top';
+   name_rb := template_name + '.corner.right.bottom';
+   name_lb := template_name + '.corner.left.bottom';
+
+   Assert(_gui_GetInterfaceElement(if_data_handle,cCornersOffset,elem_d), elementName+' _gui_CreateScalableWindowExt_VVK cCornersOffset not found, data_handle: '+IntToStr(if_data_handle));
+   co.w := elem_d.p.size.w;
+   co.h := elem_d.p.size.h;
+	
+	Assert(gArr_gui_if_window_data[if_data_handle].e[cBordersOffset].p.pos.x <> -200000, 'posX = -200000, cBordersOffset, data_handle: '+IntToStr(if_data_handle));
+	
+   if _gui_GetInterfaceElement(if_data_handle,cBordersOffset,elem_d) then
+   begin
+      bo.w := elem_d.p.size.w;
+      bo.h := elem_d.p.size.h;
+   end
+   else
+   begin
+      ErrorLogI(elementName+' _gui_CreateScalableWindowExt_VVK cBordersOffset not found, data_handle: '+IntToStr(if_data_handle));
+      bo.w := 0;
+      bo.h := 0;
+   end;
+
+   _sys_FillRect(pos,-1*co.w,-1*co.h,0,0);
+   if ((create_flags and $1) = 0) then
+      _gui_CreateImage_VVK('lefttop',bkg_handle,name_lt,gc_gui_align_parent_lt,pos);
+   pos.pos.x := box.size.w - (GetGUITextureWidth(name_rt)-co.w);
+   if ((create_flags and $2) = 0) then
+      _gui_CreateImage_VVK('righttop',bkg_handle,name_rt,gc_gui_align_parent_lt,pos);
+   pos.pos.y := box.size.h - (GetGUITextureHeight(name_rb)-co.h);
+   if ((create_flags and $4) = 0) then
+      _gui_CreateImage_VVK('rightbottom',bkg_handle,name_rb,gc_gui_align_parent_lt,pos);
+   pos.pos.x := -1*co.w;
+   if ((create_flags and $8) = 0) then
+      _gui_CreateImage_VVK('leftbottom',bkg_handle,name_lb,gc_gui_align_parent_lt,pos);
+
+   scroll_w := box.size.w-(GetGUITextureWidth(name_lt)+GetGUITextureWidth(name_rt)-co.w*2);
+   scroll_h := box.size.h-(GetGUITextureHeight(name_lt)+GetGUITextureHeight(name_lb)-co.h*2);
+
+   if scroll_w > 0 then
+   begin
+      temp_str := template_name+'.border.top';
+      if GetGUITextureWidth(temp_str+'.full') <> 0 then
+      begin
+         temp_str := temp_str + '.full';
+         _sys_FillRect(pos,GetGUITextureWidth(name_lt)-co.w,-1*bo.h,scroll_w,GetGUITextureHeight(temp_str));
+         if ((create_flags and $20) = 0) then
+            temp_handle := _gui_CreateImageSlice_VVK('topframe',bkg_handle,temp_str,gc_gui_align_parent_lt,pos);
+      end
+      else
+      begin
+         Log('[GUI] Warning: Scrollable layer used for top frame of window '+elementName);
+         _sys_FillRect(pos,GetGUITextureWidth(name_lt)-co.w,-1*co.h,scroll_w,GetGUITextureHeight(name_lt));
+         if ((create_flags and $20) = 0) then
+         begin
+            temp_handle := _gui_CreateScrollLayer_VVK(bkg_handle,gc_gui_align_parent_lt,pos,'topframe_tiles');
+            _gui_TileTexture_VVK(temp_handle,temp_str,pos.size,'topframe');
+         end;
+      end;
+
+      temp_str := template_name+'.border.bottom';
+      if GetGUITextureWidth(temp_str+'.full') <> 0 then
+      begin
+         temp_str := temp_str + '.full';
+         pos.pos.y := box.size.h-(GetGUITextureHeight(temp_str)-bo.h);
+         if ((create_flags and $80) = 0) then
+            temp_handle := _gui_CreateImageSlice_VVK('bottomframe',bkg_handle,temp_str,gc_gui_align_parent_lt,pos);
+      end
+      else
+      begin
+         Log('[GUI] Warning: Scrollable layer used for bottom frame of window '+elementName);
+         pos.pos.y := box.size.h-(GetGUITextureHeight(name_lb)-co.h);
+         if ((create_flags and $80) = 0) then
+         begin
+            temp_handle := _gui_CreateScrollLayer_VVK(bkg_handle,gc_gui_align_parent_lt,pos,'bottomframe_tiles');
+            _gui_TileTexture_VVK(temp_handle,temp_str,pos.size,'bottomframe');
+         end;
+      end;
+   end;
+
+   if scroll_h > 0 then
+   begin
+      temp_str := template_name+'.border.left';
+      if GetGUITextureWidth(temp_str+'.full') <> 0 then
+      begin
+         temp_str := temp_str + '.full';
+         _sys_FillRect(pos,-1*bo.w,GetGUITextureHeight(name_lt)-co.h,GetGUITextureWidth(temp_str),scroll_h);
+         if ((create_flags and $10) = 0) then
+            temp_handle := _gui_CreateImageSlice_VVK('leftframe',bkg_handle,temp_str,gc_gui_align_parent_lt,pos);
+      end
+      else
+      begin
+         Log('[GUI] Warning: Scrollable layer used for left frame of window '+elementName);
+         _sys_FillRect(pos,-1*co.w,GetGUITextureHeight(name_lt)-co.h,GetGUITextureWidth(name_lt),scroll_h);
+         if ((create_flags and $10) = 0) then
+         begin
+            temp_handle := _gui_CreateScrollLayer_VVK(bkg_handle,gc_gui_align_parent_lt,pos,'leftframe_tiles');
+            _gui_TileTexture_VVK(temp_handle,temp_str,pos.size,'leftframe');
+         end;
+      end;
+
+      temp_str := template_name+'.border.right';
+      if GetGUITextureWidth(temp_str+'.full') <> 0 then
+      begin
+         temp_str := temp_str + '.full';
+         pos.pos.x := box.size.w-(GetGUITextureWidth(temp_str)-bo.w);
+         if ((create_flags and $40) = 0) then
+            temp_handle := _gui_CreateImageSlice_VVK('rightframe',bkg_handle,temp_str,gc_gui_align_parent_lt,pos);
+      end
+      else
+      begin
+         Log('[GUI] Warning: Scrollable layer used for right frame of window '+elementName);
+         pos.pos.x := box.size.w-(GetGUITextureWidth(name_rt)-co.w);
+         if ((create_flags and $40) = 0) then
+         begin
+            temp_handle := _gui_CreateScrollLayer_VVK(bkg_handle,gc_gui_align_parent_lt,pos,'rightframe_tiles');
+            _gui_TileTexture_VVK(temp_handle,template_name+'.border.right',pos.size,'rightframe');
+         end;
+      end;
+   end;
+
+   SetGUIElementVisible(bkg_handle, True);
+   Result := bkg_handle;
+end;
+
+function _gui_CreateScalableWindow_VVK(elementName : String; parent : Integer; Align : TElementAlign; box : TRectangle; template_name : String) : Integer;
+begin
+   Result := _gui_CreateScalableWindowExt_VVK(elementName,parent,Align,box,template_name,0);
+end;
+
+function _gui_GetVScrollerWidth(const template : String) : Integer;
+begin
+   Result := GetGUITextureWidth(template+'.scroller.up');
+end;
+
+function _gui_GetHScrollerHeight(const template : String) : Integer;
+begin
+   //Result := GetGUITextureHeight(template+'.scroller.left');
+   Result := GetGUITextureHeight(template+'.scroller.up');
+end;
+
+function _gui_CreateScrollableCanvas_VVK(elementName : String; parent : Integer; align : TElementAlign; box : TRectangle; size : TElementSize; template: String; scroll_bars_outside : Boolean) : Integer;
+begin
+   var scroll_handle,vscroll_handle,hscroll_handle : Integer;
+   var w,h,vscroll_width,hscroll_height :Integer;
+   var hscroll_enabled,vscroll_enabled,adjust_scroll_bars : Boolean;
+
+   scroll_handle := 0;
+   if (elementName<>'') then
+      scroll_handle := GetGUIElementIndexByNameParent(elementName, parent);
+
+   if scroll_handle = 0 then
+      scroll_handle := AddNewElementByClassNameParent(elementName, 'TXGuiLayer', 0, parent)
+   else
+   if not _gui_IsRecycledElement(scroll_handle) then
+      RemoveGUIChildren(scroll_handle);
+
+   vscroll_width := _gui_GetVScrollerWidth(template);
+   hscroll_height := _gui_GetHScrollerHeight(template);
+
+   w := box.size.w;
+   h := box.size.h;
+   hscroll_enabled := false;
+   vscroll_enabled := false;
+   adjust_scroll_bars := true;
+
+   while adjust_scroll_bars do
+   begin
+      if size.w > w then
+      begin
+         if (not scroll_bars_outside) then
+            h := h - hscroll_height;
+         if h < 0 then
+            h := 1;
+         hscroll_enabled := true;
+      end;
+
+      if size.h > h then
+      begin
+         if (not scroll_bars_outside) then
+            w := w - vscroll_width;
+         if w < 0 then
+            w := 1;
+         vscroll_enabled := true;
+      end;
+      if (((size.w > w) and ( not hscroll_enabled)) or ((size.h > h) and (not vscroll_enabled))) then
+         adjust_scroll_bars := true
+      else
+         adjust_scroll_bars := false;
+   end;
+
+   SetGUIElementAlign(scroll_handle, align.h, align.v);
+   SetGUIElementAllPositionRect(scroll_handle, box.pos.x, box.pos.y, w, h);
+   SetGUIElementMaterial(scroll_handle, 'misc.blank.black.alpha.0');
+
+   if vscroll_enabled then
+   begin
+      SetGUIScrollEnabled(scroll_handle, True);
+      vscroll_handle := GetGUIElementVScroll(scroll_handle);
+      SetGUIElementAlign(vscroll_handle, 'halParentRight', 'valParentTop');
+      SetGUIElementMaterialOffset(vscroll_handle, -1, 0); // ???
+      SetGUIElementAllPositionRect(vscroll_handle, 0, 0, vscroll_width, h);
+
+      SetGUIElementMaterial(vscroll_handle, template+'.scroller.tile');
+      SetGUIScrollButtonSource(vscroll_handle, 0, template+'.scroller.up', true);
+      SetGUIScrollButtonSource(vscroll_handle, 2, template+'.scroller.down', true);
+      SetGUIScrollButtonSource(vscroll_handle, 1, template+'.scroller.slider', true);
+      SetGUIElementHeight(scroll_handle, size.h);
+   end;
+
+   if hscroll_enabled then
+   begin
+      SetGUIScrollEnabled(scroll_handle, True);
+      hscroll_handle := GetGUIElementHScroll(scroll_handle);
+      SetGUIElementAlign(hscroll_handle, 'halParentLeft', 'valParentBottom');
+      SetGUIElementMaterialOffset(hscroll_handle, -1, 0); // ???
+      SetGUIElementAllPositionRect(hscroll_handle, 0, 0, w, hscroll_height);
+
+      SetGUIElementMaterial(hscroll_handle, template+'.scroller.tile');
+      SetGUIScrollButtonSource(hscroll_handle, 0, template+'.scroller.up', true);
+      SetGUIScrollButtonSource(hscroll_handle, 2, template+'.scroller.down', true);
+      SetGUIScrollButtonSource(hscroll_handle, 1, template+'.scroller.slider', true);
+      //SetGUIElementMaterial(hscroll_handle, template+'.scroller.htile');
+      //SetGUIScrollButtonSource(hscroll_handle, 0, template+'.scroller.left', true);
+      //SetGUIScrollButtonSource(hscroll_handle, 2, template+'.scroller.right', true);
+      //SetGUIScrollButtonSource(hscroll_handle, 1, template+'.scroller.hslider', true);
+      SetGUIElementWidth(scroll_handle, size.w);
+   end;
+   
+   SetGUIElementVisible(scroll_handle, true);
+
+   Result := scroll_handle;
+end;
+
+procedure _gui_SetTiledElementBlend(parent : Integer; baseName : String; blend : Float);
+begin
+   var i,handle : Integer;
+
+   handle := GetGUIElementIndexByNameParent(baseName+'_0', parent);
+   if handle <> 0 then
+   begin
+      i := 0;
+      while i < 1000 do
+      begin
+         handle := GetGUIElementIndexByNameParent(baseName+'_'+IntToStr(i), parent);
+         if handle = 0 then
+            break;
+         SetGUIElementUserBlend(handle, blend);
+         i := i + 1;
+      end;
+   end
+   else
+      SetGUIElementUserBlend(parent,blend);
+end;
+
+procedure _gui_SetScaleableWindowBkgBlend(parent : Integer; blend : Float);
+begin
+   _gui_SetTiledElementBlend(GetGUIElementIndexByNameParent('background_tiles',parent),'background',blend);
+end;
+
+// fadeMode: 0-in else - out&destroy
+procedure _gui_FadeWindow_VVK(handle: Integer; fadeTime : Float; fadeMode : Integer);
+begin
+   IntRegister0 := handle;
+   if fadeMode = 0 then
+      IntRegister1 := 0
+   else
+      IntRegister1 := 1;
+   FloatRegister0 := fadeTime;
+   GUIExecuteState('VVK.FadeWindow');
+end;
+
+// returns GetGUIElementIndexByNameParent('text', parent) !!!
+function _gui_CreateInputControl_VVK(nm: String; parent : Integer; text : String; c_align : TElementAlign; text_centered : Boolean; box : TRectangle; text_max : Integer; event, hint : String) : Integer;
+begin
+   const cTextBkg = $1e;
+   const cLeftArrow = $2;
+   const cRightArrow = $3;
+   const cBkgTex = 'inputcontrol.back';
+   const cLeftTex = 'common.slider.left.end';
+   const cRightTex = 'common.slider.right.end';
+
+   var windowHandle,whd,if_handle,h : Integer;
+   var pos : TRectangle;
+   var elem_d : TInterfaceElementData;
+
+   if_handle := _gui_GetInterfaceWindowHandle('inputcontrol_window');
+   _gui_GetInterfaceElement(if_handle,cTextBkg,elem_d);
+
+   h := GetGUITextureHeight(cBkgTex);
+
+   _sys_FillRect(pos,box.pos.x,box.pos.y,box.size.w,h);
+   windowHandle := _gui_CreateImage_VVK(nm,parent,gc_gui_material_blank_0,c_align,pos);
+   SetGUIElementStringTag(windowHandle,nm);
+
+   _sys_FillRect(pos,0,0,0,0);
+   _gui_CreateImage_VVK('left',windowHandle,cLeftTex,gc_gui_align_parent_lt,pos);
+   _sys_FillRect(pos,box.size.w-GetGUITextureWidth(cRightTex),0,0,0);
+   _gui_CreateImage_VVK('right',windowHandle,cRightTex,gc_gui_align_parent_lt,pos);
+   _sys_FillRect(pos,GetGUITextureWidth(cLeftTex),0,box.size.w-(GetGUITextureWidth(cLeftTex)+GetGUITextureWidth(cRightTex)),h);
+   //Log('W: '+ IntToStr(pos.size.w)+', H: '+ IntToStr(pos.size.h)+', TW: '+ IntToStr(GetGUITextureWidth(cBkgTex))+', TH: '+ IntToStr(GetGUITextureHeight(cBkgTex)));
+   _gui_CreateImageSlice_VVK('bkg',windowHandle,cBkgTex,gc_gui_align_parent_lt,pos);
+
+   whd := AddNewElementByClassNameParent('text', 'TXEditControl', 0, windowHandle);
+   SetGUIElementText(whd, text);
+   SetGUIElementMaxTextLength(whd,text_max);
+   SetGUIElementHint(whd, hint);
+   SetGUIElementPressState(whd, event);
+   SetGUIElementFont(whd, elem_d.font_handle);
+   SetGUIElementColor(whd, elem_d.color.r,elem_d.color.g,elem_d.color.b,elem_d.color.a);
+   SetGUIElementAlign(whd, gc_gui_align_parent_lt.h,gc_gui_align_parent_lt.v);
+   SetGUIElementAllPositionRect(whd,pos.pos.x,pos.pos.y,pos.size.w,GetGUIElementFontHeight(elem_d.font_handle));
+   if text_centered then
+      SetGUIElementTextAlign(whd, gc_gui_align_middle.h, gc_gui_align_middle.v, 0, 0)
+   else
+      SetGUIElementTextAlign(whd, gc_gui_align_lt.h, gc_gui_align_middle.v, 0, 0);
+   SetGUIElementTextFormatted(whd, True);
+   SetGUIElementCursorByIndex(whd, 6);
+   SetGUIElementPositionY(whd,(h-GetGUIElementHeight(whd)) div 2);
+
+   Result := whd;
+end;
+
+function _gui_getFadeBlack() : Integer;
+begin
+   var ehd1,ehd2,elmMiscBlankBlackDummy,elmMiscBlankBlack : Integer;
+   var temp_str : String;
+
+   RemoveGUIChildren(_gui_GetLayer(cTopmostLayer));
+   temp_str := 'black';
+   ehd1 := AddNewElementByClassNameParent(temp_str+'_dummy', 'TOSWImageGuiControl', 0,_gui_GetLayer(cTopmostLayer));
+   SetGUIElementMaterial(ehd1,gc_gui_material_blank_0);
+   SetGUIElementAlign(ehd1,gc_gui_align_parent_m.h,gc_gui_align_parent_m.v);
+   SetGUIElementAllPositionRect(ehd1,0,0,GetViewerWidth(),GetViewerHeight());
+   ehd2 := AddNewElementByClassNameParent(temp_str, 'TOSWImageGuiControl', 0, ehd1);
+   SetGUIElementAllPositionRect(ehd2,0,0,GetViewerWidth(),GetViewerHeight());
+   SetGUIElementMaterial(ehd2,'misc.blank.black.alpha.1');
+   SetGUIElementLogicPositionRect(ehd2, 0, 0, GetViewerWidth(), GetViewerHeight());
+   SetGUIAllowEvents(ehd2, True, False, false);
+   //SetGUIElementFadeStart(ehd2, False);
+   Result := ehd2;
+end;
+
+procedure _gui_FadeScreen(fade_in : Boolean;Time : Float);
+begin
+   var not_fade_in : Boolean = (not fade_in);
+   var iImgHandle : Integer = _gui_getFadeBlack();
+
+   if Time <> 0 then
+   begin
+      SetGUIElementFadeInEnabled(iImgHandle, fade_in);
+      SetGUIElementFadeOutEnabled(iImgHandle, not_fade_in);
+      SetGUIElementFreezeEnabled(iImgHandle, fade_in);
+      SetGUIElementFadeAutoDestroy(iImgHandle, not_fade_in);
+      SetGUIElementFadingTimes(iImgHandle, Time, 0.0);
+      SetGUIElementFadeStart(iImgHandle, True);
+   end
+   else
+      RemoveGUIElement(iImgHandle);
+end;
+
+// tables
+// see gc_gui_TableStyle constants
+function _gui_TableGetFrameWidth(table_style : Integer) : Integer;
+begin
+   var nm : String;
+   var w,h : Integer;
+   var offs : Integer;
+
+   case table_style of
+      gc_gui_TableStyleBorder : begin
+         offs := gc_gui_TableIdx_opaque_offset;
+         nm := gc_gui_table_font_handle;
+      end;
+      gc_gui_TableStyleOpaque : begin
+         offs := 0;
+         nm := gc_gui_table_font_handle;
+      end;
+      else begin
+         offs := 0;
+         nm := '';
+      end;
+   end;
+
+   if nm <> '' then
+      GetGUIElementFontTextFormatRect(nm,gArrGUIFontSpacers[gc_gui_TableIdx_lt+offs],w,h)
+   else
+      w := 0;
+
+   Result := w;
+end;
+
+function _gui_TableGetFrameHeight(table_style : Integer) : Integer;
+begin
+   var nm : String;
+
+   case table_style of
+      gc_gui_TableStyleBorder,gc_gui_TableStyleOpaque : nm := gc_gui_table_font_handle;
+      else nm := '';
+   end;
+
+   if nm <> '' then
+      Result := GetGUIElementFontHeight(nm)
+   else
+      Result := 0;
+end;
+
+procedure _gui_TableGetOffsetString(cw : Integer;var dst_str : String);
+begin
+   var j,n : Integer;
+   var str : String;
+
+   str := '';
+   if cw > 0 then
+   begin
+      n := cw div $20;
+      for j:=0 to n-1 do
+         str := str + gArrGUIFontSpacers[gc_gui_TableIdx_spacers_start+$20-1];
+      n := cw mod $20;
+      if n > 0 then
+         str := str + gArrGUIFontSpacers[gc_gui_TableIdx_spacers_start+n-1];
+   end;
+   dst_str := str;
+end;
+
+// frame_style: see gc_gui_TableStyle constants
+procedure _gui_TableFormatTextLineExt(font_handle : String;frame_style : Integer;columns : String;text : String;var dst_text : String);
+begin
+   var temp_str,temp_str2,d_str : String;
+   var i,offs,n,cw,w,h,c_no,l_align,cw_type : Integer;
+   var s_offs,t_offs : Integer;
+
+   c_no := _sa_GetNum(columns);
+   if frame_style = 1 then
+      s_offs := gc_gui_TableIdx_opaque_offset
+   else
+      s_offs := 0;
+
+   if frame_style <> 2 then
+      d_str := '%style(Spacers)%'+gArrGUIFontSpacers[s_offs+gc_gui_TableIdx_l]
+   else
+      d_str := '';
+
+   for i:=0 to c_no-1 do
+   begin
+      cw := _sa_GetAsInt(columns,i);
+      if cw < 0 then
+      begin
+         cw_type := 1;
+         cw := -1*cw;
+      end
+      else
+         cw_type := 0;
+      _sa_Get(text,i,temp_str);
+      l_align := 0;
+      if SubStr(temp_str,1,1) = '^' then
+      begin
+         temp_str2 := SubStr(temp_str,2,1);
+         case temp_str2 of
+            'c' : l_align := 2;
+            'r' : l_align := 1;
+         end;
+         temp_str2 := temp_str;
+         temp_str := SubStr(temp_str2,3,StrLength(temp_str2)-2);
+      end;
+      GetGUIElementFontTextFormatRect(font_handle,temp_str,w,h);
+      if w > cw then
+      begin
+         temp_str := GetGUIWrappedTextFormatByFont(font_handle,temp_str,cw);
+         _sa_Get_D(temp_str,0,13,temp_str2);
+         temp_str := temp_str2;
+         GetGUIElementFontTextFormatRect(font_handle,temp_str,w,h);
+      end;
+
+      case l_align of
+         0 : offs := 0;
+         1 : offs := cw-w;
+         2 : offs := (cw-w) div 2;
+      end;
+
+      if offs > 0 then
+      begin
+         _gui_TableGetOffsetString(offs,temp_str2);
+         if frame_style = 2 then
+            d_str := d_str + '%style(Spacers)%';
+         d_str := d_str+temp_str2;
+      end;
+
+      d_str := d_str+'%style(default)%'+temp_str;
+
+      cw := cw-(w+offs);
+      if (frame_style <> 2) or (cw > 0) then
+         d_str := d_str+'%style(Spacers)%';
+      if cw > 0 then
+      begin
+         _gui_TableGetOffsetString(cw,temp_str2);
+         d_str := d_str+temp_str2;
+      end;
+
+      if frame_style <> 2 then
+      begin
+         if (i=(c_no-1)) then
+            d_str := d_str+'%color(ignore)%'+gArrGUIFontSpacers[s_offs+gc_gui_TableIdx_r]+'%color(default)%'
+         else
+         begin
+            if cw_type <> 0 then
+               t_offs := gc_gui_TableIdx_opaque_offset
+            else
+               t_offs := s_offs;
+            d_str := d_str+'%color(ignore)%'+gArrGUIFontSpacers[t_offs+gc_gui_TableIdx_c]+'%color(restore)%';
+         end;
+      end;
+   end;
+   d_str := d_str+'%style(default)%';
+   dst_text := d_str;
+end;
+
+procedure _gui_TableFormatTextLine(font_handle : String;columns : String;text : String;var dst_text : String);
+begin
+   _gui_TableFormatTextLineExt(font_handle,gc_gui_TableStyleBorder,columns,text,dst_text);
+end;
+
+// frame_type: see gc_gui_TableFrame
+procedure _gui_TableGetFrameStringExt(columns : String;frame_style : Integer;frame_type : Integer;var dst_text : String);
+begin
+   var d_str : String;
+   var i,j,cw,c_no,n,cw_type : Integer;
+   var s_offs,l_offs,t_offs : Integer;
+   var tw : Integer;
+
+   if frame_style <> gc_gui_TableStyleBorder then
+   begin
+      s_offs := gc_gui_TableIdx_opaque_offset;
+      l_offs := gc_gui_TableIdx_spacers_start;
+   end
+   else
+   begin
+      s_offs := 0;
+      l_offs := gc_gui_TableIdx_lines_start;
+      tw := _gui_TableGetFrameWidth(frame_style);
+   end;
+
+   c_no := _sa_GetNum(columns);
+   case frame_type of
+      gc_gui_TableFrameTop : j := gc_gui_TableIdx_lt;
+      gc_gui_TableFrameBottom : j := gc_gui_TableIdx_lb;
+      else j := gc_gui_TableIdx_lc;
+   end;
+
+   if frame_style <> gc_gui_TableStyleNone then
+      d_str := gArrGUIFontSpacers[s_offs+j]
+   else
+      d_str := '';
+   for i:=0 to c_no-1 do
+   begin
+      cw := _sa_GetAsInt(columns,i);
+      if cw < 0 then
+      begin
+         cw_type := 1;
+         cw := -1*cw;
+      end
+      else
+         cw_type := 0;
+      if cw > 0 then
+      begin
+         n := cw div $20;
+         for j:=0 to n-1 do
+            d_str := d_str + gArrGUIFontSpacers[l_offs+$20-1];
+         n := cw mod $20;
+         if n > 0 then
+            d_str := d_str + gArrGUIFontSpacers[l_offs+n-1];
+      end;
+      if (i=(c_no-1)) then
+      begin
+         case frame_type of
+            gc_gui_TableFrameTop : j := gc_gui_TableIdx_rt;
+            gc_gui_TableFrameBottom : j := gc_gui_TableIdx_rb;
+            else j := gc_gui_TableIdx_rc;
+         end;
+         if frame_style <> gc_gui_TableStyleNone then
+            d_str := d_str+gArrGUIFontSpacers[s_offs+j];
+      end
+      else
+      begin
+         case frame_type of
+            gc_gui_TableFrameTop : j := gc_gui_TableIdx_ct;
+            gc_gui_TableFrameBottom : j := gc_gui_TableIdx_cb;
+            else j := gc_gui_TableIdx_cc;
+         end;
+         if frame_style <> gc_gui_TableStyleNone then
+         begin
+            if (cw_type <> 0) and (frame_style=gc_gui_TableStyleBorder) then
+               d_str := d_str+gArrGUIFontSpacers[l_offs+tw-1]
+            else
+               d_str := d_str+gArrGUIFontSpacers[s_offs+j];
+         end;
+      end;
+   end;
+   dst_text := d_str;
+end;
+
+procedure _gui_TableGetFrameString(columns : String;frame_type : Integer;var dst_text : String);
+begin
+   _gui_TableGetFrameStringExt(columns,gc_gui_TableStyleBorder,frame_type,dst_text);
+end;
+
+//
+function _gui_DWCorrectElementPosition(var tmp_pos : TRectangle;var elem_d : TInterfaceElementData; total_x, total_y,extra_dy_offset : Integer) : Boolean;
+begin
+   if (elem_d.color_index and 4) = 0 then // element is stackable
+   begin
+      //if elem_d.align.v <> 'valParentTop' then
+      //   Log('ShowBuildingTemplate - wrong vertical alignment for stackable element: '+elem_d.align.v+', X:'+IntToStr(elem_d.p_raw.pos.x));
+      elem_d.align.h := 'halParentLeft';
+      tmp_pos.pos.y := total_y;
+      tmp_pos.pos.x := total_x;
+      Result := true;
+   end
+   else
+      Result := false;
+   tmp_pos.pos.y := tmp_pos.pos.y + extra_dy_offset;
+end;
+
+function _gui_DWCreateText(if_handle : Integer;elementName : String;parent : Integer;text : String;align : TElementAlign;pos : TRectangle;text_align : TElementAlign;font_handle : String;color : TColorRGBA) : Integer;
+begin
+   var hd : Integer;
+   var c : TColorRGBA;
+
+   hd := _gui_CreateText_VVK(elementName,parent,text,align,pos,text_align,font_handle,color);
+   if _gui_GetInterfaceWindowColor(if_handle,5,c) then SetGUIElementColorAttention(hd,c.r,c.g,c.b,c.a);
+   if _gui_GetInterfaceWindowColor(if_handle,7,c) then SetGUIElementColorInfo(hd,c.r,c.g,c.b,c.a);
+   if _gui_GetInterfaceWindowColor(if_handle,6,c) then SetGUIElementColorWarning(hd,c.r,c.g,c.b,c.a);
+   if _gui_GetInterfaceWindowColor(if_handle,4,c) then SetGUIElementColorExtraInfo(hd,c.r,c.g,c.b,c.a);
+   Result := hd;
+end;
+
+procedure _gui_DWGetElement(elem_id, template_id : Integer; var elem_d : TInterfaceElementData);
+begin
+   _gui_GetInterfaceElement(template_id,elem_id,elem_d);
+   elem_d.p.pos.y := elem_d.p_raw.pos.y;
+   elem_d.align.v := gc_gui_align_parent_lt.v;
+end;
+
+function _gui_DWFormatTextByItems(str_list, _item_pfx : String; c_no, max_dx : Integer; font_handle : String; var dst_s: String) : Integer;
+begin
+   var es : array [0..$10] of String;
+   var es_no,no,i,w,h : Integer;
+   var temp_str,temp_str2,temp_str3,item_pfx : String;
+
+   if _item_pfx = '' then item_pfx := ',  '
+   else item_pfx := _item_pfx;
+
+   temp_str2 := '';
+   es_no := 0;
+   no := 0;
+   for i := 0 to (_sa_GetNum(str_list))-1 do
+   begin
+      _sa_Get(str_list,i,temp_str);
+
+      if temp_str <> '' then
+      begin
+         no := no + 1;
+         if temp_str2 <> '' then temp_str3 := temp_str2 + item_pfx
+         else temp_str3 := '';
+         GetGUIElementFontTextFormatRect(font_handle,temp_str3+temp_str,w,h);
+         if (w <= max_dx) and (no < c_no) then
+         begin
+            temp_str2 := temp_str3+temp_str;
+         end
+         else
+         begin
+            no := 0;
+            if temp_str2 = '' then
+            begin
+               temp_str2 := temp_str;
+               temp_str := '';
+            end;
+            es[es_no] := temp_str2;
+            es_no := es_no + 1;
+            temp_str2 := temp_str;
+         end;
+      end;
+   end;
+
+   if temp_str2 <> '' then
+   begin
+      es[es_no] := temp_str2;
+      es_no := es_no + 1;
+   end;
+   temp_str := '';
+   for i := 0 to es_no-1 do
+   begin
+      temp_str := temp_str + es[i];
+      if (i <> (es_no-1)) then
+         temp_str := temp_str + gc_gui_BreakLine;
+   end;
+
+   dst_s := temp_str;
+   Result := es_no;
+end;
+//
+
+procedure _gui_ProgressCalculations(log_string : String);
+begin
+   var top : Integer;
+
+   if log_string <> '' then
+      LogI(log_string);
+
+   top := _gui_GetLayer(cTopmostLayer);
+   if top <> 0 then
+      top := GetGUIElementIndexByNameParent('black_dummy.black.useful_tips',top);
+   if top <> 0 then
+   begin
+      var prev_time : Float;
+      var str : String;
+
+      str := GetGUIElementStringTag(top);
+      prev_time := _sa_GetAsFloat(str,0);
+      if GetCurrentTime() > prev_time then
+      begin
+         var w : Integer;
+         var temp_str,fontHandle : String;
+
+         w := _sa_GetAsInt(str,1);
+         _sa_Get(str,2,fontHandle);
+         temp_str := GetLocaleTableListItemByID('hint',IntToStr(Floor(Random * 43))+'.description');
+         prev_time := StrLength(temp_str)/gc_gui_ai_turn_chars_per_second;
+         temp_str := GetGUIWrappedTextFormatByFont(fontHandle,temp_str,w);
+         str := '';
+         _sa_AddAsFLoat(str,GetCurrentTime()+prev_time);
+         _sa_AddAsInt(str,w);
+         _sa_Add(str,fontHandle);
+         SetGUIElementStringTag(top,str);
+         SetGUIElementText(top,temp_str);
+         ViewerBufferRender();
+      end;
+   end;
+end;
+
+function _gui_IntersectRectangles(src1, src2 : TRectangle;var out : TRectangle) : Boolean;
+begin
+   var rxd,rxs,ryd,rys,mx,my : Integer;
+
+   Result := False;
+   if (src1.size.w = 0) or (src1.size.h = 0) or (src2.size.w = 0) or (src2.size.h = 0) then
+      exit;
+
+   rxd := src1.pos.x + src1.size.w - 1;
+   rxs := src2.pos.x + src2.size.w - 1;
+   ryd := src1.pos.y + src1.size.h - 1;
+   rys := src2.pos.y + src2.size.h - 1;
+
+   if (rxs < src1.pos.x) or (rys < src1.pos.y) or (rxd < src2.pos.x) or (ryd < src2.pos.y) then
+      exit;
+
+   mx := Min(rxd,rxs);
+   my := Min(ryd,rys);
+
+   out.pos.x := Max(src1.pos.x,src2.pos.x);
+   out.size.w := mx-out.pos.x+1;
+   out.pos.y := Max(src1.pos.y,src2.pos.y);
+   out.size.h := my-out.pos.y+1;
+
+   Result := True;
+end;
+
+procedure _gui_AlignWindowByCursor_VVK(tooltip_hd: Integer);
+begin
+   var pos : String;
+
+   IntRegister0 := 0;
+   IntRegister1 := tooltip_hd;
+   IntRegister2 := 0;
+   IntRegister3 := cFW_AlignLT_RB;
+   IntRegister4 := cFW_PositionBottom;
+   pos := '';
+   _sa_AddAsInt(pos,cFW_PositionRight);
+   _sa_AddAsInt(pos,cFW_PositionTop);
+   _sa_AddAsInt(pos,cFW_PositionLeft);
+   StringRegister0 := pos;
+   pos := '';
+   _sa_AddAsInt(pos,cFW_AlignLT_LT);
+   _sa_AddAsInt(pos,cFW_AlignLT_RB);
+   _sa_AddAsInt(pos,cFW_AlignRB_LT);
+   StringRegister1 := pos;
+   GUIExecuteState('VVK.FitTooltipToScreen');
+end;
+
+procedure _gui_AlignWindowByCursorExt_VVK(tooltip_hd: Integer;bnd_box : TRectangle);
+begin
+   var pos : String;
+
+   IntRegister0 := 1;
+   IntRegister1 := tooltip_hd;
+   IntRegister2 := 0;
+   IntRegister3 := cFW_AlignLT_RB;
+   IntRegister4 := cFW_PositionBottom;
+   pos := '';
+   _sa_AddAsInt(pos,cFW_PositionRight);
+   _sa_AddAsInt(pos,cFW_PositionTop);
+   _sa_AddAsInt(pos,cFW_PositionLeft);
+   StringRegister0 := pos;
+   pos := '';
+   _sa_AddAsInt(pos,cFW_AlignLT_LT);
+   _sa_AddAsInt(pos,cFW_AlignLT_RB);
+   _sa_AddAsInt(pos,cFW_AlignRB_LT);
+   StringRegister1 := pos;
+   pos := '';
+   _sa_AddAsInt(pos,bnd_box.pos.x);
+   _sa_AddAsInt(pos,bnd_box.pos.y);
+   _sa_AddAsInt(pos,bnd_box.size.w);
+   _sa_AddAsInt(pos,bnd_box.size.h);
+   StringRegister2 := pos;
+   GUIExecuteState('VVK.FitTooltipToScreen');
+end;
+
+procedure _gui_AlignWindowToWindow_VVK(tooltip_hd: Integer; target_hd: Integer;align_mode : Integer;pos : Integer;fallback : String;align_fallback : String);
+begin
+   IntRegister0 := 2;
+   IntRegister1 := tooltip_hd;
+   IntRegister2 := target_hd;
+   IntRegister3 := align_mode;
+   IntRegister4 := pos;
+   StringRegister0 := fallback;
+   StringRegister1 := align_fallback;
+   StringRegister2 := '';
+   GUIExecuteState('VVK.FitTooltipToScreen');
+end;
+
+procedure _gui_AlignWindowToWindowExt_VVK(tooltip_hd: Integer; target_hd: Integer;align_mode : Integer;pos : Integer;fallback : String;align_fallback : String;bnd_box : TRectangle);
+begin
+   var box : String;
+
+   IntRegister0 := 3;
+   IntRegister1 := tooltip_hd;
+   IntRegister2 := target_hd;
+   IntRegister3 := align_mode;
+   IntRegister4 := pos;
+   StringRegister0 := fallback;
+   StringRegister1 := align_fallback;
+   box := '';
+   _sa_AddAsInt(box,bnd_box.pos.x);
+   _sa_AddAsInt(box,bnd_box.pos.y);
+   _sa_AddAsInt(box,bnd_box.size.w);
+   _sa_AddAsInt(box,bnd_box.size.h);
+   StringRegister2 := box;
+   GUIExecuteState('VVK.FitTooltipToScreen');
+end;
+
+// min_w - (0-if should be ignored else minimum text width)
+// max_h - (0-if should be ignored else maximum text height)
+// returns 0 if no alterations were made or new ratio (dx/dy)
+function _gui_TextFormatByRatio(text : String;font_handle : String;dst_ratio : Float;min_w,max_h : Integer;var dst_txt : String) : Float;
+begin
+   var _log : Boolean = false;
+   var w,h,font_h,line_space,hls,text_dx,text_dy : Integer;
+   var ratio,prev_ratio,left_dx,right_dx,middle_dx,ratio_new,ratio_dx,ratio_prev_dx : Integer;
+   var lockup_count : Integer;
+   var text_temp : String;
+
+   GetGUIElementFontTextFormatRect(font_handle, text, w, h);
+
+   if (w < min_w) and ((max_h = 0) or (h < max_h)) then
+   begin
+      dst_txt := text;
+      Result := 0;
+      exit;
+   end;
+
+   GetGUIElementFontTextFormatRect(font_handle, 'TEST'+gc_gui_BreakLine+'TEST', text_dx, text_dy);
+   font_h := GetGUIElementFontHeight(font_handle);
+   line_space := text_dy-font_h*2;
+   hls := (font_h+line_space) div 2;
+
+   if w < min_w then
+      w := min_w;
+
+   text_dx := (w+hls-1) div hls;
+   text_dy := (h+hls-1) div hls;
+   ratio := Round(dst_ratio*10);
+
+   prev_ratio := -1;
+   left_dx := 0;
+   right_dx := text_dx;
+   middle_dx := (right_dx+left_dx) div 2;
+   ratio_dx := right_dx;
+   ratio_prev_dx := -1;
+   if text_dy = 0 then
+      ratio_new := 0
+   else
+      ratio_new := (text_dx*10) div text_dy;
+   lockup_count := 0;
+
+   if _log then _log_Values('[QD1]FH|LS|W|H|R|RO',font_h,line_space,w,h,ratio,ratio_new);
+
+   if ratio_new > ratio then
+   begin
+      while (ratio_new <> ratio ) and (left_dx <= right_dx) and (prev_ratio <> ratio_new) and (lockup_count < 100) do
+      begin
+         text_temp := GetGUIWrappedTextFormatByFont(font_handle,text,middle_dx*hls);
+         GetGUIElementFontTextFormatRect(font_handle, text_temp, w, h);
+         text_dx := (w+hls-1) div hls;
+         text_dy := (h+hls-1) div hls;
+         prev_ratio := ratio_new;
+         ratio_prev_dx := ratio_dx;
+         ratio_dx := middle_dx;
+         ratio_new := (text_dx*10) div text_dy;
+         if ratio_new <> ratio then
+         begin
+            if ratio_new < ratio then
+               left_dx := middle_dx+1
+            else
+               right_dx := middle_dx-1;
+            middle_dx := (right_dx+left_dx) div 2;
+         end;
+         lockup_count := lockup_count+1;
+      end;
+
+      // should always warn about lockup
+      if lockup_count >= 100 then
+         ErrorLog('[GUI] [QD ] - Lockup count exceeded: '+IntToStr(lockup_count));
+
+      if Abs(prev_ratio-ratio) < Abs(ratio_new-ratio) then
+         ratio_dx := ratio_prev_dx;
+
+      text_temp := GetGUIWrappedTextFormatByFont(font_handle,text,ratio_dx*hls);
+      GetGUIElementFontTextFormatRect(font_handle, text_temp, w, h);
+      if _log then _log_Values('[QD2]_W|H|R',w,h,(w*10) div h,0,0,0);
+   end
+   else
+   begin
+      GetGUIElementFontTextFormatRect(font_handle, text, w, h);
+      text_temp := text;
+   end;
+
+   dst_txt := text_temp;
+
+   Result := ratio_new / 10;
+end;
+
+
+procedure _gui_FormatTableByRatio(start_dx,total_no,width,height : Integer; ratio : Float;use_upper_value : Boolean;var res_dx : Integer; var res_dy : Integer);
+begin
+   var fx,fy : Float;
+   var e_dx,e_dy : Integer;
+
+   e_dx := start_dx;
+   e_dy := ((total_no+e_dx-1) div e_dx);
+   fx := (e_dx*width);
+   fy := (e_dy*height);
+   if ((fx/fy) > ratio) and (e_dx > 1) then
+   begin
+      repeat
+         e_dx := e_dx - 1;
+         e_dy := ((total_no+e_dx-1) div e_dx);
+         fx := (e_dx*width);
+         fy := (e_dy*height);
+      until ((fx/fy) <= ratio) or (e_dx = 1);
+      if use_upper_value then
+      begin
+         e_dx := e_dx + 1;
+         e_dy := ((total_no+e_dx-1) div e_dx);
+      end;
+   end;
+   res_dx := e_dx;
+   res_dy := e_dy;
+end;
+
+procedure _gui_FindCurrentVideoPreset(const pConfig : Integer; var curPreset : String; var presetIndex : Integer);
+begin
+   curPreset := gc_ProjOptionsPresetCustom;
+   presetIndex := 5;
+   if (pConfig<>0) then
+   begin
+      var pEngine : Integer = ParserSelectByHandleByKey(pConfig, 'engine');
+      if (pEngine<>0) then
+      begin
+         var pEngineConfigs : Integer = ParserSelectByHandleByKey(pEngine, 'config');
+         if (pEngineConfigs<>0) then
+         begin
+            var tmpPreset : String;
+            var i : Integer;
+            for i:=0 to 4 do
+            begin
+               case i of
+                  0 : tmpPreset := gc_ProjOptionsPresetUltra;
+                  1 : tmpPreset := gc_ProjOptionsPresetHigh;
+                  2 : tmpPreset := gc_ProjOptionsPresetMedium;
+                  3 : tmpPreset := gc_ProjOptionsPresetLow;
+                  4 : tmpPreset := gc_ProjOptionsPresetLowest;
+               end;
+               ParserSelectByHandle(pEngineConfigs);
+               var pEngineConfig : Integer = ParserSelectByHandleByIndex(pEngineConfigs, ParserFindChildIndexByEqualChildKey('Name', tmpPreset));
+               if (pEngineConfig<>0) then
+               begin
+                  var pGui : Integer = ParserSelectByHandleByKey(pEngineConfig, 'Gui');
+                  if (pGui<>0) then
+                  begin
+                     var pOnClick : Integer = ParserSelectByHandleByKey(pGui, 'OnClick');
+                     if (pOnClick<>0) then
+                     begin
+                        if gVideoSettingsTmp.hdrtype=ParserGetValueByKeyByHandle(pOnClick, gc_ProjOptionsHDRType)
+                        and gVideoSettingsTmp.shadertype=ParserGetValueByKeyByHandle(pOnClick, gc_ProjOptionsShaderType)
+                        and gVideoSettingsTmp.antialiasing=ParserGetValueByKeyByHandle(pOnClick, gc_ProjOptionsAntiAliasing)
+                        and gVideoSettingsTmp.texturefilter=ParserGetValueByKeyByHandle(pOnClick, gc_ProjOptionsTextureFilter)
+                        and gVideoSettingsTmp.waterreflection=ParserGetValueByKeyByHandle(pOnClick, gc_ProjOptionsWaterReflection)
+                        and gVideoSettingsTmp.shadowenabled=ParserGetBoolValueByKeyByHandle(pOnClick, gc_ProjOptionsShadowEnabled) 
+								and gProfileTmp.simplegraphics=ParserGetBoolValueByKeyByHandle(pOnClick, 'SimpleGraphics') 
+								and (gProfileTmp.objectflags=ParserGetIntValueByKeyByHandle(pOnClick, 'ObjectFlags')) 
+								and (gProfileTmp.shardscenery=ParserGetIntValueByKeyByHandle(pOnClick, 'ShardScenery')) 
+								and (gProfileTmp.townscenery=ParserGetIntValueByKeyByHandle(pOnClick, 'TownScenery')) 
+								and (gProfileTmp.provincescenery=ParserGetIntValueByKeyByHandle(pOnClick, 'ProvinceScenery')) 
+								and (gProfileTmp.battlescenery=ParserGetIntValueByKeyByHandle(pOnClick, 'BattleScenery')) then
+                        begin
+                           curPreset := tmpPreset;
+                           presetIndex := i;
+                           exit;
+                        end;
+                     end;
+                  end;
+               end;
+            end;
+         end;
+      end;
+   end;
+end;
+
+procedure _gui_ShowSettingsDialog();
+begin
+   gVideoSettings.antialiasing := GetProjectOptionAsString(gc_ProjOptionsAntiAliasing);
+   gVideoSettings.hdrtype := GetProjectOptionAsString(gc_ProjOptionsHDRType);
+   gVideoSettings.vsyncmode := GetProjectOptionAsString(gc_ProjOptionsVSyncMode);
+   gVideoSettings.shadowenabled := GetProjectOptionAsBoolean(gc_ProjOptionsShadowEnabled);
+   gVideoSettings.texturefilter := GetProjectOptionAsString(gc_ProjOptionsTextureFilter);
+   gVideoSettings.shadertype := GetProjectOptionAsString(gc_ProjOptionsShaderType);
+   gVideoSettings.waterreflection := GetProjectOptionAsString(gc_ProjOptionsWaterReflection);
+
+   gIntRegister_GUISettingTab := 1;
+
+   var pConfig : Integer = _misc_ParserGetOrCreateByKey('Config', True);
+   if (ParserGetCountByHandle(pConfig)=0) then
+      ParserLoadFromFile('.\data\resources\config.res');
+
+	var presetIndex : Integer;
+   _gui_FindCurrentVideoPreset(pConfig, gVideoSettings.preset, presetIndex);
+
+   _misc_AssignGlobalVars('gProfile', 'gProfileTmp');
+   _misc_AssignGlobalVars('gVideoSettings', 'gVideoSettingsTmp');
+   GUIExecuteState('ShowSettings');
+end;
+
+
+procedure _gui_FillGraphicsListBox(const elmHandle : Integer);
+begin
+	var sHighest : String = GetLocaleTableListItemByID('tools', 'GUI.SET.ULTRA');
+	var sHigh : String = GetLocaleTableListItemByID('tools', 'GUI.SET.HIGH');
+	var sMedium : String = GetLocaleTableListItemByID('tools', 'GUI.SET.MEDIUM');
+	var sLow : String = GetLocaleTableListItemByID('tools', 'GUI.SET.LOW');
+	var sLowest : String = GetLocaleTableListItemByID('tools', 'GUI.SET.LOWEST');
+
+	GUIListBoxAddItem(elmHandle, sHighest, 0);
+	GUIListBoxAddItem(elmHandle, sHigh, 1);
+	GUIListBoxAddItem(elmHandle, sMedium, 2);
+	GUIListBoxAddItem(elmHandle, sLow, 3);
+	GUIListBoxAddItem(elmHandle, sLowest, 4);
+end;
+
+
+procedure _gui_CreateVideoPresetListBox(posX, posY : Integer);
+begin
+	const cEventState = 'EventSettings';
+
+   var pConfig : Integer = _misc_ParserGetOrCreateByKey('Config', False);
+   if (ParserGetCountByHandle(pConfig)=0) then
+      ParserLoadFromFile('.\data\resources\config.res');
+		
+	var elmParent : Integer = GetGUIElementIndexByNameParent('Settings.video', _gui_GetLayerI());
+	
+	var presetIndex : Integer;
+	_gui_FindCurrentVideoPreset(pConfig, gVideoSettingsTmp.preset, presetIndex);
+	var selectedIndex : Integer = presetIndex;
+	var elmListBoxHandle : Integer = GetGUIElementIndexByNameParent(gc_ProjOptionsPreset, elmParent);
+	if elmListBoxHandle <> 0 then
+	begin
+		posX := GetGUIElementPositionX(elmListBoxHandle);
+		posY := GetGUIElementPositionY(elmListBoxHandle);
+		RemoveGUIElement(elmListBoxHandle);
+	end;
+	elmListBoxHandle := _gui_CreateListBox(gc_ProjOptionsPreset, elmParent, 0, posX, posY, cEventState);
+
+	var fontHandle2 : String;
+	_gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_default,'',fontHandle2); // NormalL
+	var elmTextHandle : Integer = _gui_CreateText('header', elmListBoxHandle, 'menu|93', 'halParentLeft', 'valParentTop', 0, -18, GetGUIElementWidth(elmListBoxHandle), GetGUIElementHeight(elmListBoxHandle), 'halMiddle', 'valTop', fontHandle2, gc_gui_fontcolor_BrownR, gc_gui_fontcolor_BrownG, gc_gui_fontcolor_BrownB, 1);
+	_gui_FillGraphicsListBox(elmListBoxHandle);
+
+	var itemsCount : Integer = 5;
+	var presetStringTag : String = ''; 
+	if GetProjectOptionAsString(gc_ProjOptionsHDRType) = 'htNone' then // switching directly from lowest to ultra high can cause critical error, so we want to disable such leap. We will use lighting-setting to gatekeep this.
+	begin
+		GUIListBoxDeleteItem(elmListBoxHandle, 0);
+		itemsCount := itemsCount - 1;
+		selectedIndex := selectedIndex - 1;
+	end
+	else
+		presetStringTag := gc_ProjOptionsPresetUltra+'|';
+
+	presetStringTag := presetStringTag + gc_ProjOptionsPresetHigh+'|'+gc_ProjOptionsPresetMedium+'|'+gc_ProjOptionsPresetLow+'|'+gc_ProjOptionsPresetLowest+'|'+gc_ProjOptionsPresetCustom;
+	SetGUIElementStringTag(elmListBoxHandle, presetStringTag);
+
+	if (presetIndex=5) then // custom
+	begin
+		GUIListBoxAddItem(elmListBoxHandle, GetLocaleTableListItemByID('menu', '95'), 5);
+		itemsCount := itemsCount + 1;
+		selectedIndex := selectedIndex + 1;
+	end;
+	SetGUIListBoxVisibleRows(elmListBoxHandle, itemsCount);
+	var iTmpHandle : Integer = GetGUIComboBoxListBoxHandle(elmListBoxHandle);
+	SetGUIElementHeight(iTmpHandle, (GetGUIElementFontHeight(GetGUIElementFont(iTmpHandle))+2)*itemsCount+19);
+	SetGUIElementLogicHeight(iTmpHandle, GetGUIElementHeight(iTmpHandle));
+	SetGUIListBoxItemIndexSilent(elmListBoxHandle, selectedIndex);
+end;
+
+_gui_ReloadInterfaceDataConfig();

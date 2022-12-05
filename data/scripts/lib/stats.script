@@ -1,0 +1,453 @@
+//
+// stats.script
+//
+
+function _stats_ParserGetVersion : Integer;
+begin
+   var version : String = gc_DataModName;
+   //if not SameText(version, 'Fixers_Vanilla_Patch') then // always same section regardless of version number
+   //begin
+   //   var versionNumber : String = SubStr(gc_DataModVersion, 0, 3); // only separate to different section when the first or second digit is different (e.g. 1.2. vs 1.3, or 1.2 vs 2.0. Dont' separate when 1.2 vs 1.21 for example. Cut out the digits after the second)
+   //   version := version + '_' + versionNumber;
+   //end;
+   
+   var parser : Integer = ParserSelectByHandleByKey(gStatistics.handle, version);
+   if parser = 0 then
+      parser := ParserAddChildByIndex(gStatistics.handle, version);
+   
+   Result := parser;
+end;
+
+function _stats_ParserGetSection(gameType : Integer) : Integer;
+begin
+   var gameTypeStr : String = '';
+   case gameType of
+      //gc_GameTypeNone :  
+      gc_GameTypeCustom : gameTypeStr := 'Shard';
+      gc_GameTypeCampaign : gameTypeStr := 'Campaign';
+      gc_GameTypeHotseat : gameTypeStr := 'HotseatShard';
+      gc_GameTypeLanShard : gameTypeStr := 'InternetShard';
+      gc_GameTypeLanBattle : gameTypeStr := 'InternetBattle';
+      gc_GameTypeHotseatBattle : gameTypeStr := 'HotseatBattle';
+   end;
+   
+   var pVersion : Integer = _stats_ParserGetVersion;
+   var parser : Integer = ParserSelectByHandleByKey(pVersion, gameTypeStr);
+   if parser = 0 then
+      parser := ParserAddChildByIndex(pVersion, gameTypeStr);
+   
+   Result := parser;
+end;
+
+   
+procedure _stats_CreateShardCheckPoint(index : Integer);
+begin
+   var pCheckPoint : Integer = ParserAddChildByIndex(gStatistics.handle, 'CheckPoint_'+IntToStr(index));
+   var pCurrentStats : Integer = ParserSelectByHandleByIndex(gStatistics.handle, 0);
+   ParserCopyToByHandle(pCheckPoint);
+end;
+   
+{procedure _stats_CreateShardStatistics();
+begin
+   var machineHandle : Integer = GetMapInitMachineHandle;
+   var machineParser : Integer = ParserSelectStateMachineByHandle(machineHandle);
+   if (machineParser=0) then
+   machineParser := ParserCreateStateMachineByHandle(machineHandle);
+
+   gStatistics.handle := ParserSelectByHandleByKey(machineParser, 'Statistics');
+   if (gStatistics.handle=0) then
+   gStatistics.handle := ParserAddChildByIndex(machineParser, 'Statistics')
+   else
+   ParserClearByHandle(gStatistics.handle);
+
+   gStatistics.number := 1;
+   
+   var i : Integer;
+   var pShardStats : Integer = ParserAddChildByIndex(gStatistics.handle, 'CurrentShardStats');
+      
+   var pGeneral : Integer = ParserAddChildByIndex(pShardStats, 'General');
+   ParserSetIntValueByKeyByHandle(pGeneral, 'Turn', gGame.currentTurn);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'Reloads', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'Provinces', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ProvincesConquered', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ProvincesLost', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'InnerBuilds', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'OuterBuilds', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'BattlesWon', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'BattlesLost', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'Heroes', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'GoldGained', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'GemsGained', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'GoldSpent', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'GemsSpent', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'UnitRecruitGold', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'UnitRecruitGems', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'UnitUpkeepGold', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'UnitUpkeepGems', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ItemGoldSpent', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ItemGemsSpent', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'SpellGemsSpent', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ArenaBattleCount', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ArenaBattleWinCount', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ArenaBetCount', 0);
+   ParserSetIntValueByKeyByHandle(pGeneral, 'ArenaBetWinCount', 0);
+
+   var pGold : Integer = ParserAddChildByIndex(pShardStats, 'Gold');
+   ParserSetIntValueByKeyByHandle(pGold, 'BattleGold', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'SiteGold', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'EncounterGold', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'PlunderGold', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'ItemsSold', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'UnitsSold', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'AlchemyGain', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'AlchemyLoss', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'ArenaBattleProfit', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'ArenaBetProfit', 0);
+   ParserSetIntValueByKeyByHandle(pGold, 'ArenaBetLosses', 0);
+
+   var pGem : Integer = ParserAddChildByIndex(pShardStats, 'Gem');
+   ParserSetIntValueByKeyByHandle(pGem, 'BattleGem', 0);
+   ParserSetIntValueByKeyByHandle(pGem, 'SiteGem', 0);
+   ParserSetIntValueByKeyByHandle(pGem, 'EncounterGem', 0);
+   ParserSetIntValueByKeyByHandle(pGem, 'ItemsSold', 0);
+   ParserSetIntValueByKeyByHandle(pGem, 'AlchemyGain', 0);
+   ParserSetIntValueByKeyByHandle(pGem, 'AlchemyLoss', 0);
+
+   var pResources : Integer = ParserAddChildByIndex(pShardStats, 'Resources');
+   for i := 0 to gPrototypeData.units.number do
+   begin
+      var pResource : Integer = ParserAddChildByIndex(pResources, '*');
+      ParserSetIntValueByKeyByHandle(pResource, 'Controlled', 0);
+      ParserSetIntValueByKeyByHandle(pResource, 'Used', 0);
+   end;
+
+   var pDiplomacy : Integer = ParserAddChildByIndex(pShardStats, 'Diplomacy');
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'PlayersMet', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'Treachery', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TreacherySuffered', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'WarDeclarationsMade', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'WarDeclarationsReceived', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'PeaceTreatySealedMyProposal', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'PeaceTreatySealedOtherProposal', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'PeaceTreatiesOffered', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'PeaceTreatiesReceived', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'Union', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'UnionOffersOffered', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'UnionOffersReceived', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeAgreements', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeOffersMade', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeOffersReceived', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeCancelled', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeCancelledOther', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeGainGold', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeGiveGold', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeGainGem', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'TradeGiveGem', 0);
+   var pTradeResources : Integer = ParserAddChildByIndex(pDiplomacy, 'TradeResources');
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_1', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_2', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_3', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_4', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_5', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_6', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_7', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_8', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGainedID_9', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_1', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_2', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_3', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_4', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_5', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_6', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_7', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_8', 0);
+   ParserSetIntValueByKeyByHandle(pTradeResources, 'ResourcesGivenID_9', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeAgreements', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeOffersMade', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeOffersReceived', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeGainGold', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeGiveGold', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeGainGem', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeGiveGem', 0);
+   var pExchangeItems : Integer = ParserAddChildByIndex(pDiplomacy, 'ExchangeItems');
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedLevel_1', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedLevel_2', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedLevel_3', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedLevel_4', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedLevel_5', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedLevel_6', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedRarity_1', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedRarity_2', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedRarity_3', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedRarity_4', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedRarity_5', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGainedRarity_6', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenLevel_1', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenLevel_2', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenLevel_3', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenLevel_4', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenLevel_5', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenLevel_6', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenRarity_1', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenRarity_2', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenRarity_3', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenRarity_4', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenRarity_5', 0);
+   ParserSetIntValueByKeyByHandle(pExchangeItems, 'ItemsGivenRarity_6', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeProvincesGiven', 0);
+   ParserSetIntValueByKeyByHandle(pDiplomacy, 'ExchangeProvincesGained', 0);
+   
+   var pHeroes : Integer = ParserAddChildByIndex(pShardStats, 'Heroes');
+   for i := 0 to 20 do // as many as there are class choices
+   begin
+      var pHero : Integer = ParserAddChildByIndex(pHeroes, '*');
+      ParserSetIntValueByKeyByHandle(pHero, 'PrimaryChoice', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'SecondaryChoice', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'TertiaryChoice', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'QuaternaryChoice', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'Resurrected', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'Abandoned', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattlesWon', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattlesLost', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsInfantry', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsArchers', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsCavalry', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsSpellcasters', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsSiege', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsGiants', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsFliers', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'BattleUnitsHealers', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'SpellsRank_1', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'SpellsRank_2', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'SpellsRank_3', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'SpellsRank_4', 0);
+   end;
+
+   var pUnits : Integer = ParserAddChildByIndex(pShardStats, 'Units');
+   for i := 0 to gPrototypeData.units.number do
+   begin
+      var pUnit : Integer = ParserAddChildByIndex(pUnits, '*');
+      ParserSetIntValueByKeyByHandle(pUnit, 'Defeated', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'Recruited', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'Dead', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'BattlesWon', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'BattlesLost', 0);
+   end;
+   
+   var pSpells : Integer = ParserAddChildByIndex(pShardStats, 'Spells');
+   for i := 0 to gPrototypeData.items.number do
+   begin
+      var pSpell : Integer = ParserAddChildByIndex(pSpells, '*');
+      ParserSetIntValueByKeyByHandle(pHero, 'Used', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'BattlesWon', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'BattlesLost', 0);
+   end;
+   
+   var pItems : Integer = ParserAddChildByIndex(pShardStats, 'Items');
+   for i := 0 to gPrototypeData.extitems.number do
+   begin
+      var pItem : Integer = ParserAddChildByIndex(pItems, '*');
+      ParserSetIntValueByKeyByHandle(pHero, 'Gained', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'Bought', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'Sold', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'BattlesWon', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'BattlesLost', 0);
+   end;
+   
+   var pItemSets : Integer = ParserAddChildByIndex(pShardStats, 'ItemSets');
+   for i := 0 to gPrototypeData.itemSets.number do
+   begin
+      var pItemSet : Integer = ParserAddChildByIndex(pItemSets, '*');
+      ParserSetIntValueByKeyByHandle(pHero, 'Completed', 0);
+      ParserSetIntValueByKeyByHandle(pHero, 'AverageCompletion', 0);
+   end;
+
+   var pInnerBuildings : Integer = ParserAddChildByIndex(pShardStats, 'InnerBuildings');
+   for i := 0 to gPrototypeData.innerBuildings.number do
+   begin
+      var pInnerBuild : Integer = ParserAddChildByIndex(pInnerBuildings, '*');
+      ParserSetIntValueByKeyByHandle(pUnit, 'Constructed', 0);
+   end;
+
+
+   var pOuterBuildings : Integer = ParserAddChildByIndex(pShardStats, 'OuterBuildings');
+   for i := 0 to gPrototypeData.outerBuildings.number do
+   begin
+      var pOuterBuild : Integer = ParserAddChildByIndex(pOuterBuildings, '*');
+      ParserSetIntValueByKeyByHandle(pUnit, 'Constructed', 0);
+      ParserSetIntValueByKeyByHandle(pUnit, 'Destroyed', 0);
+   end;
+end;}
+
+function _stats_GetStatistics(gameType : Integer) : Integer;
+begin
+   gStatistics.handle := ParserSelectByHandleByKey(ParserSelectStateMachineByHandle(GetMapInitMachineHandle), 'Statistics');
+   if gStatistics.handle <> 0 then
+      gStatistics.handle := _stats_ParserGetSection(gameType);
+   gStatistics.number := ParserGetCountByHandle(gStatistics.handle);
+   Result := gStatistics.handle;
+end;
+
+function _stats_IsEligible(plHandle : Integer) : Boolean;
+begin
+   Result := false;
+   if (plHandle = GetPlayerHandleInterfaceIO) and SameText(GetPlayerControlModeByHandle(plHandle), 'cmPlayer') and (not gGame.sandbox) then 
+   begin
+      if (gGame.gameType = gc_GameTypeHotseat) or (gGame.gameType = gc_GameTypeHotseatBattle) then // On hotseat, store stats only for player 1 (index 0)
+      begin
+         if gIntRegister_CurGameMode = gc_GameModeTactics then
+         begin
+            PlayerExecuteStateByHandle(plHandle, 'GetMapPlayerHandle');
+            plHandle := IntRegister0;
+         end;
+            
+         if GetPlayerIndexByHandle(plHandle) = 0 then
+            Result := true;
+      end
+      else
+         Result := true;
+   end;
+end;
+
+
+procedure _stats_Action(goHandle, actInd, param : Integer);
+begin
+   {
+   actInd:
+   0 = do nothing
+   1 = melee attack
+   2 = ranged attack
+   4 = spell - param = spellID
+   5 = ability - param = abilityID
+   6 = rest
+   }
+   
+   var i, pActions : Integer;
+   var updateKnowns : Boolean = false;
+   
+   var pMyParser : Integer = ParserSelectGameObject(goHandle);
+   
+   {if GetGameObjectBoolValueIndByHandlee(goHandle, gc_stack_unit_bIsHero then
+   begin
+      var classInd : Integer = 
+      pActions := ParserSelectByHandleByKey(ParserSelectByHandleByIndex(ParserSelectByHandleByKey(gStatistics.handle, 'HeroClasses'), classInd), 'Actions');
+      var pAction : Integer = ParserSelectByHandleByIndex(pActions, actInd);
+   
+
+   end
+   else
+   begin
+      var unitID : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID);
+      pActions := ParserSelectByHandleByKey(ParserSelectByHandleByIndex(ParserSelectByHandleByKey(gStatistics.handle, 'Units'), unitID), 'Actions');
+      var pAction : Integer = ParserSelectByHandleByIndex(pActions, actInd);
+      if actInd = 5 then
+         pAction := ParserSelectByHandleByIndex(pAction, param);
+      ParserSetIntValueByKeyByHandle(pAction, 'TimesUsed', ParserGetIntValueByKeyByHandle(pAction, 'TimesUsed') + 1);
+      
+      
+      if actInd = 5 then
+      begin
+         IntRegister0 := param;
+         MapExecuteState('GetAbilityParserByID');
+         if ParserGetBoolValueByKeyByHandle(IntRegister1, 'ConsumeTurn') then
+		    updateKnowns := true;
+      end
+      else
+         updateKnowns := true;
+   end;
+   
+   if updateKnowns then // To help comparing the frequency of use of abilities/spells by checking if other abilities/spells even existed.
+   begin
+      var pKnownSpells : Integer = ParserSelectByHandleByKey(pMyParser, 'KnownSpells');
+      var pKnownAbilities : Integer = ParserSelectByHandleByKey(pMyParser, 'KnownAbilities');
+      for i := 0 to ParserGetCountByHandle(pKnownSpells)-1 do
+      begin
+         var spellID : Integer = ParserGetIntValueByKeyByHandle(pKnownSpells, ');
+         var pSpell : Integer = ParserSelectByHandleByIndex(ParserSelectByHandleByIndex(pActions, 4), spellID);
+         ParserSetIntValueByKeyByHandle(pSpell, 'TimesKnown', ParserGetIntValueByKeyByHandle(pSpell, 'TimesKnown') + 1);
+      end;
+      for i := 0 to ParserGetCountByHandle(pKnownAbilities)-1 do
+      begin
+         var abilID : Integer = ParserGetIntValueByKeyByHandle(pKnownAbilities, ');
+         var pAbility : Integer = ParserSelectByHandleByIndex(ParserSelectByHandleByIndex(pActions, 5), abilID);
+         ParserSetIntValueByKeyByHandle(pAbility, 'TimesKnown', ParserGetIntValueByKeyByHandle(pAbility, 'TimesKnown') + 1);
+      end;
+   end;}
+end;
+
+procedure _stats_Spell(goHandle, spellID : Integer);
+begin
+   
+end;
+
+procedure _stats_SimpleUpdate(category, key : String; add : Integer);
+begin
+   if add <> 0 then
+   begin
+      var pParser : Integer = ParserSelectByHandleByKey(ParserSelectByHandleByIndex(gStatistics.handle, 0), category);
+      if pParser <> 0 then
+      begin
+         var value : Integer = ParserGetIntValueByKeyByHandle(pParser, key);
+         ParserSetIntValueByKeyByHandle(pParser, key, value + add);
+      end;
+   end;
+end;
+
+procedure _stats_ListUpdate(category, key : String; index, add : Integer);
+begin
+   if add <> 0 then
+   begin
+      var pParser : Integer = ParserSelectByHandleByKey(ParserSelectByHandleByIndex(gStatistics.handle, 0), category);
+      if pParser <> 0 then
+      begin
+         pParser := ParserSelectByHandleByIndex(pParser, index);
+         if pParser <> 0 then
+         begin
+            var value : Integer = ParserGetIntValueByKeyByHandle(pParser, key);
+            ParserSetIntValueByKeyByHandle(pParser, key, value + add);
+         end;
+      end;
+   end;
+end;
+
+procedure _stats_SubCategoryUpdate(category, subCategory, key : String; add : Integer);
+begin
+   if add <> 0 then
+   begin
+      var pParser : Integer = ParserSelectByHandleByKey(ParserSelectByHandleByIndex(gStatistics.handle, 0), category);
+      if pParser <> 0 then
+      begin
+         pParser := ParserSelectByHandleByKey(pParser, subCategory);
+         if pParser <> 0 then
+         begin
+            var value : Integer = ParserGetIntValueByKeyByHandle(pParser, key);
+            ParserSetIntValueByKeyByHandle(pParser, key, value + add);
+         end;
+      end;
+   end;
+end;
+
+procedure _stats_SubCategoryListUpdate(category, subCategory, key : String; index, add : Integer);
+begin
+   if add <> 0 then
+   begin
+      var pParser : Integer = ParserSelectByHandleByKey(ParserSelectByHandleByIndex(gStatistics.handle, 0), category);
+      if pParser <> 0 then
+      begin
+         pParser := ParserSelectByHandleByKey(pParser, subCategory);
+         if pParser <> 0 then
+         begin
+            pParser := ParserSelectByHandleByIndex(pParser, index);
+            if pParser <> 0 then
+            begin
+               var value : Integer = ParserGetIntValueByKeyByHandle(pParser, key);
+               ParserSetIntValueByKeyByHandle(pParser, key, value + add);
+            end;
+         end;
+      end;
+   end;
+end;
+
+
+
+

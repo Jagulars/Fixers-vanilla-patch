@@ -1,0 +1,310 @@
+section.begin
+   [*] : struct.begin
+      id = ability
+      filename = .\data\locale\RU\ability.lng
+   struct.end
+   [*] : struct.begin
+      id = attitude
+      filename = .\data\locale\RU\attitude.lng
+   struct.end
+   [*] : struct.begin
+      id = bf_object
+      filename = .\data\locale\RU\bf_object.lng
+   struct.end
+   [*] : struct.begin
+      id = build_group
+      filename = .\data\locale\RU\build_group.lng
+   struct.end
+   [*] : struct.begin
+      id = campaign_dialog
+      filename = .\data\locale\RU\campaign_dialog.lng
+   struct.end
+   [*] : struct.begin
+      id = defender
+      filename = .\data\locale\RU\defender.lng
+   struct.end
+   [*] : struct.begin
+      id = effects
+      filename = .\data\locale\RU\effects.lng
+   struct.end
+   [*] : struct.begin
+      id = glossary
+      filename = .\data\locale\RU\glossary.lng
+   struct.end
+   [*] : struct.begin
+      id = guard_type
+      filename = .\data\locale\RU\guard_type.lng
+   struct.end
+   [*] : struct.begin
+      id = gui
+      filename = .\data\locale\RU\gui.lng
+   struct.end
+   [*] : struct.begin
+      id = hero_advice
+      filename = .\data\locale\RU\hero_advice.lng
+   struct.end
+   [*] : struct.begin
+      id = hero_class
+      filename = .\data\locale\RU\hero_class.lng
+   struct.end
+   [*] : struct.begin
+      id = hero_class_d
+      filename = .\data\locale\RU\hero_class_d.lng
+   struct.end
+   [*] : struct.begin
+      id = hero_names
+      filename = .\data\locale\RU\hero_names.lng
+   struct.end
+   [*] : struct.begin
+      id = hint
+      filename = .\data\locale\RU\hint.lng
+   struct.end
+   [*] : struct.begin
+      id = hotkeys
+      filename = .\data\locale\RU\hotkeys.lng
+   struct.end
+   [*] : struct.begin
+      id = inner_build
+      filename = .\data\locale\RU\inner_build.lng
+   struct.end
+   [*] : struct.begin
+      id = item
+      filename = .\data\locale\RU\item.lng
+   struct.end
+   [*] : struct.begin
+      id = item_set
+      filename = .\data\locale\RU\item_set.lng
+   struct.end
+   [*] : struct.begin
+      id = item_slot
+      filename = .\data\locale\RU\item_slot.lng
+   struct.end
+   [*] : struct.begin
+      id = item_type
+      filename = .\data\locale\RU\item_type.lng
+   struct.end
+   [*] : struct.begin
+      id = journal
+      filename = .\data\locale\RU\journal.lng
+   struct.end
+   [*] : struct.begin
+      id = map.event
+      filename = .\data\locale\RU\map.event.lng
+   struct.end
+   [*] : struct.begin
+      id = map.provinceinfo
+      filename = .\data\locale\RU\map.provinceinfo.lng
+   struct.end
+   [*] : struct.begin
+      id = medal
+      filename = .\data\locale\RU\medal.lng
+   struct.end
+   [*] : struct.begin
+      id = message
+      filename = .\data\locale\RU\message.lng
+   struct.end
+   [*] : struct.begin
+      id = outer_build
+      filename = .\data\locale\RU\outer_build.lng
+   struct.end
+   [*] : struct.begin
+      id = player0
+      filename = .\data\locale\RU\player0.lng
+   struct.end
+   [*] : struct.begin
+      id = player1
+      filename = .\data\locale\RU\player1.lng
+   struct.end
+   [*] : struct.begin
+      id = player10
+      filename = .\data\locale\RU\player10.lng
+   struct.end
+   [*] : struct.begin
+      id = player11
+      filename = .\data\locale\RU\player11.lng
+   struct.end
+   [*] : struct.begin
+      id = player12
+      filename = .\data\locale\RU\player12.lng
+   struct.end
+   [*] : struct.begin
+      id = player13
+      filename = .\data\locale\RU\player13.lng
+   struct.end
+   [*] : struct.begin
+      id = player14
+      filename = .\data\locale\RU\player14.lng
+   struct.end
+   [*] : struct.begin
+      id = player15
+      filename = .\data\locale\RU\player15.lng
+   struct.end
+   [*] : struct.begin
+      id = player16
+      filename = .\data\locale\RU\player16.lng
+   struct.end
+   [*] : struct.begin
+      id = player2
+      filename = .\data\locale\RU\player2.lng
+   struct.end
+   [*] : struct.begin
+      id = player3
+      filename = .\data\locale\RU\player3.lng
+   struct.end
+   [*] : struct.begin
+      id = player4
+      filename = .\data\locale\RU\player4.lng
+   struct.end
+   [*] : struct.begin
+      id = player5
+      filename = .\data\locale\RU\player5.lng
+   struct.end
+   [*] : struct.begin
+      id = player6
+      filename = .\data\locale\RU\player6.lng
+   struct.end
+   [*] : struct.begin
+      id = player7
+      filename = .\data\locale\RU\player7.lng
+   struct.end
+   [*] : struct.begin
+      id = player8
+      filename = .\data\locale\RU\player8.lng
+   struct.end
+   [*] : struct.begin
+      id = player9
+      filename = .\data\locale\RU\player9.lng
+   struct.end
+   [*] : struct.begin
+      id = players
+      filename = .\data\locale\RU\players.lng
+   struct.end
+   [*] : struct.begin
+      id = province_level
+      filename = .\data\locale\RU\province_level.lng
+   struct.end
+   [*] : struct.begin
+      id = quest
+      filename = .\data\locale\RU\quest.lng
+   struct.end
+   [*] : struct.begin
+      id = question
+      filename = .\data\locale\RU\question.lng
+   struct.end
+   [*] : struct.begin
+      id = races
+      filename = .\data\locale\RU\races.lng
+   struct.end
+   [*] : struct.begin
+      id = resource
+      filename = .\data\locale\RU\resource.lng
+   struct.end
+   [*] : struct.begin
+      id = ritual
+      filename = .\data\locale\RU\ritual.lng
+   struct.end
+   [*] : struct.begin
+      id = ruler_nick
+      filename = .\data\locale\RU\ruler_nick.lng
+   struct.end
+   [*] : struct.begin
+      id = ruler_title
+      filename = .\data\locale\RU\ruler_title.lng
+   struct.end
+   [*] : struct.begin
+      id = site
+      filename = .\data\locale\RU\site.lng
+   struct.end
+   [*] : struct.begin
+      id = site1
+      filename = .\data\locale\RU\site1.lng
+   struct.end
+   [*] : struct.begin
+      id = skill
+      filename = .\data\locale\RU\skill.lng
+   struct.end
+   [*] : struct.begin
+      id = spell
+      filename = .\data\locale\RU\spell.lng
+   struct.end
+   [*] : struct.begin
+      id = tutorial
+      filename = .\data\locale\RU\tutorial.lng
+   struct.end
+   [*] : struct.begin
+      id = unit
+      filename = .\data\locale\RU\unit.lng
+   struct.end
+   [*] : struct.begin
+      id = unit_class
+      filename = .\data\locale\RU\unit_class.lng
+   struct.end
+   [*] : struct.begin
+      id = unit_type
+      filename = .\data\locale\RU\unit_type.lng
+   struct.end
+   [*] : struct.begin
+      id = upgrade
+      filename = .\data\locale\RU\upgrade.lng
+   struct.end
+   [*] : struct.begin
+      id = shard
+      filename = .\data\locale\RU\shard.lng
+   struct.end
+   [*] : struct.begin
+      id = shard_bonus
+      filename = .\data\locale\RU\shard_bonus.lng
+   struct.end
+   [*] : struct.begin
+      id = terrain
+      filename = .\data\locale\RU\terrain.lng
+   struct.end
+   [*] : struct.begin
+      id = tooltip
+      filename = .\data\locale\RU\tooltip.lng
+   struct.end
+   [*] : struct.begin
+      id = difficulty
+      filename = .\data\locale\RU\difficulty.lng
+   struct.end
+   [*] : struct.begin
+      id = table
+      filename = .\data\locale\RU\table.lng
+   struct.end
+   [*] : struct.begin
+      id = tools
+      filename = .\data\locale\RU\tools.lng
+   struct.end
+   [*] : struct.begin
+      id = menu
+      filename = .\data\locale\RU\menu.lng
+   struct.end
+   [*] : struct.begin
+      id = worldrule
+      filename = .\data\locale\RU\worldrule.lng
+   struct.end
+   [*] : struct.begin
+      id = credits
+      filename = .\data\locale\RU\credits.lng
+   struct.end
+   [*] : struct.begin
+      id = demo
+      filename = .\data\locale\RU\demo.lng
+   struct.end
+   [*] : struct.begin
+      id = inner_build_abilities
+      filename = .\data\locale\RU\inner_build_abilities.lng
+   struct.end
+   [*] : struct.begin
+      id = achievements
+      filename = .\data\locale\RU\achievements.lng
+   struct.end
+   [*] : struct.begin
+      id = achievements_e2
+      filename = .\data\locale\RU\achievements_e2.lng
+   struct.end
+   [*] : struct.begin
+      id = genesismode
+      filename = .\data\locale\RU\genesismode.lng
+   struct.end
+section.end

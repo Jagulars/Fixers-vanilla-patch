@@ -1,0 +1,608 @@
+//
+// init.script
+//
+
+procedure _init_ProcessExclusions(filePath : String); // initially, all controversial data is excluded by default, and then it is checked if it should be included because, for example, DLC is installed.
+begin
+   // this should exclude data that remains persistent as long as the game is running, namely Allied Forces DLC which cannot be installed/uninstalled while the game is running. Negative ID is used for this kind of data.
+   // To exclude data that can change while the game is running, for example, when loading another shard, ban_data parser and DataBanReplacement.inc should be used.
+   IntRegister0 := 2;
+   StringRegister0 := filePath;
+   MapExecuteState('VVK.Menu.Helper');
+end;
+
+procedure _init_AssignParserByName(section_name : String; src_parser : TParserData);
+begin
+   procedure CopyParserPointer(snm : String; src_parser : TParserData; var dst_parser : TParserData);
+   begin
+      dst_parser.handle := src_parser.handle;
+      dst_parser.number := src_parser.number;
+      _pars_ParserSelectByKey(dst_parser,snm,dst_parser); // select the immediate child with same name because when loaded from the file, an additional child with the same name is added.
+   end;
+	  
+   case section_name of
+      'ProvinceTypes': CopyParserPointer(section_name,src_parser,gPrototypeData.provincetypes);
+      'ProvinceLevels': CopyParserPointer(section_name,src_parser,gPrototypeData.provincelevels);
+      'ProvinceNames': CopyParserPointer(section_name,src_parser,gPrototypeData.provincenames);
+      'Prefixes': CopyParserPointer(section_name,src_parser,gPrototypeData.prefixes);
+      'Suffixes': CopyParserPointer(section_name,src_parser,gPrototypeData.suffixes);
+      'TerrainTypes': CopyParserPointer(section_name,src_parser,gPrototypeData.terraintypes);
+      'Resources': CopyParserPointer(section_name,src_parser,gPrototypeData.resources);
+      'Sites': CopyParserPointer(section_name,src_parser,gPrototypeData.sites);
+      'Races': CopyParserPointer(section_name,src_parser,gPrototypeData.races);
+      'Events': CopyParserPointer(section_name,src_parser,gPrototypeData.events);
+      'Units': CopyParserPointer(section_name,src_parser,gPrototypeData.units);
+      'UnitLevels': CopyParserPointer(section_name,src_parser,gPrototypeData.unitlevels);
+      'HeroClasses': CopyParserPointer(section_name,src_parser,gPrototypeData.heroclasses);
+      'GuardTypes': CopyParserPointer(section_name,src_parser,gPrototypeData.guardtypes);
+      'Guards': CopyParserPointer(section_name,src_parser,gPrototypeData.guards);
+      'UnitUpgrades': CopyParserPointer(section_name,src_parser,gPrototypeData.unitupgrades);
+      'Abilities': CopyParserPointer(section_name,src_parser,gPrototypeData.abilities);
+      'InnerBuildings': CopyParserPointer(section_name,src_parser,gPrototypeData.innerbuildings);
+      'BuildGroups': CopyParserPointer(section_name,src_parser,gPrototypeData.buildgroups);
+      'Spells': CopyParserPointer(section_name,src_parser,gPrototypeData.spells);
+      'Medals': CopyParserPointer(section_name,src_parser,gPrototypeData.medals);
+      'Skills': CopyParserPointer(section_name,src_parser,gPrototypeData.skills);
+      'HeroBonuses': CopyParserPointer(section_name,src_parser,gPrototypeData.herobonuses);
+      'Effects': CopyParserPointer(section_name,src_parser,gPrototypeData.effects);
+      'OuterBuildings': CopyParserPointer(section_name,src_parser,gPrototypeData.outerbuildings);
+      'Items': CopyParserPointer(section_name,src_parser,gPrototypeData.items);
+      'ItemTypes': CopyParserPointer(section_name,src_parser,gPrototypeData.itemtypes);
+      'ItemSets': CopyParserPointer(section_name,src_parser,gPrototypeData.itemsets);
+      'ItemSlots': CopyParserPointer(section_name,src_parser,gPrototypeData.itemslots);
+      'Defenders': CopyParserPointer(section_name,src_parser,gPrototypeData.defenders);
+      'Encounters': CopyParserPointer(section_name,src_parser,gPrototypeData.encounters);
+      'Rituals': CopyParserPointer(section_name,src_parser,gPrototypeData.rituals);
+      'Mercenaries': CopyParserPointer(section_name,src_parser,gPrototypeData.mercenaries);
+      'HeroPrices': CopyParserPointer(section_name,src_parser,gPrototypeData.heroprices);
+      'ShardBonuses': CopyParserPointer(section_name,src_parser,gPrototypeData.shardbonuses);
+      'Landmarks': CopyParserPointer(section_name,src_parser,gPrototypeData.landmarks);
+      'CampEvents': CopyParserPointer(section_name,src_parser,gPrototypeData.campevents);
+      'TownQuarters': CopyParserPointer(section_name,src_parser,gPrototypeData.townquarters);
+      'Players': CopyParserPointer(section_name,src_parser,gPrototypeData.players);
+      'BFObjects': CopyParserPointer(section_name,src_parser,gPrototypeData.bfobjects);
+      'ExtHeroClasses': CopyParserPointer(section_name,src_parser,gPrototypeData.extheroclasses);
+      'Quests': CopyParserPointer(section_name,src_parser,gPrototypeData.quests);
+      'Attitudes': CopyParserPointer(section_name,src_parser,gPrototypeData.attitudes);
+      'Difficulty': CopyParserPointer(section_name,src_parser,gPrototypeData.difficulty);
+      'CustomDifficulty': CopyParserPointer(section_name,src_parser,gPrototypeData.customdifficulty);
+      'UnitTypes': CopyParserPointer(section_name,src_parser,gPrototypeData.unittypes);
+      'HeroAdvices': CopyParserPointer(section_name,src_parser,gPrototypeData.heroadvices);
+      'RulerNicks': CopyParserPointer(section_name,src_parser,gPrototypeData.rulernicks);
+      'RulerTitles': CopyParserPointer(section_name,src_parser,gPrototypeData.rulertitles);
+      'BookMasters': CopyParserPointer(section_name,src_parser,gPrototypeData.bookmasters);
+      'CampDifficulties': CopyParserPointer(section_name,src_parser,gPrototypeData.campdifficulties);
+      'WorldRules': CopyParserPointer(section_name,src_parser,gPrototypeData.worldrules);
+      'Music': CopyParserPointer(section_name,src_parser,gPrototypeData.music);
+      'ObjectTypes': CopyParserPointer(section_name,src_parser,gPrototypeData.objectTypes);
+      //'ScenarioEvents': CopyParserPointer(section_name,src_parser,gPrototypeData.scenarioevents);
+      'PatternList': CopyParserPointer(section_name,src_parser,gBattleData.patternlist);
+      'ZoneList': CopyParserPointer(section_name,src_parser,gBattleData.zonelist);
+      'ColumnZones': CopyParserPointer(section_name,src_parser,gBattleData.columnzones);
+      else ErrorLogI('Init. Unknown section: '+section_name);
+   end;
+end;
+
+// _init_LoadPrototypes
+//
+procedure _init_LoadPrototypes();
+begin
+   // keys
+   const cPrototypeDataKey = 'Common';
+   const cBattleDataKey = 'Battle';
+
+   const cPatternCoverFileName = '.\data\gen\patterncovers.cfg';
+   const cGameData = '.\data\game\var\game_data.cfg';
+
+   // main
+   var pData,p,i : Integer;
+   var parserStruct : TParserData;
+   var fnm,snm : String;
+
+
+   // windows
+   if (_pars_ParserIsEmpty(gWindows)) then
+   begin
+      _pars_ParserCreate('Windows', gWindows);
+      _pars_ParserLoadFromFile('.\data\gui\designerwindows.cfg', gWindows);
+   end;
+
+
+   // patterns
+   if (_pars_ParserIsEmpty(gPatternCover)) then
+   begin
+      _pars_ParserCreate('PatternCover', gPatternCover);
+      _pars_ParserLoadFromFile(cPatternCoverFileName, gPatternCover);
+      _pars_ParserSelectByKey(gPatternCover, 'TerrainTypes', gPatternCoverTerrainTypes);
+   end;
+
+
+   // loading parsers
+   _pars_ParserSelect(cPrototypeDataKey, gPrototypeData.root);
+   _pars_ParserSelect(cBattleDataKey, gBattleData.root);
+
+   if (not _pars_ParserIsEmpty(gPrototypeData.root)) and (not _pars_ParserIsEmpty(gBattleData.root)) then
+      exit;
+
+   _pars_ParserCreate(cPrototypeDataKey, gPrototypeData.root);
+   _pars_ParserCreate(cBattleDataKey, gBattleData.root);
+
+
+   pData := _misc_ParserGetOrCreateByKey('game_data_cfg',true);
+   ParserLoadFromFileByHandle(pData,cGameData);
+   pData := ParserSelectByHandleByKey(pData, 'ConfigFiles');
+   for i := 0 to ParserGetCountByHandle(pData)-1 do
+   begin
+      p := ParserSelectByHandleByIndex(pData,i);
+      snm := ParserGetValueByKeyByHandle(p,'SectionName');
+	  
+      if ParserGetIntValueByKeyByHandle(p,'Parent') > 0 then
+         _pars_ParserAddChild(gBattleData.root, snm, parserStruct)
+      else
+         _pars_ParserAddChild(gPrototypeData.root, snm, parserStruct);
+		 
+      fnm := '.\data\'+ParserGetValueByKeyByHandle(p,'Path')+'\'+ParserGetValueByKeyByHandle(p,'Filename')+'.cfg';
+      if (not IsFileExists(fnm)) or (not _pars_ParserLoadFromFile(fnm, parserStruct)) then
+         ErrorLogI('Init. File not found '+fnm)
+      else
+         _init_AssignParserByName(snm, parserStruct);
+		 
+      if snm = 'ObjectTypes' then
+	  begin
+	     var pParser : Integer = ParserSelectByHandleByKey(gPrototypeData.objectTypes.handle, 'ShardPlayer');
+	     pParser := ParserSelectByHandleByKey(pParser, 'Stack');
+	     if ParserGetCountByHandle(pParser) <> gc_ShardPlayerStackVarsCount then
+            ErrorLogI('Incorrect Stack Variable Count, ShardPlayer');
+	     
+	     pParser := ParserSelectByHandleByKey(gPrototypeData.objectTypes.handle, 'ShardHero');
+	     pParser := ParserSelectByHandleByKey(pParser, 'Stack');
+	     if ParserGetCountByHandle(pParser) <> gc_ShardHeroStackVarsCount then
+            ErrorLogI('Incorrect Stack Variable Count, ShardHero');
+	     
+	     pParser := ParserSelectByHandleByKey(gPrototypeData.objectTypes.handle, 'BattleUnit');
+	     pParser := ParserSelectByHandleByKey(pParser, 'Stack');
+	     if ParserGetCountByHandle(pParser) <> gc_BattleUnitStackVarsCount then
+            ErrorLogI('Incorrect Stack Variable Count, BattleUnit');
+	  end;
+   end;
+
+   //_log_values('SKILLS|MEDALS',gPrototypeData.skills.number,gPrototypeData.medals.number,0,0,0,0);
+   _init_ProcessExclusions('.\data\game\var\exceptions.cfg');
+
+   //
+   // MakeExtItemsList
+   //
+   var pItems : Integer = gPrototypeData.items.handle;
+   var pSpells : Integer = gPrototypeData.spells.handle;
+   var pDefenders : Integer = gPrototypeData.defenders.handle;
+   var pOuterBuildings : Integer = gPrototypeData.outerBuildings.handle;
+   var pRituals : Integer = gPrototypeData.rituals.handle;
+   var pInnerBuildings : Integer = gPrototypeData.innerBuildings.handle;
+
+   _pars_ParserAddChild(gPrototypeData.root, 'ExtItems', gPrototypeData.extItems);
+   _pars_ParserAddChild(gPrototypeData.extItems, 'ExtItems', gPrototypeData.extItems);
+   var pExtItems : Integer = gPrototypeData.extItems.handle;
+
+   _pars_ParserAssign(gPrototypeData.items, gPrototypeData.extItems);
+
+   var j : Integer;
+   var itemInd : Integer = ParserGetCountByHandle(pItems)-1;
+
+   // check spells list
+   for i := 0 to ParserGetCountByHandle(pSpells)-1 do
+   begin
+      var pSpell : Integer = ParserSelectByHandleByIndex(pSpells, i);
+      //if ParserGetIntValueByKeyByHandle(pSpell, 'SpellID') >= 0 then
+      begin
+         var spLevel : Integer = ParserGetIntValueByKeyByHandle(pSpell, 'Level');
+         var spItemLevel : Integer = ParserGetIntValueByKeyByHandle(pSpell, 'ItemLevel');
+
+         itemInd := itemInd + 1;
+         var pExtItem : Integer = ParserAddChildByIndex(pExtItems, '*');
+         if ParserGetIntValueByKeyByHandle(pSpell, 'SpellID') >= 0 then
+            ParserSetIntValueByKeyByHandle(pExtItem, 'ItemID', itemInd)
+         else
+            ParserSetIntValueByKeyByHandle(pExtItem, 'ItemID', -1*itemInd);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemSlot', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemType', 10);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Durability', 1);
+
+         var goldCost : Integer = 10;
+         if spLevel >= 1 then
+            goldCost := goldCost * Round(Pow(3, spLevel));
+         goldCost := goldCost + spItemLevel * 20;
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GoldCost', goldCost);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GemCost', goldCost div 5);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ShopLevel', spItemLevel);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Rarity', spLevel div 2 + 1);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'BuildingID', 0);
+
+         var pItemResources : Integer = ParserAddChildByIndex(pExtItem, 'Resources');
+
+         var resID : Integer = 0;
+         case spLevel of
+            2 : resID := 4;
+            3 : resID := 5;
+            4 : begin
+               if (i > 60) and (i < 70) then
+                  resID := 9
+               else
+                  resID := 8;
+            end;
+         end;
+         if resID > 0 then
+            ParserSetIntValueByKeyByHandle(ParserAddChildByIndex(pItemResources, '*'), 'ResourceID', resID);
+
+         var pItemAbilities : Integer = ParserAddChildByIndex(pExtItem, 'Abilities');
+         var pItemAbility : Integer = ParserAddChildByIndex(pItemAbilities, '*');
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'AbilityID', 83);
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'Power', i);
+         ParserSetBoolValueByKeyByHandle(pItemAbility, 'HeroOnly', false);
+      end;
+   end;
+
+   // check defenders list
+   for i := 0 to ParserGetCountByHandle(pDefenders)-1 do
+   begin
+      var pDefender : Integer = ParserSelectByHandleByIndex(pDefenders, i);
+      var pDefAbilities : Integer = ParserSelectByHandleByKey(pDefender, 'Abilities');
+      var pDefAbility : Integer = 0;
+
+      for j := ParserGetCountByHandle(pDefAbilities)-1 downto 0 do
+      begin
+         var pTmpDefAbility : Integer = ParserSelectByHandleByIndex(pDefAbilities, j);
+         var abilID : Integer = ParserGetIntValueByKeyByHandle(pTmpDefAbility, 'AbilityID');
+
+         if abilID = 10 then
+         begin
+            pDefAbility := pTmpDefAbility;
+            break;
+         end;
+      end;
+
+      if pDefAbility <> 0 then
+      begin
+         itemInd := itemInd + 1;
+
+         var param1 : Integer = ParserGetIntValueByKeyByHandle(pDefAbility, 'Param1');
+         var param2 : Integer = ParserGetIntValueByKeyByHandle(pDefAbility, 'Param2');
+
+         var pExtItem : Integer = ParserAddChildByIndex(pExtItems, '*');
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemID', itemInd);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemSlot', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemType', 11);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Durability', 1);
+         ParserSetBoolValueByKeyByHandle(pExtItem, 'Breakable', false);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GoldCost', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GemCost', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ShopLevel', param1);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Rarity', param2);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'BuildingID', 0);
+
+         var pItemAbilities : Integer = ParserAddChildByIndex(pExtItem, 'Abilities');
+         var pItemAbility : Integer = ParserAddChildByIndex(pItemAbilities, '*');
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'AbilityID', 86);
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'Power', i);
+         ParserSetBoolValueByKeyByHandle(pItemAbility, 'HeroOnly', false);
+      end;
+   end;
+
+   // check outer buildings list
+   for i := 0 to ParserGetCountByHandle(pOuterBuildings)-1 do
+   begin
+      var pOuterBuilding : Integer = ParserSelectByHandleByIndex(pOuterBuildings, i);
+      var pBuildAbilities : Integer = ParserSelectByHandleByKey(pOuterBuilding, 'Abilities');
+      var pBuildAbility : Integer = 0;
+
+      for j := ParserGetCountByHandle(pBuildAbilities)-1 downto 0 do
+      begin
+         var pTmpBuildAbility : Integer = ParserSelectByHandleByIndex(pBuildAbilities, j);
+         var abilID : Integer = ParserGetIntValueByKeyByHandle(pTmpBuildAbility, 'AbilityID');
+
+         if abilID = 8 then
+         begin
+            pBuildAbility := pTmpBuildAbility;
+            break;
+         end;
+      end;
+
+      if pBuildAbility <> 0 then
+      begin
+         itemInd := itemInd + 1;
+
+         var param1 : Integer = ParserGetIntValueByKeyByHandle(pBuildAbility, 'Param1');
+         var param2 : Integer = ParserGetIntValueByKeyByHandle(pBuildAbility, 'Param2');
+
+         var pExtItem : Integer = ParserAddChildByIndex(pExtItems, '*');
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemID', itemInd);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemSlot', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemType', 12);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Durability', 1);
+         ParserSetBoolValueByKeyByHandle(pExtItem, 'Breakable', false);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GoldCost', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GemCost', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ShopLevel', param1);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Rarity', param2);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'BuildingID', 0);
+
+         var pItemAbilities : Integer = ParserAddChildByIndex(pExtItem, 'Abilities');
+         var pItemAbility : Integer = ParserAddChildByIndex(pItemAbilities, '*');
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'AbilityID', 87);
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'Power', i);
+         ParserSetBoolValueByKeyByHandle(pItemAbility, 'HeroOnly', false);
+      end;
+   end;
+
+   // check rituals list
+   for i := 0 to ParserGetCountByHandle(pRituals)-1 do
+   begin
+      var pRitual : Integer = ParserSelectByHandleByIndex(pRituals, i);
+      if ParserGetIntValueByKeyByHandle(pRitual, 'RitualID') >= 0 then
+      begin
+         var ritItemLevel : Integer = ParserGetIntValueByKeyByHandle(pRitual, 'ItemLevel');
+         var ritItemRarity : Integer = ParserGetIntValueByKeyByHandle(pRitual, 'ItemRarity');
+
+         itemInd := itemInd + 1;
+
+         var pExtItem : Integer = ParserAddChildByIndex(pExtItems, '*');
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemID', itemInd);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemSlot', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ItemType', 13);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Durability', 1);
+         ParserSetBoolValueByKeyByHandle(pExtItem, 'Breakable', false);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GoldCost', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'GemCost', 0);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'ShopLevel', ritItemLevel);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'Rarity', ritItemRarity);
+         ParserSetIntValueByKeyByHandle(pExtItem, 'BuildingID', 0);
+
+         var pItemAbilities : Integer = ParserAddChildByIndex(pExtItem, 'Abilities');
+         var pItemAbility : Integer = ParserAddChildByIndex(pItemAbilities, '*');
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'AbilityID', 94);
+         ParserSetIntValueByKeyByHandle(pItemAbility, 'Power', i);
+         ParserSetBoolValueByKeyByHandle(pItemAbility, 'HeroOnly', false);
+      end;
+   end;
+
+   // check inner buildings list
+   for i := 0 to ParserGetCountByHandle(pInnerBuildings)-1 do
+   begin
+      itemInd := itemInd + 1;
+
+      var pExtItem : Integer = ParserAddChildByIndex(pExtItems, '*');
+      ParserSetIntValueByKeyByHandle(pExtItem, 'ItemID', itemInd);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'ItemSlot', 0);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'ItemType', 14);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'Durability', 1);
+      ParserSetBoolValueByKeyByHandle(pExtItem, 'Breakable', false);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'GoldCost', 0);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'GemCost', 0);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'ShopLevel', 0);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'Rarity', 0);
+      ParserSetIntValueByKeyByHandle(pExtItem, 'BuildingID', 0);
+
+      var pItemAbilities : Integer = ParserAddChildByIndex(pExtItem, 'Abilities');
+      var pItemAbility : Integer = ParserAddChildByIndex(pItemAbilities, '*');
+      ParserSetIntValueByKeyByHandle(pItemAbility, 'AbilityID', 95);
+      ParserSetIntValueByKeyByHandle(pItemAbility, 'Power', i);
+      ParserSetBoolValueByKeyByHandle(pItemAbility, 'HeroOnly', false);
+   end;
+
+   _pars_ParserSelectByHandle(gPrototypeData.extItems);
+end;
+
+// _init_LoadQueryMachine
+//
+procedure _init_LoadQueryMachine();
+begin
+   const cQueryMachineFileName = '.\data\game\query\query.machine.cfg';
+
+   procedure TryToLoadQueryMachine();
+   begin
+      QueryMachineLoadFromParserFile(cQueryMachineFileName);
+   end;
+
+   function IsQueryMachineAllocated() : Boolean;
+   begin
+      var queriesHandle : Integer = QueryMachineGetQueriesHandle();
+      var count : Integer = QueryMachineQueriesCount(queriesHandle);
+      Result := (count>0);
+   end;
+
+   function AllocateQueryMachine() : Boolean;
+   begin
+      TryToLoadQueryMachine(); //QueryMachineLoadFromParserFile(cQueryMachineFileName);
+      Result := IsQueryMachineAllocated();
+   end;
+
+   // --- Prepare query machine ---
+   if (not IsQueryMachineAllocated()) then
+   begin
+      AllocateQueryMachine();
+   end;
+end;
+
+// _init_ReloadQueryMachine
+//
+procedure _init_ReloadQueryMachine();
+begin
+   QueryMachineDestroy();
+   QueryMachineQueriesClear(QueryMachineGetQueriesHandle());
+   QueryMachineCustomQueriesClear();
+   _init_LoadQueryMachine;
+end;
+
+// _init_ServerList
+//
+procedure _init_ServerList();
+begin
+   var i : Integer;
+   var pr : Integer = _misc_ParserGetOrCreateByKey('init_servers',true);
+   ParserLoadFromFile('.\data\resources\servers.dat');
+   var nm : Integer = ParserGetCountByHandle(pr);
+   if nm>gc_ConnectIPListMax then
+   begin
+      ErrorLogI('error _init_ServerList : too much');
+      nm := gc_ConnectIPListMax;
+   end;
+   for i := 0 to nm-1 do
+      gConnectIPList[i] := ParserGetValueByIndex(i);
+   gConnectIPIndex := 0;
+   gConnectIPCount := nm;
+   _misc_ParserGetOrCreateByKey('init_servers',true);
+end;
+
+// _init_RunDLC
+//
+procedure _init_RunDLC(const arg0 : Integer);
+begin
+   var r0 : Integer = IntRegister0;
+   var i,c : Integer;
+   var fnm : String;
+
+   c := RefreshFileList(gc_dlc_path + gc_dlc_ext);
+   for i:=0 to c-1 do
+   begin
+      fnm := GetFileListNameByIndex(i);
+      IntRegister0 := 2;
+      IntRegister1 := 0;
+      IntRegister2 := -1;
+      EvaluateFile(gc_dlc_path + fnm);
+      if IntRegister1 = 1 then
+      begin
+         IntRegister0 := arg0;
+         EvaluateFile(gc_dlc_path + fnm);
+      end
+      else
+         ErrorLogI('DLC '+fnm+'['+IntToStr(IntRegister2)+'] is not available.');
+   end;
+   IntRegister0 := r0;
+end;
+
+function _init_CheckDLCAvailability(dlc_id : Integer) : Boolean;
+begin
+   IntRegister0 := 0;
+   IntRegister1 := dlc_id;
+   MapExecuteState('VVK.Menu.Helper');
+   if BoolRegister0 then
+      Result := true
+   else
+      Result := false;
+end;
+
+// returns string array of active DLC ids xored by $ffffff
+function _init_GetDLCConfiguration(var dlc_ids : String) : Integer;
+begin
+   var i,no : Integer;
+   var c : Integer = RefreshFileList(gc_dlc_path + gc_dlc_ext);
+   var d_str : String = '';
+
+   no := 0;
+   for i:=0 to c-1 do
+   begin
+      IntRegister0 := 2;
+      IntRegister1 := 0;
+      EvaluateFile(gc_dlc_path + GetFileListNameByIndex(i));
+      if IntRegister1 = 1 then
+      begin
+         _sa_AddAsInt(d_str, IntRegister2 xor $ffffff);
+         no := no + 1;
+      end;
+   end;
+   dlc_ids := d_str;
+   Result := no;
+end;
+
+// _init_GenDLC
+//
+procedure _init_GenDLC();
+begin
+   _init_RunDLC(1);
+end;
+
+// _init_ReloadPrototypes
+//
+procedure _init_ReloadPrototypes();
+begin
+   _pars_ParserClear(gPatternCover);
+   _pars_ParserClear(gPrototypeData.root);
+   _pars_ParserClear(gBattleData.root);
+   _init_LoadPrototypes();
+   _init_RunDLC(0);
+end;
+
+
+procedure _init_DefaultGame();
+begin
+   gGame.fog := True;
+   gGame.diplomacy := True;
+   gGame.quickgame := False;
+   gGame.sandbox := False;
+   gGame.allowedheroes := 0;
+   gGame.genesismode := '';
+   gGame.improvedai := False;
+   _misc_ParserGetOrCreateByKey('ban_data', True);
+   
+   const cGameDataPath = '.\data\game\var\game_data.cfg';
+   var pGameData : Integer = _misc_ParserGetOrCreateByKey('game_data_cfg', false);
+   if ParserGetCountByHandle(pGameData) = 0 then
+      ParserLoadFromFile(cGameDataPath);
+   pGameData := ParserSelectByHandleByKey(pGameData, 'ConfigFiles');
+   
+   var parserStruct : TParserData;
+   var sectionName, fileName : String;
+   var i, j, pParser, pThing : Integer;
+   for i := 0 to ParserGetCountByHandle(pGameData)-1 do
+   begin
+      pParser := ParserSelectByHandleByIndex(pGameData, i);
+     
+      fileName := '.\data\'+ParserGetValueByKeyByHandle(pParser, 'Path')+'\'+ParserGetValueByKeyByHandle(pParser, 'Filename')+'.cfg';
+      sectionName := ParserGetValueByKeyByHandle(pParser, 'SectionName');
+	  
+      if ParserGetIntValueByKeyByHandle(pParser, 'Parent') > 0 then
+	     pParser := _pars_ParserSelectByKey(gBattleData.root, sectionName, parserStruct)
+      else
+	     pParser := _pars_ParserSelectByKey(gPrototypeData.root, sectionName, parserStruct);
+      
+      if pParser = 0 then
+         ErrorLogI('Prototype data not found: '+sectionName)
+      else
+      if not IsFileExists(fileName) then
+         ErrorLogI('File not found: '+fileName)
+      else
+      begin
+         pParser := ParserSelectByHandleByKey(pParser, sectionName);
+         for j := 0 to ParserGetCountByHandle(pParser)-1 do
+         begin
+            pThing := ParserSelectByHandleByIndex(pParser, j);
+            if ParserGetBoolValueByKeyByHandle(pThing, 'Customised') then
+            begin
+               Log(sectionName+' modified, reload '+fileName);
+		       _pars_ParserLoadFromFile(fileName, parserStruct);
+               _init_AssignParserByName(sectionName, parserStruct);
+               break;
+            end;
+         end;
+      end;
+   end;
+   
+   _init_ProcessExclusions('.\data\game\var\exceptions.cfg');
+   _init_RunDLC(0);
+end;
+
+//
+// run point
+//
+SetLocaleTableListUseTags(true);
+
+_init_LoadPrototypes();
+_init_LoadQueryMachine();
+
+_map_CreateGridVertices();
+
+_init_ServerList();
+
+_init_RunDLC(0);
+
+// we want to delete the default config file so the profile values are not reset to undesirables every time the config tool is used.
+if IsFileExists('.\data\resources\config.res') then DeleteFileStream('.\data\resources\config.res');

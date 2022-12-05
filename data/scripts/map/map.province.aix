@@ -1,0 +1,732 @@
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\Initial.inc
+section.end
+
+section.begin
+   Name = Nothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = GetEventPoss
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetEventPoss.inc
+section.end
+
+section.begin
+   Name = CheckEventConditions
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckEventConditions.inc
+section.end
+
+section.begin
+   Name = CreateEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CreateEvent.inc
+section.end
+
+section.begin
+   Name = CreateEventByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CreateEventByID.inc
+section.end
+
+section.begin
+   Name = CreateAIEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CreateAIEvent.inc
+section.end
+
+section.begin
+   Name = ProceedEvent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\ProceedEvent.inc
+section.end
+
+section.begin
+   Name = CheckOuterBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckOuterBuilding.inc
+section.end
+
+section.begin
+   Name = CheckInnerBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckInnerBuilding.inc
+section.end
+
+section.begin
+   Name = GetFreeOuterBuildSlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetFreeOuterBuildSlot.inc
+section.end
+
+section.begin
+   Name = IsBuildingAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsBuildingAvailable.inc
+section.end
+
+section.begin
+   Name = IsDefenderAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsDefenderAvailable.inc
+section.end
+
+section.begin
+   Name = GetResource
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetResource.inc
+section.end
+
+section.begin
+   Name = CanCastRitual
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CanCastRitual.inc
+section.end
+
+section.begin
+   Name = SetupPlayerFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\SetupPlayerFlag.inc
+section.end
+
+section.begin
+   Name = CaptureProvince
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CaptureProvince.inc
+section.end
+
+section.begin
+   Name = GuardCaptureProvince
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GuardCaptureProvince.inc
+section.end
+
+section.begin
+   Name = GetMaxFortValue
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetMaxFortValue.inc
+section.end
+
+section.begin
+   Name = GetWallRepairValue
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetWallRepairValue.inc
+section.end
+
+section.begin
+   Name = ExploreNextSite
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\ExploreNextSite.inc
+section.end
+
+section.begin
+   Name = FinishExploration
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\FinishExploration.inc
+section.end
+
+section.begin
+   Name = CheckInnerBuildAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckInnerBuildAbility.inc
+section.end
+
+section.begin
+   Name = CheckInnerBuildAbilityByParam1
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckInnerBuildAbilityByParam1.inc
+section.end
+
+section.begin
+   Name = CheckOuterBuildAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckOuterBuildAbility.inc
+section.end
+
+section.begin
+   Name = CheckOuterBuildAbilityByParam1
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckOuterBuildAbilityByParam1.inc
+section.end
+
+section.begin
+   Name = CheckRitualEffect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckRitualEffect.inc
+section.end
+
+section.begin
+   Name = CheckSiteDestroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckSiteDestroy.inc
+section.end
+
+section.begin
+   Name = IsPlayable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsPlayable.inc
+section.end
+
+section.begin
+   Name = IsUnderSiege
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsUnderSiege.inc
+section.end
+
+section.begin
+   Name = ApplyCastedRituals
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\ApplyCastedRituals.inc
+section.end
+
+section.begin
+   Name = IsSiteActive
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsSiteActive.inc
+section.end
+
+section.begin
+   Name = GetLevel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetLevel.inc
+section.end
+
+section.begin
+   Name = CalcLevel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CalcLevel.inc
+section.end
+
+section.begin
+   Name = GetOwnerAttitude
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetOwnerAttitude.inc
+section.end
+
+section.begin
+   Name = GetPlayerAttitude
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetPlayerAttitude.inc
+section.end
+
+section.begin
+   Name = ChangeAttitude
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\ChangeAttitude.inc
+section.end
+
+section.begin
+   Name = GetOwnerUnrest
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetOwnerUnrest.inc
+section.end
+
+section.begin
+   Name = SetOwnerUnrest
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\SetOwnerUnrest.inc
+section.end
+
+section.begin
+   Name = GetPlayerUnrest
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetPlayerUnrest.inc
+section.end
+
+section.begin
+   Name = SetPlayerUnrest
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\SetPlayerUnrest.inc
+section.end
+
+section.begin
+   Name = GetRitualBonus
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetRitualBonus.inc
+section.end
+
+section.begin
+   Name = GetUnitsSkill
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetUnitsSkill.inc
+section.end
+
+section.begin
+   Name = CheckSiteAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckSiteAbility.inc
+section.end
+
+section.begin
+   Name = CheckSiteAbilityByParam1
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CheckSiteAbilityByParam1.inc
+section.end
+
+section.begin
+   Name = GetMood
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetMood.inc
+section.end
+
+section.begin
+   Name = GetUnrestSlowdown
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetUnrestSlowdown.inc
+section.end
+
+section.begin
+   Name = GetCorruption
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetCorruption.inc
+section.end
+
+section.begin
+   Name = GetGrow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetGrow.inc
+section.end
+
+section.begin
+   Name = GetHeal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetHeal.inc
+section.end
+
+section.begin
+   Name = GetGoldIncome
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetGoldIncome.inc
+section.end
+
+section.begin
+   Name = GetGemIncome
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetGemIncome.inc
+section.end
+
+section.begin
+   Name = GetGoldAndGemIncomeExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetGoldAndGemIncomeExt.inc
+section.end
+
+section.begin
+   Name = GetDefenderPayment
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetDefenderPayment.inc
+section.end
+
+section.begin
+   Name = GetPort
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetPort.inc
+section.end
+
+section.begin
+   Name = IsGarrison
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsGarrison.inc
+section.end
+
+section.begin
+   Name = FillGarrison
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\FillGarrison.inc
+section.end
+
+section.begin
+   Name = IsShopAndLibrary
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsShopAndLibrary.inc
+section.end
+
+section.begin
+   Name = CanHireDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CanHireDefender.inc
+section.end
+
+section.begin
+   Name = IsEnemyNeighbour
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\IsEnemyNeighbour.inc
+section.end
+
+section.begin
+   Name = AITryDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\AITryDefender.inc
+section.end
+
+section.begin
+   Name = GetPlayerArmy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetPlayerArmy.inc
+section.end
+
+section.begin
+   Name = GetOwnerArmy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetOwnerArmy.inc
+section.end
+
+section.begin
+   Name = GetHeroesData
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetHeroesData.inc
+section.end
+
+section.begin
+   Name = Rebel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\Rebel.inc
+section.end
+
+section.begin
+   Name = StartRebel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\StartRebel.inc
+section.end
+
+section.begin
+   Name = RebelSiegeAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\RebelSiegeAttack.inc
+section.end
+
+section.begin
+   Name = GuardAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GuardAttack.inc
+section.end
+
+section.begin
+   Name = AddOuterBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\AddOuterBuilding.inc
+section.end
+
+section.begin
+   Name = GetNewSiteExplore
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetNewSiteExplore.inc
+section.end
+
+section.begin
+   Name = DismissDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\DismissDefender.inc
+section.end
+
+section.begin
+   Name = PlaceDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\PlaceDefender.inc
+section.end
+
+section.begin
+   Name = RazeBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\RazeBuilding.inc
+section.end
+
+section.begin
+   Name = CalcNextLevelTurns
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CalcNextLevelTurns.inc
+section.end
+
+section.begin
+   Name = CalcRebelTurns
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CalcRebelTurns.inc
+section.end
+
+section.begin
+   Name = MakeNeutral
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\MakeNeutral.inc
+section.end
+
+section.begin
+   Name = GetTowersData
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetTowersData.inc
+section.end
+
+section.begin
+   Name = GetRitualTimer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetRitualTimer.inc
+section.end
+
+section.begin
+   Name = GetStable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetStable.inc
+section.end
+
+section.begin
+   Name = AfterRebel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\AfterRebel.inc
+section.end
+
+section.begin
+   Name = FillMonsters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\FillMonsters.inc
+section.end
+
+section.begin
+   Name = GetQuestUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetQuestUnit.inc
+section.end
+
+section.begin
+   Name = GetFreeUnitSlotNum
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetFreeUnitSlotNum.inc
+section.end
+
+section.begin
+   Name = GetPlayerIndex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetPlayerIndex.inc
+section.end
+
+section.begin
+   Name = DiplCaptureProvince
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\DiplCaptureProvince.inc
+section.end
+
+section.begin
+   Name = EnemyAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\EnemyAttack.inc
+section.end
+
+section.begin
+   Name = GetWallPercent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\GetWallPercent.inc
+section.end
+
+section.begin
+   Name = SaveInfoToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\SaveInfoToParser.inc
+section.end
+
+section.begin
+   Name = LoadInfoFromParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\LoadInfoFromParser.inc
+section.end
+
+section.begin
+   Name = CreateRitualFX
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CreateRitualFX.inc
+section.end
+
+section.begin
+   Name = DestroyRitualFX
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\DestroyRitualFX.inc
+section.end
+
+section.begin
+   Name = ____________________
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = SetRandomDefenders
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\SetRandomDefenders.inc
+section.end
+
+section.begin
+   Name = HideShowObjects
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\HideShowObjects.inc
+section.end
+
+section.begin
+   Name = UpdateLevelGFX
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\UpdateLevelGFX.inc
+section.end
+
+section.begin
+   Name = MergeUpdateFlags
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\MergeUpdateFlags.inc
+section.end
+
+section.begin
+   Name = ResetUpdateFlags
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\ResetUpdateFlags.inc
+section.end
+
+section.begin
+   Name = FadeEffectOnEndReach
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\FadeEffectOnEndReach.inc
+section.end
+
+section.begin
+   Name = vvk.GetSiegeParameters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\vvk.GetSiegeParameters.inc
+section.end
+
+section.begin
+   Name = CreateRoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CreateRoad.inc
+section.end
+
+section.begin
+   Name = FillTerrainPatterns
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\FillTerrainPatterns.inc
+section.end
+
+section.begin
+   Name = CreateOuterBuildModel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.province.inc\CreateOuterBuildModel.inc
+section.end
+
+section.begin
+   CurrentState = Nothing
+   SaveVariables = True
+section.end
+

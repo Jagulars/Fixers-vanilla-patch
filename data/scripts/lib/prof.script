@@ -1,0 +1,790 @@
+//
+// prof.script
+//
+function _prof_IsEmailValidChar(text : String) : Boolean;
+begin
+   var i : Integer;
+   var symbol : String;
+
+   Result := True;
+   for i:=1 to StrLength(text) do
+   begin
+      symbol := SubStr(text, i, 1);
+      if (symbol<=#32) or (symbol>=#123) or StrExists('"/(),:;<>[\]',symbol) then
+      begin
+         Result := False;
+         break;
+      end;
+   end;
+end;
+
+function _prof_IsEmailValidFormat(email : String) : Boolean;
+begin
+   if (StrExists(email, '@')) and
+      (StrExists(email, '.')) and
+      (not StrExists(email, '@.')) and
+      (not StrExists(email, '.@')) and
+      (not StrExists(email, '..')) and
+      (SubStr(email, 1, 1)<>'.') and
+      (SubStr(email, StrLength(email),1)<>'.') and
+      _prof_IsEmailValidChar(email) then
+      Result := True
+   else
+      Result := False;
+end;
+
+function _prof_IsNameOrLandValid(text : String) : Boolean;
+begin
+   var i,l : Integer;
+   var symbol : String;
+
+   Result := True;
+   l := StrLength(text);
+   for i:=1 to l do
+   begin
+      symbol := SubStr(text,i,1);
+      if ((symbol < #45) or ((symbol >= #58) and (symbol <= #64)) or ((symbol >= #123) and (symbol <= #128)) or (StrExists('/\^_`',symbol))) then
+      begin
+         Result := false;
+         break;
+      end;
+   end;
+end;
+
+function _prof_CorrectNameOrLand(text : String; var dt : String) : Boolean;
+begin
+   var i,l : Integer;
+   var symbol,t : String;
+   var d : String = '';
+
+   Result := True;
+   l := StrLength(text);
+   if l < 4 then
+      t := text+SubStr('....',1,4-l)
+   else
+   begin
+      if l > 16 then
+         t := Substr(text,1,16)
+      else
+         t := text;
+   end;
+   l := StrLength(t);
+   for i:=0 to l-1 do
+   begin
+      symbol := SubStr(t,i+1,1);
+      if ((symbol < #45) or ((symbol >= #58) and (symbol <= #64)) or ((symbol >= #123) and (symbol <= #128)) or (StrExists('/\^_`',symbol))) then
+      //if ((symbol < #45) or ((symbol >= #58) and (symbol <= #64)) or (symbol >= #123) or (StrExists('/\^_`',symbol))) then
+      begin
+         d := d + '.';
+         Result := false;
+      end
+      else
+         d := d + symbol;
+   end;
+   dt := d;
+end;
+
+// _prof_SetDefaultProjectOptions
+//
+procedure _prof_SetDefaultProjectOptions(var profile : TProfile);
+begin
+   SetProjectOptionAsFloat('Sound.Master', profile.sndmaster);
+   SetProjectOptionAsFloat('svgMusic', profile.sndmusic);
+   SetProjectOptionAsFloat('svgAmbient', profile.sndambient);
+   SetProjectOptionAsFloat('svgSFX', profile.sndfx);
+   SetProjectOptionAsFloat('svgInterface', profile.sndinterface);
+end;
+
+// _prof_SetGameBattleOptionsDefault
+//
+procedure _prof_SetGameBattleOptionsDefault(var profile : TProfile);
+begin
+   profile.battlespeed := (1-gc_battle_speed_min)/(gc_battle_speed_max-gc_battle_speed_min);
+   profile.wargrid := True;
+   profile.warbar := 1;
+   profile.warautospell := 0;
+   profile.warendturn := False;
+   profile.brushunderunit := True;
+   profile.battle_flytext := 2;
+   profile.autosavebattle := False;
+   profile.battlespeedally := profile.battlespeed;
+end;
+
+// _prof_SetDefault
+//
+procedure _prof_SetDefault(var profile : TProfile);
+begin
+   _misc_SetPhrase(216, profile.name);
+   _misc_SetPhrase(217, profile.land);
+   profile.difficulty := 0;
+   profile.color1 := 13; //Floor(Random*gc_MaxHerbColor);
+   profile.color2 := 5; //Floor(Random*gc_MaxHerbColor);
+   profile.sign := 16; //Floor(Random*gc_MaxHerbSign);
+   profile.avatar := 17;
+   profile.sndmute := 0;
+   profile.sndmaster := 0.75;
+   profile.sndmusic := 0.75;
+   profile.sndambient := 0.75;
+   profile.sndfx := 0.75;
+   profile.sndvoice := 0.75;
+   profile.sndinterface := 0.33;
+   profile.scrollspeed := 0.5;
+   profile.wheelspeed := 0.5;
+   profile.keyspeed := 0.5;
+   profile.autolvlup := 0;
+   profile.autocombat := 0;
+   profile.finishtutorial := False;
+   profile.autosave := 3;
+   profile.diplomacy := True;
+   profile.fog := True;
+   profile.tutorialmode := True;
+	profile.provhudflags := gc_gui_provhudflags_default;
+   profile.mestutor := True;
+   profile.meslimitpopulation := True;
+   profile.mesloafers := True;
+   profile.messaleunits := True;
+   profile.mesremoval := True;
+   profile.mesdismisguard := True;
+   profile.mesdestroybuilds := True;
+   profile.mesbuildinner := True;
+   profile.mesbuildouter := True;
+   profile.mesbuildgold := 1;
+   profile.mesbuildgem := 1;
+   profile.clampingmouse := False;
+   profile.simplegraphics := False;
+   profile.objectflags := 0;
+   profile.shardscenery := 2;
+   profile.townscenery := 2;
+   profile.provincescenery := 2;
+   profile.battlescenery := 2;
+   profile.lightchange := 0;
+   profile.lastcampaignsave := '';
+   profile.lastcustomsave := '';
+   profile.netemail := '';
+   profile.netpass := '';
+   profile.netkey := '';
+   profile.nick := 'Player';
+   profile.storeadvdiff := '';
+   profile.achievements := '';
+   profile.quick_access := gc_asd_default_value;
+   profile.exthintdelay := 0.5;
+   profile.serverautoconnect := True;
+   profile.allowedheroes := 0;
+   profile.astralchatsize := 6;
+   profile.chatopacity := 0.7;
+   profile.chatnotifications := 6;
+   profile.profilemessage := '';
+   profile.quickgame := False;
+   profile.sandbox := False;
+   profile.mapsettings := '0|50|50|50|50|50|50|50|100|50|50|50';
+   profile.custommapplayers := 0;
+   profile.custommapsize := 0;
+   profile.custommapworldrule := 0;
+   profile.latestmodname := gc_DataModName;
+   profile.latestmodversion := gc_DataModVersion;
+   profile.genesismode := '0|0|0|0|0|0|0|0';
+   profile.improvedai := False;
+
+   _prof_SetGameBattleOptionsDefault(profile);
+   _map_SetDefault(profile.map);
+end;
+
+// _prof_SetGameOptionsDefault
+//
+procedure _prof_SetGameOptionsDefault(var profile : TProfile; mode : Integer);
+begin
+   if (mode=0) or (mode=1) then
+   begin
+      profile.sndmute := 0;
+      profile.sndmaster := 0.75;
+      profile.sndmusic := 0.75;
+      profile.sndambient := 0.75;
+      profile.sndfx := 0.75;
+      profile.sndvoice := 0.75;
+      profile.sndinterface := 0.33;
+   end;
+   if (mode=0) or (mode=3) then
+   begin
+      profile.autosave := 3;
+      profile.autolvlup := 0;
+      profile.autocombat := 0;
+   end;
+   if (mode=0) or (mode=4) then
+   begin
+		profile.provhudflags := gc_gui_provhudflags_default;
+      profile.mestutor := True;
+      profile.meslimitpopulation := True;
+      profile.mesloafers := True;
+      profile.messaleunits := True;
+      profile.mesremoval := True;
+      profile.mesdismisguard := True;
+      profile.mesdestroybuilds := True;
+      profile.mesbuildinner := True;
+      profile.mesbuildouter := True;
+      profile.mesbuildgold := 1;
+      profile.mesbuildgem := 1;
+      profile.exthintdelay := 0.5;
+      profile.scrollspeed := 0.5;
+      profile.wheelspeed := 0.5;
+      profile.keyspeed := 0.5;
+      profile.clampingmouse := False;
+   end;
+   if (mode=0) or (mode=5) then
+      _prof_SetGameBattleOptionsDefault(profile);
+   if (mode=0) or (mode=6) then
+   begin
+      profile.serverautoconnect := True;
+      profile.astralchatsize := 6;
+      profile.chatopacity := 0.7;
+      profile.chatnotifications := 6;
+   end;
+   if (mode=0) then
+      _map_SetGameCustomDifficultyOptionsDefault(profile.advdiff, False, profile.difficulty);
+end;
+
+procedure _prof_ModifyChangedVariables(var profile : TProfile);
+begin
+   if GetUserValue('latestmodname') = '' then
+	begin
+		if (profile.autosave < 0) then
+			profile.autosave := 1
+		else
+			profile.autosave := 3;
+      
+      if profile.battle_flytext = 0 then // extended text is now 2, while 0 is no text at all
+         profile.battle_flytext := 2;
+   end;
+   if GetUserValue('provhudflags') = '' then
+	begin
+		profile.provhudflags := 0;
+		if GetUserIntValue('icoherb') = 0         then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_name;
+		if GetUserIntValue('icomood') = -1        then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_mood;
+		if GetUserIntValue('icodispleasure') = -1 then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_unrest;
+		if GetUserIntValue('icoguard') = -1       then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_guard;
+		if GetUserIntValue('icoresearch') = -1    then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_overpop;
+		if GetUserIntValue('icoquest') = -1       then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_quest;
+		if GetUserIntValue('icoarenas') = -1      then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_arena;
+		if GetUserIntValue('icostalls') = -1      then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_shop;
+		if GetUserIntValue('icolair') = -1        then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_lair;
+		if GetUserIntValue('icotemple') = -1      then profile.provhudflags := profile.provhudflags or gc_gui_provhudflag_temple;
+   end;
+end;
+
+procedure _prof_DeleteUnusedVariables();
+begin
+	var userStateMachine : Integer = GetUserProfileStateMachineHandle();
+	
+	procedure DeleteVariableByName(const varName : String);
+	begin
+		var index : Integer = StateMachineGetIndexByName(userStateMachine, varName);
+		if index >= 0 then
+			StateMachineDeleteVariableByIndex(userStateMachine, index);
+	end;
+	DeleteVariableByName('resource');
+	DeleteVariableByName('index');
+	DeleteVariableByName('victory');
+	DeleteVariableByName('lost');
+	DeleteVariableByName('single');
+	DeleteVariableByName('campaign');
+	DeleteVariableByName('hint');
+	DeleteVariableByName('deselecthero');
+	DeleteVariableByName('enterdata');
+	DeleteVariableByName('icoherb');
+	DeleteVariableByName('icomood');
+	DeleteVariableByName('icodispleasure');
+	DeleteVariableByName('icoguard');
+	DeleteVariableByName('icoresearch');
+	DeleteVariableByName('icoquest');
+	DeleteVariableByName('icoarenas');
+	DeleteVariableByName('icostalls');
+	DeleteVariableByName('icolair');
+	DeleteVariableByName('icotemple');
+	DeleteVariableByName('settingslowest');
+end;
+
+// _prof_ClampProfileValues
+//
+procedure _prof_ClampProfileValues(var profile : TProfile);
+begin
+   if (profile.difficulty<0) or (profile.difficulty>6) then
+   begin
+      ErrorLogI('profile.difficulty impossible cfg value = '+IntToStr(profile.difficulty));
+      profile.difficulty := Round(Clamp(profile.difficulty, 0, 6));
+   end;
+   if (profile.color1<0) or (profile.color1>(gc_MaxHerbColor-1)) then
+   begin
+      ErrorLogI('profile.color1 impossible cfg value = '+IntToStr(profile.color1));
+      profile.color1 := Round(Clamp(profile.color1, 0, gc_MaxHerbColor-1));
+   end;
+   if (profile.color2<0) or (profile.color2>(gc_MaxHerbColor-1)) then
+   begin
+      ErrorLogI('profile.color2 impossible cfg value = '+IntToStr(profile.color2));
+      profile.color2 := Round(Clamp(profile.color2, 0, gc_MaxHerbColor-1));
+   end;
+   if (profile.sign<0) or (profile.sign>(gc_MaxHerbSign-1)) then
+   begin
+      ErrorLogI('profile.sign impossible cfg value = '+IntToStr(profile.sign));
+      profile.sign := Round(Clamp(profile.sign, 0, gc_MaxHerbSign-1));
+   end;
+   if (profile.avatar<1) or (profile.avatar>20) then
+   begin
+      ErrorLogI('profile.avatar impossible cfg value = '+IntToStr(profile.avatar));
+      profile.avatar := Round(Clamp(profile.avatar, 1, 20));
+   end;
+   if profile.advdiff.score = 0 then
+      profile.advdiff.score := 100;
+
+   profile.sndmaster := Clamp(profile.sndmaster, 0, 1);
+   profile.sndmusic := Clamp(profile.sndmusic, 0, 1);
+   profile.sndambient := Clamp(profile.sndambient, 0, 1);
+   profile.sndfx := Clamp(profile.sndfx, 0, 1);
+   profile.sndvoice := Clamp(profile.sndvoice, 0, 1);
+   profile.sndinterface := Clamp(profile.sndinterface, 0, 1);
+   profile.scrollspeed := Clamp(profile.scrollspeed, 0, 1);
+   profile.wheelspeed := Clamp(profile.wheelspeed, 0, 1);
+   profile.keyspeed := Clamp(profile.keyspeed, 0, 1);
+   profile.lightchange := Round(Clamp(profile.lightchange, 0, 8));
+   profile.shardscenery := Round(Clamp(profile.shardscenery, 0, 4));
+   profile.townscenery := Round(Clamp(profile.townscenery, 0, 4));
+   profile.provincescenery := Round(Clamp(profile.provincescenery, 0, 4));
+   profile.battlescenery := Round(Clamp(profile.battlescenery, 0, 4));
+   profile.battlespeed := Clamp(profile.battlespeed, 0, 1);
+   profile.battlespeedally := Clamp(profile.battlespeedally, 0, 1);
+   profile.exthintdelay := Clamp(profile.exthintdelay, 0, 1);
+   profile.chatopacity := Clamp(profile.chatopacity, 0, 1);
+   profile.chatnotifications := Round(Clamp(profile.chatnotifications, 0, 6));
+   profile.astralchatsize := Round(Clamp(profile.astralchatsize, 1, 24));
+   profile.mesbuildgold := Clamp(profile.mesbuildgold, 0, 1);
+   profile.mesbuildgem := Clamp(profile.mesbuildgem, 0, 1);
+   profile.autosave := Round(Clamp(profile.autosave, 0, 10));
+   profile.autocombat := Round(Clamp(profile.autocombat, 0, 1));
+
+   if (profile.name='CFG.PROFILE.NAME.DEF') then
+      profile.name := GetLocaleTableListItemByID('tools', 'CFG.PROFILE.NAME.DEF');
+   if (profile.land='CFG.PROFILE.LAND.DEF') then
+      profile.land := GetLocaleTableListItemByID('tools', 'CFG.PROFILE.LAND.DEF');
+
+   if (profile.custommapplayers > gc_MaxCustomMapPlayer-2) or (profile.custommapplayers < 0) then
+      profile.custommapplayers := 0;
+   if (profile.custommapsize > gc_MapSizeOptions-1) or (profile.custommapsize < 0) then
+      profile.custommapsize := 0;
+   if (profile.custommapworldrule > gPrototypeData.worldrules.number-1) or (profile.custommapworldrule < 0) then
+      profile.custommapworldrule := 0;
+   if (profile.allowedheroes >= $ffff) or (profile.allowedheroes < 0) then
+      profile.allowedheroes := 0;
+   if (_sa_GetNum(profile.mapsettings) <> 12) then
+      profile.mapsettings := '0|50|50|50|50|50|50|50|100|50|50|50';
+   if (_sa_GetNum(profile.genesismode) <> 8) then
+      profile.genesismode := '0|0|0|0|0|0|0|0';
+end;
+
+procedure _prof_LoadUserProfileFromStateMachine(const statemachine : Integer);
+begin
+   var dst : String;
+
+   StateMachineGlobalVariablesLoadFromStack(statemachine, 'gProfile', '');
+   _prof_ClampProfileValues(gProfile);
+   _prof_GetProfileFolder(dst,false);
+   gStringRegister_ProfileSavesFolderRoot := dst+'\';
+   gStringRegister_ProfileSavesFolderLast := dst+'\'+'customs\';
+   LogI('Root saves folder set to '+gStringRegister_ProfileSavesFolderRoot);
+end;
+
+// _prof_SaveUserProfileToStateMachine
+//
+procedure _prof_SaveUserProfileToStateMachine(const statemachine : Integer);
+begin
+   gProfile.storeadvdiff := BoolToStr(gProfile.advdiff.custom);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.basediff);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.neutralhp);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.defenderhp);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.expmod);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.startgold);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.startgem);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.goldincomeadd);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.gemincomeadd);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.corruption);
+   _sa_AddAsInt(gProfile.storeadvdiff,gProfile.advdiff.score);
+   _prof_ClampProfileValues(gProfile);
+   StateMachineGlobalVariablesSaveToStack(statemachine, 'gProfile', '');
+end;
+
+// _prof_LoadStructFromUserProfileParser
+//
+function _prof_LoadStructFromUserProfileParser(structName : String) : Boolean;
+begin
+   var pUserStruct : Integer = ParserSelectByHandleByKey(ParserSelectUser(), structName);
+   if pUserStruct <> 0 then
+   begin
+      Result := true;
+      StateMachineGlobalVariablesLoadFromParser(pUserStruct, structName, False, False);
+   end
+   else
+      Result := false;
+end;
+
+// _prof_LoadUserProfile
+//
+procedure _prof_LoadUserProfile();
+begin
+   var tmp : String;
+   var i,p,p1 : Integer;
+   _prof_SetDefault(gProfile);
+   _prof_SetDefaultProjectOptions(gProfile);
+   
+   _prof_LoadUserProfileFromStateMachine(GetUserProfileStateMachineHandle());
+   _prof_ModifyChangedVariables(gProfile);
+	_prof_DeleteUnusedVariables();
+   
+   if (gProfile.storeadvdiff = '') or (_sa_GetNum(gProfile.storeadvdiff) < 2) then
+   begin
+      _map_SetGameCustomDifficultyOptionsDefault(gProfile.advdiff, False, gProfile.difficulty);
+      gProfile.advdiff.custom := false;
+   end
+   else
+   begin
+      gProfile.advdiff.custom := _gui_GetDelimiterBoolValueByIndex(gProfile.storeadvdiff, 0);
+      gProfile.advdiff.basediff := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 1);
+      gProfile.advdiff.neutralhp := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 2);
+      gProfile.advdiff.defenderhp := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 3);
+      gProfile.advdiff.expmod := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 4);
+      gProfile.advdiff.startgold := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 5);
+      gProfile.advdiff.startgem := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 6);
+      gProfile.advdiff.goldincomeadd := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 7);
+      gProfile.advdiff.gemincomeadd := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 8);
+      gProfile.advdiff.corruption := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 9);
+      gProfile.advdiff.score := _gui_GetDelimiterIntValueByIndex(gProfile.storeadvdiff, 10);
+      if (gProfile.advdiff.basediff <> gProfile.difficulty) then
+      begin
+         gProfile.advdiff.basediff := gProfile.difficulty;
+         if not gProfile.advdiff.custom then
+            _map_SetGameCustomDifficultyOptionsDefault(gProfile.advdiff, False, gProfile.difficulty);
+      end;
+      if gProfile.advdiff.score = 0 then
+      begin
+         var p : Integer;
+
+         if (gProfile.advdiff.basediff >= 0) and (gProfile.advdiff.basediff < ParserGetCountByHandle(gPrototypeData.difficulty.handle)) then
+            p := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, gProfile.advdiff.basediff)
+         else
+            p := 0;
+         if p <> 0 then
+            gProfile.advdiff.score := ParserGetIntValueByKeyByHandle(p, 'Score')
+         else
+            gProfile.advdiff.score := 100;
+      end;
+   end;
+
+   if (not _prof_CorrectNameOrLand(gProfile.name,tmp)) then
+      gProfile.name := tmp;
+   if (not _prof_CorrectNameOrLand(gProfile.land,tmp)) then
+      gProfile.land := tmp;
+   // now lets check if we have default names in different language and change it to current
+   p := _misc_ParserGetOrCreateByKey('prof_defaultnames',true);
+   if ParserLoadFromFileByHandle(p, '.\data\locale\default_names.cfg') then
+   begin
+      p1 := ParserSelectByHandleByKey(p, 'DefaultHeroName');
+      for i := 0 to ParserGetCountByHandle(p1)-1 do
+      begin
+         if ParserGetValueByIndexByHandle(p1,i) = gProfile.name then
+         begin
+            ErrorLogI('Player name set to locale default');
+            _misc_SetPhrase(216, gProfile.name);
+            break;
+         end;
+      end;
+
+      p1 := ParserSelectByHandleByKey(p, 'DefaultCastleName');
+      for i := 0 to ParserGetCountByHandle(p1)-1 do
+      begin
+         if ParserGetValueByIndexByHandle(p1,i) = gProfile.land then
+         begin
+            //ErrorLogI('Player land name set to locale default');
+            _misc_SetPhrase(217, gProfile.land);
+            break;
+         end;
+      end;
+
+   end;
+   _misc_ParserGetOrCreateByKey('prof_defaultnames',true);
+
+   _prof_LoadStructFromUserProfileParser('gInetBattle');
+   _prof_LoadStructFromUserProfileParser('gHotSeatPlayer1');
+   _prof_LoadStructFromUserProfileParser('gHotSeatPlayer2');
+
+   if gProfile.latestmodname <> gc_DataModName then
+   begin
+      gProfile.latestmodname := gc_DataModName;
+      gProfile.latestmodversion := gc_DataModVersion;
+   end
+   else
+   if _misc_IsUpdatedVersion(gProfile.latestmodversion, gc_DataModVersion) then
+      gProfile.latestmodversion := gc_DataModVersion;
+end;
+
+// _prof_SaveUserProfile
+//
+procedure _prof_SaveUserProfile();
+begin
+   _prof_SaveUserProfileToStateMachine(GetUserProfileStateMachineHandle);
+end;
+
+// _prof_SaveInetBattleToUserProfile
+//
+procedure _prof_SaveStructToUserProfileParser(structName : String);
+begin
+   var pUser : Integer = ParserSelectUser();
+   var pUserInetBattle : Integer = ParserSelectByHandleByKey(pUser, structName);
+   if (pUserInetBattle=0) then
+       pUserInetBattle :=  ParserAddChildByIndex(pUser, structName)
+   else
+       ParserClearByHandle(pUserInetBattle);
+   StateMachineGlobalVariablesSaveToParser(pUserInetBattle, structName, False, False);
+   UserSaveProfile();
+end;
+
+// if flags_override <> -1 then should use them
+// map_uid - subfolder id for client game
+function _prof_GetCustomsFolderName(flags_override,map_uid,lan_master : Integer;var customs_name : String) : Integer;
+begin
+   var gf : Integer;
+   var folder : String;
+
+   if lan_master = -1 then
+   begin
+      if GetLanMode() >= 2 then
+         lan_master := 1
+      else
+         lan_master := 0;
+   end;
+
+   if flags_override <> -1 then
+      gf := flags_override
+   else
+      gf := _misc_GetGameFlags();
+
+   Result := 0;
+   if ((gf and gc_GameTypeFlagMenu) <> 0) then
+   begin
+      Result := 2;
+      folder := 'menu';
+   end
+   else
+   begin
+      if ((gf and gc_GameTypeFlagCampaign) = 0) then
+      begin
+         if ((gf and gc_GameTypeFlagSingle) = 0) then
+         begin
+            if ((gf and gc_GameTypeFlagInternet) <> 0) then
+            begin
+               if lan_master > 0 then
+                  folder := 'lanmaster'
+               else
+                  folder := 'lanclient\'+IntToStr(map_uid);
+            end
+            else
+               folder := 'hotseat';
+         end
+         else
+            folder := 'customs';
+      end
+      else
+      begin
+         Result := 1;
+         folder := 'saves';
+      end;
+   end;
+
+   customs_name := folder;
+end;
+
+procedure _prof_SyncCustomsFolderExt(flags_override,map_uid,lan_master : Integer);
+begin
+   var folder : String;
+   var fa : Integer;
+
+   fa := _prof_GetCustomsFolderName(flags_override,map_uid,lan_master,folder);
+   if ((fa and 2) <> 0) then
+      SetUserProfileCustomsRoot('\'+folder+'\')
+   else
+   begin
+      SetUserProfileCustomsRoot('\'+folder+'\');
+      gStringRegister_ProfileSavesFolderName := folder + '\';
+      gStringRegister_ProfileSavesFolderLast := gStringRegister_ProfileSavesFolderRoot + folder + '\';
+      UserProfileRefreshCustomsList();
+      if ((fa and 1) <> 0) then
+         UserProfileRefreshSavesList();
+   end;
+end;
+
+procedure _prof_SyncCustomsFolder(flags_override : Integer);
+begin
+   _prof_SyncCustomsFolderExt(flags_override,0,-1);
+end;
+
+// save filenames manipulations
+// < 0 if this is not autosave, else - number
+function _prof_StripAutoSaveSuffix(var dst : String; fnm : String) : Integer;
+begin
+   var l : Integer = StrLength(fnm);
+
+   Result := -1;
+   if SubStr(fnm,(l-(2+8)),9) = '.autosave' then
+   begin
+      dst := SubStr(fnm,1,(l-(2+8+1)));
+      Result := StrToInt(SubStr(fnm,l,1));
+   end
+   else
+      dst := fnm;
+end;
+
+// returns string array of lan players in this save and game uid
+function _prof_GetLanPlayersFromSaveFilename(var lan_ids : String; nm : String) : Integer;
+begin
+   var ids : String;
+   var n,master_id,i,j,k,p,pg,pl,uid : Integer;
+   var use_override : Boolean;
+
+   p := _misc_GetSaveGameDescriptionParser(nm);
+   uid := ParserGetIntValueByKeyByHandle(p,'gIntRegister_LanMapUID');
+   ids := '';
+
+   if ParserGetIntValueByKeyByHandle(p,'OverrideLAN') > 0 then
+      use_override := true
+   else
+      use_override := false;
+
+   pg := ParserSelectByHandleByKey(p,'gGame');
+   n := ParserGetIntValueByKeyByHandle(ParserSelectByHandleByKey(pg,'map'),'players');
+   pg := ParserSelectByHandleByKey(pg,'arrplayercontrol');
+   pl := ParserSelectByHandleByKey(p,'gLanShardGame');
+   master_id := ParserGetIntValueByKeyByHandle(pl,'masterid');
+   if use_override then
+      k := ParserGetIntValueByKeyByHandle(p,'OverrideLAN_'+IntToStr(master_id))
+   else
+      k := 0;
+   if k > 0 then
+      _sa_AddAsInt(ids,k)
+   else
+      _sa_AddAsInt(ids,master_id);
+
+   pl := ParserSelectByHandleByKey(pl,'arrlanplayers');
+
+   for i := 0 to n-1 do
+   begin
+      if ParserGetIntValueByIndexByHandle(pg,i) <> 0 then
+      begin
+         j := ParserGetIntValueByKeyByHandle(ParserSelectByHandleByIndex(pl,i),'lanid');
+         if j <> master_id then
+         begin
+            if use_override then
+               k := ParserGetIntValueByKeyByHandle(p,'OverrideLAN_'+IntToStr(j))
+            else
+               k := 0;
+            if k > 0 then
+               _sa_AddAsInt(ids,k)
+            else
+               _sa_AddAsInt(ids,j);
+         end;
+      end;
+   end;
+
+   lan_ids := ids;
+   Result := uid;
+end;
+
+// returns number of players for multiplayer or 0 if single player/hotseat
+function _prof_ConvertSaveFilename(var dst : String; fnm : String; is_lan : Boolean) : Integer;
+begin
+   var dnm,tnm : String;
+   var n,p_no,a_no,i : Integer;
+
+   a_no := _prof_StripAutoSaveSuffix(dnm,fnm);
+   if is_lan then
+   begin
+      _prof_GetLanPlayersFromSaveFilename(tnm,fnm);
+      p_no := _sa_GetNum(tnm);
+   end
+   else
+      p_no := 0;
+
+   if a_no >= 0 then
+   begin
+      if dnm = 'map' then
+         dnm := '[SHARD AUTOSAVE: '+IntToStr(a_no)+']'
+      else
+      begin
+         if dnm = 'battle' then
+            dnm := '[BATTLE AUTOSAVE: '+IntToStr(a_no)+']'
+         else
+            dnm := '[CAMPAIGN AUTOSAVE: '+IntToStr(a_no)+']';
+      end;
+   end;
+
+   dst := dnm;
+   Result := p_no;
+end;
+
+procedure _prof_LanEndGame(); // does not work for some reason atm
+begin
+   {if GetLanMode = 1 then
+   begin
+      var fileName,full_nm,folder : String;
+      _prof_GetCustomsFolderName(gc_GameTypeFlagInternet, gIntRegister_LanMapUID, -1, folder);
+      SetUserProfileCustomsRoot('\'+folder+'\');
+      gStringRegister_ProfileSavesFolderLast := gStringRegister_ProfileSavesFolderRoot + folder + '\';
+	  
+      var i : Integer;
+      var count : Integer = UserGetProfileCustomsCount();
+   
+      for i := 0 to count-1 do
+      begin 
+         fileName := UserGetProfileCustomByIndex(i);
+         full_nm := gStringRegister_ProfileSavesFolderLast+fileName;
+         if IsFileExists(full_nm+'.map') then DeleteFileStream(full_nm+'.map');
+         if IsFileExists(full_nm+'.dat') then DeleteFileStream(full_nm+'.dat');
+         if IsFileExists(full_nm+'.bmp') then DeleteFileStream(full_nm+'.bmp');
+      end;
+   end;}
+end;
+
+procedure _prof_MapGeneratorProfileLoad(var thisMapSettings : TMapSettings);
+begin
+   if SameText(gProfile.mapsettings, '') then
+      _map_MapGeneratorDefault(thisMapSettings, True)
+   else
+   begin
+      thisMapSettings.typ := _sa_GetAsInt(gProfile.mapsettings, 0);
+      thisMapSettings.water := Clamp(_sa_GetAsInt(gProfile.mapsettings, 1) / 100, 0, 1);
+      thisMapSettings.hill := Clamp(_sa_GetAsInt(gProfile.mapsettings, 2) / 100, 0, 1);
+      thisMapSettings.forest := Clamp(_sa_GetAsInt(gProfile.mapsettings, 3) / 100, 0, 1);
+      thisMapSettings.swamp := Clamp(_sa_GetAsInt(gProfile.mapsettings, 4) / 100, 0, 1);
+      thisMapSettings.wastelands := Clamp(_sa_GetAsInt(gProfile.mapsettings, 5) / 100, 0, 1);
+      thisMapSettings.isles := Clamp(_sa_GetAsInt(gProfile.mapsettings, 6) / 100, 0, 1);
+      thisMapSettings.dissolve := Clamp(_sa_GetAsInt(gProfile.mapsettings, 7) / 100, 0, 1);
+      thisMapSettings.neutrals := Clamp(_sa_GetAsInt(gProfile.mapsettings, 8) / 100, 0, 1);
+      thisMapSettings.resource := Clamp(_sa_GetAsInt(gProfile.mapsettings, 9) / 100, 0, 1);
+      thisMapSettings.site := Clamp(_sa_GetAsInt(gProfile.mapsettings, 10) / 100, 0, 1);
+      thisMapSettings.population := Clamp(_sa_GetAsInt(gProfile.mapsettings, 11) / 100, 0, 1);
+   end;
+   thisMapSettings.random := false; 
+end;
+
+procedure _prof_MapGeneratorProfileSave(thisMapSettings : TMapSettings);
+begin
+   gProfile.mapsettings := IntToStr(thisMapSettings.typ);
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.water * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.hill * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.forest * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.swamp * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.wastelands * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.isles * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.dissolve * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.neutrals * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.resource * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.site * 100));
+   _sa_AddAsInt(gProfile.mapsettings,Round(thisMapSettings.population * 100));
+end;
+
+_prof_LoadUserProfile();
+

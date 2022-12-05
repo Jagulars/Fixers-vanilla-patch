@@ -1,0 +1,1249 @@
+section.begin
+   Name = DoCreate
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoCreate.inc
+section.end
+
+section.begin
+   Name = DoInitialize
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoInitialize.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = DoProgress
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoProgress.inc
+section.end
+
+section.begin
+   Name = VVK.DoProgressGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = DoDestroy
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoDestroy.inc
+section.end
+
+section.begin
+   Name = DoResize
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoResize.inc
+section.end
+
+section.begin
+   Name = DoInitSound
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoInitSound.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = DoUpdateCursor
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoUpdateCursor.inc
+section.end
+
+section.begin
+   Name = DoUpdateCamera
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoUpdateCamera.inc
+section.end
+
+section.begin
+   Name = DoMouseHookSliderControl
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoMouseHookSliderControl.inc
+section.end
+
+section.begin
+   Name = DoMouseUnPressSliderControl
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoMouseUnPressSliderControl.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = OnMouseEnter
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnMouseEnter.inc
+section.end
+
+section.begin
+   Name = OnMouseLeave
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnMouseLeave.inc
+section.end
+
+section.begin
+   Name = OnMouseMove
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnMouseMove.inc
+section.end
+
+section.begin
+   Name = OnMouseClick
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnMouseClick.inc
+section.end
+
+section.begin
+   Name = OnMouseHook
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnMouseHook.inc
+section.end
+
+section.begin
+   Name = OnMouseWheel
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnMouseWheel.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = OnHint
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnHint.inc
+section.end
+
+section.begin
+   Name = OnHintExt
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnHintExt.inc
+section.end
+
+section.begin
+   Name = VVK.FloatingTooltipsCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FloatingTooltipsCore.inc
+section.end
+
+section.begin
+   Name = vvk.OnClickHint
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.OnClickHint.inc
+section.end
+
+section.begin
+   Name = vvk.ShowUnitInfoModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowUnitInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowSpellInfoModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowSpellInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowAchievListModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowAchievListModal.inc
+section.end
+
+section.begin
+   Name = vvk.CloseAchievListModal
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\vvk.CloseAchievListModal.inc
+section.end
+
+section.begin
+   Name = VVK.FitTooltipToScreen
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FitTooltipToScreen.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipItem
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipItem.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipUnit
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipUnit.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipResource
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipResource.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipSpell
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipSpell.inc
+section.end
+
+section.begin
+   Name = VVK.MenuProcessHintGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.MenuProcessHintGUI.inc
+section.end
+
+section.begin
+   Name = VVK.HintCommonCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintCommonCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintUnitStatsCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.HintUnitStatsCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroSkillCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroSkillCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroParamCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroParamCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroClassCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroClassCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintASERCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintASERCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintUnitMedalsCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.HintUnitMedalsCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintAchievementIcon
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintAchievementIcon.inc
+section.end
+
+section.begin
+   Name = VVK.CloseCommonTooltip
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CloseCommonTooltip.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindow.inc
+section.end
+
+section.begin
+   Name = VVK.ShowDynamicAsModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowDynamicAsModal.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowBuildingCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowBuildingCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowUnitCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowUnitCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowItemCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowItemCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowSpellCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowSpellCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowAchievCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowAchievCallback.inc
+section.end
+
+section.begin
+   Name = VVK.EventUpdateSteamAchievements
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.EventUpdateSteamAchievements.inc
+section.end
+
+section.begin
+   Name = DoDragElement
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoDragElement.inc
+section.end
+
+section.begin
+   Name = VVK.DragCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DragCommands.inc
+section.end
+
+section.begin
+   Name = DoResetDragElement
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoResetDragElement.inc
+section.end
+
+section.begin
+   Name = VVK.AchievementsCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.AchievementsCore.inc
+section.end
+
+section.begin
+   Name = VVK.ShowAchievement
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowAchievement.inc
+section.end
+
+section.begin
+   Name = VVK.GetAchievementFromQuery
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.GetAchievementFromQuery.inc
+section.end
+
+section.begin
+   Name = ------------------- console commands ----------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = VVK.HelperMethods
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HelperMethods.inc
+section.end
+
+section.begin
+   Name = SwitchToChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\SwitchToChat.inc
+section.end
+
+section.begin
+   Name = OnEventChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnEventChat.inc
+section.end
+
+section.begin
+   Name = CreateChatLayer
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateChatLayer.inc
+section.end
+
+section.begin
+   Name = VVK.ChatCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ChatCommands.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = SetCameraTarget
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\SetCameraTarget.inc
+section.end
+
+section.begin
+   Name = ShowListMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowListMenu.inc
+section.end
+
+section.begin
+   Name = VVK.BannerWindowShow
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.BannerWindowShow.inc
+section.end
+
+section.begin
+   Name = VVK.BannerWindowCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.BannerWindowCommands.inc
+section.end
+
+section.begin
+   Name = VVK.BannerWindowEvent
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.BannerWindowEvent.inc
+section.end
+
+section.begin
+   Name = ShowHeader
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowHeader.inc
+section.end
+
+section.begin
+   Name = ShowMenuHeader
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowMenuHeader.inc
+section.end
+
+section.begin
+   Name = VVK.QuickAccessCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.QuickAccessCore.inc
+section.end
+
+section.begin
+   Name = ShowMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowMenu.inc
+section.end
+
+section.begin
+   Name = EventMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventMenu.inc
+section.end
+
+section.begin
+   Name = ShowDemo
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowDemo.inc
+section.end
+
+section.begin
+   Name = ShowCustomGame
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowCustomGame.inc
+section.end
+
+section.begin
+   Name = ShowCampaign
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowCampaign.inc
+section.end
+
+section.begin
+   Name = ShowNewGame
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowNewGame.inc
+section.end
+
+section.begin
+   Name = EventNewGame
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventNewGame.inc
+section.end
+
+section.begin
+   Name = ShowMapGeneratorSettings
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowMapGeneratorSettings.inc
+section.end
+
+section.begin
+   Name = EventMapGeneratorSettings
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventMapGeneratorSettings.inc
+section.end
+
+section.begin
+   Name = ShowSettings
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowSettings.inc
+section.end
+
+section.begin
+   Name = EventSettings
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventSettings.inc
+section.end
+
+section.begin
+   Name = ShowBookMasters
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowBookMasters.inc
+section.end
+
+section.begin
+   Name = EventBookMasters
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventBookMasters.inc
+section.end
+
+section.begin
+   Name = ShowLoadMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowLoadMap.inc
+section.end
+
+section.begin
+   Name = EventLoadMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventLoadMap.inc
+section.end
+
+section.begin
+   Name = ShowSaveMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowSaveMap.inc
+section.end
+
+section.begin
+   Name = EventSaveMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventSaveMap.inc
+section.end
+
+section.begin
+   Name = ShowMultiplayer
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowMultiplayer.inc
+section.end
+
+section.begin
+   Name = ShowProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowProfile.inc
+section.end
+
+section.begin
+   Name = EventProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventProfile.inc
+section.end
+
+section.begin
+   Name = ShowCustomDifficulty
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowCustomDifficulty.inc
+section.end
+
+section.begin
+   Name = EventCustomDifficulty
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventCustomDifficulty.inc
+section.end
+
+section.begin
+   Name = ShowChooseProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowChooseProfile.inc
+section.end
+
+section.begin
+   Name = EventChooseProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventChooseProfile.inc
+section.end
+
+section.begin
+   Name = ShowQuestionDialog
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowQuestionDialog.inc
+section.end
+
+section.begin
+   Name = EventQuestionDialog
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventQuestionDialog.inc
+section.end
+
+section.begin
+   Name = ShowCredits
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowCredits.inc
+section.end
+
+section.begin
+   Name = EventCredits
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventCredits.inc
+section.end
+
+section.begin
+   Name = DoDemoScenario
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoDemoScenario.inc
+section.end
+
+section.begin
+   Name = DoCampaign
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoCampaign.inc
+section.end
+
+section.begin
+   Name = FadeIn
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\FadeIn.inc
+section.end
+
+section.begin
+   Name = FadeOut
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\FadeOut.inc
+section.end
+
+section.begin
+   Name = FadeControl
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\FadeControl.inc
+section.end
+
+section.begin
+   Name = ToolQueryWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ToolQueryWindow.inc
+section.end
+
+section.begin
+   Name = RequestQueryWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\RequestQueryWindow.inc
+section.end
+
+section.begin
+   Name = EventQueryWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventQueryWindow.inc
+section.end
+
+section.begin
+   Name = EventQueryWindowModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventQueryWindowModal.inc
+section.end
+
+section.begin
+   Name = GUIInvokeMouseMove
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\GUIInvokeMouseMove.inc
+section.end
+
+section.begin
+   Name = ResetHint
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ResetHint.inc
+section.end
+
+section.begin
+   Name = VVK.ShowInfoWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowInfoWindow.inc
+section.end
+
+section.begin
+   Name = VVK.CloseOneButtonWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CloseOneButtonWindow.inc
+section.end
+
+section.begin
+   Name = ShowItemDetailedWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowItemDetailedWindow.inc
+section.end
+
+section.begin
+   Name = --------------- Commands --------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = VVK.ProcessCommandsShortcuts
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ProcessCommandsShortcuts.inc
+section.end
+
+section.begin
+   Name = VVK.GameCommandsCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.GameCommandsCore.inc
+section.end
+
+section.begin
+   Name = VVK.ModalCommandsBlock
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ModalCommandsBlock.inc
+section.end
+
+section.begin
+   Name = VVK.MenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.MenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.DebugCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.DebugCommands.inc
+section.end
+
+section.begin
+   Name = VVK.MainMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.MainMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.CampaignMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.CampaignMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.CustomMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.CustomMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.DemoMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.DemoMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.MultiplayerMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.MultiplayerMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.FadeWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FadeWindow.inc
+section.end
+
+section.begin
+   Name = VVK.FadeWindowTrigger
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FadeWindowTrigger.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = DoInetBattle
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoInetBattle.inc
+section.end
+
+section.begin
+   Name = DoInetShardGame
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoInetShardGame.inc
+section.end
+
+// VVK.lan.resetbattleglobals
+section.begin
+   Name = VVK.lan.resetbattleglobals
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.lan.resetbattleglobals.inc
+section.end
+
+// VVK.LanLogHelper
+section.begin
+   Name = VVK.LanLogHelper
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.LanLogHelper.inc
+section.end
+
+section.begin
+   Name = vvk.LanLoadMap
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\vvk.LanLoadMap.inc
+section.end
+
+section.begin
+   Name = ShowInternetShell
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowInternetShell.inc
+section.end
+
+section.begin
+   Name = EventInternetShell
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventInternetShell.inc
+section.end
+
+section.begin
+   Name = UpdateCustomHeroWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\UpdateCustomHeroWindow.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroSquad
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroSquad.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroSquad
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroSquad.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroSquadRecruit
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroSquadRecruit.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroSquadRecruit
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroSquadRecruit.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroSpellbook
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroSpellbook.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroSpellbook
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroSpellbook.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroLibrary
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroLibrary.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroLibrary
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroLibrary.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroInventory
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroInventory.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroInventory
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroInventory.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroShop
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroShop.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroShop
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroShop.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroHeroRecruit
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroHeroRecruit.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroHeroRecruit
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroHeroRecruit.inc
+section.end
+
+section.begin
+   Name = ShowCustomHeroHeroUpgrade
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowCustomHeroHeroUpgrade.inc
+section.end
+
+section.begin
+   Name = EventCustomHeroHeroUpgrade
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventCustomHeroHeroUpgrade.inc
+section.end
+
+section.begin
+   Name = VVK.ReorderInterfaceLayers
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ReorderInterfaceLayers.inc
+section.end
+
+section.begin
+   Name = VVK.RootWindowOperations
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.RootWindowOperations.inc
+section.end
+
+section.begin
+   Name = EventModalBackgroundClick
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventModalBackgroundClick.inc
+section.end
+
+section.begin
+   Name = VVK.SetupLanProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.SetupLanProfile.inc
+section.end
+
+section.begin
+   Name = VVK.LanProfileEvent
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.LanProfileEvent.inc
+section.end
+
+section.begin
+   Name = VVK.LanProfileRegister
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.LanProfileRegister.inc
+section.end
+
+section.begin
+   Name = VVK.LanProfileRegisterCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.LanProfileRegisterCommands.inc
+section.end
+
+section.begin
+   Name = ShowInternetShellCreateCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowInternetShellCreateCustomRoom.inc
+section.end
+
+section.begin
+   Name = EventInternetShellCreateCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventInternetShellCreateCustomRoom.inc
+section.end
+
+section.begin
+   Name = ShowInternetShellJoinCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowInternetShellJoinCustomRoom.inc
+section.end
+
+section.begin
+   Name = EventInternetShellJoinCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventInternetShellJoinCustomRoom.inc
+section.end
+
+section.begin
+   Name = ShowInternetShellCreateShardCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowInternetShellCreateShardCustomRoom.inc
+section.end
+
+section.begin
+   Name = EventInternetShellCreateShardCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventInternetShellCreateShardCustomRoom.inc
+section.end
+
+section.begin
+   Name = ShowInternetShellJoinShardCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowInternetShellJoinShardCustomRoom.inc
+section.end
+
+section.begin
+   Name = EventInternetShellJoinShardCustomRoom
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventInternetShellJoinShardCustomRoom.inc
+section.end
+
+section.begin
+   Name = ShowHotseatProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowHotseatProfile.inc
+section.end
+
+section.begin
+   Name = EventHotseatProfile
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventHotseatProfile.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = OnLanEvent
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\OnLanEvent.inc
+section.end
+
+section.begin
+   Name = LanEventDefault
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\LanEventDefault.inc
+section.end
+
+section.begin
+   Name = DoLanConnect
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoLanConnect.inc
+section.end
+
+section.begin
+   Name = DoLanProgress
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\DoLanProgress.inc
+section.end
+
+section.begin
+   Name = vvk.LanUpdateGUIElements
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\vvk.LanUpdateGUIElements.inc
+section.end
+
+section.begin
+   Name = vvk.ShowLanLoadGameProgress
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\vvk.ShowLanLoadGameProgress.inc
+section.end
+
+section.begin
+   Name = VVK.EventLanLoadGameProgress
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.EventLanLoadGameProgress.inc
+section.end
+
+section.begin
+   Name = EvLanConnect
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanConnect.inc
+section.end
+
+section.begin
+   Name = EvLanShellChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanShellChat.inc
+section.end
+
+section.begin
+   Name = VVK.InternetShellCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.InternetShellCommands.inc
+section.end
+
+section.begin
+   Name = ShowVersion
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowVersion.inc
+section.end
+
+section.begin
+   Name = EventLanDialogs
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventLanDialogs.inc
+section.end
+
+section.begin
+   Name = vvk.lan.LoadingSync
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\vvk.lan.LoadingSync.inc
+section.end
+
+section.begin
+   Name = VVK.CreateLanChatLayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CreateLanChatLayer.inc
+section.end
+
+section.begin
+   Name = VVK.OnLanEventChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.OnLanEventChat.inc
+section.end
+
+section.begin
+   Name = VVK.LanChatCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.LanChatCommands.inc
+section.end
+
+section.begin
+   Name = VVK.SwitchToLanChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.SwitchToLanChat.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChatExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChatExt.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChat2
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChat2.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChat.inc
+section.end
+
+section.begin
+   Name = InitAstralChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\InitAstralChat.inc
+section.end
+
+section.begin
+   Name = ShowAstralChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowAstralChat.inc
+section.end
+
+section.begin
+   Name = EventAstralChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventAstralChat.inc
+section.end
+
+section.begin
+   Name = DoProgressMusic
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoProgressMusic.inc
+section.end
+
+section.begin
+   Name = ShowMainMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowMainMenu.inc
+section.end
+
+section.begin
+   Name = ShowTools
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\ShowTools.inc
+section.end
+
+section.begin
+   Name = VVK.ToolsMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\VVK.ToolsMenuCommands.inc
+section.end
+
+section.begin
+   Name = InitNewGame
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\InitNewGame.inc
+section.end
+
+section.begin
+   Name = WindowDesigner
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\WindowDesigner.inc
+section.end
+
+section.begin
+   Name = EventWindowDesigner
+   UsedFile = True
+   UsedFileName = .\data\gui\menu.inc\EventWindowDesigner.inc
+section.end
+
+section.begin
+   Name = ShowParserLoadList
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowParserLoadList.inc
+section.end
+
+section.begin
+   Name = EventParserLoadList
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventParserLoadList.inc
+section.end
+
+section.begin
+   Name = CreateWindowFromParser
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateWindowFromParser.inc
+section.end
+
+section.begin
+   Name = EventGameplaySettings
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventGameplaySettings.inc
+section.end
+
+section.begin
+   Name = CheckScenery
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CheckScenery.inc
+section.end
+
+section.begin
+   Name = EventGenesisMode
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventGenesisMode.inc
+section.end
+
+section.begin
+   CurrentState = OnMouseMove
+   SaveVariables = False
+section.end
+

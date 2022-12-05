@@ -1,0 +1,998 @@
+
+// 0 - not available, 1 - available and enough resources to build, 2 - built already, 3 - available lack of resources, 4 - won't be available at all
+function _misc_GetBuildingStatusExt(plHandle : Integer; bld_id : Integer; ghost_building : Integer;var need_alliance : Boolean) : Integer;
+begin
+   var r : Integer = 0;
+
+   need_alliance := false;
+   IntRegister0 := (bld_id or (ghost_building shl $10));
+   PlayerExecuteStateByHandle(plHandle,'IsBuildingAvailable');
+   if (IntRegister0 and $f) = $a then
+      need_alliance := true;
+   if (IntRegister0 and 1) <> 0 then
+      r := 2
+   else
+   begin
+      if (IntRegister0 and 2) = 0 then
+      begin
+         var plGold : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iGold);
+         var plGem : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iGem);
+         var can_build: Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iCanInnerBuild);
+         var gold,gem : Integer;
+
+         IntRegister0 := bld_id;
+         PlayerExecuteStateByHandle(plHandle,'GetBuildPrice');
+         gold := IntRegister1;
+         gem := IntRegister2;
+
+         r := 3;
+         if (can_build>0) then
+         begin
+            if ((plGold>=gold) or (gold=0)) and ((plGem>=gem) or (gem=0)) then
+               r := 1;
+         end;
+      end
+      else
+      begin
+         if (IntRegister0 and $c) <> 0 then
+            r := 4;
+      end;
+   end;
+
+   //_log_Values('BLD_ID|IR0|R',bld_id,IntRegister0,r,0,0,0);
+
+   Result := r;
+end;
+
+function _misc_GetBuildingStatus(plHandle : Integer; bld_id : Integer; ghost_building : Integer) : Integer;
+begin
+   var alliance : Boolean;
+
+   Result := _misc_GetBuildingStatusExt(plHandle,bld_id,ghost_building,alliance);
+end;
+
+function _misc_CanBuildAtAll() : Boolean;
+begin
+   var can_build: Integer = GetPlayerIntValueIndByHandle(GetPlayerHandleInterfaceIO(), gc_map_PLStack_MapUnit_iCanInnerBuild);
+
+   Result := false;
+   if (can_build>0) then
+      Result := true;
+end;
+
+function _misc_CanBuildBuilding(bld_id : Integer) : Boolean;
+begin
+   var plHandle : Integer = GetPlayerHandleInterfaceIO();
+   var r : Integer;
+
+   r := _misc_GetBuildingStatus(plHandle,bld_id,0);
+   if r = 1 then
+      Result := True
+   else
+      Result := false;
+end;
+
+// idx = -1 - filter out built buildings and shift queue if first element is empty
+function _misc_UpdateBuildingsQueue(idx : Integer; b_id : Integer) : Integer;
+begin
+   IntRegister0 := 2;
+   IntRegister1 := idx;
+   IntRegister2 := b_id;
+   GUIExecuteState('VVK.BuildQueueOperations');
+   Result := IntRegister0;
+end;
+
+procedure _misc_BuildQueueParentWindowsGet(var names : String);
+begin
+   IntRegister0 := 3;
+   GUIExecuteState('VVK.BuildQueueOperations');
+   names := StringRegister0;
+end;
+
+function _misc_BuildQueueParentWindowOper(windowName : String; do_remove : Boolean) : Boolean;
+begin
+   IntRegister0 := 4;
+   StringRegister0 := windowName;
+   BoolRegister0 := do_remove;
+   GUIExecuteState('VVK.BuildQueueOperations');
+   Result := BoolRegister0;
+end;
+
+// returns handle to the first button
+//function _misc_CreateBuildingQueue(windowFullName : String; windowHandle : Integer;elem_d : TRectangle;icon_outer_d,icon_inner_d : TElementSize;eventName : String;build_d : TElementPos; enable_clear : Boolean;skip_built : Boolean) : Integer;
+function _misc_CreateBuildingQueue(windowFullName : String; parentHandle: Integer;queue_type : Integer;eventName : String; enable_clear : Boolean;skip_built : Boolean;header_text: String) : Integer;
+begin
+   IntRegister0 := 0;
+   StringRegister0 := windowFullName;
+   StringRegister1 := eventName;
+   StringRegister2 := header_text;
+   BoolRegister0 := enable_clear;
+   BoolRegister1 := skip_built;
+   IntRegister1 := parentHandle;
+   IntRegister2 := queue_type;
+   GUIExecuteState('VVK.BuildQueueOperations');
+   Result := IntRegister0;
+end;
+
+procedure _misc_RefreshBuildingsQueue(ehd : Integer;sel_bld_id : Integer);
+begin
+   IntRegister0 := 1;
+   IntRegister1 := ehd;
+   IntRegister2 := sel_bld_id;
+   GUIExecuteState('VVK.BuildQueueOperations');
+end;
+
+procedure _misc_UpdateBuildingsQueueButtons(ehd : Integer; build_id : Integer);
+begin
+   IntRegister0 := 5;
+   IntRegister1 := ehd;
+   IntRegister2 := build_id;
+   GUIExecuteState('VVK.BuildQueueOperations');
+end;
+
+procedure _misc_ShiftBuildingsQueue();
+begin
+   var plHandle : Integer = GetPlayerHandleInterfaceIO();
+   var temp_str : String;
+   var q_str : String;
+   var dc,i : Integer;
+
+   temp_str := GetPlayerValueByHandle(plHandle, gc_map_PLStack_MapUnit_nInnerBuildingsQueue);
+   dc := _sa_GetNum(temp_str);
+
+   q_str := '';
+   for i := 1 to cMaxBuildingsQueueSize-1 do
+   begin
+      if dc > i then
+         _sa_AddAsInt(q_str,_sa_GetAsInt(temp_str,i))
+      else
+         _sa_AddAsInt(q_str,0);
+   end;
+   SetPlayerValueByHandle(plHandle, gc_map_PLStack_MapUnit_nInnerBuildingsQueue, q_str);
+end;
+
+procedure _misc_ShiftBuildingsQueueIfEmpty();
+begin
+   var plHandle : Integer = GetPlayerHandleInterfaceIO();
+   var temp_str : String;
+   var dc : Integer;
+
+   temp_str := GetPlayerValueByHandle(plHandle, gc_map_PLStack_MapUnit_nInnerBuildingsQueue);
+   dc := _sa_GetNum(temp_str);
+   if (dc > 0) and (_sa_GetAsInt(temp_str,0) = 0) then
+      _misc_ShiftBuildingsQueue();
+end;
+
+procedure _misc_GetRequiredBuildingsFromString(bld_str : String; group_mask : Integer; var string_tag : String);
+begin
+   var initMachine : Integer = GetMapInitMachineHandle;
+   var pBuilding, pRequiredBuildings, pReqBuilding, i, reqID,delimiterCount,k : Integer;
+
+   delimiterCount := _sa_GetNum(bld_str);
+   if delimiterCount > 0 then
+   begin
+      for k:=0 to delimiterCount-1 do
+      begin
+         IntRegister0 := (_sa_GetAsInt(bld_str,k) and $fff);
+         StateMachineExecuteState(initMachine, 'GetInnerBuildParserByID', 0);
+         pBuilding := IntRegister1;
+         pRequiredBuildings := ParserSelectByHandleByKey(pBuilding, 'RequiredBuildings');
+
+         for i := 0 to ParserGetCountByHandle(pRequiredBuildings)-1 do
+         begin
+            pReqBuilding := ParserSelectByHandleByIndex(pRequiredBuildings, i);
+            reqID := ParserGetIntValueByKeyByHandle(pReqBuilding, 'BuildingID');
+            _sa_AddAsInt(string_tag,reqID + group_mask);
+         end;
+      end;
+   end;
+
+end;
+
+procedure _misc_GetRequiredBuildingGroupsFromString(bld_str : String; group_mask : Integer; var string_tag : String);
+begin
+   var initMachine : Integer = GetMapInitMachineHandle;
+   var pBuilding, pRequiredBuildings, pReqBuilding, i, reqID,delimiterCount,k : Integer;
+   var pAbilities,pAbility,j : Integer;
+
+   delimiterCount := _sa_GetNum(bld_str);
+   if delimiterCount > 0 then
+   begin
+      for k:=0 to delimiterCount-1 do
+      begin
+         IntRegister0 := (_sa_GetAsInt(bld_str,k) and $fff);
+         StateMachineExecuteState(initMachine, 'GetInnerBuildParserByID', 0);
+         pBuilding := IntRegister1;
+
+         reqID := 0;
+         pAbilities := ParserSelectByHandleByKey(pBuilding, 'Abilities');
+         if (pAbilities<>0) then
+         begin
+            for i:=0 to ParserGetCountByHandle(pAbilities)-1 do
+            begin
+               pAbility := ParserSelectByHandleByIndex(pAbilities, i);
+               j := ParserGetIntValueByKeyByHandle(pAbility, 'AbilityID');
+               if j = gc_inner_build_race_alliance then
+               begin
+                  reqID := pAbility;
+                  break;
+               end;
+            end;
+         end;
+
+         if reqID <> 0 then
+         begin
+            i := ParserGetIntValueByKeyByHandle(reqID, 'Param1');
+            _sa_AddAsInt(string_tag ,i+$ff0+group_mask+$2000);
+         end
+         else
+         begin
+            pRequiredBuildings := ParserSelectByHandleByKey(pBuilding, 'RequiredBuildGroups');
+            for i := 0 to ParserGetCountByHandle(pRequiredBuildings)-1 do
+            begin
+               pReqBuilding := ParserSelectByHandleByIndex(pRequiredBuildings, i);
+               reqID := ParserGetIntValueByKeyByHandle(pReqBuilding, 'GroupID');
+
+               IntRegister0 := reqID;
+               StateMachineExecuteState(initMachine, 'GetBuildGroupByID', 0);
+               pBuilding := IntRegister1;
+
+               if pBuilding <> 0 then
+                  _sa_AddAsInt(string_tag ,reqID+group_mask+$2000);
+            end;
+         end;
+      end;
+   end;
+end;
+
+procedure _misc_GetUnlockedBuildingsFromString(bld_str : String; group_mask : Integer; var string_tag : String);
+begin
+   var i,delimiterCount,k,bld_id,id : Integer;
+
+   delimiterCount := _sa_GetNum(bld_str);
+   if delimiterCount>0 then
+   begin
+      for k:=0 to delimiterCount-1 do
+      begin
+         bld_id := (_sa_GetAsInt(bld_str,k) and $fff);
+         if bld_id < gc_inner_buildings_max_id then
+         begin
+            for i := 0 to gArr_inner_buildings_opens_access_to[bld_id].no-1 do
+            begin
+               id := gArr_inner_buildings_opens_access_to[bld_id].ids[i];
+               _sa_AddAsInt(string_tag,id+$1000+group_mask);
+            end;
+         end;
+      end;
+   end;
+end;
+
+function _misc_DrawBuildingButton(idx : Integer; parent : Integer; event : String; pos : TRectangle; icon_size: TElementSize; buildings_data_hd : Integer; start_tag,button_type : Integer) : Integer;
+begin
+   var elmBtnHandle : Integer;
+   var building_icon : Integer;
+   var frame_handle : Integer;
+   var icon_pos : TRectangle;
+
+   frame_handle := _gui_CreateImage_VVK('building_button_'+IntToStr(idx),parent,gc_gui_material_blank_0,gc_gui_align_parent_lt,pos);
+   _sys_fillRect(icon_pos,0,0,pos.size.w,pos.size.h);
+   elmBtnHandle := _gui_CreateImage_VVK('group',frame_handle,gc_gui_material_blank_0,gc_gui_align_parent_lt,icon_pos);
+   elmBtnHandle := _gui_CreateImage_VVK('frame',frame_handle,gc_gui_material_blank_0,gc_gui_align_parent_lt,icon_pos);
+   _sys_fillRect(icon_pos,(pos.size.w-icon_size.w) div 2,(pos.size.h-icon_size.h) div 2,icon_size.w,icon_size.h);
+   building_icon := ParserGetIntValueByKeyByHandle(ParserSelectByHandleByIndex(buildings_data_hd, idx), 'Icon');
+   elmBtnHandle := _gui_CreateButton_VVK('building_icon',frame_handle, '', 'icon.building.'+IntToStr(building_icon), gc_gui_align_parent_lt, icon_pos, event, '', idx+start_tag);
+   _gui_ft_AttachHint_I2(elmBtnHandle,'VVK.FTooltipInnerBuilding',button_type,idx);
+   _sys_fillRect(icon_pos,0,0,pos.size.w,pos.size.h);
+   elmBtnHandle := _gui_CreateImage_VVK('building_frame',frame_handle,'building_show_1',gc_gui_align_parent_lt,icon_pos);
+   Result := frame_handle;
+end;
+
+function _misc_DrawEmptyBuildingButton(idx : Integer; parent : Integer; event : String; pos : TRectangle; icon_size: TElementSize; buildings_data_hd : Integer; start_tag : Integer) : Integer;
+begin
+   var elmBtnHandle : Integer;
+   var frame_handle : Integer;
+   var icon_pos : TRectangle;
+
+   frame_handle := _gui_CreateImage_VVK('empty_building_button_'+IntToStr(idx),parent,gc_gui_material_blank_0,gc_gui_align_parent_lt,pos);
+   _sys_fillRect(icon_pos,0,0,pos.size.w,pos.size.h);
+   elmBtnHandle := _gui_CreateImage_VVK('frame',frame_handle,gc_gui_material_blank_0,gc_gui_align_parent_lt,icon_pos);
+   _sys_fillRect(icon_pos,(pos.size.w-icon_size.w) div 2,(pos.size.h-icon_size.h) div 2,icon_size.w,icon_size.h);
+   elmBtnHandle := _gui_CreateButton_VVK('building_icon',frame_handle, '', gc_gui_material_blank_0, gc_gui_align_parent_lt, icon_pos, event, '', idx+start_tag);
+   //SetGUIElementEnabled(elmBtnHandle, false);
+   //_sys_fillRect(icon_pos,0,0,pos.size.w,pos.size.h);
+   //elmBtnHandle := _gui_CreateImage_VVK('building_frame',frame_handle,'building_show_1',gc_gui_align_parent_lt,icon_pos);
+   Result := frame_handle;
+end;
+
+// return handle to text string
+function _misc_AttachBuildingButtonGroupInfo(id,frame_handle : Integer;text_d : TRectangle;align : TElementAlign;font_handle : String;font_color : TColorRGBA) : Integer;
+begin
+   var j,whd,b_no : Integer;
+   var tmp_pos : TRectangle;
+
+   Result := 0;
+   j := gArr_inner_buildings_opens_access_to[id].group_no;
+   if (j <> -1) and (gArr_inner_buildings_groups[j].color_no <> -1) then
+   begin
+      var initMachine : Integer = GetMapInitMachineHandle();
+      var c : Integer;
+      var hint_str : String;
+
+      IntRegister0 := j;
+      StateMachineExecuteState(initMachine, 'GetBuildGroupByID', 0);
+      if IntRegister1 <> 0 then
+          c := ParserGetIntValueByKeyByHandle(IntRegister1, 'MaxCount')
+      else
+          c := 0;
+      //_log_Values('AB|GRP|ID|BUILT|C',available_buildings[i],j,available_buildings[i] and $ffff,gArr_inner_buildings_groups[j].built_no,c,0);
+      whd := _gui_CreateText_VVK('group_text',frame_handle,IntToStr(gArr_inner_buildings_groups[j].built_no)+'/'+IntToStr(c),gc_gui_align_parent_lt,text_d,align,font_handle,font_color);
+      Result := whd;
+      b_no := gArr_inner_buildings_groups[j].built_no;
+      if b_no = 0 then
+         hint_str := GetLocaleTableListItemByID('build_group', 'built_0_from_y')
+      else
+         hint_str := GetLocaleTableListItemByID('build_group', 'built_x_from_y');
+      if hint_str <> '' then
+      begin
+         hint_str := StrReplace(hint_str,'%num_current%',IntToStr(b_no));
+         hint_str := StrReplace(hint_str,'%num_total%',IntToStr(c));
+         hint_str := GetLocaleTableListItemByID('build_group', 'group_singular') + GetLocaleTableListItemByID('build_group', IntToStr(j)) + gc_gui_BreakLine + hint_str;
+      end;
+      _sys_FillRect(tmp_pos,text_d.pos.x,text_d.pos.y,GetGUIElementWidth(whd),GetGUIElementHeight(whd));
+      whd := _gui_CreateButton_VVK('group_text_hint',frame_handle,'', gc_gui_material_blank_0,gc_gui_align_parent_lt,tmp_pos,'',hint_str,0);
+      SetGUIElementEnabled(whd, false);
+   end;
+end;
+
+// returns getbuildingstatus
+function _misc_AttachBuildingButtonBuiltStatus(id,frame_handle : Integer) : Integer;
+begin
+   var bld_attr,whd : Integer;
+
+   bld_attr := _misc_GetBuildingStatus(GetPlayerHandleInterfaceIO(),id,0);
+   whd := GetGUIElementIndexByNameParent('building_frame', frame_handle);
+   if whd <> 0 then
+   begin
+      var temp_str : String;
+
+      temp_str := 'building_show_0';
+      case bld_attr of
+         1: temp_str := 'building_show_1';
+         2: temp_str := 'building_show_2';
+         3: temp_str := 'building_show_3';
+         4: temp_str := 'building_show_4';
+      end;
+      SetGUIElementMaterial(whd,temp_str);
+   end;
+   Result := bld_attr;
+end;
+
+
+procedure _misc_RebuildBuildingsPlayerGlobals();
+begin
+   var i,j,id,bld_attr : Integer;
+
+   for i := 0 to gc_inner_buildings_max_groups-1 do
+   begin
+      if (gArr_inner_buildings_groups[i].no>0) then
+      begin
+         for j := 0 to gArr_inner_buildings_groups[i].no-1 do
+         begin
+            id := ((gArr_inner_buildings_groups[i].id[j]) and $ffff);
+            if id < gc_inner_buildings_max_id then
+            begin
+               gArr_inner_buildings_opens_access_to[id].group_no := i;
+               bld_attr := _misc_GetBuildingStatus(GetPlayerHandleInterfaceIO(),id,0);
+               if bld_attr = 2 then
+                  gArr_inner_buildings_groups[i].built_no := gArr_inner_buildings_groups[i].built_no + 1;
+            end;
+         end;
+      end;
+   end;
+end;
+
+procedure _misc_RebuildBuildingsAccessData();
+begin
+   const cBldFileName = '.\data\gui\buildings_extra.cfg';
+
+   var i,j,id,pExtraData,pElems,pElem,bld_attr,priority,group : Integer;
+
+   if gArr_inner_buildings_opens_access_to[0].no = -1 then
+   begin
+      var pInnerBuildings : Integer = gPrototypeData.innerBuildings.handle;
+      var id2,pRequiredBuildings,pReqBuilding : Integer;
+
+      for i := 0 to gc_inner_buildings_max_id-1 do
+      begin
+         gArr_inner_buildings_opens_access_to[i].no := 0;
+         gArr_inner_buildings_opens_access_to[i].group_no := -1;
+      end;
+
+      for i := 0 to ParserGetCountByHandle(pInnerBuildings)-1 do
+      begin
+         pElem := ParserSelectByHandleByIndex(pInnerBuildings, i);
+         id := ParserGetIntValueByKeyByHandle(pElem, 'BuildingID');
+         if id < gc_inner_buildings_max_id then
+         begin
+            pRequiredBuildings := ParserSelectByHandleByKey(pElem, 'RequiredBuildings');
+            for j := 0 to ParserGetCountByHandle(pRequiredBuildings)-1 do
+            begin
+               pReqBuilding := ParserSelectByHandleByIndex(pRequiredBuildings, j);
+               id2 := ParserGetIntValueByKeyByHandle(pReqBuilding, 'BuildingID');
+               if (id2 < gc_inner_buildings_max_id) and (gArr_inner_buildings_opens_access_to[id2].no < gc_inner_buildings_array_max ) then
+               begin
+                  gArr_inner_buildings_opens_access_to[id2].ids[gArr_inner_buildings_opens_access_to[id2].no] := id;
+                  gArr_inner_buildings_opens_access_to[id2].no := gArr_inner_buildings_opens_access_to[id2].no + 1;
+               end;
+            end;
+         end;
+      end;
+   end;
+
+   for i := 0 to gc_inner_buildings_max_groups-1 do
+   begin
+      gArr_inner_buildings_groups[i].no := 0;
+      gArr_inner_buildings_groups[i].color_no := -1;
+      gArr_inner_buildings_groups[i].built_no := 0;
+      gArr_inner_buildings_groups[i].color.r := 0.0;
+      gArr_inner_buildings_groups[i].color.g := 0.0;
+      gArr_inner_buildings_groups[i].color.b := 0.0;
+      gArr_inner_buildings_groups[i].color.a := 0.0;
+   end;
+
+   pExtraData  := _misc_ParserGetOrCreateByKey('buildings_extra_cfg',true);
+   ParserLoadFromFile(cBldFileName);
+
+   pElems := ParserSelectByHandleByKey(pExtraData, 'BuildingsGroupsColors');
+   for i := 0 to ParserGetCountByHandle(pElems)-1 do
+   begin
+      if i >= gc_inner_buildings_max_groups then
+         break;
+      _gui_WebColorToTColor(ParserGetValueByIndexByHandle(pElems,i),gArr_inner_buildings_groups[i].color);
+   end;
+
+   pElems := ParserSelectByHandleByKey(pExtraData, 'BuildingsExtraData');
+   for i := 0 to ParserGetCountByHandle(pElems)-1 do
+   begin
+      pElem := ParserSelectByHandleByIndex(pElems, i);
+      id := ParserGetIntValueByKeyByHandle(pElem, 'Id');
+      priority := ParserGetIntValueByKeyByHandle(pElem, 'Priority');
+      group :=  ParserGetIntValueByKeyByHandle(pElem, 'Group');
+      if (id <> 0) and (group < gc_inner_buildings_max_groups) then
+      begin
+         if id < 0 then
+            id := $fff;
+         gArr_inner_buildings_groups[group].id[gArr_inner_buildings_groups[group].no] := ((priority shl $10) or id);
+         gArr_inner_buildings_groups[group].no := gArr_inner_buildings_groups[group].no + 1;
+         if gArr_inner_buildings_groups[group].color.a <> 0.0 then
+            gArr_inner_buildings_groups[group].color_no := group;
+      end
+      else
+         if (group >= gc_inner_buildings_max_groups) then
+            ErrorLogI('Max buildings groups limit exceeded - '+IntToStr(group));
+   end;
+
+   for i := 0 to gc_inner_buildings_max_groups-1 do
+   begin
+      ArrayClear();
+      for j := 0 to gArr_inner_buildings_groups[i].no-1 do
+      begin
+         ArrayPushValue(gArr_inner_buildings_groups[i].id[j]);
+      end;
+      ArraySort(true);
+      for j := 0 to gArr_inner_buildings_groups[i].no-1 do
+      begin
+         gArr_inner_buildings_groups[i].id[j] := ArrayPopValue();
+      end;
+   end;
+
+   _misc_RebuildBuildingsPlayerGlobals();
+   _misc_ParserGetOrCreateByKey('buildings_extra_cfg',true);
+end;
+
+// & 0x100 - exclude already built (for modes 1 and 2 only)
+function _misc_IsBuildingDisplayableByMode(mode : Integer; id : Integer;extra_id : Integer) : Boolean;
+begin
+   var bld_attr,pl_handle : Integer;
+
+   pl_handle := GetPlayerHandleInterfaceIO();
+
+   Result := true;
+   case (mode and $ff) of
+      1 : begin // hide unavailable
+         bld_attr := _misc_GetBuildingStatus(pl_handle,id,extra_id);
+         if (bld_attr = 4) or (((mode and $100) <> 0) and (bld_attr = 2)) then
+            Result := False;
+      end;
+      2 : begin // only ones that you can build (or can't only because lack of resiurces)
+         bld_attr := _misc_GetBuildingStatus(pl_handle,id,extra_id);
+         if ((bld_attr <> 1) and (bld_attr <> 3)) or (((mode and $100) <> 0) and (bld_attr = 2)) then
+            Result := False;
+      end;
+   end;
+end;
+
+function _misc_IsBuildingDisplayableByModeByAttr(mode : Integer; bld_attr : Integer) : Boolean;
+begin
+   Result := true;
+   case mode of
+      1 : begin // hide unavailable
+         if bld_attr = 4 then
+            Result := False;
+      end;
+      2 : begin // only ones that you can build (or can't only because lack of resiurces)
+         if (bld_attr <> 1) and (bld_attr <> 3) then
+            Result := False;
+      end;
+   end;
+end;
+
+// bld_id > 100 -> switch directly to quarter (bld_id-100)
+procedure _misc_UpdateCastleCameraPosition(bld_id : Integer);
+begin
+   procedure GetCastleCameraPosFromQuarter(q_id : Integer; var c_pos : String);
+   begin
+      var temp_str : String = '';
+
+      case q_id of
+         1 : temp_str :='Military';
+         2 : temp_str :='Trade';
+         3 : temp_str :='Magic';
+         4 : temp_str :='Craft';
+         5 : temp_str :='Holy';
+         6 : temp_str :='Central';
+         7 : temp_str :='Joy';
+         8 : temp_str :='Forest';
+         9 : temp_str :='Ally';
+         else
+            temp_str :='Start';
+      end;
+
+      c_pos := '@tC'+temp_str;
+   end;
+
+   if bld_id = 0 then
+      exit;
+
+   if gIntRegister_GUICurCastleMode = 1 then
+   begin
+      var c_pos : String;
+
+      c_pos := '';
+      if bld_id < 0 then // reset position
+         GetCastleCameraPosFromQuarter(0,c_pos)
+      else
+      begin
+         if bld_id > 100 then
+            GetCastleCameraPosFromQuarter(bld_id-100,c_pos)
+         else
+         begin
+            IntRegister0 := bld_id;
+            MapExecuteState('GetInnerBuildParserByID');
+
+            if (IntRegister1 <> 0) then
+               GetCastleCameraPosFromQuarter(ParserGetIntValueByKeyByHandle(IntRegister1, 'Quarter'),c_pos);
+         end;
+      end;
+
+      if (c_pos <> '') and (not IsCameraMoveToPosition()) then
+      begin
+         StringRegister0 := c_pos;
+         MapExecuteState('ResizeCamera');
+      end;
+   end;
+end;
+
+function _misc_HistoryAddBuilding(bld_id : Integer;windowHandle : Integer) : Integer;
+begin
+   var h_str,temp_str : String;
+   var i,no,cpos,whd,id : Integer;
+
+   if bld_id <= 0 then
+   begin
+      Result := 0;
+      exit;
+   end;
+
+   temp_str := gStrRegister_GUIBuildHistory;
+   no := _sa_GetNum_D(temp_str,$23);
+   if no > 1 then
+   begin
+      cpos := _sa_GetAsInt_D(temp_str,0,$23);
+      _sa_Get_D(temp_str,1,$23,h_str);
+      no := Min(_sa_GetNum(h_str),$100);
+      temp_str := '';
+      if no = 0 then
+         cpos := 0
+      else
+      begin
+         if cpos >= no then
+            cpos := no-1;
+         if _sa_GetAsInt(h_str,cpos) = bld_id then
+            cpos := cpos - 1;
+         for i:=0 to cpos do
+         begin
+            id := _sa_GetAsInt(h_str,i);
+            //if id <> bld_id then
+            _sa_AddAsInt(temp_str,id);
+         end;
+         cpos := cpos + 1;
+      end;
+      _sa_AddAsInt(temp_str,bld_id);
+   end
+   else
+   begin
+      cpos := 0;
+      temp_str := '';
+      _sa_AddAsInt(temp_str,bld_id);
+   end;
+   gStrRegister_GUIBuildHistory := IntToStr(cpos)+'#'+temp_str;
+
+   whd := GetGUIElementIndexByNameParent('button_back',windowHandle);
+   if whd = 0 then
+   begin
+      windowHandle := GetGUIElementIndexByNameParent('details2',windowHandle);
+      if windowHandle <> 0 then
+         whd := GetGUIElementIndexByNameParent('button_back',windowHandle);
+   end;
+
+   if whd <> 0 then
+   begin
+      if _sa_GetNum(temp_str) > 1 then
+         SetGUIElementEnabled(whd,true)
+      else
+         SetGUIElementEnabled(whd,false);
+   end;
+   whd := GetGUIElementIndexByNameParent('button_fwd',windowHandle);
+   if whd <> 0 then
+      SetGUIElementEnabled(whd,false);
+
+   Result := cpos;
+end;
+
+// -1 if no forward move possible, else building id
+function _misc_HistoryMoveForward(windowHandle : Integer) : Integer;
+begin
+   var h_str,temp_str : String;
+   var i,no,cpos,bhd,fhd : Integer;
+
+   Result := -1;
+
+   fhd := GetGUIElementIndexByNameParent('button_fwd',windowHandle);
+   if fhd = 0 then
+   begin
+      windowHandle := GetGUIElementIndexByNameParent('details2',windowHandle);
+      if windowHandle <> 0 then
+         fhd := GetGUIElementIndexByNameParent('button_fwd',windowHandle);
+   end;
+   if fhd <> 0 then
+      SetGUIElementEnabled(fhd,false);
+
+   bhd := GetGUIElementIndexByNameParent('button_back',windowHandle);
+   if (bhd <> 0) then
+      SetGUIElementEnabled(bhd,false);
+
+   temp_str := gStrRegister_GUIBuildHistory;
+   no := _sa_GetNum_D(temp_str,$23);
+   cpos := _sa_GetAsInt_D(temp_str,0,$23);
+   _sa_Get_D(temp_str,1,$23,h_str);
+   if no > 1 then
+   begin
+      no := _sa_GetNum(h_str);
+      if (no > 1) and (cpos < (no-1)) then
+      begin
+         cpos := cpos + 1;
+         Result := _sa_GetAsInt(h_str,cpos);
+         if (cpos > 0) and (bhd <> 0) then
+            SetGUIElementEnabled(bhd,true);
+         if (cpos < (no-1)) and (fhd <> 0) then
+            SetGUIElementEnabled(fhd,true);
+         gStrRegister_GUIBuildHistory := IntToStr(cpos)+'#'+h_str;
+      end;
+   end
+end;
+
+// -1 if no backward move possible, else building id
+function _misc_HistoryMoveBackward(windowHandle : Integer) : Integer;
+begin
+   var h_str,temp_str : String;
+   var i,no,cpos,bhd,fhd : Integer;
+
+   Result := -1;
+
+   fhd := GetGUIElementIndexByNameParent('button_fwd',windowHandle);
+   if fhd = 0 then
+   begin
+      windowHandle := GetGUIElementIndexByNameParent('details2',windowHandle);
+      if windowHandle <> 0 then
+         fhd := GetGUIElementIndexByNameParent('button_fwd',windowHandle);
+   end;
+   if fhd <> 0 then
+      SetGUIElementEnabled(fhd,false);
+
+   bhd := GetGUIElementIndexByNameParent('button_back',windowHandle);
+   if (bhd <> 0) then
+      SetGUIElementEnabled(bhd,false);
+
+   temp_str := gStrRegister_GUIBuildHistory;
+   no := _sa_GetNum_D(temp_str,$23);
+   cpos := _sa_GetAsInt_D(temp_str,0,$23);
+   _sa_Get_D(temp_str,1,$23,h_str);
+   if no > 1 then
+   begin
+      no := _sa_GetNum(h_str);
+      if (no > 1) and (cpos > 0) then
+      begin
+         cpos := cpos - 1;
+         Result := _sa_GetAsInt(h_str,cpos);
+         if (cpos > 0) and (bhd <> 0) then
+            SetGUIElementEnabled(bhd,true);
+         if (cpos < (no-1)) and (fhd <> 0) then
+            SetGUIElementEnabled(fhd,true);
+         gStrRegister_GUIBuildHistory := IntToStr(cpos)+'#'+h_str;
+      end;
+   end
+end;
+
+// 1 - custom load, 2 - custom continue, 4 - camp load, 8 - camp continue
+// 0x10 - hotseat load, 0x20 - hotseat continue, 0x40 - lan load, 0x80 - lan continue
+function _misc_GetLoadContinueFlags(mask : Integer) : Integer;
+begin
+   var ret : Integer = 0;
+   var n,f_mask,f_flags,saves_no : Integer;
+   var ext,lastsave,filename,filepath : String;
+
+   for n := 0 to 3 do
+   begin
+      case n of
+         0 : begin
+            f_mask := 1;
+            f_flags := gc_GameTypeFlagSingle;
+         end;
+         1 : begin
+            f_mask := $10;
+            f_flags := 0;
+         end;
+         2 : begin
+            f_mask := $40;
+            f_flags := gc_GameTypeFlagInternet;
+         end;
+         3 : begin
+            f_mask := 4;
+            f_flags := gc_GameTypeFlagCampaign;
+         end;
+      end;
+
+      if ((mask and (f_mask or (f_mask shl 1))) <> 0) then
+      begin
+         if ((f_flags and gc_GameTypeFlagCampaign) <> 0) then
+            lastsave := gProfile.lastcampaignsave
+         else
+         begin
+            if ((f_flags and gc_GameTypeFlagSingle) <> 0) then
+               lastsave := gProfile.lastcustomsave
+            else
+               lastsave := '';
+         end;
+
+         _prof_SyncCustomsFolderExt(f_flags,0,1);
+         if (UserGetProfileCustomsCount()>0) then
+            ret := ret or f_mask;
+
+         if (lastsave <> '') and (IsFileExists(gStringRegister_ProfileSavesFolderLast+lastsave+'.map')) then
+            ret := ret or (f_mask shl 1);
+      end;
+   end;
+
+   Result := ret;
+end;
+
+procedure _misc_BuildOuterBuildingsExtraData();
+begin
+   const cBldFileName = '.\data\gui\outer_buildings_extra.cfg';
+
+   var i,j,pExtraData,pElems,pElem,no,n : Integer;
+   var initMachine : Integer = GetMapInitMachineHandle;
+
+   pExtraData  := _misc_ParserGetOrCreateByKey('outer_buildings_extra_cfg',true);
+   ParserLoadFromFile(cBldFileName);
+
+   pElems := ParserSelectByHandleByKey(pExtraData, 'OuterBuildingsExtraData');
+   no := min(ParserGetCountByHandle(pElems),gc_outer_buildings_max_no);
+   n := 0;
+   for i := 0 to no-1 do
+   begin
+      pElem := ParserSelectByHandleByIndex(pElems, i);
+      gArr_outer_buildings_data[n].id := ParserGetIntValueByKeyByHandle(pElem, 'Id');
+      gArr_outer_buildings_data[n].level := ParserGetIntValueByKeyByHandle(pElem, 'Level');
+      gArr_outer_buildings_data[n].group := ParserGetIntValueByKeyByHandle(pElem, 'Group');
+      gArr_outer_buildings_data[n].parent_id := ParserGetIntValueByKeyByHandle(pElem, 'Parent');
+      gArr_outer_buildings_data[n].parent_idx := -1;
+      gArr_outer_buildings_data[n].child_idx := -1;
+      if (gArr_outer_buildings_data[n].id <> 0) then
+      begin
+         gArr_outer_buildings_data[n].upgrades_no := 0;
+         n := n + 1;
+      end;
+   end;
+
+   gArr_outer_buildings_data_no := n;
+
+   for i := 0 to n-1 do
+   begin
+      if gArr_outer_buildings_data[i].parent_id > 0 then
+      begin
+         for j := 0 to n-1 do
+         begin
+            if gArr_outer_buildings_data[j].id = gArr_outer_buildings_data[i].parent_id then
+               break;
+         end;
+         if j < n then
+         begin
+            gArr_outer_buildings_data[j].child_idx := i;
+            gArr_outer_buildings_data[i].parent_idx := j;
+         end;
+      end;
+   end;
+
+   for i := 0 to n-1 do
+   begin
+      if (gArr_outer_buildings_data[i].child_idx > 0) and (gArr_outer_buildings_data[i].parent_idx = -1) then
+      begin
+         j := i;
+         while gArr_outer_buildings_data[j].child_idx > 0 do
+         begin
+            gArr_outer_buildings_data[i].upgrades_no := gArr_outer_buildings_data[i].upgrades_no + 1;
+            j := gArr_outer_buildings_data[j].child_idx;
+         end;
+      end;
+   end;
+   ParserFreeByHandle(pExtraData);
+end;
+
+// res_p - resources parser, out - string array with (res_id,count) pairs
+function _gui_ft_GetResourcesCount(res_p : Integer; var ret_s : String) : Integer;
+begin
+   const cMaxResID = 9;
+   var counters : array [0..cMaxResID] of Integer;
+   var i,n,c,p : Integer;
+   var temp_str : String;
+
+   for i := 0 to cMaxResID-1 do
+      counters[i] := 0;
+
+   for i := 0 to ParserGetCountByHandle(res_p)-1 do
+   begin
+      p := ParserSelectByHandleByIndex(res_p,i);
+      n := ParserGetIntValueByKeyByHandle(p,'ResourceID');
+      if (n > 0) and (n <= cMaxResID) then
+      begin
+         c := ParserGetIntValueByKeyByHandle(p,'Count');
+         if c = 0 then c := 1;
+         counters[n-1] := counters[n-1] + c;
+      end;
+   end;
+
+   n := 0;
+   temp_str := '';
+   for i := 0 to cMaxResID-1 do
+   begin
+      if counters[i] > 0 then
+      begin
+         _sa_AddAsInt(temp_str,i+1);
+         _sa_AddAsInt(temp_str,counters[i]);
+         n := n + 1;
+      end;
+   end;
+
+   ret_s := temp_str;
+
+   Result := n;
+end;
+
+// ret_boxes: (id,x,dx) triplets. special resource ids: $10000 - gold, $10001 - gems; returns height
+function _gui_ft_FormatResourcesData(res_array : String;font_handle,font_color : String; var ret_s : String;var ret_boxes : String;fill_rect : Boolean) : Integer;
+begin
+   var x : array [0..$10] of Integer;
+   var dx : array [0..$10] of Integer;
+   var ids : array [0..$10] of Integer;
+   var s,temp_str,res_str,color : String;
+   var i,no,id,c,start_x,space_w,w,h : Integer;
+
+   if font_color = '' then color := 'default'
+   else color := font_color;
+   start_x := 0;
+   res_str := '01ABCDEFGHI';
+   no := _sa_GetNum(res_array) div 2;
+   s := '';
+   temp_str := '   ';
+   GetGUIElementFontTextFormatRect(font_handle,temp_str,w,h);
+   space_w := w;
+   for i := 0 to no-1 do
+   begin
+      if i <> 0 then
+      begin
+         s := s + '   ';
+         start_x := start_x + space_w;
+      end;
+      id := _sa_GetAsInt(res_array,i*2);
+      c := _sa_GetAsInt(res_array,i*2+1);
+      ids[i] := id;
+
+      if id >= $10000 then id := id-$ffff
+      else id := id+2;
+
+      temp_str := '%color(ignore)%%style(Symbols)%'+SubStr(res_str,id,1)+'%style(default)%%color('+color+')%';
+      if c > 0 then
+         temp_str := temp_str + IntToStr(c);
+      if fill_rect then
+      begin
+         x[i] := start_x;
+         GetGUIElementFontTextFormatRect(font_handle,temp_str,w,h);
+         dx[i] := w;
+         start_x := start_x + w;
+      end;
+      s := s + temp_str;
+   end;
+
+   ret_s := s;
+   temp_str := '';
+   if fill_rect then
+   begin
+      for i := 0 to no-1 do
+      begin
+         _sa_AddAsInt(temp_str,ids[i]);
+         _sa_AddAsInt(temp_str,x[i]);
+         _sa_AddAsInt(temp_str,dx[i]);
+      end;
+   end;
+   ret_boxes := temp_str;
+   Result := h;
+end;
+
+function _gui_ft_FormatStringsAsTable(src_str : String;dx : Integer;font_handle : String;var dst : String) : Integer;
+begin
+   const cMaxTableElems = $20;
+
+   var s : array [0..cMaxTableElems] of String;
+   var i,n,x,max_w,w,h : Integer;
+   var columns,table_str,temp_str : String;
+
+   n := min(_sa_GetNum(src_str),cMaxTableElems);
+   max_w := 0;
+   for i := 0 to n-1 do
+   begin
+      _sa_Get(src_str,i,s[i]);
+      if s[i] = '' then s[i] := ' ';
+      GetGUIElementFontTextFormatRect(font_handle,s[i],w,h);
+      //_log_gui('I: '+IntToStr(i)+', S: '+s[i]);
+      if w > max_w then max_w := w;
+   end;
+   //_log_values('DX|N|MAX_W',dx,n,max_w,0,0,0);
+   columns := '';
+   _sa_AddAsInt(columns,max_w);
+
+   x := 0;
+   table_str := '';
+   for i := 0 to n-1 do
+   begin
+      _gui_TableFormatTextLineExt(font_handle,2,columns,'"'+s[i]+'"',temp_str);
+      table_str := table_str + temp_str;
+      x := x + 1;
+      if x >= dx then
+      begin
+         x := 0;
+         if i <> (n-1) then
+            table_str := table_str+gc_gui_BreakLine;
+      end
+      else
+         table_str := table_str+'  ';
+   end;
+
+   //_log_gui('TS: '+table_str);
+   dst := table_str;
+   Result := max_w;
+end;
+
+
+_misc_BuildOuterBuildingsExtraData();

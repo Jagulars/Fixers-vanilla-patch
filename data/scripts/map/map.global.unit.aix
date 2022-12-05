@@ -1,0 +1,1077 @@
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\Initial.inc
+section.end
+
+section.begin
+   Name = Main
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\Main.inc
+section.end
+
+section.begin
+   Name = Nothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = CreateParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CreateParser.inc
+section.end
+
+section.begin
+   Name = GetResCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetResCount.inc
+section.end
+
+section.begin
+   Name = GetResPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetResPrice.inc
+section.end
+
+section.begin
+   Name = GetResPriceStat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetResPriceStat.inc
+section.end
+
+section.begin
+   Name = GetBuildPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetBuildPrice.inc
+section.end
+
+section.begin
+   Name = GetUnitPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetUnitPrice.inc
+section.end
+
+section.begin
+   Name = GetOuterBuildPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetOuterBuildPrice.inc
+section.end
+
+section.begin
+   Name = GetItemPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetItemPrice.inc
+section.end
+
+section.begin
+   Name = GetItemRepPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetItemRepPrice.inc
+section.end
+
+section.begin
+   Name = GetSellItemPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetSellItemPrice.inc
+section.end
+
+section.begin
+   Name = GetSellUnitPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetSellUnitPrice.inc
+section.end
+
+section.begin
+   Name = GetDefenderPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetDefenderPrice.inc
+section.end
+
+section.begin
+   Name = GetRitualPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetRitualPrice.inc
+section.end
+
+section.begin
+   Name = GetRitualCooldown
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetRitualCooldown.inc
+section.end
+
+section.begin
+   Name = GetCastleParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetCastleParser.inc
+section.end
+
+section.begin
+   Name = BuyInnerBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BuyInnerBuild.inc
+section.end
+
+section.begin
+   Name = AddInnerBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AddInnerBuild.inc
+section.end
+
+section.begin
+   Name = BuyOuterBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BuyOuterBuild.inc
+section.end
+
+section.begin
+   Name = DestroyOuterBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DestroyOuterBuild.inc
+section.end
+
+section.begin
+   Name = BuyDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BuyDefender.inc
+section.end
+
+section.begin
+   Name = DismissDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DismissDefender.inc
+section.end
+
+section.begin
+   Name = BuyUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BuyUnit.inc
+section.end
+
+section.begin
+   Name = IsDefenderAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsDefenderAvailable.inc
+section.end
+
+section.begin
+   Name = IsBuildingAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsBuildingAvailable.inc
+section.end
+
+// SetInGameStatus
+section.begin
+   Name = SetInGameStatus
+   UsedFile = True
+   LanClientExecute = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SetInGameStatus.inc
+section.end
+
+// IsInGame
+section.begin
+   Name = IsInGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsInGame.inc
+section.end
+
+// GetCastleStats
+section.begin
+   Name = GetCastleStats
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetCastleStats.inc
+section.end
+
+section.begin
+   Name = IsInnerBuildRequired
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsInnerBuildRequired.inc
+section.end
+
+section.begin
+   Name = GetSelectedGroupHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetSelectedGroupHandle.inc
+section.end
+
+section.begin
+   Name = CheckInnerBuildAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckInnerBuildAbility.inc
+section.end
+
+section.begin
+   Name = CheckInnerBuildAbilityByParam1
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckInnerBuildAbilityByParam1.inc
+section.end
+
+section.begin
+   Name = RecruitHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\RecruitHero.inc
+section.end
+
+section.begin
+   Name = SelectNextHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SelectNextHero.inc
+section.end
+
+section.begin
+   Name = CanSellItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CanSellItem.inc
+section.end
+
+section.begin
+   Name = CastRitual
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CastRitual.inc
+section.end
+
+section.begin
+   Name = CastDestructiveRitual
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CastDestructiveRitual.inc
+section.end
+
+section.begin
+   Name = AddMercenary
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AddMercenary.inc
+section.end
+
+section.begin
+   Name = MakeBuildTaste
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\MakeBuildTaste.inc
+section.end
+
+section.begin
+   Name = IsFullBuildGroup
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsFullBuildGroup.inc
+section.end
+
+section.begin
+   Name = IsRitualAllowed
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsRitualAllowed.inc
+section.end
+
+section.begin
+   Name = IsRitualCheap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\IsRitualCheap.inc
+section.end
+
+section.begin
+   Name = GetHeroPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetHeroPrice.inc
+section.end
+
+section.begin
+   Name = KillHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\KillHero.inc
+section.end
+
+section.begin
+   Name = AddSpecUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AddSpecUnit.inc
+section.end
+
+section.begin
+   Name = CalcSpecUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CalcSpecUnits.inc
+section.end
+
+section.begin
+   Name = TryBuildGarrison
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\TryBuildGarrison.inc
+section.end
+
+section.begin
+   Name = TryBuildLibrary
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\TryBuildLibrary.inc
+section.end
+
+section.begin
+   Name = TryBuildShop
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\TryBuildShop.inc
+section.end
+
+section.begin
+   Name = GetProvinceDanger
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetProvinceDanger.inc
+section.end
+
+section.begin
+   Name = BuyItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BuyItem.inc
+section.end
+
+section.begin
+   Name = SellItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SellItem.inc
+section.end
+
+section.begin
+   Name = DismissUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DismissUnit.inc
+section.end
+
+section.begin
+   Name = AddTreasuryItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AddTreasuryItem.inc
+section.end
+
+section.begin
+   Name = FindTreasuryItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\FindTreasuryItem.inc
+section.end
+
+// CurrentPlayerChanged
+section.begin
+   Name = CurrentPlayerChanged
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CurrentPlayerChanged.inc
+section.end
+
+section.begin
+   Name = BeforeHumanTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BeforeHumanTurn.inc
+section.end
+
+section.begin
+   Name = StartHumanTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\StartHumanTurn.inc
+section.end
+
+section.begin
+   Name = AfterEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AfterEndTurn.inc
+section.end
+
+section.begin
+   Name = RecalcResCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\RecalcResCount.inc
+section.end
+
+section.begin
+   Name = CheckPlayerLose
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckPlayerLose.inc
+section.end
+
+section.begin
+   Name = DoPlayerLose
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DoPlayerLose.inc
+section.end
+
+section.begin
+   Name = DestroyCastlePattern
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DestroyCastlePattern.inc
+section.end
+
+section.begin
+   Name = ChangeResource
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ChangeResource.inc
+section.end
+
+section.begin
+   Name = GetRitualCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetRitualCount.inc
+section.end
+
+section.begin
+   Name = RepairInvItem
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\RepairInvItem.inc
+section.end
+
+section.begin
+   Name = AddAllRituals
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AddAllRituals.inc
+section.end
+
+section.begin
+   Name = GenerateFighter
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GenerateFighter.inc
+section.end
+
+section.begin
+   Name = GenerateOrca
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GenerateOrca.inc
+section.end
+
+section.begin
+   Name = WatchArenaBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\WatchArenaBattle.inc
+section.end
+
+section.begin
+   Name = GetProvinceCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetProvinceCount.inc
+section.end
+
+section.begin
+   Name = GetName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetName.inc
+section.end
+
+section.begin
+   Name = CanPassProvince
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CanPassProvince.inc
+section.end
+
+section.begin
+   Name = CheckItemRarity
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckItemRarity.inc
+section.end
+
+section.begin
+   Name = CheckCampQuest
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckCampQuest.inc
+section.end
+
+section.begin
+   Name = PlayerWin
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\PlayerWin.inc
+section.end
+
+section.begin
+   Name = PlayerLose
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\PlayerLose.inc
+section.end
+
+section.begin
+   Name = DoNecromancy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DoNecromancy.inc
+section.end
+
+section.begin
+   Name = SetNeighboursFog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SetNeighboursFog.inc
+section.end
+
+section.begin
+   Name = CalcFogMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CalcFogMap.inc
+section.end
+
+section.begin
+   Name = GetAvailableUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetAvailableUnit.inc
+section.end
+
+section.begin
+   Name = GetRequiredBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetRequiredBuilding.inc
+section.end
+
+section.begin
+   Name = SaveInfoToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SaveInfoToParser.inc
+section.end
+
+section.begin
+   Name = SaveShortInfoToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SaveShortInfoToParser.inc
+section.end
+
+section.begin
+   Name = LoadShortInfoFromParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\LoadShortInfoFromParser.inc
+section.end
+
+section.begin
+   Name = CheckRequestQuery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckRequestQuery.inc
+section.end
+
+section.begin
+   Name = CheckChooseHeroWindow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckChooseHeroWindow.inc
+section.end
+
+section.begin
+   Name = _________________
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = AIPlaceDefender
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AIPlaceDefender.inc
+section.end
+
+section.begin
+   Name = FillGarrison
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\FillGarrison.inc
+section.end
+
+section.begin
+   Name = AIRecruitHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AIRecruitHero.inc
+section.end
+
+section.begin
+   Name = AIOuterBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AIOuterBuild.inc
+section.end
+
+section.begin
+   Name = HeroTaskMaster
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\HeroTaskMaster.inc
+section.end
+
+section.begin
+   Name = ChooseInnerBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ChooseInnerBuild.inc
+section.end
+
+section.begin
+   Name = RitualHealUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\RitualHealUnits.inc
+section.end
+
+section.begin
+   Name = CastRitualAI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CastRitualAI.inc
+section.end
+
+section.begin
+   Name = _________________
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = ResolveConflicts
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ResolveConflicts.inc
+section.end
+
+section.begin
+   Name = MakeTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\MakeTurn.inc
+section.end
+
+section.begin
+   Name = ApplyRituals
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ApplyRituals.inc
+section.end
+
+section.begin
+   Name = ExecuteHeroOrders
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ExecuteHeroOrders.inc
+section.end
+
+section.begin
+   Name = DiplomacyWrongMessages
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DiplomacyWrongMessages.inc
+section.end
+
+section.begin
+   Name = DiplomacyFirstMeet
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DiplomacyFirstMeet.inc
+section.end
+
+section.begin
+   Name = DiplomacyRecieveMessages
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DiplomacyRecieveMessages.inc
+section.end
+
+section.begin
+   Name = DiplomacyRecieveAnswers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DiplomacyRecieveAnswers.inc
+section.end
+
+section.begin
+   Name = ExecuteTimerProvinceEvents
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ExecuteTimerProvinceEvents.inc
+section.end
+
+section.begin
+   Name = CampQuestsActivation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CampQuestsActivation.inc
+section.end
+
+section.begin
+   Name = CampMainShardEvents
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CampMainShardEvents.inc
+section.end
+
+section.begin
+   Name = ExecuteProvinceEvents
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ExecuteProvinceEvents.inc
+section.end
+
+section.begin
+   Name = BeginMainTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\BeginMainTurn.inc
+section.end
+
+section.begin
+   Name = ExecuteRebels
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ExecuteRebels.inc
+section.end
+
+section.begin
+   Name = ProceedQueries
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ProceedQueries.inc
+section.end
+
+section.begin
+   Name = CheckFailQuests
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckFailQuests.inc
+section.end
+
+// CompletePlayerTurn
+section.begin
+   Name = CompletePlayerTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CompletePlayerTurn.inc
+section.end
+
+section.begin
+   Name = _____Diplomacy______
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = GetAttitude
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetAttitude.inc
+section.end
+
+section.begin
+   Name = GetUnionCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetUnionCount.inc
+section.end
+
+section.begin
+   Name = GetWars
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetWars.inc
+section.end
+
+section.begin
+   Name = MakeDiplomacy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\MakeDiplomacy.inc
+section.end
+
+section.begin
+   Name = MakeDiplomacyText
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\MakeDiplomacyText.inc
+section.end
+
+section.begin
+   Name = MakeHumanDiplomacyText
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\MakeHumanDiplomacyText.inc
+section.end
+
+section.begin
+   Name = SendGreetings
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SendGreetings.inc
+section.end
+
+section.begin
+   Name = SendAnswer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SendAnswer.inc
+section.end
+
+section.begin
+   Name = GetPoliticalPower
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetPoliticalPower.inc
+section.end
+
+section.begin
+   Name = AcceptDeal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AcceptDeal.inc
+section.end
+
+section.begin
+   Name = HumanAcceptDeal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\HumanAcceptDeal.inc
+section.end
+
+section.begin
+   Name = CancelDeal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CancelDeal.inc
+section.end
+
+section.begin
+   Name = HumanCancelDeal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\HumanCancelDeal.inc
+section.end
+
+section.begin
+   Name = MessageEntry
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\MessageEntry.inc
+section.end
+
+section.begin
+   Name = DeclareWar
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DeclareWar.inc
+section.end
+
+section.begin
+   Name = ReturnHeroes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ReturnHeroes.inc
+section.end
+
+section.begin
+   Name = CheckMessage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckMessage.inc
+section.end
+
+section.begin
+   Name = GetDiploAnswerAI
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetDiploAnswerAI.inc
+section.end
+
+section.begin
+   Name = CheckUnionWars
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckUnionWars.inc
+section.end
+
+section.begin
+   Name = AcceptPeaceFromUnion
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\AcceptPeaceFromUnion.inc
+section.end
+
+section.begin
+   Name = RefusePeaceFromUnion
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\RefusePeaceFromUnion.inc
+section.end
+
+section.begin
+   Name = DeleteDiplQuery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DeleteDiplQuery.inc
+section.end
+
+section.begin
+   Name = _____Cheats______
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = SetAsCurrent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SetAsCurrent.inc
+section.end
+
+section.begin
+   Name = UncastRitual
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\UncastRitual.inc
+section.end
+
+section.begin
+   Name = SwitchControlMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\SwitchControlMode.inc
+section.end
+
+section.begin
+   Name = GetCorruption
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetCorruption.inc
+section.end
+
+section.begin
+   Name = CheckUnionPeaceOffer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CheckUnionPeaceOffer.inc
+section.end
+
+section.begin
+   Name = ExecuteUnionPeace
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\ExecuteUnionPeace.inc
+section.end
+
+section.begin
+   Name = DeleteUnionPeaceOffers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\DeleteUnionPeaceOffers.inc
+section.end
+
+section.begin
+   Name = GetGoldAndGemTaste
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\GetGoldAndGemTaste.inc
+section.end
+
+section.begin
+   Name = CreateInnerBuildModel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CreateInnerBuildModel.inc
+section.end
+
+section.begin
+   Name = CanInnerBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CanInnerBuild.inc
+section.end
+
+section.begin
+   Name = CanOuterBuild
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\map\map.global.unit.inc\CanOuterBuild.inc
+section.end
+
+section.begin
+   CurrentState = Nothing
+   SaveVariables = False
+section.end
+

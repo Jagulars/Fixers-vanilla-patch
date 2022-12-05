@@ -1,0 +1,63 @@
+section.begin
+   Name = DoNothing
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\DoNothing.inc
+section.end
+
+section.begin
+   Name = DoInitial
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\DoInitial.inc
+section.end
+
+section.begin
+   Name = DoHide
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\DoHide.inc
+section.end
+
+section.begin
+   Name = DoShow
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\DoShow.inc
+section.end
+
+section.begin
+   Name = ------------------------------------------------
+   UsedFileName = 
+section.end
+
+section.begin
+   Name = OnCreate
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\OnCreate.inc
+section.end
+
+section.begin
+   Name = OnUpdate
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\OnUpdate.inc
+section.end
+
+section.begin
+   Name = OnDestroy
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\OnDestroy.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\batshadow.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   CurrentState = DoNothing
+   SaveVariables = False
+section.end

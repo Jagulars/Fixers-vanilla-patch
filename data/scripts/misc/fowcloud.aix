@@ -1,0 +1,94 @@
+section.begin
+   Name = DoNothing
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoNothing.inc
+section.end
+
+section.begin
+   Name = DoInitial
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoInitial.inc
+section.end
+
+section.begin
+   Name = DoHide
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoHide.inc
+section.end
+
+section.begin
+   Name = DoShow
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoShow.inc
+section.end
+
+section.begin
+   Name = DoShowFlash
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoShowFlash.inc
+section.end
+
+section.begin
+   Name = DoHideFlash
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoHideFlash.inc
+section.end
+
+section.begin
+   Name = DoShowLightning
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoShowLightning.inc
+section.end
+
+section.begin
+   Name = DoHideLightning
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoHideLightning.inc
+section.end
+
+section.begin
+   Name = DoFadeOff
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\DoFadeOff.inc
+section.end
+
+section.begin
+   Name = ------------------------------------------------
+   UsedFileName = 
+section.end
+
+section.begin
+   Name = OnCreate
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\OnCreate.inc
+section.end
+
+section.begin
+   Name = OnUpdate
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\OnUpdate.inc
+section.end
+
+section.begin
+   Name = OnDestroy
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\OnDestroy.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\fowcloud.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   CurrentState = DoNothing
+   SaveVariables = False
+section.end
+

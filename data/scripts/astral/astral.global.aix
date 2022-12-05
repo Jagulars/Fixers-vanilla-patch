@@ -1,0 +1,36 @@
+section.begin
+   Name = Initial
+   UsedFile = True
+   UsedFileName = .\data\scripts\astral\astral.global.inc\Initial.inc
+section.end
+
+section.begin
+   Name = Main
+   UsedFile = True
+   UsedFileName = .\data\scripts\astral\astral.global.inc\Main.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   UsedFile = True
+   UsedFileName = .\data\scripts\astral\astral.global.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   UsedFile = True
+   UsedFileName = .\data\scripts\astral\astral.global.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = DoNothing
+   UsedFile = True
+   UsedFileName = .\data\scripts\astral\astral.global.inc\DoNothing.inc
+section.end
+
+section.begin
+   CurrentState = Main
+   SaveVariables = True
+   Variables.cap = 0
+section.end
+

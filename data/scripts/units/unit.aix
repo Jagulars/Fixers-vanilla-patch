@@ -1,0 +1,1232 @@
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Initial.inc
+section.end
+
+section.begin
+   Name = CopyStackFrom
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CopyStackFrom.inc
+section.end
+
+section.begin
+   Name = CreateParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CreateParser.inc
+section.end
+
+// SaveInfoToParser
+section.begin
+   Name = SaveInfoToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SaveInfoToParser.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = Idle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Idle.inc
+section.end
+
+section.begin
+   Name = Nothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = EndPointReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\EndPointReached.inc
+section.end
+
+section.begin
+   Name = CheckTargetAction
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckTargetAction.inc
+section.end
+
+section.begin
+   Name = Attack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Attack.inc
+section.end
+
+section.begin
+   Name = DoAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DoAttack.inc
+section.end
+
+section.begin
+   Name = FireAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\FireAttack.inc
+section.end
+
+section.begin
+   Name = VisualFireAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\VisualFireAttack.inc
+section.end
+
+section.begin
+   Name = DoFireDamage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DoFireDamage.inc
+section.end
+
+section.begin
+   Name = Move
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Move.inc
+section.end
+
+section.begin
+   Name = Turn
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Turn.inc
+section.end
+
+section.begin
+   Name = OnDirectionReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnDirectionReached.inc
+section.end
+
+section.begin
+   Name = Death
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Death.inc
+section.end
+
+section.begin
+   Name = Resurrect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Resurrect.inc
+section.end
+
+section.begin
+   Name = IsStand
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsStand.inc
+section.end
+
+section.begin
+   Name = OnAnimationReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnAnimationReached.inc
+section.end
+
+section.begin
+   Name = OnFBAnimationReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnFBAnimationReached.inc
+section.end
+
+section.begin
+   Name = OnStartCyclesReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnStartCyclesReached.inc
+section.end
+
+section.begin
+   Name = OnEndFrameReached
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnEndFrameReached.inc
+section.end
+
+section.begin
+   Name = WriteToGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\WriteToGrid.inc
+section.end
+
+section.begin
+   Name = BloodBoom
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\BloodBoom.inc
+section.end
+
+section.begin
+   Name = CreateProjectile
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CreateProjectile.inc
+section.end
+
+section.begin
+   Name = CreateSpellProjectile
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CreateSpellProjectile.inc
+section.end
+
+section.begin
+   Name = RestoreHiddenProjectile
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\RestoreHiddenProjectile.inc
+section.end
+
+section.begin
+   Name = Position
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Position.inc
+section.end
+
+section.begin
+   Name = DoPosition
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DoPosition.inc
+section.end
+
+section.begin
+   Name = DoPositionByCoords
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DoPositionByCoords.inc
+section.end
+
+section.begin
+   Name = GoToPosition
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GoToPosition.inc
+section.end
+
+section.begin
+   Name = GetProperty
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetProperty.inc
+section.end
+
+section.begin
+   Name = IsAbilityInEffects
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsAbilityInEffects.inc
+section.end
+
+section.begin
+   Name = CalcAbilities
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CalcAbilities.inc
+section.end
+
+section.begin
+   Name = CheckAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckAbility.inc
+section.end
+
+section.begin
+   Name = GetEffectParserByUpgradeID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetEffectParserByUpgradeID.inc
+section.end
+
+section.begin
+   Name = GetEffectParserBySpellID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetEffectParserBySpellID.inc
+section.end
+
+section.begin
+   Name = GetEffectDurationByAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetEffectDurationByAbility.inc
+section.end
+
+section.begin
+   Name = SetEffectsDuration
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SetEffectsDuration.inc
+section.end
+
+section.begin
+   Name = IsTerrainTypeAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsTerrainTypeAvailable.inc
+section.end
+
+section.begin
+   Name = IsSpellsInAbilities
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsSpellsInAbilities.inc
+section.end
+
+section.begin
+   Name = CreateSpellList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CreateSpellList.inc
+section.end
+
+section.begin
+   Name = CopyFromParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CopyFromParser.inc
+section.end
+
+section.begin
+   Name = CopyToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CopyToParser.inc
+section.end
+
+section.begin
+   Name = ChangeMoral
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ChangeMoral.inc
+section.end
+
+section.begin
+   Name = ChangeStamina
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ChangeStamina.inc
+section.end
+
+section.begin
+   Name = BeforeTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\BeforeTurn.inc
+section.end
+
+section.begin
+   Name = IsHealTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsHealTarget.inc
+section.end
+
+section.begin
+   Name = MakeTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeTurn.inc
+section.end
+
+section.begin
+   Name = Panic
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Panic.inc
+section.end
+
+section.begin
+   Name = TakeDamage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\TakeDamage.inc
+section.end
+
+section.begin
+   Name = TakeDamageFlyText
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\TakeDamageFlyText.inc
+section.end
+
+section.begin
+   Name = AfterBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AfterBattle.inc
+section.end
+
+section.begin
+   Name = GetHexStaminaCharge
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetHexStaminaCharge.inc
+section.end
+
+section.begin
+   Name = GetPathStaminaCharge
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetPathStaminaCharge.inc
+section.end
+
+section.begin
+   Name = DoPathStaminaCharge
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DoPathStaminaCharge.inc
+section.end
+
+section.begin
+   Name = SetRestMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SetRestMode.inc
+section.end
+
+section.begin
+   Name = GetHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetHit.inc
+section.end
+
+section.begin
+   Name = GetMeleeHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetMeleeHit.inc
+section.end
+
+section.begin
+   Name = GetBackstabBonus
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetBackstabBonus.inc
+section.end
+
+section.begin
+   Name = GetAttackBonus
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetAttackBonus.inc
+section.end
+
+section.begin
+   Name = GetPossibleMeleeHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetPossibleMeleeHit.inc
+section.end
+
+section.begin
+   Name = GetPossibleRangedHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetPossibleRangedHit.inc
+section.end
+
+section.begin
+   Name = GetPossibleSpellHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetPossibleSpellHit.inc
+section.end
+
+section.begin
+   Name = GetSpellRuntimeAttributes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetSpellRuntimeAttributes.inc
+section.end
+
+section.begin
+   Name = GetRangedHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetRangedHit.inc
+section.end
+
+section.begin
+   Name = AI_CalcMeleeHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AI_CalcMeleeHit.inc
+section.end
+
+section.begin
+   Name = AI_CalcRangedHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AI_CalcRangedHit.inc
+section.end
+
+section.begin
+   Name = IsValidEndPoint
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsValidEndPoint.inc
+section.end
+
+section.begin
+   Name = UpdateTrackNodes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\UpdateTrackNodes.inc
+section.end
+
+section.begin
+   Name = IsAbilityAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsAbilityAvailable.inc
+section.end
+
+section.begin
+   Name = ActivateAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ActivateAbility.inc
+section.end
+
+section.begin
+   Name = GetNeighbourEnemy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetNeighbourEnemy.inc
+section.end
+
+section.begin
+   Name = HealUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\HealUnit.inc
+section.end
+
+section.begin
+   Name = RaiseCorpse
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\RaiseCorpse.inc
+section.end
+
+section.begin
+   Name = ActionDone
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ActionDone.inc
+section.end
+
+section.begin
+   Name = GetNeededExpForLevel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetNeededExpForLevel.inc
+section.end
+
+section.begin
+   Name = GetLevel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetLevel.inc
+section.end
+
+section.begin
+   Name = MakeUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeUpgrade.inc
+section.end
+
+section.begin
+   Name = LevelUp
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\LevelUp.inc
+section.end
+
+section.begin
+   Name = AddEffect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AddEffect.inc
+section.end
+
+section.begin
+   Name = ApplyTurnEffects
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ApplyTurnEffects.inc
+section.end
+
+section.begin
+   Name = IsSacrifice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsSacrifice.inc
+section.end
+
+section.begin
+   Name = IsSpellTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsSpellTarget.inc
+section.end
+
+section.begin
+   Name = IsTeleportTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsTeleportTarget.inc
+section.end
+
+section.begin
+   Name = ChangeSide
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ChangeSide.inc
+section.end
+
+section.begin
+   Name = UnderSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\UnderSpell.inc
+section.end
+
+section.begin
+   Name = CastSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CastSpell.inc
+section.end
+
+section.begin
+   Name = CanCastSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CanCastSpell.inc
+section.end
+
+section.begin
+   Name = DamageArmor
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DamageArmor.inc
+section.end
+
+section.begin
+   Name = DamageWeapon
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DamageWeapon.inc
+section.end
+
+section.begin
+   Name = GetMedal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetMedal.inc
+section.end
+
+section.begin
+   Name = AddMedal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AddMedal.inc
+section.end
+
+section.begin
+   Name = GetMoveType
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetMoveType.inc
+section.end
+
+section.begin
+   Name = MakeStartUpgrades
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeStartUpgrades.inc
+section.end
+
+section.begin
+   Name = MakeMoveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeMoveMap.inc
+section.end
+
+section.begin
+   Name = MakeStepMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeStepMap.inc
+section.end
+
+section.begin
+   Name = MakeOldAIStepMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeOldAIStepMap.inc
+section.end
+
+section.begin
+   Name = MakeAIStepMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeAIStepMap.inc
+section.end
+
+section.begin
+   Name = MakeSimStepMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeSimStepMap.inc
+section.end
+
+section.begin
+   Name = ClearShootMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ClearShootMap.inc
+section.end
+
+section.begin
+   Name = MakeOldShootMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeOldShootMap.inc
+section.end
+
+section.begin
+   Name = MakeShootMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeShootMap.inc
+section.end
+
+section.begin
+   Name = MakeSimShootMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeSimShootMap.inc
+section.end
+
+section.begin
+   Name = MakeOldFlyMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeOldFlyMap.inc
+section.end
+
+section.begin
+   Name = MakeFlyMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeFlyMap.inc
+section.end
+
+section.begin
+   Name = Select
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Select.inc
+section.end
+
+section.begin
+   Name = FindNeighbour
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\FindNeighbour.inc
+section.end
+
+section.begin
+   Name = FindNeighbourEx
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\FindNeighbourEx.inc
+section.end
+
+section.begin
+   Name = IsNeighbour
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsNeighbour.inc
+section.end
+
+section.begin
+   Name = InMeleeRangePower
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\InMeleeRangePower.inc
+section.end
+
+section.begin
+   Name = GetEnemySpellTaste
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetEnemySpellTaste.inc
+section.end
+
+section.begin
+   Name = GetAllySpellTaste
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetAllySpellTaste.inc
+section.end
+
+section.begin
+   Name = AfterAISpellCast
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AfterAISpellCast.inc
+section.end
+
+section.begin
+   Name = CalcSpellPenalty
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CalcSpellPenalty.inc
+section.end
+
+section.begin
+   Name = GetEffectDuration
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetEffectDuration.inc
+section.end
+
+section.begin
+   Name = GetMyTaste
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetMyTaste.inc
+section.end
+
+section.begin
+   Name = GetTeleportTaste
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetTeleportTaste.inc
+section.end
+
+section.begin
+   Name = GetUpdShootingRange
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetUpdShootingRange.inc
+section.end
+
+section.begin
+   Name = Replace
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\Replace.inc
+section.end
+
+section.begin
+   Name = HitEffect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\HitEffect.inc
+section.end
+
+section.begin
+   Name = ShootEffect
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ShootEffect.inc
+section.end
+
+section.begin
+   Name = SoulSteal
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SoulSteal.inc
+section.end
+
+section.begin
+   Name = IsTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsTarget.inc
+section.end
+
+section.begin
+   Name = OnRemains
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnRemains.inc
+section.end
+
+section.begin
+   Name = OnDestroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnDestroy.inc
+section.end
+
+section.begin
+   Name = AfterDeath
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AfterDeath.inc
+section.end
+
+section.begin
+   Name = EatCorpse
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\EatCorpse.inc
+section.end
+
+section.begin
+   Name = FindCorpse
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\FindCorpse.inc
+section.end
+
+section.begin
+   Name = GoMarch
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GoMarch.inc
+section.end
+
+section.begin
+   Name = GatherAmmo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GatherAmmo.inc
+section.end
+
+section.begin
+   Name = BattleShout
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\BattleShout.inc
+section.end
+
+//section.begin
+//   Name = GetPhantomFormHandle
+//   LanClientExecute = True
+//   UsedFile = True
+//   UsedFileName = .\data\scripts\units\unit.inc\GetPhantomFormHandle.inc
+//section.end
+
+section.begin
+   Name = SwitchCrushFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchCrushFlag.inc
+section.end
+
+section.begin
+   Name = SwitchRoundAttackFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchRoundAttackFlag.inc
+section.end
+
+section.begin
+   Name = SwitchStealthModeFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchStealthModeFlag.inc
+section.end
+
+section.begin
+   Name = SwitchFireBreathFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchFireBreathFlag.inc
+section.end
+
+section.begin
+   Name = SwitchPoisonBiteFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchPoisonBiteFlag.inc
+section.end
+
+section.begin
+   Name = SwitchAstralStrikeFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchAstralStrikeFlag.inc
+section.end
+
+section.begin
+   Name = SwitchLungeFlag
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SwitchLungeFlag.inc
+section.end
+
+section.begin
+   Name = AfterSwitchWeapon
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AfterSwitchWeapon.inc
+section.end
+
+section.begin
+   Name = ShowTrueForm
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ShowTrueForm.inc
+section.end
+
+section.begin
+   Name = ShowPhantomForm
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ShowPhantomForm.inc
+section.end
+
+section.begin
+   Name = AddToHeroArmy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AddToHeroArmy.inc
+section.end
+
+section.begin
+   Name = IsNecromancyUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsNecromancyUnit.inc
+section.end
+
+section.begin
+   Name = IsFullDestroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\IsFullDestroy.inc
+section.end
+
+section.begin
+   Name = GetParamsParserByUID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetParamsParserByUID.inc
+section.end
+
+section.begin
+   Name = ModifyVisualParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ModifyVisualParams.inc
+section.end
+
+section.begin
+   Name = CreateFlyTexts
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CreateFlyTexts.inc
+section.end
+
+section.begin
+   Name = _________________
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = SetupAnimation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\SetupAnimation.inc
+section.end
+
+section.begin
+   Name = CheckAttackAnimation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckAttackAnimation.inc
+section.end
+
+section.begin
+   Name = CheckInvAttackAnimation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckInvAttackAnimation.inc
+section.end
+
+section.begin
+   Name = CheckCAttackAnimation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckCAttackAnimation.inc
+section.end
+
+section.begin
+   Name = CheckDeathAnimation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckDeathAnimation.inc
+section.end
+
+section.begin
+   Name = CheckDeathAnimationD
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckDeathAnimationD.inc
+section.end
+
+section.begin
+   Name = PlayBerserkAnimation
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\PlayBerserkAnimation.inc
+section.end
+
+section.begin
+   Name = AddSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\AddSpell.inc
+section.end
+
+section.begin
+   Name = DeleteSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DeleteSpell.inc
+section.end
+
+section.begin
+   Name = ClearSpellBook
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ClearSpellBook.inc
+section.end
+
+section.begin
+   Name = RestoreParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\RestoreParams.inc
+section.end
+
+section.begin
+   Name = RestoreSpells
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\RestoreSpells.inc
+section.end
+
+section.begin
+   Name = ClearEffects
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ClearEffects.inc
+section.end
+
+section.begin
+   Name = EvaluateOrderParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\EvaluateOrderParser.inc
+section.end
+
+section.begin
+   Name = OnDamage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\OnDamage.inc
+section.end
+
+// MakeSureUnitIsDead
+section.begin
+   Name = MakeSureUnitIsDead
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\MakeSureUnitIsDead.inc
+section.end
+
+section.begin
+   Name = ResetAbilityFlags
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ResetAbilityFlags.inc
+section.end
+
+section.begin
+   Name = CheckSlyBootsAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckSlyBootsAbility.inc
+section.end
+
+// GetMapHandles
+section.begin
+   Name = GetMapHandles
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\GetMapHandles.inc
+section.end
+
+section.begin
+   CurrentState = Nothing
+   SaveVariables = False
+section.end
+
+section.begin
+   Name = DeathAnimReady
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\DeathAnimReady.inc
+section.end
+
+section.begin
+   Name = ApplyAllVisualParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\ApplyAllVisualParams.inc
+section.end
+
+section.begin
+   Name = CheckFreeze
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\unit.inc\CheckFreeze.inc
+section.end
+
+

@@ -1,0 +1,2148 @@
+//
+// misc.script
+//
+
+// placeholders to avoid compiler errors when debugging. The actual functions moved to object.script
+function _misc_GetPickedUnitHandle() : Integer;begin ErrorLog('Trying to call _misc_GetPickedUnitHandle instead of _obj_GetPickedUnitHandle'); end;
+function _misc_GetPickedChildHandle(const parentHnd : Integer) : Integer;begin ErrorLog('Trying to call _misc_GetPickedChildHandle instead of _obj_GetPickedChildHandle'); end;
+function _misc_GetPickedHandle() : Integer;begin ErrorLog('Trying to call _misc_GetPickedHandle instead of _obj_GetPickedHandle'); end;
+procedure _misc_GetGameObjectAbsolutePosition(const goHnd : Integer; var x : Float; var y : Float; var z : Float; const calcTLFAnimation : Boolean);begin ErrorLog('Trying to call _misc_GetGameObjectAbsolutePosition instead of _obj_GetGameObjectAbsolutePosition'); end;
+procedure _misc_GetGameObjectLocalPosition(const goHnd : Integer; var x : Float; var y : Float; var z : Float; const calcTLFAnimation : Boolean);begin ErrorLog('Trying to call _misc_GetGameObjectLocalPosition instead of _obj_GetGameObjectLocalPosition'); end;
+procedure _misc_ChildToParent(const goHnd : Integer; const stopTLFAnimation : Boolean);begin ErrorLog('Trying to call _misc_ChildToParent instead of _obj_ChildToParent'); end;
+function _misc_GetGroupHandleByName(const plHnd : Integer; const name : String) : Integer;begin ErrorLog('Trying to call _misc_GetGroupHandleByName instead of _obj_GetGroupHandleByName'); end;
+function _misc_GetOrCreateGroupByName(const plHnd : Integer; const name : String) : Integer;begin ErrorLog('Trying to call _misc_GetOrCreateGroupByName instead of _obj_GetOrCreateGroupByName'); end;
+function _misc_GetOrCreateGroupByUnit(const unitHnd : Integer) : Integer;begin ErrorLog('Trying to call _misc_GetOrCreateGroupByUnit instead of _obj_GetOrCreateGroupByUnit'); end;
+function _misc_GetOrCreatePlayer(const plName, raceName, controlMode : String) : Integer;begin ErrorLog('Trying to call _misc_GetOrCreatePlayer instead of _plr_GetOrCreate'); end;
+function _misc_FindChildHandle(const parentHandle : Integer; hierarchy : Boolean; raceName, baseName, customName : String) : Integer;begin ErrorLog('Trying to call _misc_FindChildHandle instead of _obj_FindChildHandle'); end;
+function _misc_GetObjectHandleByData(parentHnd : Integer; hierarchy : Boolean; raceName, baseName, playerName, customName : String) : Integer;begin ErrorLog('Trying to call _misc_GetObjectHandleByData instead of _obj_GetObjectHandleByData'); end;
+procedure _misc_GetHeroHumanName(hero_nm : String; var _name : String);begin ErrorLog('Trying to call _misc_GetHeroHumanName instead of _hero_GetHeroHumanName'); end;
+procedure _misc_GetHeroName(heroHandle : Integer; var _name : String);begin ErrorLog('Trying to call _misc_GetHeroName instead of _hero_GetHeroName'); end;
+procedure _misc_SetPlayersGameObjectVisible(plHnd : Integer; visible : Boolean); begin ErrorLog('Trying to call _misc_SetPlayersGameObjectVisible instead of _plr_SetPlayerGameObjectsVisible'); end;
+procedure _misc_UpdateHeroHUDs(); begin ErrorLog('Trying to call _misc_UpdateHeroHUDs instead of _hero_UpdateHeroHUDs'); end;
+
+// WITHOUT trailing '\' !
+procedure _prof_GetProfileFolder(var dst_path : String;profiles_root : Boolean);
+begin
+   var temp_str,temp_str2,temp_str3 : String;
+   var i,n : Integer;
+
+   dst_path := '';
+   temp_str := StrReplace(UserGetProfileFileNameByIndex(0),' ','?');
+   if (temp_str <> '') and (_sa_GetNum_D(temp_str,$5c) > 2) then
+   begin
+      n := _sa_GetNum_D(temp_str,$5c);
+      temp_str2 := '';
+      for i := 0 to n-3 do
+      begin
+         _sa_Get_D(temp_str,i,$5c,temp_str3);
+         _sa_Add_D(temp_str2,temp_str3,'\');
+      end;
+      if not profiles_root then
+         _sa_Add_D(temp_str2,UserGetProfileName(),'\');
+      dst_path := StrReplace(temp_str2,'?',' ');
+   end;
+end;
+
+procedure _prof_CreateZIPCommandsFile(map_name : String);
+begin
+   var p : Integer;
+   var temp_str : String;
+
+   _prof_GetProfileFolder(temp_str,True);
+   p := _misc_ParserGetOrCreateByKey('prof_savemap_tmp', True);
+   ParserSetValueByKeyByHandle(p,'Name1',temp_str+'\'+gc_TempMap_FileName);
+   ParserSetValueByKeyByHandle(p,'Name2',gStringRegister_ProfileSavesFolderLast+map_name);
+   temp_str := temp_str+'\'+gc_TempMap_FileName+'.cfg';
+   if IsFileExists(temp_str) then
+      DeleteFileStream(temp_str);
+   ParserSaveToFile(temp_str);
+end;
+
+
+procedure _misc_StripQuotationMarks(var str : String);
+begin
+   if SubStr(str, 1, 1) = '"' then
+      str := SubStr(str, 2, StrLength(str)-1);
+
+   if SubStr(str, StrLength(str), 1) = '"' then
+      str := SubStr(str, 0, StrLength(str)-1);
+end;
+
+
+function StrToChar(const str : String) : Char; // look at this retarded function I had to make because Ord method was not included in the build. 
+begin
+   case str of
+      #1 : Result := 1;
+      #2 : Result := 2;
+      #3 : Result := 3;
+      #4 : Result := 4;
+      #5 : Result := 5;
+      #6 : Result := 6;
+      #7 : Result := 7;
+      #8 : Result := 8;
+      #9 : Result := 9;
+      #10 : Result := 10;
+      #11 : Result := 11;
+      #12 : Result := 12;
+      #13 : Result := 13;
+      #14 : Result := 14;
+      #15 : Result := 15;
+      #16 : Result := 16;
+      #17 : Result := 17;
+      #18 : Result := 18;
+      #19 : Result := 19;
+      #20 : Result := 20;
+      #21 : Result := 21;
+      #22 : Result := 22;
+      #23 : Result := 23;
+      #24 : Result := 24;
+      #25 : Result := 25;
+      #26 : Result := 26;
+      #27 : Result := 27;
+      #28 : Result := 28;
+      #29 : Result := 29;
+      #30 : Result := 30;
+      #31 : Result := 31;
+      #32 : Result := 32;
+      #33 : Result := 33;
+      #34 : Result := 34;
+      #35 : Result := 35;
+      #36 : Result := 36;
+      #37 : Result := 37;
+      #38 : Result := 38;
+      #39 : Result := 39;
+      #40 : Result := 40;
+      #41 : Result := 41;
+      #42 : Result := 42;
+      #43 : Result := 43;
+      #44 : Result := 44;
+      #45 : Result := 45;
+      #46 : Result := 46;
+      #47 : Result := 47;
+      #48 : Result := 48;
+      #49 : Result := 49;
+      #50 : Result := 50;
+      #51 : Result := 51;
+      #52 : Result := 52;
+      #53 : Result := 53;
+      #54 : Result := 54;
+      #55 : Result := 55;
+      #56 : Result := 56;
+      #57 : Result := 57;
+      #58 : Result := 58;
+      #59 : Result := 59;
+      #60 : Result := 60;
+      #61 : Result := 61;
+      #62 : Result := 62;
+      #63 : Result := 63;
+      #64 : Result := 64;
+      #65 : Result := 65;
+      #66 : Result := 66;
+      #67 : Result := 67;
+      #68 : Result := 68;
+      #69 : Result := 69;
+      #70 : Result := 70;
+      #71 : Result := 71;
+      #72 : Result := 72;
+      #73 : Result := 73;
+      #74 : Result := 74;
+      #75 : Result := 75;
+      #76 : Result := 76;
+      #77 : Result := 77;
+      #78 : Result := 78;
+      #79 : Result := 79;
+      #80 : Result := 80;
+      #81 : Result := 81;
+      #82 : Result := 82;
+      #83 : Result := 83;
+      #84 : Result := 84;
+      #85 : Result := 85;
+      #86 : Result := 86;
+      #87 : Result := 87;
+      #88 : Result := 88;
+      #89 : Result := 89;
+      #90 : Result := 90;
+      #91 : Result := 91;
+      #92 : Result := 92;
+      #93 : Result := 93;
+      #94 : Result := 94;
+      #95 : Result := 95;
+      #96 : Result := 96;
+      #97 : Result := 97;
+      #98 : Result := 98;
+      #99 : Result := 99;
+      #100 : Result := 100;
+      #101 : Result := 101;
+      #102 : Result := 102;
+      #103 : Result := 103;
+      #104 : Result := 104;
+      #105 : Result := 105;
+      #106 : Result := 106;
+      #107 : Result := 107;
+      #108 : Result := 108;
+      #109 : Result := 109;
+      #110 : Result := 110;
+      #111 : Result := 111;
+      #112 : Result := 112;
+      #113 : Result := 113;
+      #114 : Result := 114;
+      #115 : Result := 115;
+      #116 : Result := 116;
+      #117 : Result := 117;
+      #118 : Result := 118;
+      #119 : Result := 119;
+      #120 : Result := 120;
+      #121 : Result := 121;
+      #122 : Result := 122;
+      #123 : Result := 123;
+      #124 : Result := 124;
+      #125 : Result := 125;
+      #126 : Result := 126;
+      #127 : Result := 127;
+      #128 : Result := 128;
+      #129 : Result := 129;
+      #130 : Result := 130;
+      #131 : Result := 131;
+      #132 : Result := 132;
+      #133 : Result := 133;
+      #134 : Result := 134;
+      #135 : Result := 135;
+      #136 : Result := 136;
+      #137 : Result := 137;
+      #138 : Result := 138;
+      #139 : Result := 139;
+      #140 : Result := 140;
+      #141 : Result := 141;
+      #142 : Result := 142;
+      #143 : Result := 143;
+      #144 : Result := 144;
+      #145 : Result := 145;
+      #146 : Result := 146;
+      #147 : Result := 147;
+      #148 : Result := 148;
+      #149 : Result := 149;
+      #150 : Result := 150;
+      #151 : Result := 151;
+      #152 : Result := 152;
+      #153 : Result := 153;
+      #154 : Result := 154;
+      #155 : Result := 155;
+      #156 : Result := 156;
+      #157 : Result := 157;
+      #158 : Result := 158;
+      #159 : Result := 159;
+      #160 : Result := 160;
+      #161 : Result := 161;
+      #162 : Result := 162;
+      #163 : Result := 163;
+      #164 : Result := 164;
+      #165 : Result := 165;
+      #166 : Result := 166;
+      #167 : Result := 167;
+      #168 : Result := 168;
+      #169 : Result := 169;
+      #170 : Result := 170;
+      #171 : Result := 171;
+      #172 : Result := 172;
+      #173 : Result := 173;
+      #174 : Result := 174;
+      #175 : Result := 175;
+      #176 : Result := 176;
+      #177 : Result := 177;
+      #178 : Result := 178;
+      #179 : Result := 179;
+      #180 : Result := 180;
+      #181 : Result := 181;
+      #182 : Result := 182;
+      #183 : Result := 183;
+      #184 : Result := 184;
+      #185 : Result := 185;
+      #186 : Result := 186;
+      #187 : Result := 187;
+      #188 : Result := 188;
+      #189 : Result := 189;
+      #190 : Result := 190;
+      #191 : Result := 191;
+      #192 : Result := 192;
+      #193 : Result := 193;
+      #194 : Result := 194;
+      #195 : Result := 195;
+      #196 : Result := 196;
+      #197 : Result := 197;
+      #198 : Result := 198;
+      #199 : Result := 199;
+      #200 : Result := 200;
+      #201 : Result := 201;
+      #202 : Result := 202;
+      #203 : Result := 203;
+      #204 : Result := 204;
+      #205 : Result := 205;
+      #206 : Result := 206;
+      #207 : Result := 207;
+      #208 : Result := 208;
+      #209 : Result := 209;
+      #210 : Result := 210;
+      #211 : Result := 211;
+      #212 : Result := 212;
+      #213 : Result := 213;
+      #214 : Result := 214;
+      #215 : Result := 215;
+      #216 : Result := 216;
+      #217 : Result := 217;
+      #218 : Result := 218;
+      #219 : Result := 219;
+      #220 : Result := 220;
+      #221 : Result := 221;
+      #222 : Result := 222;
+      #223 : Result := 223;
+      #224 : Result := 224;
+      #225 : Result := 225;
+      #226 : Result := 226;
+      #227 : Result := 227;
+      #228 : Result := 228;
+      #229 : Result := 229;
+      #230 : Result := 230;
+      #231 : Result := 231;
+      #232 : Result := 232;
+      #233 : Result := 233;
+      #234 : Result := 234;
+      #235 : Result := 235;
+      #236 : Result := 236;
+      #237 : Result := 237;
+      #238 : Result := 238;
+      #239 : Result := 239;
+      #240 : Result := 240;
+      #241 : Result := 241;
+      #242 : Result := 242;
+      #243 : Result := 243;
+      #244 : Result := 244;
+      #245 : Result := 245;
+      #246 : Result := 246;
+      #247 : Result := 247;
+      #248 : Result := 248;
+      #249 : Result := 249;
+      #250 : Result := 250;
+      #251 : Result := 251;
+      #252 : Result := 252;
+      #253 : Result := 253;
+      #254 : Result := 254;
+      #255 : Result := 255;
+      else Result := 0;
+   end;
+end;
+
+procedure _misc_WriteStringToFile(const filePath, writeStr : String);
+begin
+   //if IsFileExists(filePath) then
+   begin
+      OpenFileStreamForWrite(filePath); 
+      var len : Integer = StrLength(writeStr);
+      //if (len > 0) then
+      begin
+         var i, j, int : Integer;
+         var str : String; 
+         var index : Integer = 1;
+         var slots : Integer = len div 4 + 1;
+         for i := 0 to slots-1 do
+         begin
+            int := 0;
+            for j := index to index+3 do
+            begin
+               str := SubStr(writeStr, j, 1);
+               if str <> '' then
+               begin
+                  int := int + (StrToChar(str) shl (8 * ((j-1) mod 4)));
+               end;
+            end;
+            FileStreamWriteInteger(int);
+            index := index + 4;
+         end;
+      end;
+      CloseFileStream();
+   end;
+end;
+
+
+// _misc_SetCameraTargetByPos
+//
+procedure _misc_SetCameraTargetByPos(goX, goZ : Float);
+begin
+   var cameraStartName : String = '@stratCamera';
+
+   if not GetCameraExist(cameraStartName) then
+      AddCameraInfo(cameraStartName);
+
+   var lx, rx, fy, by, htmin, sh, shm, SphereLength, SphereLengthMin : Float;
+   GetCameraRestrictInfo(lx, rx, fy, by, htmin, sh, shm, SphereLength, SphereLengthMin);
+
+   var distance : Float = 0.1;
+   var sWidth : Integer = GetViewerWidth();
+   var sHeight : Integer = GetViewerHeight();
+   var maxZoom : Integer;
+   var b5x4resoulution : Boolean = (sWidth/sHeight < 1.48);
+   var posY : Float;
+
+   if (b5x4resoulution) then
+      maxZoom := gc_gui_map_camera_max_zoom_5x4
+   else
+      maxZoom := gc_gui_map_camera_max_zoom;
+
+   if (gFloatRegister_GUICameraHeight>0) then
+   begin
+      var tx, ty, tz, cx, cy, cz : Float;
+
+      if not GetCameraExist(cameraStartName) then
+         AddCameraInfo(cameraStartName);
+      CameraInfoSaveFromCurrentView(cameraStartName);
+      CameraInfoReadProperties(cameraStartName, tx, ty, tz, cx, cy, cz);
+      gFloatRegister_GUICameraHeight := ty;
+
+      if (gFloatRegister_GUICameraHeight<gc_gui_map_camera_min_zoom) then
+         gFloatRegister_GUICameraHeight := gc_gui_map_camera_min_zoom
+      else
+         if (gFloatRegister_GUICameraHeight>maxZoom) then
+            gFloatRegister_GUICameraHeight := maxZoom;
+   end
+   else
+      gFloatRegister_GUICameraHeight := maxZoom;
+
+   posY := gFloatRegister_GUICameraHeight;
+
+   var tarX : Float = goX;
+   var tarZ : Float = goZ;
+   var tarY : Float = GetCameraAbsoluteHeightByXZ(tarX, tarZ);
+   var offsetX  : Float = 0;
+   var offsetZ  : Float = 0;
+   if (b5x4resoulution) then
+   begin
+      var koef : Float = (gFloatRegister_GUICameraHeight/(maxZoom+tarY));
+      offsetZ := 36.25*koef
+   end
+   else
+   begin
+      var koef : Float = (gFloatRegister_GUICameraHeight/(maxZoom+tarY));
+      offsetZ := 40.8*koef;
+   end;
+
+   var posX : Float = goX + offsetX;
+   var posZ : Float = goZ + offsetZ;
+
+   var tarDirX : Float = tarX - posX;
+   var tarDirY : Float = tarY - posY;
+   var tarDirZ : Float = tarZ - posZ;
+   var invLen : Float = 1/Sqrt(Sqr(tarDirX)+Sqr(tarDirY)+Sqr(tarDirZ));
+   tarDirX := tarDirX * invLen;
+   tarDirY := tarDirY * invLen;
+   tarDirZ := tarDirZ * invLen;
+
+   tarX := posX + tarDirX * -distance;
+   tarY := posY + tarDirY * -distance;
+   tarZ := posZ + tarDirZ * -distance;
+   CameraInfoSaveWithProperties(cameraStartName, posX, posY, posZ, tarX, tarY ,tarZ);
+   SetCameraInfoSmoothingTime(1000);
+   CameraInfoLoadToCurrentView(cameraStartName);
+end;
+
+// _misc_SetCameraTarget
+//
+procedure _misc_SetCameraTarget(goHandle : Integer);
+begin
+   _misc_SetCameraTargetByPos(GetGameObjectPositionXByHandle(goHandle),GetGameObjectPositionZByHandle(goHandle));
+end;
+
+// _misc_SetPhrase
+//
+procedure _misc_SetPhrase(const id : Integer; var res : String);
+begin
+   res := GetLocaleTableListItemByID('gui', IntToStr(id));
+end;
+
+// _misc_AssignGlobalVars
+//
+procedure _misc_AssignGlobalVars(varFrom, varTo : String);
+begin
+   var pGlobalVarAssign : Integer = _misc_ParserGetOrCreateByKey('misc_GlobalVarAssign',true);
+   StateMachineGlobalVariablesSaveToParser(pGlobalVarAssign, varFrom, False, False);
+   StateMachineGlobalVariablesLoadFromParser(pGlobalVarAssign, varTo, False, False);
+end;
+
+// _misc_GlobalVarSaveToFile
+//
+procedure _misc_GlobalVarSaveToFile(varName, fileName : String);
+begin
+   var pGlobalVarSaveToFile : Integer = _misc_ParserGetOrCreateByKey('misc_GlobalVarSaveToFile',true);
+   StateMachineGlobalVariablesSaveToParser(pGlobalVarSaveToFile, varName, False, False);
+   ParserSaveToFileByHandle(pGlobalVarSaveToFile, fileName);
+end;
+
+// _misc_GlobalVarLoadFromFile
+//
+procedure _misc_GlobalVarLoadFromFile(varName, fileName : String);
+begin
+   var pGlobalVarLoadFromFile : Integer = _misc_ParserGetOrCreateByKey('misc_GlobalVarLoadFromFile',true);
+   ParserLoadFromFileByHandle(pGlobalVarLoadFromFile, fileName);
+   StateMachineGlobalVariablesLoadFromParser(pGlobalVarLoadFromFile, varName, False, False);
+end;
+
+// _misc_GetItemIconNameExt
+//
+procedure _misc_GetItemIconNameExt(itemID : Integer; var iconName : String);
+begin
+   var pExtItem : Integer = ParserSelectByHandleByIndex(gPrototypeData.extitems.handle, itemID);
+   var itemType : Integer = ParserGetIntValueByKeyByHandle(pExtItem, 'ItemType');
+   if itemType >= 10 then
+   begin
+      var pItemAbilities : Integer = ParserSelectByHandleByKey(pExtItem, 'Abilities');
+      var pItemAbility : Integer = ParserSelectByHandleByIndex(pItemAbilities, 0);
+      var power : Integer = ParserGetIntValueByKeyByHandle(pItemAbility, 'Power');
+      case itemType of
+         10 : begin
+            var pSpell : Integer = ParserSelectByHandleByIndex(gPrototypeData.spells.handle, power);
+            var level : Integer = ParserGetIntValueByKeyByHandle(pSpell, 'Level');
+            iconName := 'icon.scroll.'+IntToStr(level);
+         end;
+         11 : iconName := 'icon.defender.' + IntToStr(power);
+         12 : begin
+            var pOuterBuild : Integer = ParserSelectByHandleByIndex(gPrototypeData.outerBuildings.handle, power);
+            var icon : Integer = ParserGetIntValueByKeyByHandle(pOuterBuild, 'Icon');
+            iconName := 'icon.building.' + IntToStr(icon);
+         end;
+         13 : iconName := 'icon.ritual.' + IntToStr(power);
+         14 : begin
+            IntRegister0 := power;
+            MapExecuteState('GetInnerBuildParserByID');
+            var pInnerBuilding : Integer = IntRegister1;
+            var buildIcon : Integer = ParserGetIntValueByKeyByHandle(pInnerBuilding, 'Icon');
+            iconName := 'icon.building.' + IntToStr(buildIcon);
+         end;
+      end;
+   end
+   else
+   iconName := 'icon.item.'+IntToStr(itemID);
+end;
+
+// _misc_GetParserChildByKeyValue
+//
+function _misc_GetParserChildByKeyValue(const nodes : Integer; const key, value : String) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for i := 0 to ParserGetCountByHandle(nodes)-1 do
+   begin
+      var node : Integer = ParserSelectByHandleByIndex(nodes, i);
+      if (SameText(ParserGetValueByKeyByHandle(node, key), value)) then
+      begin
+         Result := node;
+         break;
+      end;
+   end;
+end;
+
+// _misc_ParserGetBoolValueByKeyByHandleDef
+//
+function _misc_ParserGetBoolValueByKeyByHandleDef(const struct : Integer; const key : String; const def : Boolean) : Boolean;
+begin
+   if (ParserGetValueByKeyByHandle(struct, key)<>'') then
+   Result := ParserGetBoolValueByKeyByHandle(struct, key)
+   else
+   Result := def;
+end;
+
+// _misc_ParserGetIntValueByKeyByHandleDef
+//
+function _misc_ParserGetIntValueByKeyByHandleDef(const struct : Integer; const key : String; const def : Integer) : Integer;
+begin
+   if (ParserGetValueByKeyByHandle(struct, key)<>'') then
+   Result := ParserGetIntValueByKeyByHandle(struct, key)
+   else
+   Result := def;
+end;
+
+// _misc_ParserGetFloatValueByKeyByHandleDef
+//
+function _misc_ParserGetFloatValueByKeyByHandleDef(const struct : Integer; const key : String; const def : Float) : Float;
+begin
+   if (ParserGetValueByKeyByHandle(struct, key)<>'') then
+   Result := ParserGetFloatValueByKeyByHandle(struct, key)
+   else
+   Result := def;
+end;
+
+// _misc_RndVector
+//
+procedure _misc_RndVector(var vx : Float; var vy : Float; var vz : Float; const f, dispRangeX, dispRangeY, dispRangeZ : Float);
+begin
+   var f2 : Float = 2*f;
+
+   var px : Float = dispRangeX*f2;
+   var py : Float = dispRangeY*f2;
+   var pz : Float = dispRangeZ*f2;
+
+   vx := (Random-0.5)*px;
+   vy := (Random-0.5)*py;
+   vz := (Random-0.5)*pz;
+end;
+
+// _misc_DispersionRange
+//
+procedure _misc_DispersionRange(var posx : Float; var posy : Float; var posz : Float; const initx, inity, initz, posdisp, disprangex, disprangey, disprangez : Float);
+begin
+   var vx, vy, vz : Float;
+
+   _misc_RndVector(vx, vy, vz, posdisp, disprangex, disprangey, disprangez);
+
+   posx := vx+initx;
+   posy := vy+inity;
+   posz := vz+initz;
+end;
+
+// _misc_RndVectorForScale
+//
+procedure _misc_RndVectorForScale(var vx : Float; var vy : Float; var vz : Float; const f, dispRangeX, dispRangeY, dispRangeZ : Float);
+begin
+   var f2 : Float = 2*f;
+
+   var px : Float = dispRangeX*f2;
+   var py : Float = dispRangeY*f2;
+   var pz : Float = dispRangeZ*f2;
+
+   var rn : Float = Random;
+
+   vx := (rn-0.5)*px;
+   vy := (rn-0.5)*py;
+   vz := (rn-0.5)*pz;
+end;
+
+// _misc_DispersionRangeForScale
+//
+procedure _misc_DispersionRangeForScale(var posx : Float; var posy : Float; var posz : Float; const initx, inity, initz, posdisp, disprangex, disprangey, disprangez : Float);
+begin
+   var vx, vy, vz : Float;
+
+   _misc_RndVectorForScale(vx, vy, vz, posdisp, disprangex, disprangey, disprangez);
+
+   posx := vx+initx;
+   posy := vy+inity;
+   posz := vz+initz;
+end;
+
+// _misc_ClearPath
+//
+procedure _misc_ClearPath;
+begin
+   var i : Integer;
+   for i:=0 to gc_MaxPath-1 do
+   gArrPath[i] := 0;
+end;
+
+// _misc_GetProvinceParserByUID
+//
+function _misc_GetProvinceParserByUID(uid : Integer) : Integer;
+begin
+   IntRegister0 := uid;
+   MapExecuteState('GetProvinceParserByUID');
+   Result := IntRegister1;
+end;
+
+// _misc_GetProvinceHeroCoords
+//
+procedure _misc_GetProvinceHeroCoords(pProvince : Integer; var heroX, heroZ : Float);
+begin
+   if gBoolRegister_StandHeroAtProvCenter then
+   begin
+      heroX := ParserGetFloatValueByKeyByHandle(pProvince, 'CenterX');
+      heroZ := ParserGetFloatValueByKeyByHandle(pProvince, 'CenterY');
+   end
+   else
+   begin
+      heroX := ParserGetFloatValueByKeyByHandle(pProvince, 'HeroPointX');
+      heroZ := ParserGetFloatValueByKeyByHandle(pProvince, 'HeroPointY');
+   end;
+end;
+
+
+// _misc_IsProvinceNeutral
+//
+function _misc_IsProvinceNeutral(pProvince : Integer) : Boolean;
+begin
+   var terType : Integer = ParserGetIntValueByKeyByHandle(pProvince, 'TerrainType');
+   var pTerrainType : Integer = ParserSelectByHandleByIndex(gPrototypeData.terrainTypes.handle, terType);
+   Result := ParserGetBoolValueByKeyByHandle(pTerrainType, 'Neutral');
+end;
+
+// _misc_CalcEffect
+//
+function _misc_CalcEffect(pEffect, mult, value : Integer) : Integer;
+begin
+   Result := 0;
+
+   var power : Integer = ParserGetIntValueByKeyByHandle(pEffect, 'Power');
+   var param1 : Integer = ParserGetIntValueByKeyByHandle(pEffect, 'Param1');
+   var param2 : Integer = ParserGetIntValueByKeyByHandle(pEffect, 'Param2');
+
+   case param2 of
+      1 :
+      begin
+         Result := Result + power * mult + _rand_Random(param1 * mult);
+      end;
+      2 :
+      begin
+         var perc : Integer = power + _rand_Random(param1);
+         Result := Result + (value * perc) div 100;
+      end
+      else
+      begin
+         Result := Result + power + _rand_Random(param1);
+      end;
+   end;
+end;
+
+// _misc_RoundUp
+//
+function _misc_RoundUp(const value : Float) : Integer;
+begin
+   Result := Floor(value);
+   if value - Floor(value) > 0 then
+   Result := Result+1;
+end;
+
+// _misc_RoundTowardsZero
+//
+function _misc_RoundTowardsZero(value : Float) : Integer;
+begin
+   if value < 0 then
+		Result := _misc_RoundUp(value)
+   else
+		Result := Floor(value);
+end;
+
+// _misc_WithinFrequency
+//
+function _misc_WithinFrequency(const value : Integer; const frequency : Float) : Boolean;
+begin
+	if (frequency <= 0) then
+		Result := False
+	else
+	if (frequency < 1) then
+	begin
+		var fValue : Float = value * frequency;
+		fValue := fValue - Trunc(fValue);
+		Result := (fValue < frequency) or (fValue = 0);
+	end
+	else
+		Result := True;
+end;
+
+// _misc_IsMapLocked
+//
+function _misc_IsMapLocked() : Boolean;
+begin
+   Result := (_gv_GetMapLock() > 0) or gBoolRegister_MapProceedBattle or gBoolRegister_WaitLanQueryResult or
+		(gIntRegister_CurQueryHandle <> 0) or gBoolRegister_MapWin or gBoolRegister_MapLose or gBoolRegister_GUIBattleResultWindow;
+end;
+
+// _misc_AntiFreezeStart
+//
+procedure _misc_AntiFreezeStart();
+begin
+   if (gIntRegister_AntiFreezeStarted=0) and (gc_AntiFreezeEnabled) then
+   begin
+      gIntRegister_AntiFreezeStarted := gIntRegister_AntiFreezeStarted + 1;
+      gFloatRegister_FramesPerSecondFactor := gFloatRegister_AntiFreezeLowFPS;
+      if (FramesPerSecond<gFloatRegister_AntiFreezeLowFPS/gFloatRegister_AntiFreezeLowFactor) then
+      gFloatRegister_FramesPerSecondFactor := FramesPerSecond * gFloatRegister_AntiFreezeLowFactor;
+      ResetPerformanceMonitor();
+   end;
+end;
+
+// _misc_AntiFreeze
+//
+procedure _misc_AntiFreeze;
+begin
+   if (gIntRegister_AntiFreezeStarted>0) and (gIntRegister_AntiFreezeUpdated=0) then
+   begin
+      gIntRegister_AntiFreezeUpdated := gIntRegister_AntiFreezeUpdated + 1;
+      
+      //var smGlobalHnd : Integer = StateMachineLibraryGet('.\data\scripts\units\global.aix');
+      //var smUnitHnd : Integer = StateMachineLibraryGet('.\data\scripts\units\unit.aix');
+      //var smMapProvHnd : Integer = StateMachineLibraryGet('.\data\scripts\map\map.province.aix');
+      //var smMapGlobalHnd : Integer = StateMachineLibraryGet('.\data\scripts\map\map.global.unit.aix');
+      //var smMapUnitHnd : Integer = StateMachineLibraryGet('.\data\scripts\map\map.unit.aix');
+      //SetStateMachineLibraryLocked(smGlobalHnd, true);
+      //SetStateMachineLibraryLocked(smUnitHnd, true);
+      //SetStateMachineLibraryLocked(smMapProvHnd, true);
+      //SetStateMachineLibraryLocked(smMapGlobalHnd, true);
+      //SetStateMachineLibraryLocked(smMapUnitHnd, true);
+      
+      var i : Integer;
+      for i:=0 to GetCountOfPlayers-1 do
+      begin
+         var plHnd : Integer = GetPlayerHandleByIndex(i);
+         if (GetPlayerRaceTagByHandle(plHnd)=gc_player_Units_RaceTag) or (GetPlayerRaceTagByHandle(plHnd)=gc_map_PlayerRaceTag) then
+         SetPlayersGlobalStateMachineEnabled(plHnd, False);
+      end;
+      ApplicationInvalidate(gFloatRegister_FramesPerSecondFactor);
+      for i:=0 to GetCountOfPlayers-1 do
+      begin
+         var plHnd : Integer = GetPlayerHandleByIndex(i);
+         if (GetPlayerRaceTagByHandle(plHnd)=gc_player_Units_RaceTag) or (GetPlayerRaceTagByHandle(plHnd)=gc_map_PlayerRaceTag) then
+         SetPlayersGlobalStateMachineEnabled(plHnd, True);
+      end;
+      
+      //SetStateMachineLibraryLocked(smGlobalHnd, false);
+      //SetStateMachineLibraryLocked(smUnitHnd, false);
+      //SetStateMachineLibraryLocked(smMapProvHnd, false);
+      //SetStateMachineLibraryLocked(smMapGlobalHnd, false);
+      //SetStateMachineLibraryLocked(smMapUnitHnd, false);
+      
+      gIntRegister_AntiFreezeUpdated := gIntRegister_AntiFreezeUpdated - 1;
+   end;
+end;
+
+// _misc_AntiFreezeFinish
+//
+procedure _misc_AntiFreezeFinish;
+begin
+   if (gIntRegister_AntiFreezeStarted>0) then
+   gIntRegister_AntiFreezeStarted := gIntRegister_AntiFreezeStarted - 1;
+end;
+
+
+function _misc_SetupModalQueries() : Integer;
+begin
+   var p,pe,i,no : Integer;
+
+   p  := _misc_ParserGetOrCreateByKey('modal_queries.cfg',true);
+   ParserLoadFromFile('.\data\gui\modal_queries.cfg');
+
+   p := ParserSelectByHandleByKey(p, 'ModalQueries');
+
+   no := min(ParserGetCountByHandle(p),gc_gui_max_modal_queries-1);
+   if no < ParserGetCountByHandle(p) then
+      ErrorLog('Warning. Too many modal queries ['+IntToStr(ParserGetCountByHandle(p))+']');
+
+   for i := 0 to no-1 do
+   begin
+      pe := ParserSelectByHandleByIndex(p, i);
+      gArr_ModalQueries[i].id := ParserGetIntValueByKeyByHandle(pe, 'Id');
+      gArr_ModalQueries[i].mode := ParserGetIntValueByKeyByHandle(pe, 'Mode');
+   end;
+
+   gArr_ModalQueries[no].id := 0;
+   _misc_ParserGetOrCreateByKey('modal_queries.cfg',true);
+   Result := no;
+end;
+
+function _misc_IsModalQuery(q_id : Integer) : Boolean;
+begin
+   var i : Integer;
+
+   Result := false;
+   for i := 0 to gc_gui_max_modal_queries-1 do
+   begin
+      if gArr_ModalQueries[i].id = 0 then
+         break;
+
+      if ((gArr_ModalQueries[i].mode = -1) or (gArr_ModalQueries[i].mode = gIntRegister_CurGameMode)) and (q_id = gArr_ModalQueries[i].id) then
+      begin
+         Result := true;
+         break;
+      end;
+   end;
+end;
+
+// &1 - menu, &2 - quick menu, &4 - banneres, &8 - header
+// &0x100 - do not use fade - remove at once
+procedure _misc_FadeMenuExt(wnd_name : String;flags : Integer);
+begin
+   var whd : Integer;
+   var fade_delay : Float;
+
+   if ((flags and $100) <> 0) then
+      fade_delay := 0
+   else
+      fade_delay := gc_gui_FadeTime0_4;
+
+   whd := _gui_GetWindow(wnd_name);
+   if (whd <> 0) and ((flags and $1) <> 0) then
+      _gui_RootWindowRemoveWithFade(whd,fade_delay);
+   whd := _gui_GetWindow(cQuickAccessMenuWindowName);
+   if (whd <> 0) and ((flags and $2) <> 0) then
+      _gui_RootWindowRemoveWithFade(whd,fade_delay);
+   whd := _gui_GetWindow(cBaseAdsWindowName);
+   if (whd <> 0) and ((flags and $4) <> 0) then
+      _gui_RootWindowRemoveWithFade(whd,fade_delay);
+   whd := _gui_GetWindow(cListMenuHeaderWindowName);
+   if (whd <> 0) and ((flags and $8) <> 0) then
+      _gui_RootWindowRemoveWithFade(whd,fade_delay);
+end;
+
+procedure _misc_FadeMenu(wnd_name : String;hdr : Integer);
+begin
+   if hdr > 0 then
+      _misc_FadeMenuExt(wnd_name,$f)
+   else
+      _misc_FadeMenuExt(wnd_name,7);
+end;
+
+function _misc_IsMenuVisible(wnd_name : String) : Boolean;
+begin
+   var whd : Integer;
+
+   Result := false;
+   whd := _gui_GetWindow(wnd_name);
+   if whd <> 0 then
+   begin
+      var topmost : Integer;
+
+      topmost := _gui_RootWindowGetTopmost(cRootWindowModal);
+      //Log('Topmost window name: '+GetGUIElementNameByIndex(topmost));
+      if (topmost = whd) or (topmost = 0) or (GetGUIElementNameByIndex(topmost) = cListMenuHeaderWindowName) then
+         Result := true;
+   end;
+end;
+
+procedure _misc_PostConsoleCommand(c_command : String; silent : Boolean);
+begin
+   if silent then
+      SetGUIValue('Status','console_command_silent')
+   else
+      SetGUIValue('Status','console_command');
+   SetGUIValue('Tag',c_command);
+   GUIExecuteState('OnEventChat');
+end;
+
+procedure _misc_PostLanConsoleCommand(c_command : String);
+begin
+   SetGUIValue('Status','lan_console_command');
+   SetGUIValue('Tag',c_command);
+   GUIExecuteState('VVK.OnLanEventChat');
+end;
+
+procedure _misc_DropTextLines(txt : String; lines_to_drop : Integer;var txt_dst : String);
+begin
+   var no,i : Integer;
+   var temp_str,temp_str2 : String;
+
+   temp_str := StrReplace(txt,gc_gui_BreakLine,#129);
+   temp_str := StrReplace(temp_str,' ',#128);
+   no := _sa_GetNum_D(temp_str,$81);
+   txt_dst := '';
+   if no > lines_to_drop then
+   begin
+      for i := lines_to_drop to no -1 do
+      begin
+         _sa_Get_D(temp_str,i,$81,temp_str2);
+         if txt_dst <> '' then
+            txt_dst := txt_dst+gc_gui_BreakLine;
+         txt_dst := txt_dst+temp_str2;
+      end;
+      txt_dst := StrReplace(txt_dst,#128,' ');
+   end;
+end;
+
+procedure _misc_GetGameDataRootPath(var dst_path : String);
+begin
+   var temp_str,temp_str2,temp_str3 : String;
+   var i,n : Integer;
+
+   dst_path := '';
+   temp_str := StrReplace(UserGetProfileFileNameByIndex(0),' ','?');
+   if (temp_str <> '') and (_sa_GetNum_D(temp_str,$5c) > 2) then
+   begin
+      n := _sa_GetNum_D(temp_str,$5c);
+      temp_str2 := '';
+      for i := 0 to n-4 do
+      begin
+         _sa_Get_D(temp_str,i,$5c,temp_str3);
+         _sa_Add_D(temp_str2,temp_str3,'\');
+      end;
+//      _sa_Add_D(temp_str2,'banners','\');
+      dst_path := StrReplace(temp_str2,'?',' ')+'\';
+   end;
+end;
+
+
+// _misc_GetTutorialHintStatus
+//
+function _misc_GetTutorialHintStatus : Integer;
+begin
+   var elmHandle : Integer = GetGUIElementIndexByNameParent('showtutorial', _gui_GetLayer(cTutorialLayer));
+   if elmHandle = 0 then
+   begin
+      if gIntRegister_TutorialCurrentHint = 0 then
+      Result := gc_Tutorial_HintDisabled
+      else
+      Result := gc_Tutorial_HintHidden;
+   end
+   else
+   begin
+      if GetGUIElementVisible(elmHandle) then
+      Result := gc_Tutorial_HintEnabled
+      else
+      Result := gc_Tutorial_HintHidden;
+   end;
+end;
+
+// _misc_SetTutorialHintVisible
+//
+procedure _misc_SetTutorialHintVisible(visible : Boolean);
+begin
+   if visible then
+   begin
+      IntRegister0 := gIntRegister_TutorialCurrentHint;
+      GUIExecuteState('ShowTutorial');
+   end
+   else
+   begin
+      var elmHandle : Integer = GetGUIElementIndexByNameParent('showtutorial', _gui_GetLayer(cTutorialLayer));
+      if elmHandle <> 0 then
+      _gui_FadeElement(elmHandle, gc_gui_FadeTime0_2, false, true, false);
+   end;
+end;
+
+// _misc_UpdateTutorialHint
+//
+procedure _misc_UpdateTutorialHint;
+begin
+   var hStatus : Integer = _misc_GetTutorialHintStatus;
+   case hStatus of
+      gc_Tutorial_HintEnabled: begin
+         var hide : Boolean = false;
+         if (gIntRegister_TutCurCastleMode = 1) then
+         begin
+            if (gIntRegister_GUICurCastleMode <> gIntRegister_TutCurCastleMode) or
+            (gIntRegister_GUICurCastleTabMode <> gIntRegister_TutCurCastleTabMode) then
+            hide := true;
+         end
+         else
+         begin
+            if (gIntRegister_GUICurCastleMode <> gIntRegister_TutCurCastleMode) or
+            (gIntRegister_GUICurHeroMode <> gIntRegister_TutCurHeroMode) then
+            hide := true;
+         end;
+
+         if hide then
+         _misc_SetTutorialHintVisible(false);
+      end;
+      gc_Tutorial_HintHidden: begin
+         var show : Boolean = false;
+         if (gIntRegister_GUICurCastleMode = gIntRegister_TutCurCastleMode) then
+         begin
+            if (gIntRegister_TutCurCastleMode = 1) then
+            begin
+               if (gIntRegister_GUICurCastleTabMode = gIntRegister_TutCurCastleTabMode) then
+               show := true;
+            end
+            else
+            begin
+               if (gIntRegister_GUICurHeroMode = gIntRegister_TutCurHeroMode) then
+               show := true;
+            end;
+
+            if show then
+            _misc_SetTutorialHintVisible(true);
+         end;
+      end;
+   end;
+end;
+
+// _misc_ResetNecromancyData
+//
+procedure _misc_ResetNecromancyData;
+begin
+   var i : Integer;
+   for i := 0 to 4 do
+   begin
+      arrNecroInfo[i].unitID := 0;
+      arrNecroInfo[i].count := 0;
+      arrNecroInfo[i].curIndex := -1;
+   end;
+end;
+
+// _misc_PlMakeDiplomacyText
+//
+procedure _misc_PlMakeDiplomacyText(ind1, ind2, dipIndex, dipParam : Integer);
+begin
+   var plHandle : Integer = GetPlayerHandleByIndex(ind1);
+   IntRegister0 := ind2;
+   IntRegister1 := dipIndex;
+   IntRegister2 := dipParam;
+   PlayerExecuteStateByHandle(plHandle, 'MakeDiplomacyText');
+end;
+
+
+// _misc_BattleBothHuman
+//
+function _misc_BattleBothHuman() : Boolean;
+begin
+   var aCMode : String = GetPlayerControlModeByHandle(gIntRegister_BattleAttackPlayer);
+   var dCMode : String = GetPlayerControlModeByHandle(gIntRegister_BattleDefendPlayer);
+
+   Result := (gIntRegister_BattleAttackPlayer <> gIntRegister_BattleDefendPlayer) and SameText(aCMode, 'cmPlayer') and SameText(dCMode, 'cmPlayer');
+end;
+
+// _misc_IsLanBattle
+//
+function _misc_IsLanBattle() : Boolean;
+begin
+   Result := false;
+   if gGame.gameType = gc_GameTypeLanBattle then
+      Result := true
+   else
+   if gGame.gameType = gc_GameTypeLanShard then
+      Result := _misc_BattleBothHuman();
+end;
+
+
+// _misc_IsVisibleBattle
+//
+function _misc_IsVisibleBattle() : Boolean;
+begin
+   Result := gBoolRegister_IsHumanPlayer;
+   //Result := (not gBoolRegister_BattleSimulate) and (not gBoolRegister_RealAIBattle) and (not gBoolRegister_IsDefenderAutoBattle) and ((not gBoolRegister_IsDefenderBattle) or _misc_IsLanBattle);
+   //if Result then
+   //Log('visible battle')
+   //else
+   //Log('invisible battle');
+end;
+
+
+// _misc_GetGameFlags
+// see gc_GameTypeFlag constants
+// &1    - single, else - multiplayer (valid for menu mode as well)
+// &2    - internet, else - hotseat (valid for menu mode as well)
+// &4    - battle, else - strategy/astral/menu (see 0x40 and 0x80)
+// &8    - campaign, else - custom map (true always for 0x40)
+// &0x10 - master, else - client
+// &0x20 - tactical battle between two human players on lan
+// &0x40 - astral mode
+// &0x80 - menu mode
+function _misc_GetGameFlags() : Integer;
+begin
+   if (gIntRegister_CurGameMode = gc_GameModeMenu) or (gIntRegister_CurGameMode = gc_GameModeAstral) then
+   begin
+      if (gGame.gametype = gc_GameTypeLanShard) or (gGame.gametype = gc_GameTypeLanBattle) then
+      begin
+         Result := gc_GameTypeFlagInternet;
+         if GetLanMode() > 1 then
+            Result := Result or gc_GameTypeFlagMaster;
+      end
+      else
+         Result := gc_GameTypeFlagSingle;
+
+      if (gIntRegister_CurGameMode = gc_GameModeMenu) then
+         Result := Result or gc_GameTypeFlagMenu
+      else
+         Result := Result or (gc_GameTypeFlagAstral or gc_GameTypeFlagCampaign);
+   end
+   else
+   begin
+      if (gGame.gameType = gc_GameTypeHotseat) or (gGame.gameType = gc_GameTypeLanShard) or (gGame.gameType = gc_GameTypeLanBattle) or (gGame.gameType = gc_GameTypeHotseatBattle) then
+      begin
+         Result := 0;
+         if (gGame.gameType = gc_GameTypeLanShard) or (gGame.gameType = gc_GameTypeLanBattle) then
+         begin
+            Result := Result or gc_GameTypeFlagInternet;
+            if GetLanMode() > 1 then
+               Result := Result or gc_GameTypeFlagMaster;
+         end;
+         if (gGame.gameType = gc_GameTypeHotseatBattle) or (gGame.gameType = gc_GameTypeLanBattle) or (gIntRegister_CurGameMode = gc_GameModeTactics) then
+         begin
+            Result := Result or gc_GameTypeFlagBattle;
+            if (gGame.gameType = gc_GameTypeLanShard) then
+            begin
+               var aCMode : String = GetPlayerControlModeByHandle(gIntRegister_BattleAttackPlayer);
+               var dCMode : String = GetPlayerControlModeByHandle(gIntRegister_BattleDefendPlayer);
+
+               if (gIntRegister_BattleAttackPlayer <> gIntRegister_BattleDefendPlayer) and SameText(aCMode, 'cmPlayer') and SameText(dCMode, 'cmPlayer') then
+                  Result := Result or gc_GameTypeFlagHumanBattle;
+            end;
+         end;
+         //else
+         //begin
+        //    if gIntRegister_CurGameMode = gc_GameModeTactics then
+        //       Result := Result or gc_GameTypeFlagBattle;
+         //   if (gGame.gameType = gc_GameTypeLanShard) then
+         //   begin
+         //      var aCMode : String = GetPlayerControlModeByHandle(gIntRegister_BattleAttackPlayer);
+         //      var dCMode : String = GetPlayerControlModeByHandle(gIntRegister_BattleDefendPlayer);
+
+         //      if (gIntRegister_BattleAttackPlayer <> gIntRegister_BattleDefendPlayer) and SameText(aCMode, 'cmPlayer') and SameText(dCMode, 'cmPlayer') then
+         //         Result := Result or gc_GameTypeFlagBattle;
+        //    end;
+        // end;
+      end
+      else
+      begin
+         Result := gc_GameTypeFlagSingle;
+         if (gGame.gameType = gc_GameTypeCampaign) then
+            Result := Result or gc_GameTypeFlagCampaign;
+         if gIntRegister_CurGameMode = gc_GameModeTactics then
+            Result := Result or gc_GameTypeFlagBattle;
+      end;
+   end;
+end;
+
+
+// _misc_GetBattleSpeed
+//
+function _misc_GetBattleSpeed() : Float;
+begin
+   if _misc_IsLanBattle() then
+      Result := gc_lan_battlespeed
+   else
+   begin
+      if gIntRegister_BattleCurPlIndex <> GetPlayerIndexByHandle(GetPlayerHandleInterfaceIO) then
+         Result := gProfile.battlespeed
+      else
+         Result := gProfile.battlespeedally;
+   end;
+end;
+
+
+function _misc_CalcBattleSpeedModifiedByValue(const value, modifier : Float) : Float;
+begin
+   if value >= 1 then 
+		Result := gc_battle_speed_absolute_max
+   else
+   begin
+		Result := gc_battle_speed_min;
+   
+		if value > 0 then
+			Result := Result + value * (gc_battle_speed_max - gc_battle_speed_min);
+	end;
+	
+	Result := Result * modifier;
+end;
+
+
+// _misc_CalcBattleSpeedModified
+//
+function _misc_CalcBattleSpeedModified(const modifier : Float) : Float;
+begin
+   Result := _misc_CalcBattleSpeedModifiedByValue(_misc_GetBattleSpeed(), modifier);
+end;
+
+
+// _misc_NormalizeWaterFieldByIndex
+// step = 0.05
+procedure _misc_NormalizeWaterFieldByIndex(ind : Integer; step : Float; doraise, dolower : Boolean);
+begin
+   if (ind>=0) and (ind<WaterFieldGetCount) then
+   begin
+      var globalOffset : Float = GetCurrentWaterOffset;
+      var posx, posy, posz : Float;
+      WaterFieldGetPosition(ind, posx, posy, posz);
+      var minx, minz, maxx, maxz, offsety : Float;
+      WaterFieldGetCoord(ind, minx, minz, maxx, maxz, offsety);
+      var absy : Float = globalOffset+offsety+posy;
+      var miny : Float = absy;
+      var absminy : Float = 65000;
+      var cur : Float;
+      cur := minx;
+      repeat
+         var y : Float;
+         y := RayCastHeight(cur, minz);
+         if y<miny then miny:=y;
+         if y<absminy then absminy:=y;
+         y := RayCastHeight(cur, maxz);
+         if y<miny then miny:=y;
+         if y<absminy then absminy:=y;
+         cur := cur + step;
+      until cur>maxx;
+      cur := minz;
+      repeat
+         var y : Float;
+         y := RayCastHeight(minx, cur);
+         if y<miny then miny:=y;
+         if y<absminy then absminy:=y;
+         y := RayCastHeight(maxx, cur);
+         if y<miny then miny:=y;
+         if y<absminy then absminy:=y;
+         cur := cur + step;
+      until cur>maxz;
+      if (miny<absy) and (dolower) then
+      WaterFieldSetOffsetY(ind, miny-posy-globalOffset) //WaterFieldSetOffsetY(ind, offsety-(absy-miny))
+      else
+      if (doraise) then
+      WaterFieldSetOffsetY(ind, absminy-posy-globalOffset);
+   end;
+end;
+
+// _misc_NormalizeWaterFieldByName
+//
+procedure _misc_NormalizeWaterFieldByName(name : String; step : Float; doraise, dolower : Boolean);
+begin
+   var ind : Integer;
+   for ind:=0 to WaterFieldGetCount-1 do
+   begin
+      var fieldname : String = WaterFieldGetNameByIndex(ind);
+      if (fieldname=name) then
+      _misc_NormalizeWaterFieldByIndex(ind, step, doraise, dolower);
+   end;
+end;
+
+
+// _misc_GetRandomPatternIndex
+//
+function _misc_GetRandomPatternIndex(const pPatternList, visualID : Integer; const bProgressSeed : Boolean) : Integer;
+begin
+   Result := -1;
+   var i, j : Integer;
+   var sum : Float = 0;
+
+   for i := 0 to ParserGetCountByHandle(pPatternList)-1 do
+   begin
+      var pPattern : Integer = ParserSelectByHandleByIndex(pPatternList, i);
+      var pWorldRuleVisualFreqs : Integer = ParserSelectByHandleByKey(pPattern, 'WorldRuleVisualFreqs');
+      for j:=0 to ParserGetCountByHandle(pWorldRuleVisualFreqs)-1 do
+      begin
+         var pWorldRuleVisualFreq : Integer = ParserSelectByHandleByIndex(pWorldRuleVisualFreqs, j);
+         if (visualID = ParserGetIntValueByKeyByHandle(pWorldRuleVisualFreq, 'VisualID')) then
+         begin
+            var freq : Float = ParserGetFloatValueByKeyByHandle(pWorldRuleVisualFreq, 'Frequency');
+            sum := sum + freq;
+         end;
+      end;
+   end;
+
+   var rand : Float;
+	if bProgressSeed then 
+		rand := RandomExt * sum
+	else
+		rand := Random * sum;
+   var curSum : Float = 0;
+
+   for [MAIN]i := 0 to ParserGetCountByHandle(pPatternList)-1 do
+   begin
+      var pPattern : Integer = ParserSelectByHandleByIndex(pPatternList, i);
+      var pWorldRuleVisualFreqs : Integer = ParserSelectByHandleByKey(pPattern, 'WorldRuleVisualFreqs');
+      for j:=0 to ParserGetCountByHandle(pWorldRuleVisualFreqs)-1 do
+      begin
+         var pWorldRuleVisualFreq : Integer = ParserSelectByHandleByIndex(pWorldRuleVisualFreqs, j);
+         if (visualID = ParserGetIntValueByKeyByHandle(pWorldRuleVisualFreq, 'VisualID')) then
+         begin
+            var freq : Float = ParserGetFloatValueByKeyByHandle(pWorldRuleVisualFreq, 'Frequency');
+            curSum := curSum + freq;
+
+            if curSum >= rand then
+            begin
+               Result := i;
+               break(MAIN);
+            end;
+         end;
+      end;
+   end;
+end;
+
+
+// _misc_GetCurrentConflict
+//
+function _misc_GetCurrentConflict : Integer;
+begin
+   var plHandle : Integer = GetPlayerHandleByIndex(gIntRegister_ConflictPlayerIndex);
+   if plHandle <> 0 then
+   begin
+      var pPlParser : Integer = ParserSelectPlayer(plHandle);
+      Result := ParserSelectByHandleByIndex(ParserSelectByHandleByKey(pPlParser, 'Conflicts'), 0);
+   end
+   else
+      Result := 0;
+end;
+
+// _misc_GetConflictPlayerCount
+//
+function _misc_GetConflictPlayerCount() : Integer;
+begin
+   var pConflict : Integer = _misc_GetCurrentConflict();
+   var pConfHeroes : Integer = ParserSelectByHandleByKey(pConflict, 'Heroes');
+
+   var i : Integer;
+   var arPlayers : array [0..gc_MaxMapPlayers-1] of Boolean;
+   for i := 0 to gc_MaxMapPlayers-1 do
+      arPlayers[i] := false;
+
+   for i := ParserGetCountByHandle(pConfHeroes)-1 downto 0 do
+   begin
+      var uid : Integer = ParserGetIntValueByKeyByHandle(ParserSelectByHandleByIndex(pConfHeroes, i), 'UID');
+      var plHandle : Integer = GetGameObjectPlayerHandleByHandle(GetGameObjectHandleByUniqueId(uid));
+      arPlayers[GetPlayerIndexByHandle(plHandle)] := true;
+   end;
+
+   Result := 0;
+   for i := 0 to gGame.map.players-1 do
+   begin
+      if arPlayers[i] then
+         Result := Result + 1;
+   end;
+end;
+
+// _misc_RemoveConflictHero
+//
+procedure _misc_RemoveConflictHero(heroUID : Integer);
+begin
+   var pConflict : Integer = _misc_GetCurrentConflict;
+   var pConfHeroes : Integer = ParserSelectByHandleByKey(pConflict, 'Heroes');
+   var i : Integer;
+   for i := ParserGetCountByHandle(pConfHeroes)-1 downto 0 do
+   begin
+      var pConfHero : Integer = ParserSelectByHandleByIndex(pConfHeroes, i);
+      var uid : Integer = ParserGetIntValueByKeyByHandle(pConfHero, 'UID');
+
+      if uid = heroUID then
+      begin
+         ParserFreeByHandle(pConfHero);
+         break;
+      end;
+   end;
+end;
+
+// _misc_GetHexDist
+//
+function _misc_GetHexDist(x0, y0, x1, y1 : Integer) : Integer;
+begin
+   var minX : Integer = 0;
+   var maxX : Integer = 0;
+   var dy : Integer = Round(Abs(y0 - y1));
+
+   if y0 mod 2 = 0 then
+   begin
+      minX := x0 - (dy + 1) div 2;
+      maxX := x0 + dy div 2;
+   end
+   else
+   begin
+      minX := x0 - dy div 2;
+      maxX := x0 + (dy + 1) div 2;
+   end;
+
+   if x1 < minX then
+   Result := dy + minX - x1
+   else
+   if x1 > maxX then
+   Result := dy + x1 - maxX
+   else
+   Result := dy;
+end;
+
+
+function _misc_CalcScoreModifier(profile : TProfile) : Integer;
+begin
+   var ind : Integer = 0;
+   var fValue : Float = 0;
+   var scores : array [0..6] of Integer;
+   var scoresRes : array [0..6] of Integer;
+   var pDiff : array [0..6] of Integer;
+   var ival : array [0..6] of Integer;
+   var iexpmod : array [0..6] of Integer;
+   function GetFValue(value,s0,s1,s2,s3,s4,s5,s6,sr0,sr1,sr2,sr3,sr4,sr5,sr6,min,max : Integer) : Float;
+   begin
+      scores[0] := s0;
+      scores[1] := s1;
+      scores[2] := s2;
+      scores[3] := s3;
+      scores[4] := s4;
+      scores[5] := s5;
+      scores[6] := s6;
+      scoresRes[0] := sr0;
+      scoresRes[1] := sr1;
+      scoresRes[2] := sr2;
+      scoresRes[3] := sr3;
+      scoresRes[4] := sr4;
+      scoresRes[5] := sr5;
+      scoresRes[6] := sr6;
+      ind := 0;
+      var i : Integer;
+      for i:=0 to 6 do
+      begin
+         if (i=6) then
+         begin
+            ind := max-1;
+            break;
+         end
+         else
+         if (value<scores[i+1]) or ((i=5) and (value=scores[i+1])) then
+         begin
+            ind := i;
+            break;
+         end;
+      end;
+      var fValue : Float = 0;
+      if ((scores[ind+1]-scores[ind])=0) then
+         fValue := scoresRes[ind]
+      else
+         fValue := Lerp(scoresRes[ind], scoresRes[ind+1], (value-scores[ind])/(scores[ind+1]-scores[ind]));
+      Result := fValue;
+   end;
+   pDiff[0] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 0);
+   pDiff[1] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 1);
+   pDiff[2] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 2);
+   pDiff[3] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 3);
+   pDiff[4] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 4);
+   pDiff[5] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 5);
+   pDiff[6] := ParserSelectByHandleByIndex(gPrototypeData.difficulty.handle, 6);
+   //log(FloatToStr(fValue));
+   var sum : Float = 0;
+   var koef : Float = 0;
+   var tmp : Float = 0;
+   var valuekey : String = 'Difficulty';
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   fValue := fValue+GetFValue(profile.advdiff.basediff,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,6)*koef;
+   sum := sum+koef;
+
+   valuekey := 'NeutralHP';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   fValue := fValue+GetFValue(profile.advdiff.neutralhp,ival[0],ival[1],ival[2],ival[3],ival[4],ival[5],ival[6],0,1,2,3,4,5,6,0,6)*koef;
+   sum := sum+koef;
+
+   valuekey := 'ExpMod';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   iexpmod[0] := (round(100*100/ival[0]) div 5)*5;
+   iexpmod[1] := (round(100*100/ival[1]) div 5)*5;
+   iexpmod[2] := (round(100*100/ival[2]) div 5)*5;
+   iexpmod[3] := (round(100*100/ival[3]) div 5)*5;
+   iexpmod[4] := (round(100*100/ival[4]) div 5)*5;
+   iexpmod[5] := (round(100*100/ival[5]) div 5)*5;
+   iexpmod[6] := (round(100*100/ival[6]) div 5)*5;
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);;
+   fValue := fValue+GetFValue(profile.advdiff.expmod,iexpmod[6],iexpmod[5],iexpmod[4],iexpmod[3],iexpmod[2],iexpmod[1],iexpmod[0],6,5,4,3,2,1,0,0,6)*koef;
+   sum := sum+koef;
+
+   valuekey := 'DefenderHP';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   tmp := GetFValue(profile.advdiff.defenderhp,ival[0],ival[1],ival[2],ival[3],ival[4],ival[5],ival[6],0,1,2,3,3,3,3,0,3);
+   if (tmp>2) then
+      koef := Lerp(1, 0, tmp-2);
+   sum := sum+koef;
+   fValue := fValue+tmp*koef;
+
+   valuekey := 'GoldIncomeAdd';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   tmp := GetFValue(profile.advdiff.goldincomeadd,ival[6],ival[5],ival[4],ival[3],ival[2],ival[1],ival[0],3,3,3,3,2,1,0,0,3);
+   if (tmp>2) then
+      koef := Lerp(1, 0, tmp-2);
+   sum := sum+koef;
+   fValue := fValue+tmp*koef;
+
+   valuekey := 'GemIncomeAdd';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   tmp := GetFValue(profile.advdiff.gemincomeadd,ival[6],ival[5],ival[4],ival[3],ival[2],ival[1],ival[0],3,3,3,3,2,1,0,0,3);
+   if (tmp>2) then
+      koef := Lerp(1, 0, tmp-2);
+   sum := sum+koef;
+   fValue := fValue+tmp*koef;
+
+   valuekey := 'Corruption';
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   koef := 3;
+   fValue := fValue+GetFValue(profile.advdiff.corruption,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,6)*koef;
+   sum := sum+koef;
+
+   valuekey := 'StartGold';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   tmp := GetFValue(profile.advdiff.startgold,ival[6],ival[5],ival[4],ival[3],ival[2],ival[1],ival[0],3,3,3,3,2,1,0,0,3);
+   if (tmp>2) then
+   koef := Lerp(1, 0, tmp-2);
+   sum := sum+koef;
+   fValue := fValue+tmp*koef;
+
+   valuekey := 'StartGem';
+   ival[0] := ParserGetIntValueByKeyByHandle(pDiff[0], valuekey);
+   ival[1] := ParserGetIntValueByKeyByHandle(pDiff[1], valuekey);
+   ival[2] := ParserGetIntValueByKeyByHandle(pDiff[2], valuekey);
+   ival[3] := ParserGetIntValueByKeyByHandle(pDiff[3], valuekey);
+   ival[4] := ParserGetIntValueByKeyByHandle(pDiff[4], valuekey);
+   ival[5] := ParserGetIntValueByKeyByHandle(pDiff[5], valuekey);
+   ival[6] := ParserGetIntValueByKeyByHandle(pDiff[6], valuekey);
+   koef := ParserGetIntValueByKeyByHandle(gPrototypeData.customdifficulty.handle, valuekey);
+   tmp := GetFValue(profile.advdiff.startgem,ival[6],ival[5],ival[4],ival[3],ival[2],ival[1],ival[0],3,3,3,3,2,1,0,0,3);
+   if (tmp>2) then
+      koef := Lerp(1, 0, tmp-2);
+   sum := sum+koef;
+   fValue := fValue+tmp*koef;
+
+   fValue := fValue/sum;
+
+   Result := 25+round(fValue*25);//+iscore;
+end;
+
+// _misc_AssignDifficulty
+//
+procedure _misc_AssignDifficulty(fromDifficulty : TDifficulty; var toDifficulty : TDifficulty);
+begin
+   toDifficulty.custom := fromDifficulty.custom;
+   toDifficulty.basediff := fromDifficulty.basediff;
+   toDifficulty.neutralhp := fromDifficulty.neutralhp;
+   toDifficulty.defenderhp := fromDifficulty.defenderhp;
+   toDifficulty.expmod := fromDifficulty.expmod;
+   toDifficulty.startgold := fromDifficulty.startgold;
+   toDifficulty.startgem := fromDifficulty.startgem;
+   toDifficulty.goldincomeadd := fromDifficulty.goldincomeadd;
+   toDifficulty.gemincomeadd := fromDifficulty.gemincomeadd;
+   toDifficulty.corruption := fromDifficulty.corruption;
+   toDifficulty.score := fromDifficulty.score;
+end;
+
+function _misc_FloatToIntValueByCount(value : Float; count : Integer) : Integer;
+begin
+   var iPos : Integer = floor(value/(1/count));
+   if iPos>(count-1) then
+       iPos := count-1;
+   Result := iPos;
+end;
+
+
+// _misc_CreateStratMapParser
+//
+procedure _misc_CreateStratMapParser(iSeed : Integer);
+begin
+   var iPlayers : Integer = gMapSettings.players+2;
+   var iSize : Integer = gMapSettings.size*2+6;
+   var iType : Integer = 2-gMapSettings.typ;
+
+   var valueCount : Integer = 5;
+   var iWater : Integer = _misc_FloatToIntValueByCount(gMapSettings.water, valueCount)*8+4;
+   var iHill : Integer = _misc_FloatToIntValueByCount(gMapSettings.hill, valueCount)*5+15;
+   var iForest : Integer = _misc_FloatToIntValueByCount(gMapSettings.forest, valueCount)*5+9;
+   var iSwamp : Integer = _misc_FloatToIntValueByCount(gMapSettings.swamp, valueCount)*4+8;
+   var iDesert : Integer = floor(_misc_FloatToIntValueByCount(gMapSettings.wastelands, valueCount)*2)+4;
+   var iDeadLand : Integer = _misc_FloatToIntValueByCount(gMapSettings.wastelands, valueCount)*2+4;
+   var iIsles : Integer = _misc_FloatToIntValueByCount(gMapSettings.isles, valueCount)*5;
+   var iDissolve : Integer = (_misc_FloatToIntValueByCount(gMapSettings.dissolve, valueCount)+1)*10;
+   var iNeutrals : Integer = _misc_FloatToIntValueByCount(gMapSettings.neutrals, valueCount);
+   case iNeutrals of
+      0 : iNeutrals := 1;
+      1 : iNeutrals := 4;
+      2 : iNeutrals := 8;
+      3 : iNeutrals := 12;
+      4 : iNeutrals := 20;
+   end;
+   var iResource : Integer = _misc_FloatToIntValueByCount(gMapSettings.resource, valueCount);
+   var iSite : Integer = _misc_FloatToIntValueByCount(gMapSettings.site, valueCount);
+   var iPopulation : Integer = _misc_FloatToIntValueByCount(gMapSettings.population, valueCount);
+
+   gGame.seed := iSeed;
+   gGame.map.players := iPlayers;
+   gGame.map.difficulty := 0;
+   gGame.map.x := iSize;
+   gGame.map.y := iSize;
+   gGame.map.typ := iType;
+   gGame.map.water := iWater;
+   gGame.map.hill := iHill;
+   gGame.map.forest := iForest;
+   gGame.map.swamp := iSwamp;
+   gGame.map.desert := iDesert;
+   gGame.map.deadland := iDeadLand;
+   gGame.map.isles := iIsles;
+   gGame.map.dissolve := iDissolve;
+   gGame.map.neutrals := iNeutrals;
+   gGame.map.resource := iResource;
+   gGame.map.site := iSite;
+   gGame.map.population := iPopulation;
+
+   gGame.worldrule := gMapSettings.worldrule;
+   
+   gGame.fog := gMapSettings.fog;
+   gGame.diplomacy := gMapSettings.diplomacy;
+   gGame.quickgame := gMapSettings.quickgame;
+   gGame.allowedheroes := gMapSettings.allowedheroes;
+   gGame.sandbox := gMapSettings.sandbox and ((gGame.gameType = gc_GameTypeCustom) or (gGame.gameType = gc_GameTypeHotseat));
+   gGame.genesismode := gMapSettings.genesismode;
+   gGame.improvedai := gMapSettings.improvedai and (gGame.gametype = gc_GameTypeLanShard); // aside from online games, this is acquired directly from gProfile whenever asked, so it can be changed at will.
+   
+   var i : Integer;
+   for i:=0 to iPlayers-1 do
+      gGame.arrPlayerSet[i] := gMapSettings.arrplayers[i].id;
+   for i:=0 to iPlayers-1 do
+       gGame.arrplayercontrol[i] := gMapSettings.arrplayers[i].control;
+   for i:=0 to iPlayers-1 do
+       _misc_AssignDifficulty(gMapSettings.arrplayers[i].advdiff, gGame.arrplayerdifficulty[i]);
+	   
+	   
+   gBoolRegister_ConvertGenesisMode := True;
+   GUIExecuteState('EventGenesisMode');
+   
+   const dataPath = '.\data\game\var\genesismode.cfg';
+   var pReplacementData : Integer = _misc_ParserGetOrCreateByKey('replacement_data', true);
+   ParserLoadFromFileByHandle(pReplacementData, dataPath);
+   
+   IntRegister0 := pReplacementData;
+   BoolRegister0 := False;
+   MapExecuteState('DataBanReplacement');
+end;
+
+function _misc_CreateMapDescriptionParser() : Integer;
+begin
+   var p : Integer;
+
+   p := _misc_ParserGetOrCreateByKey('misc_cmdp_tmp', True);
+   StateMachineGlobalVariablesSaveToParser(p, 'gGame', False, True);
+   StateMachineGlobalVariablesSaveToParser(p, 'gLanShardGame', False, True);
+   StateMachineGlobalVariablesSaveToParser(p, 'gIntRegister_LanMapUID', False, True);
+   Result := p;
+end;
+
+// no .map extension!, if name is empty, then retrieve last description parser from temp folder
+function _misc_GetSaveGameDescriptionParser(save_name : String) : Integer;
+begin
+   var p,i : Integer;
+   var fnm,temp_str : String;
+
+   _prof_GetProfileFolder(temp_str,True);
+   fnm := temp_str+'\'+gc_TempMap_FileName+'.dat';
+
+   if save_name <> '' then
+   begin
+      if IsFileExists(fnm) then
+         DeleteFileStream(fnm);
+      _prof_CreateZIPCommandsFile(save_name);
+      i := SteamAPPTriggerAchievements('-4|2',gc_gui_DelimiterChar,gc_gui_QuoteChar);
+   end
+   else
+      i := 1;
+
+   p := _misc_ParserGetOrCreateByKey('misc_gsgdp_tmp', True);
+   if i <> 0 then
+   begin
+      if IsFileExists(fnm) then
+      begin
+         if not ParserLoadFromFileByHandle(p,fnm) then
+            ParserClearByHandle(p);
+      end;
+   end;
+
+   Result := p;
+end;
+
+// no .map extension!
+function _misc_IsNewSaveGameFormat(save_name : String) : Boolean;
+begin
+   var i : Integer;
+
+   _prof_CreateZIPCommandsFile(save_name);
+   i := SteamAPPTriggerAchievements('-4|3',gc_gui_DelimiterChar,gc_gui_QuoteChar);
+   if i <> 0 then
+      Result := true
+   else
+      Result := false;
+end;
+
+// no .map extension!
+function _misc_GetSaveSnapShotFullName(save_name : String; var dst_shot_path : String) : Boolean;
+begin
+   var fnm : String;
+
+   fnm := gStringRegister_ProfileSavesFolderLast+save_name+'.bmp';
+   if IsFileExists(fnm) then
+   begin
+      dst_shot_path := fnm;
+      Result := true;
+   end
+   else
+      Result := false;
+end;
+
+function _misc_AssignSaveSnapShotToTexture(save_index : Integer; tex_name : String) : Boolean;
+begin
+   var bSnapShot : Boolean = false;
+   var filename,dst_shot_path : String;
+
+   filename := UserGetProfileCustomByIndex(save_index);
+   if bSnapShot then Log('Get name: '+filename+', path: '+gStringRegister_ProfileSavesFolderLast+', idx: '+IntToStr(save_index));
+   if _misc_GetSaveSnapShotFullName(filename,dst_shot_path) then
+   begin
+      bSnapShot := LoadImageToMaterial(dst_shot_path,tex_name);
+      //if bSnapShot then Log('Get snapshot: '+dst_shot_path+', tex: '+tex_name+', result: '+BoolToStr(bSnapShot));
+   end
+   else
+   begin
+      filename := UserGetProfileCustomFilePathByIndex(save_index);
+      bSnapShot := LoadMapSnapShotToMaterial(filename, tex_name);
+   end;
+   Result := bSnapShot;
+end;
+
+function _misc_GetSaveNameLanPostfix(var lan_postfix : String) : Boolean;
+begin
+   var gf : Integer = _misc_GetGameFlags();
+
+   if ((gf and gc_GameTypeFlagInternet) <> 0) and ((gf and gc_GameTypeFlagMaster) = 0) then
+   begin
+      lan_postfix := '_'+IntToStr(LanMyInfoID());
+      Result := true;
+   end
+   else
+   begin
+      lan_postfix := '';
+      Result := false;
+   end;
+end;
+
+
+procedure _misc_SetupStrReplaceRegEx();
+begin
+   gIntRegister_StringReplaceRegExHandle := RegExprCreate('\%|\$|\&|\~');
+end;
+
+
+function _misc_GetBitFlagByIndex(index : Integer) : Integer;
+begin
+   if index < 2 then
+      Result := index + 1
+   else
+      Result := Round(Pow(2, index));
+end;
+
+
+function _misc_GetParserAbilityPower(pParser, abilityID : Integer) : Integer;  
+begin
+   Result := 0;
+   var pAbilities : Integer = ParserSelectByHandleByKey(pParser, 'Abilities');
+   if pAbilities <> 0 then
+   begin
+      var i, pAbility : Integer;
+      for i := ParserGetCountByHandle(pAbilities)-1 downto 0 do
+      begin
+         pAbility := ParserSelectByHandleByIndex(pAbilities, i);
+   
+         if ParserGetIntValueByKeyByHandle(pAbility, 'AbilityID') = abilityID then
+            Result := Result + ParserGetIntValueByKeyByHandle(pAbility, 'Power');
+      end;
+   end;
+end;
+
+
+procedure _misc_ArrayGetRandomIndices(const maxCount, startInd, endInd : Integer; const bProgressSeed : Boolean);
+begin
+	var i, j, k, count, ind, rndInd : Integer;
+	
+	function IsItemUnique(const value : Integer) : Boolean;
+	begin
+		Result := True;
+		
+		for k:=0 to ArrayGetCount-1 do
+		begin
+			if (value = ArrayGetValueByIndex(k)) then
+			begin
+				Result := false;
+				break;
+			end;
+		end;
+	end;
+	
+	ArrayClear;
+	
+	for i := 0 to maxCount-1 do
+	begin
+		count := 0;
+		
+		for j := startInd to endInd do
+		begin
+			if IsItemUnique(j) then
+				count := count+1;
+		end;
+		
+		if (count>0) then
+		begin
+			if bProgressSeed then
+				rndInd := Floor(RandomExt * count)
+			else
+				rndInd := Floor(Random * count);
+			
+			ind := 0;
+			for j := startInd to endInd do
+			begin
+				if IsItemUnique(j) then
+				begin
+					if (rndInd=ind) then
+					begin
+						ArrayPushValue(j);
+						break;
+					end
+					else
+						ind := ind+1;
+				end;
+			end;
+		end;
+	end;
+end;
+
+
+function _sound_PickMusicTrack() : Integer;
+begin
+   Result := 0;
+   
+            Result := 1 + Floor(Random * 19); // only old songs
+   
+   {var pMusic, i, pTrack, trackID, count, cooldown : Integer;
+   case gIntRegister_CurGameMode of
+      gc_GameModeMenu : 
+      begin
+         pMusic := ParserSelectByHandleByKey(gPrototypeData.music.handle, 'Menu');
+      end;
+      gc_GameModeAstral : 
+      begin
+         pMusic := ParserSelectByHandleByKey(gPrototypeData.music.handle, 'Astral');
+      end;
+      gc_GameModeStrategy,gc_GameModeTactics : 
+      begin
+         var j, pShard, pWorldRules : Integer;
+         pMusic := ParserSelectByHandleByKey(gPrototypeData.music.handle, 'Shard');
+         for [MAIN]i := ParserGetCountByHandle(pMusic)-1 downto 0 do
+         begin
+            pShard := ParserSelectByHandleByIndex(pMusic, i);
+            pWorldRules := ParserSelectByHandleByKey(pShard, 'WorldRules');
+            for j := 0 to ParserGetCountByHandle(pWorldRules)-1 do
+            begin
+               if ParserGetIntValueByKeyByHandle(ParserSelectByHandleByIndex(pWorldRules, j), 'WorldRuleID') = gGame.worldrule then
+                  break(MAIN);
+            end;
+         end;
+         pMusic := ParserSelectByHandleByKey(pShard, 'Peace');
+         
+      end;
+      gc_GameModeTactics : 
+      begin
+         var firstTrack : Integer = gArr_BattleMusicTracks[0];
+         Result := firstTrack;
+         
+         for i := 0 to gc_MaxBattleMusic-1 do
+         begin
+		    if (gArr_BattleMusicTracks[i+1] = 0) or (i = gc_MaxBattleMusic-1) then
+		       gArr_BattleMusicTracks[i] := firstTrack // re-cycle first to last
+		    else
+		       gArr_BattleMusicTracks[i] := gArr_BattleMusicTracks[i+1];
+         end;
+		 
+         exit;
+      end;
+   end;
+   
+   var sum : Integer = 0;
+   count := ParserGetCountByHandle(pMusic);
+   
+   for i := 0 to count-1 do
+   begin
+      pTrack := ParserSelectByHandleByIndex(pMusic, i);
+      trackID := ParserGetIntValueByKeyByHandle(pTrack, 'TrackID');
+      if (gArr_MusicTrackCooldown[trackID] = 0) then
+         sum := sum + ParserGetIntValueByKeyByHandle(pTrack, 'Possibility');
+   end;
+   
+   var randSum : Integer = Floor(Random * sum);
+   sum := 0;
+   
+   for i := 0 to count-1 do
+   begin
+      pTrack := ParserSelectByHandleByIndex(pMusic, i);
+      trackID := ParserGetIntValueByKeyByHandle(pTrack, 'TrackID');
+      cooldown := gArr_MusicTrackCooldown[trackID];
+      if cooldown > 0 then
+         gArr_MusicTrackCooldown[trackID] := cooldown - 1
+      else
+      if (Result = 0) then
+      begin
+         sum := sum + ParserGetIntValueByKeyByHandle(pTrack, 'Possibility');
+      
+         if (sum > randSum) then
+         begin
+            Result := ParserGetIntValueByKeyByHandle(pTrack, 'TrackID');
+            gArr_MusicTrackCooldown[trackID] := count div 3;
+         end;
+      end;
+   end;}
+end;
+
+procedure _sound_SetupBattleMusic(pMusic : Integer);
+begin
+   
+   if gIntRegister_VirtualBattleResult > 0 then
+   begin
+      if gIntRegister_VirtualBattleResult < gc_StrongEnemyCompareLimit then
+      begin
+   
+   
+      end
+      else
+      if gIntRegister_VirtualBattleResult >= gc_WeakEnemyCompareLimit then
+      begin
+   
+   
+      end
+      else
+      begin
+   
+   
+      end;
+   end;
+end;
+
+function _misc_IsUpdatedVersion(myVersion, compareVersion : String) : Boolean;
+begin
+   Result := false;
+   var len2 : Integer = StrLength(compareVersion);
+   var len : Integer = StrLength(myVersion);
+   var pos2 : Integer = StrPos('.', compareVersion);
+   var pos : Integer = StrPos('.', myVersion);
+   var firstNumber2 : Integer = StrToInt(SubStr(compareVersion, 0, pos2-1));
+   var firstNumber : Integer = StrToInt(SubStr(myVersion, 0, pos-1));
+			
+   if (pos = 0) or (pos2 = 0) then // no dot exists
+   begin
+      if (pos = 0) and (pos2 = 0) then
+      begin
+         if StrToInt(compareVersion) > StrToInt(myVersion) then
+            Result := true;
+      end
+      else
+      if (pos2 = 0) then // only one number for compare version
+      begin
+         if StrToInt(compareVersion) > firstNumber then
+            Result := true;
+      end
+      else
+      begin
+         if firstNumber2 > StrToInt(myVersion) then
+            Result := true
+         else 
+         if firstNumber2 = StrToInt(myVersion) then
+         begin
+            if StrToInt(SubStr(compareVersion, pos2, len2-pos2)) > 0 then  // after dot number is greater than zero
+               Result := true;
+         end;
+      end;
+   end
+   else
+   begin
+      if firstNumber2 > firstNumber then
+         Result := true
+      else
+      if firstNumber = firstNumber2 then
+      begin
+         var next, next2 : String;
+         var i : Integer;
+         for i := pos to Max(len, len2) do
+         begin
+            next := SubStr(myVersion, pos, 1);
+            next2 := SubStr(compareVersion, pos2, 1);
+			      
+			if (next = '') and (next2 <> '') then
+            begin
+               Result := true;
+               break;
+            end
+			else
+			if (next2 = '') and (next <> '') then
+               break
+            else
+            if next <> next2 then
+            begin
+               if (next = '.') then
+               begin
+                  Result := true;
+                  break;
+               end
+               else
+               if (next2 = '.') then
+                  break
+               else
+               if StrToInt(next2) > StrToInt(next) then
+               begin
+                  Result := true;
+                  break;
+               end;
+            end
+            else // identical for now
+            begin
+               pos := pos + 1;
+               pos2 := pos2 + 1;
+            end;
+         end;
+      end;
+   end;
+end;
+
+procedure _misc_ExtractModVersionFromExtendedVersion(extVersion : String; var modVersion : String);
+begin
+   modVersion := '';
+   
+   var modVersionStartIndex : Integer = 8;
+   if StrLength(extVersion) > modVersionStartIndex then
+   begin
+      var str : String = '';
+      while (modVersionStartIndex < 1000) do
+      begin
+	     str := SubStr(extVersion, modVersionStartIndex, 1);
+         if (str = '0') or (StrToInt(str) > 0) then
+	        break
+	     else
+            modVersionStartIndex := modVersionStartIndex + 1;
+      end;
+      
+      if modVersionStartIndex < 1000 then
+      begin
+         modVersion := SubStr(extVersion, modVersionStartIndex, StrLength(extVersion) - modVersionStartIndex+1);
+      end;
+   end;
+end;
+
+procedure _misc_GetBuildVersionExt(var buildVersion : String);
+begin
+   buildVersion := GetBuildVersion;
+   
+   var str_dlc : String = '';
+   _init_GetDLCConfiguration(str_dlc);
+   if str_dlc = IntToStr(gc_allied_forces_id xor $ffffff) then
+      buildVersion := buildVersion + '_(AF)';
+   
+   buildVersion := buildVersion + '_+_' + gc_DataModName + '_' + gc_DataModVersion;
+end;
+
+_misc_SetupModalQueries();
+_misc_SetupStrReplaceRegEx();
+
+gFloatRegister_AntiFreezeLowFactor := 0.75;
+gFloatRegister_AntiFreezeLowFPS := 20;
+

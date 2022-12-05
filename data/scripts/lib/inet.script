@@ -1,0 +1,2763 @@
+//
+// _inet_GetLanEnemyID
+//
+function _inet_GetLanEnemyID() : Integer;
+begin
+   if (gIntRegister_MyLanID = gIntRegsiter_LanBatClientID) then
+      Result := gIntRegsiter_LanBatServerID
+   else
+   begin
+      if (gIntRegister_MyLanID = gIntRegsiter_LanBatServerID) then
+         Result := gIntRegsiter_LanBatClientID
+      else
+         Result := 0;
+   end;
+end;
+
+// _inet_GetLanMyOwnID
+//
+function _inet_GetLanMyOwnID() : Integer;
+begin
+   if GetLanMode() > 0 then
+       Result := LanMyInfoID
+   else
+      Result := 0;
+end;
+
+function _lan_ConvertFromBattleUID(const uid : Integer) : Integer;
+begin
+   var idx : Integer = _plr_GetIndexesFromUID(uid);
+	
+   if idx <> -1 then
+   begin
+      if SameText(GetPlayerNameByIndex((idx shr $10) and $ff), gc_battle_attackPlayerName) then
+         idx := idx and $ffff
+      else
+         idx := (idx and $ffff) or $10000;
+   end;
+
+   Result := idx;
+end;
+
+function _lan_ConvertToBattleUID(idx : Integer) : Integer;
+begin
+   var uid : Integer = 0;
+
+   if idx <> -1 then
+   begin
+      var h : Integer;
+
+      if (((idx shr $10) and $ff) = 0) then
+         h := GetPlayerHandleByName(gc_battle_attackPlayerName)
+      else
+         h := GetPlayerHandleByName(gc_battle_defendPlayerName);
+
+      if h <> 0 then
+      begin
+         idx := GetGameObjectHandleByIndex(idx and $ffff,h);
+         if idx <> 0 then
+            uid := GetGameObjectUniqueIdByHandle(idx);
+      end;
+   end;
+
+   Result := uid;
+end;
+
+procedure _inet_dbg_DumpLogInfo(pLan : Integer; state_name : String);
+begin
+   //var attacker : Integer = ParserGetIntValueByKeyByHandle(pLan, 'src_opponent');
+   var src_idx : Integer = ParserGetIntValueByKeyByHandle(pLan, 'src_index');
+   //var t_attacker : Integer = ParserGetIntValueByKeyByHandle(pLan, 'target_opponent');
+   var tgt_idx : Integer = ParserGetIntValueByKeyByHandle(pLan, 'target_index');
+   //var a_handle : Integer = GetPlayerHandleByName(gc_battle_attackPlayerName);
+   //var d_handle : Integer = GetPlayerHandleByName(gc_battle_defendPlayerName);
+   var pl_handle : Integer;
+   var n,i,h,j,uid : Integer;
+   var ts : String;
+
+   _log_lan('State: '+state_name);
+
+   uid := _lan_ConvertToBattleUID(src_idx);
+   pl_handle := GetGameObjectPlayerHandleByHandle(GetGameObjectHandleByUniqueId(uid));
+   n := GetPlayerGameObjectsCountByHandle(pl_handle);
+   ts := GetPlayerNameByHandle(pl_handle)+'|';
+   if tgt_idx <> -1 then
+   begin
+      uid := _lan_ConvertToBattleUID(tgt_idx);
+      pl_handle := GetGameObjectPlayerHandleByHandle(GetGameObjectHandleByUniqueId(uid));
+      ts := ts+GetPlayerNameByHandle(pl_handle);
+   end;
+   _log_valuesl(ts,n,GetPlayerGameObjectsCountByHandle(pl_handle),0,0,0,0);
+
+   for j := 0 to 1 do
+   begin
+      if j = 0 then pl_handle := GetPlayerHandleByName(gc_battle_attackPlayerName)
+      else pl_handle := GetPlayerHandleByName(gc_battle_defendPlayerName);
+
+      if j = 0 then _log_gui('_ATTACK_PLAYER: '+GetPlayerNameByHandle(pl_handle))
+      else _log_gui('_DEFEND_PLAYER: '+GetPlayerNameByHandle(pl_handle));
+
+      n := GetPlayerGameObjectsCountByHandle(pl_handle);
+
+      for i := 0 to n-1 do
+      begin
+         h := GetGameObjectHandleByIndex(i,pl_handle);
+         _log_values('__OBJ_IDX|OBJ_HND|OBJ_UID',i,h,GetGameObjectUniqueIdByHandle(h),0,0,0);
+      end;
+   end;
+end;
+
+function _lan_GetPlayerIndexByLanID(const lanID : Integer) : Integer;
+begin
+   Result := -1;
+      
+   if (gGame.gameType = gc_GameTypeLanShard) then 
+   begin
+      var i : Integer;
+      for i := 0 to gc_MaxCustomMapPlayer-1 do
+		begin
+			if gLanShardGame.arrLanPlayers[i].lanid = lanID then
+			begin
+				Result := i;
+				break;
+			end;
+		end;
+   end
+   else
+   if (gGame.gameType = gc_GameTypeLanBattle) then 
+   begin
+      if (lanID = gIntRegsiter_LanBatServerID) then // for some reason, they are inversed: gIntRegsiter_LanBatClientID = gLanHeroServer.lanid;
+         Result := 1
+      else
+      if (lanID = gIntRegsiter_LanBatClientID) then
+         Result := 0;
+   end;
+end;
+
+function _lan_IsPlayerInGame(const lanID : Integer) : Boolean;
+begin
+	var plIndex : Integer = _lan_GetPlayerIndexByLanID(lanID);
+	if plIndex >= 0 then
+	begin
+		Result := (gIntRegister_CurGameMode = gc_GameModeMenu);
+		if not Result then
+		begin
+			var plHandle : Integer = GetPlayerHandleByIndex(plIndex);
+			Result := _plr_IsInGame(plHandle) and SameText(GetPlayerControlModeByHandle(plHandle), 'cmPlayer');
+		end;
+	end
+	else
+		Result := False;
+end;
+	
+function _lan_ParserToProgressHalt(const parserID, parser : Integer) : Boolean;
+begin
+   if (parserID = gc_LAN_SHARD_SYNC_READY) or (parserID = gc_LAN_SHARD_SYNC_RELEASE) then
+      Result := (ParserGetIntValueByKeyByHandle(parser, 'TimerID') = gc_lt_restart_session)
+   else
+      Result := (parserID = gc_LAN_SHUTDOWN_GAME);
+end;
+
+function _lan_ParserBackupable(const id, parser : Integer) : Boolean;
+begin
+	case id of
+		gc_LAN_DUMP : Result := False;
+		gc_LAN_MESSAGE : Result := False;
+		gc_LAN_SHARD_SYNC_READY : Result := False;
+		gc_LAN_SHARD_SYNC_RELEASE, gc_LAN_SHARD_SYNC_REVOKE : Result := ParserGetIntValueByKeyByHandle(parser, 'TimerID') <> gc_lt_restart_session;
+		gc_LAN_RESEND_PARSER_REQUEST : Result := False;
+		gc_LAN_SHARD_DUMPCONFLICTS : Result := False;
+		else Result := True;
+	end;
+end;
+
+function _lan_GetPlayerSyncData(const lanID : Integer) : Integer;
+begin
+	var pSyncData : Integer = _misc_ParserGetOrCreateByKey('lan_backup_sync_data', False);
+	Result := ParserSelectByHandleByKey(pSyncData, 'LanID_'+IntToStr(lanID));
+	if Result = 0 then
+	   Result := ParserAddChildByIndex(pSyncData, 'LanID_'+IntToStr(lanID));
+end;
+
+function _lan_GetPlayerParsersReceived(const lanID : Integer) : Integer;
+begin
+	var pSyncData : Integer = _lan_GetPlayerSyncData(lanID);
+	Result := ParserGetIntValueByKeyByHandle(pSyncData, 'ParsersReceived');
+end;
+
+procedure _lan_HoldBackupParsers(const bHold : Boolean);
+begin
+	var pSyncData : Integer = _misc_ParserGetOrCreateByKey('lan_backup_sync_data', False);
+	var i, pPlayer : Integer;
+	for i := 0 to ParserGetCountByHandle(pSyncData)-1 do
+	begin
+		pPlayer := ParserSelectByHandleByIndex(pSyncData, i);
+		ParserSetBoolValueByKeyByHandle(pPlayer, 'Hold', bHold);
+		ParserSetFloatValueByKeyByHandle(pPlayer, 'HoldTimer', 0);
+	end;
+end;
+
+procedure _lan_ClearPlayerBackupParsers(const lanID : Integer);
+begin
+	const cRetainSafetyCount = 3;
+
+	var i : Integer;
+	var pPlayerSyncData : Integer = _lan_GetPlayerSyncData(lanID);
+	var pBackups : Integer = ParserSelectByHandleByKey(pPlayerSyncData, 'BackupParsers');
+	for i := 0 to ParserGetCountByHandle(pBackups)-cRetainSafetyCount-1 do
+	begin
+		ParserFreeByHandle(ParserSelectByHandleByIndex(pBackups, 0));
+	end;
+end;
+
+procedure _lan_StoreBackupParser(const lanID, pParser, parserID : Integer);
+begin
+	if (lanID > 0) and _lan_IsPlayerInGame(lanID) then
+	begin
+		var pPlayerSyncData : Integer = _lan_GetPlayerSyncData(lanID);
+		var pBackupParsers : Integer = ParserSelectByHandleByKey(pPlayerSyncData, 'BackupParsers');
+		if pBackupParsers = 0 then
+			pBackupParsers := ParserAddChildByIndex(pPlayerSyncData, 'BackupParsers');
+		
+		var pBackup : Integer = ParserAddChildByIndex(pBackupParsers, '*');
+		ParserSetIntValueByKeyByHandle(pBackup, 'ParserID', parserID);
+		ParserAddChildByIndex(pBackup, 'Parser');
+		ParserCopyFromByHandle(pParser);
+		
+		var parsersSent : Integer = ParserGetIntValueByKeyByHandle(pPlayerSyncData, 'ParsersSent');
+		ParserSetIntValueByKeyByHandle(pPlayerSyncData, 'ParsersSent', parsersSent + 1);
+	end
+	else
+		ErrorLogI('_lan_StoreBackupParser, lanID = null');
+end;
+
+procedure _lan_StoreBackupParserForAll(const id, pParser : Integer);
+begin
+	if gGame.gameType = gc_GameTypeLanShard then
+	begin
+		var i, plHandle, lanID : Integer;
+		for i := 0 to gc_MaxCustomMapPlayer-1 do 
+		begin
+			lanID := gLanShardGame.arrLanPlayers[i].lanid;
+			plHandle := GetPlayerHandleByIndex(i);
+			if (lanID > 0) and (lanID <> gIntRegister_MyLanID) then
+				_lan_StoreBackupParser(lanID, pParser, id);
+		end;
+	end
+	else
+	if gGame.gameType = gc_GameTypeLanBattle then
+	begin
+		_lan_StoreBackupParser(_inet_GetLanEnemyID, pParser, id);
+	end;
+end;
+
+procedure _lan_LanSendParser(const id, pParser : Integer); // this is not used within battle mode
+begin
+   if _lan_ParserBackupable(id, pParser) then 
+      _lan_StoreBackupParserForAll(id, pParser); // must come before sending the parser
+   
+   if GetLanMode > 0 then
+	begin
+		_lan_LogSentParser('OTHERS',id,pParser);
+		_lan_StartParserTransfer(id,pParser);
+		LanSendParser(id, pParser);
+		_lan_FinishParserTransfer();
+	end;
+end;
+
+procedure _lan_LanSendParserToEnemy(const id, pParser : Integer);
+begin
+	var target_id : Integer = _inet_GetLanEnemyID();
+	
+	if _lan_ParserBackupable(id, pParser) then 
+		_lan_StoreBackupParser(target_id, pParser, id);
+		
+   if GetLanMode > 0 then
+	begin
+		if target_id > 0 then
+		begin
+			_lan_LogSentParser('S'+IntToStr(target_id),id,pParser);
+			_lan_StartParserTransfer(id,pParser);
+			LanPublicServerSendSessionParser(target_id,id,pParser);
+			_lan_FinishParserTransfer();
+		end
+		else
+			ErrorLog('[SendParserToEnemy] Enemy ID is undefined.');
+	end;
+end;
+
+procedure _lan_LanSendParserToServer(const id, pParser : Integer);
+begin
+   var target_id : Integer = gLanShardGame.masterid;
+
+   _lan_LogSentParser('S'+IntToStr(target_id),id,pParser);
+   if gIntRegister_MyLanID = target_id then
+   begin
+      IntRegister0 := leSessionParser;
+      IntRegister1 := target_id;
+      IntRegister2 := target_id;
+      IntRegister3 := target_id;
+      IntRegister4 := id;
+      IntRegister5 := pParser;
+      GUIExecuteState('vvk.lan.PushLanEvent');
+   end
+   else
+   begin
+      if _lan_ParserBackupable(id, pParser) then 
+			_lan_StoreBackupParser(target_id, pParser, id);
+      
+		if GetLanMode > 0 then
+		begin
+			_lan_StartParserTransfer(id,pParser);
+			LanPublicServerSendSessionParser(target_id,id,pParser);
+			_lan_FinishParserTransfer();
+		end;
+	end;
+end;
+
+// _inet_LanSendParserExt
+//
+procedure _inet_LanSendParserExt(const id, pParser : Integer);
+begin
+   if _lan_ParserBackupable(id, pParser) then 
+      _lan_StoreBackupParserForAll(id, pParser);
+   
+	if GetLanMode > 0 then
+	begin
+		_lan_LogSentParser('ALL',id,pParser);
+		_lan_StartParserTransfer(id,pParser);
+		LanSendParser(id, pParser);
+		_lan_FinishParserTransfer();
+	end;
+
+   IntRegister0 := leParser;
+   IntRegister1 := LanMyInfoID();
+   IntRegister2 := IntRegister1;
+   IntRegister3 := IntRegister1;
+   IntRegister4 := id;
+   IntRegister5 := pParser;
+   GUIExecuteState('vvk.lan.PushLanEvent');
+end;
+
+// _inet_LanSendBattleParser
+//
+procedure _inet_LanSendBattleParser(const id : Integer; var pParser : Integer);
+begin
+   ParserSetIntValueByKeyByHandle(pParser, 'LanID1', gIntRegsiter_LanBatServerID);
+   ParserSetIntValueByKeyByHandle(pParser, 'LanID2', gIntRegsiter_LanBatClientID);
+   
+   if _lan_ParserBackupable(id, pParser) then 
+      _lan_StoreBackupParserForAll(id, pParser);
+   
+	if GetLanMode > 0 then
+	begin
+		_lan_LogSentParser('BATTLE',id,pParser);
+		_lan_StartParserTransfer(id,pParser);
+		LanSendParser(id, pParser);
+		_lan_FinishParserTransfer();
+	end;
+
+   IntRegister0 := leParser;
+   IntRegister1 := LanMyInfoID();
+   IntRegister2 := IntRegister1;
+   IntRegister3 := IntRegister1;
+   IntRegister4 := id;
+   IntRegister5 := pParser;
+   GUIExecuteState('vvk.lan.PushLanEvent');
+end;
+
+
+// _inet_CreateOrderParser
+//
+function _inet_CreateOrderParser(myUID, tx, ty, actType, spellID, abilityID, tUID, pDoll, randKey0, randKey1 : Integer;state_name : String) : Integer;
+begin
+   var _log : Boolean = False;
+   
+   if (_misc_IsLanBattle()) and (not gBoolRegister_InetLanIsEvaluateOrder) then
+   begin
+      var myHandle : Integer = GetGameObjectHandleByUniqueId(myUID);
+      var myPlHandle : Integer = GetGameObjectPlayerHandleByHandle(myHandle);
+      //var myInd : Integer = GetGameObjectIndexByHandle(myHandle);
+      //var myPlInd : Integer = GetPlayerIndexByHandle(myPlHandle);
+		
+      if (myPlHandle=GetPlayerHandleInterfaceIO()) then
+      begin
+         var pOrders : Integer = _misc_ParserGetOrCreateByKey('inet_script_lan',true);
+         var action, pOrder, obj_idx : Integer;
+
+         obj_idx := _lan_ConvertFromBattleUID(myUID);
+         action := GetGameObjectIntValueIndByHandle(myHandle, gc_stack_unit_iActionType);
+
+         gIntRegister_InetLanActionSyncEnum := gIntRegister_InetLanActionSyncEnum+1;
+
+         pOrder := ParserAddChildByIndex(pOrders, '*');
+
+         _log_lan('ActionSyncEnum: '+IntToStr(gIntRegister_InetLanActionSyncEnum));
+         ParserSetIntValueByKeyByHandle(pOrder, 'ActionSyncEnum', gIntRegister_InetLanActionSyncEnum);
+         ParserSetIntValueByKeyByHandle(pOrder, 'randKey0', randKey0);
+         ParserSetIntValueByKeyByHandle(pOrder, 'randKey1', randKey1);
+         //ParserSetIntValueByKeyByHandle(pOrder, 'src_opponent', 0);
+         ParserSetIntValueByKeyByHandle(pOrder, 'src_index', obj_idx);
+         //ParserSetIntValueByKeyByHandle(pOrder, 'myUID', myUID);
+         //ParserSetIntValueByKeyByHandle(pOrder, 'player', myPlInd);
+         //ParserSetIntValueByKeyByHandle(pOrder, 'goIndex', myInd);
+         ParserSetIntValueByKeyByHandle(pOrder, 'targetX', tx);
+         ParserSetIntValueByKeyByHandle(pOrder, 'targetY', ty);
+         ParserSetIntValueByKeyByHandle(pOrder, 'actionType', actType);
+         ParserSetIntValueByKeyByHandle(pOrder, 'spellID', spellID);
+         ParserSetIntValueByKeyByHandle(pOrder, 'abilityID', abilityID);
+
+         obj_idx := _lan_ConvertFromBattleUID(tUID);
+         ParserSetIntValueByKeyByHandle(pOrder, 'target_index', obj_idx);
+         //if tUID > 0 then
+         //begin
+         //   var tGOInd : Integer = -1;
+         //   var tPlHandle : Integer = -1;
+         //   var tGOHandle : Integer = GetGameObjectHandleByUniqueId(tUID);
+         //
+         //   tGOInd := GetGameObjectIndexByHandle(tGOHandle);
+         //   tPlHandle := GetGameObjectPlayerHandleByHandle(tGOHandle);
+         //
+         //   if tPlHandle = myPlHandle then
+         //      ParserSetIntValueByKeyByHandle(pOrder, 'target_opponent', 0)
+         //   else
+         //      ParserSetIntValueByKeyByHandle(pOrder, 'target_opponent', 1);
+         //   ParserSetIntValueByKeyByHandle(pOrder, 'target_index', tGOInd);
+         //end
+         //else
+         //begin
+         //   ParserSetIntValueByKeyByHandle(pOrder, 'target_opponent', -1);
+         //   ParserSetIntValueByKeyByHandle(pOrder, 'target_index', -1);
+         //end;
+         //ParserSetIntValueByKeyByHandle(pOrder, 'targetUID', tUID);
+         //ParserSetIntValueByKeyByHandle(pOrder, 'enPlayer', tPlInd);
+         //ParserSetIntValueByKeyByHandle(pOrder, 'enGOIndex', tGOInd);
+         ParserSetIntValueByKeyByHandle(pOrder, 'stackActionType', action);
+         if (pDoll<>0) then
+         begin
+            ParserAddChildByIndex(pOrder, 'Doll');
+            ParserCopyFromByHandle(pDoll);
+         end;
+
+         _lan_LanSendParserToEnemy( gc_LAN_ACTION, pOrder);
+
+         if _log then
+         begin
+            _inet_dbg_DumpLogInfo(pOrder,state_name);
+
+            var pLanOutputs : Integer = _misc_ParserGetOrCreateByKey('inet_lanoutput',false);
+            var pLanOutput : Integer = ParserAddChildByIndex(pLanOutputs, '*');
+
+            ParserSelectByHandle(pOrder);
+            ParserCopyToByHandle(pLanOutput);
+            ParserSaveToFileByHandle(pLanOutputs, 'pLanOutputs.txt');
+         end;
+         Result := pOrder;
+      end;
+   end
+   else
+      Result := 0;
+end;
+
+// _inet_ExecuteLanSyncParser
+//
+function _inet_ExecuteLanSyncParser() : Boolean;
+begin
+   var _log : Boolean = false;
+   var pLanSyncs : Integer = _misc_ParserGetOrCreateByKey('LanSync',false);
+   var unit_handle : Integer;
+   var pLanSyncsCount : Integer;
+
+   Result := False;
+
+   pLanSyncsCount := ParserGetCountByHandle(pLanSyncs);
+   if (pLanSyncsCount>0) then
+   begin
+      var i,pLanSync,actionSyncEnum : Integer;
+      var bAvailableOrders : Boolean = True;
+
+      if (_log) then ParserSaveToFileByHandle(pLanSyncs, 'pLanSyncs.txt');
+
+      ErrorLog('_inet_ExecuteLanSyncParser : Evaluating unsyncronised orders pLanSyncsCount='+IntToStr(pLanSyncsCount));
+
+      while (bAvailableOrders) do
+      begin
+         bAvailableOrders := False;
+         for i:=pLanSyncsCount-1 downto 0 do
+         begin
+            pLanSync := ParserSelectByHandleByIndex(pLanSyncs, i);
+            actionSyncEnum := ParserGetIntValueByKeyByHandle(pLanSync, 'ActionSyncEnum');
+
+            if (actionSyncEnum=(gIntRegister_InetLanActionSyncEnum+1)) then
+            begin
+               unit_handle := GetGameObjectHandleByUniqueId(_lan_ConvertToBattleUID(ParserGetIntValueByKeyByHandle(pLanSync, 'src_index')));
+               //var goUID : Integer = ParserGetIntValueByKeyByHandle(pLanSync, 'myUID');
+
+               //var plIndex : Integer = ParserGetIntValueByKeyByHandle(pLanSync, 'Player');
+               //var plHandle : Integer = GetPlayerHandleByIndex(plIndex);
+               //var goIndex : Integer = ParserGetIntValueByKeyByHandle(pLanSync, 'goIndex');
+               //var goHnd : Integer = GetGameObjectHandleByIndex(goIndex, plHandle);
+               if unit_handle <> 0 then
+               begin
+                  IntRegister0 := pLanSync;
+                  GameObjectExecuteStateByHandle(unit_handle, 'EvaluateOrderParser');
+               end;
+               bAvailableOrders := True;
+               Result := True;
+            end;
+         end;
+      end;
+   end;
+end;
+
+// _inet_ExecuteUnitLanSyncParser
+//
+function _inet_ExecuteUnitLanSyncParser(goHnd : Integer) : Boolean;
+begin
+   var pGoParser : Integer = ParserSelectGameObject(goHnd);
+   var pLanUnitSyncs : Integer = ParserSelectByHandleByKey(pGoParser, 'LanUnitSyncs');
+
+   Result := False;
+   if (pLanUnitSyncs<>0) then
+   begin
+      var count : Integer = ParserGetCountByHandle(pLanUnitSyncs);
+
+      if (count>0) then
+      begin
+         var i,pLanUnitSync,unit_handle,actionSyncEnum : Integer;
+
+         for i:=count-1 downto 0 do
+         begin
+            pLanUnitSync := ParserSelectByHandleByIndex(pLanUnitSyncs, i);
+            //var goUID : Integer = ParserGetIntValueByKeyByHandle(pLanUnitSync, 'myUID');
+            //var plIndex : Integer = ParserGetIntValueByKeyByHandle(pLanUnitSync, 'Player');
+            //var plHandle : Integer = GetPlayerHandleByIndex(plIndex);
+            //var goIndex : Integer = ParserGetIntValueByKeyByHandle(pLanUnitSync, 'goIndex');
+            //var goHnd : Integer = GetGameObjectHandleByIndex(goIndex, plHandle);
+
+            unit_handle := GetGameObjectHandleByUniqueId(_lan_ConvertToBattleUID(ParserGetIntValueByKeyByHandle(pLanUnitSync, 'src_index')));
+            if (unit_handle=0) then
+               ErrorLog('EndPointReached : pLanAction invalid index='+ParserGetValueByKeyByHandle(pLanUnitSync, 'src_index'))
+            else
+            begin
+               actionSyncEnum := ParserGetIntValueByKeyByHandle(pLanUnitSync, 'ActionSyncEnum');
+               if (actionSyncEnum=(gIntRegister_InetLanActionSyncEnum+1)) then
+               begin
+                  IntRegister0 := pLanUnitSync;
+                  GameObjectExecuteStateByHandle(unit_handle, 'EvaluateOrderParser');
+                  Result := True;
+               end;
+            end;
+         end;
+      end;
+   end;
+end;
+
+// _inet_AssignUnit
+//
+procedure _inet_AssignUnit(var unit1, unit2 : TInetUnit);
+begin
+   unit2.unitid := unit1.unitid;
+   unit2.level := unit1.level;
+   unit2.hero := unit1.hero;
+   var i : Integer;
+   for i:=0 to gc_MaxUnitMedalsCount-1 do
+      unit2.arrmedals[i] := unit1.arrmedals[i];
+   for i:=0 to gc_MaxUnitLevel-1 do
+      unit2.arrupgrades[i] := unit1.arrupgrades[i];
+end;
+
+// _inet_SwapUnit
+//
+procedure _inet_SwapUnit(var unit1, unit2 : TInetUnit);
+begin
+   var tmpUnit : TInetUnit;
+   _inet_AssignUnit(unit1, tmpUnit);
+   _inet_AssignUnit(unit2, unit1);
+   _inet_AssignUnit(tmpUnit, unit2);
+end;
+
+// _inet_ResetUnit
+//
+procedure _inet_ResetUnit(var unit : TInetUnit);
+begin
+   unit.unitid := 0;
+   unit.level := 0;
+   unit.hero := false;
+   var i : Integer;
+   for i:=0 to gc_MaxUnitMedalsCount-1 do
+      unit.arrmedals[i] := 0;
+   for i:=0 to gc_MaxUnitLevel-1 do
+      unit.arrupgrades[i] := 0;
+end;
+
+// _inet_SwapIntVars
+//
+procedure _inet_SwapIntVars(var var1, var2 : Integer);
+begin
+   var tmp : Integer = var1;
+   var1 := var2;
+   var2 := tmp;
+end;
+
+// _inet_RecruitHero
+//
+function _inet_RecruitHero(var battle : TInetBattle; classInd : Integer) : Integer;
+begin
+   var freeIndex : Integer = -1;
+   var i : Integer;
+   for i:=0 to gc_MaxInetHeroCount-1 do
+   begin
+      if (battle.hero[i].class1=0) then
+      begin
+         freeIndex := i;
+         break;
+      end;
+   end;
+   if (freeIndex>-1) then
+   begin
+      battle.hero[freeIndex].class1 := classInd;
+      case classInd of
+         1 : battle.hero[freeIndex].health := 1;
+         2 : battle.hero[freeIndex].health := 1;
+         3 : battle.hero[freeIndex].leader := 1;
+         4 : battle.hero[freeIndex].magic := 1;
+      end;
+
+      // setting hero name
+      var pHeroClass : Integer = ParserSelectByHandleByIndex(gPrototypeData.heroClasses.handle, classInd);
+      var pHeroNames : Integer = ParserSelectByHandleByKey(pHeroClass, 'NameList');
+      _rand_ClearRoll;
+      var count : Integer = 0;
+      for i:=0 to ParserGetCountByHandle(pHeroNames)-1 do
+      begin
+         var pHeroName : Integer = ParserSelectByHandleByIndex(pHeroNames, i);
+         var heroName : String = ParserGetValueByKeyByHandle(pHeroName, 'Name');
+         var f : Boolean = true;
+
+         var j : Integer;
+         for j:=0 to gc_MaxInetHeroCount-1 do
+         begin
+            if SameText(battle.hero[j].name, heroName) then
+            begin
+               f := false;
+               break;
+            end;
+         end;
+
+         if f then
+         begin
+            gArrRollerN[count] := i + 1;
+            gArrRollerP[count] := 1;
+            count := count + 1;
+         end;
+      end;
+      var ind : Integer = _rand_Roll(false) - 1;
+      var pHeroName : Integer = ParserSelectByHandleByIndex(pHeroNames, ind);
+      battle.hero[freeIndex].name := ParserGetValueByKeyByHandle(pHeroName, 'Name');
+
+      // setting hero portrait
+      var pHeroPortraits : Integer = ParserSelectByHandleByKey(pHeroClass, 'PortraitList');
+      _rand_ClearRoll;
+      count := 0;
+      for i:=0 to ParserGetCountByHandle(pHeroPortraits)-1 do
+      begin
+         var pHeroPortrait : Integer = ParserSelectByHandleByIndex(pHeroPortraits, i);
+         var heroPortrait : String = ParserGetValueByKeyByHandle(pHeroPortrait, 'Portrait');
+         var f : Boolean = true;
+
+         var j : Integer;
+         for j:=0 to gc_MaxInetHeroCount-1 do
+         begin
+            if SameText(battle.hero[j].portrait, heroPortrait) then
+            begin
+               f := false;
+               break;
+            end;
+         end;
+
+         if f then
+         begin
+            gArrRollerN[count] := i + 1;
+            gArrRollerP[count] := 1;
+            count := count + 1;
+         end;
+      end;
+
+      ind := _rand_Roll(false) - 1;
+      var pHeroPortrait : Integer = ParserSelectByHandleByIndex(pHeroPortraits, ind);
+      battle.hero[freeIndex].portrait := ParserGetValueByKeyByHandle(pHeroPortrait, 'Portrait');
+   end;
+   Result := freeIndex;
+end;
+
+// _inet_ResetHero
+//
+procedure _inet_ResetHero(var hero : TInetHero);
+begin
+   hero.class1 := 0;
+   hero.class2 := 0;
+   hero.level := 0;
+   hero.health := 0;
+   hero.leader := 0;
+   hero.magic := 0;
+   hero.life := 0;
+   hero.name := '';
+   hero.portrait := '';
+   var i : Integer;
+   for i:=0 to (gc_MaxArmyCount-1) do
+      _inet_ResetUnit(hero.arrunits[i]);
+   for i:=0 to (gc_HeroInventoryCount-1) do
+      hero.arritems[i] := 0;
+   for i:=0 to (gc_MaxHeroSpellCount-1) do
+      hero.arrspells[i] := 0;
+   for i:=0 to (gc_MaxHeroSkillCount-1) do
+   begin
+      hero.arrskills[i].id := 0;
+      hero.arrskills[i].level := 0;
+   end;
+end;
+
+// _inet_ResetInetBattleMap
+//
+procedure _inet_ResetInetMap(var map : TInetMap);
+begin
+   map.randkey0 := 0;
+   map.randkey1 := 0;
+   map.seed := 0;
+   map.lefttype := 0;
+   map.righttype := 0;
+   map.siteid := 0;
+   map.visualid := 0;
+end;
+
+// _inet_ResetInetBattle
+//
+procedure _inet_ResetInetBattle(var battle : TInetBattle);
+begin
+   battle.curhero := 0;
+   battle.points := 0;
+   _inet_ResetInetMap(battle.map);
+   var i : Integer;
+   for i:=0 to gc_MaxInetHeroCount-1 do
+      _inet_ResetHero(battle.hero[i]);
+end;
+
+// _inet_AssignHero
+//
+procedure _inet_AssignHero(var hero1, hero2 : TInetHero);
+begin
+   hero2.class1 := hero1.class1;
+   hero2.class2 := hero1.class2;
+   hero2.level := hero1.level;
+   hero2.health := hero1.health;
+   hero2.leader := hero1.leader;
+   hero2.magic := hero1.magic;
+   hero2.life := hero1.life;
+   hero2.name := hero1.name;
+   hero2.portrait := hero1.portrait;
+   var i : Integer;
+   for i:=0 to (gc_MaxArmyCount-1) do
+      _inet_AssignUnit(hero1.arrunits[i], hero2.arrunits[i]);
+   for i:=0 to (gc_HeroInventoryCount-1) do
+      hero2.arritems[i] := hero1.arritems[i];
+   for i:=0 to (gc_MaxHeroSpellCount-1) do
+      hero2.arrspells[i] := hero1.arrspells[i];
+   for i:=0 to (gc_MaxHeroSkillCount-1) do
+   begin
+      hero2.arrskills[i].id := hero1.arrskills[i].id;
+      hero2.arrskills[i].level := hero1.arrskills[i].level;
+   end;
+end;
+
+// _inet_SwapHero
+//
+procedure _inet_SwapHero(var hero1, hero2 : TInetHero);
+begin
+   var tmpHero : TInetHero;
+   _inet_AssignHero(hero1, tmpHero);
+   _inet_AssignHero(hero2, hero1);
+   _inet_AssignHero(tmpHero, hero2);
+end;
+
+// _inet_GetHeroLevelPrice
+//
+function _inet_GetHeroLevelPrice(class1, level : Integer) : Integer;
+begin
+   var levelprice : Integer = 0;
+   var pUnit : Integer = ParserSelectByHandleByIndex(gPrototypeData.units.handle, 39+class1);
+   var unitLevelPrice : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'LevelPrice');
+   case level of
+      1..9 : levelprice := 20+(level-1)*5;
+      10 : levelprice := 150;
+      11..19 : levelprice := 100+(level-11)*10;
+      20 : levelprice := 300;
+      else
+         levelprice := 100;
+   end;
+   levelprice := levelprice+(levelprice*unitLevelPrice div 100);
+
+   Result := levelprice;
+end;
+
+// _inet_GetUnitPrice
+//
+function _inet_GetUnitPrice(unitID, level : Integer) : Integer;
+begin
+   var pUnit : Integer = ParserSelectByHandleByIndex(gPrototypeData.units.handle, unitID);
+   var pointPrice : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'PointPrice');
+   var levelPrice : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'LevelPrice');
+   Result := pointPrice+levelPrice*level;
+end;
+
+// _inet_GetItemPrice
+//
+function _inet_GetItemPrice(itemID : Integer) : Integer;
+begin
+   var pItem : Integer = ParserSelectByHandleByIndex(gPrototypeData.extitems.handle, itemID);
+   var pointPrice : Integer = round(ParserGetIntValueByKeyByHandle(pItem, 'PointPrice')*gc_lan_itempricemod);
+   Result := pointPrice;
+end;
+
+// _inet_GetSpellPrice
+//
+function _inet_GetSpellPrice(spellID : Integer) : Integer;
+begin
+   var pSpell : Integer = ParserSelectByHandleByIndex(gPrototypeData.spells.handle, spellID);
+   var pointPrice : Integer = ParserGetIntValueByKeyByHandle(pSpell, 'PointPrice');
+   Result := pointPrice;
+end;
+
+// _inet_CalcHeroPrice
+//
+function _inet_CalcHeroPrice(hero : TInetHero) : Integer;
+begin
+   Result := 0;
+   // hero cost
+   var heroScores : Integer = 0;
+   var i : Integer;
+   for i:=1 to hero.level do
+      heroScores := heroScores+_inet_GetHeroLevelPrice(hero.class1, i);
+
+   // army cost
+   var armyPrices : Integer = 0;
+   for i:=0 to gc_MaxArmyCount-1 do
+      armyPrices := armyPrices+_inet_GetUnitPrice(hero.arrunits[i].unitid, hero.arrunits[i].level);
+
+   // items cost
+   var itemPrices : Integer = 0;
+   for i:=0 to gc_HeroInventoryCount-1 do
+      itemPrices := itemPrices+_inet_GetItemPrice(hero.arritems[i]);
+
+   // spells cost
+   var spellPrices : Integer = 0;
+   for i:=0 to gc_MaxHeroSpellCount-1 do
+      spellPrices := spellPrices+_inet_GetSpellPrice(hero.arrspells[i]);
+
+   Result := heroScores+armyPrices+itemPrices+spellPrices;
+end;
+
+// _inet_CheckAllowHeroesReqs
+//
+function _inet_CheckAllowHeroesReqs() : Boolean;
+begin
+   Result := false;
+   var checkCount : Integer = 0;
+   var allowedClasses : Integer = gInetShell.allowedheroclasses;
+   var i : Integer;
+   for i := 0 to gc_HeroClassChoiceCount-1 do
+   begin
+      if ((_misc_GetBitFlagByIndex(i) and allowedClasses) > 0) then
+          checkCount := checkCount + 1;
+      
+      if (checkCount >= gc_MinAllowedHeroClasses) then
+      begin
+         Result := true;
+         break;
+      end;
+   end;
+end;
+
+// _inet_CheckAllowTerrainReqs
+//
+function _inet_CheckAllowTerrainReqs() : Boolean;
+begin
+   Result := false;
+   var checkCount : Integer = 0;
+   var allowedTerrains : Integer = gInetShell.allowedterrains;
+   var i : Integer;
+   for i := 0 to gc_TerrainChoiceCount-1 do
+   begin
+      if ((_misc_GetBitFlagByIndex(i) and allowedTerrains) > 0) then
+          checkCount := checkCount + 1;
+      
+      if (checkCount >= gc_MinAllowedTerrains) then
+      begin
+         Result := true;
+         break;
+      end;
+   end;
+end;
+
+// _inet_ShellAllowSetDefault
+//
+procedure _inet_ShellAllowSetDefault(var shell : TInetShell);
+begin
+   shell.allowedheroclasses := $ffff;
+   shell.allowedterrains := 63;
+   shell.allowpointsdif := 1;
+end;
+
+// _inet_LanCurHeroParser
+//
+function _inet_LanCurHeroParser() : Integer;
+begin
+   Result := _misc_ParserGetOrCreateByKey('LanCurHero',false);
+end;
+
+// _inet_GetDollItemSlot
+//
+function _inet_GetDollItemSlot(index : Integer) : Integer;
+begin
+   var itemSlot : Integer = 0;
+   case index of
+      0  : itemSlot := 9;
+      1  : itemSlot := 4;
+      2  : itemSlot := 6;
+      3  : itemSlot := 1;
+      4  : itemSlot := 12;
+      5  : itemSlot := 10;
+      6  : itemSlot := 3;
+      7  : itemSlot := 5;
+      8  : itemSlot := 2;
+      9  : itemSlot := 13;
+      10 : itemSlot := 10;
+      11 : itemSlot := 8;
+      12 : itemSlot := 7;
+      13, 14, 15, 16 : itemSlot := 11;
+      else
+      itemSlot := 0;
+   end;
+
+   Result := itemSlot;
+end;
+
+// _inet_GetSlotIndexByItemSlot
+//
+function _inet_GetSlotIndexByItemSlot(battle : TInetBattle; itemSlot : Integer) : Integer;
+begin
+   var i : Integer;
+   var dollSlot : Integer = -1;
+   var ind : Integer = -1;
+
+   for i:=0 to gc_HeroDollSlotsCount-1 do
+   begin
+      var iSlot : Integer = _inet_GetDollItemSlot(i);
+      var itemID : Integer = battle.hero[battle.curhero].arritems[i];
+
+      if (iSlot=itemSlot) then
+      begin
+         if (ind<0) then
+         ind := i;
+
+         if (itemID=0) then
+         begin
+            dollSlot := i;
+            break;
+         end;
+      end;
+   end;
+
+   if (dollSlot<0) then
+   dollSlot := ind;
+
+   Result := dollSlot;
+end;
+
+// _inet_GetCanUseItem
+//
+function _inet_GetCanUseItem(battle : TInetBattle; itemID : Integer) : Boolean;
+begin
+   var class1 : Integer = battle.hero[battle.curhero].class1;
+   var class2 : Integer = battle.hero[battle.curhero].class2;
+
+   IntRegister0 := itemID;
+   MapExecuteState('GetItemParserByID');
+   var pItem : Integer = IntRegister1;
+   var itemSlot : Integer = ParserGetIntValueByKeyByHandle(pItem, 'ItemSlot');
+   var itemType : Integer = ParserGetIntValueByKeyByHandle(pItem, 'ItemType');
+
+   IntRegister0 := itemType;
+   MapExecuteState('GetItemTypeParserByID');
+   var pItemType : Integer = IntRegister1;
+
+   var pHeroClasses : Integer = ParserSelectByHandleByKey(pItemType, 'HeroClasses');
+   var i : Integer;
+   var canUse : Boolean = false;
+
+   for i := ParserGetCountByHandle(pHeroClasses)-1 downto 0 do
+   begin
+      var pHeroClass : Integer = ParserSelectByHandleByIndex(pHeroClasses, i);
+      var heroClass : Integer = ParserGetIntValueByKeyByHandle(pHeroClass, 'HeroClass');
+
+      if (heroClass = class1) or (heroClass = class2) then
+      begin
+         canUse := true;
+         break;
+      end;
+   end;
+   Result := canUse;
+end;
+
+// _inet_GetFreeInvSlotsCount
+//
+function _inet_GetFreeInvSlotsCount(battle : TInetBattle) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for i:=gc_HeroDollSlotsCount to gc_HeroInventoryCount-1 do
+   begin
+      var itemID : Integer = battle.hero[battle.curhero].arritems[i];
+
+      if (itemID=0) then
+         Result := Result+1;
+   end;
+end;
+
+// _inet_GetFreeInvSlotIndex
+//
+function _inet_GetFreeInvSlotIndex(battle : TInetBattle) : Integer;
+begin
+   Result := -1;
+   var i : Integer;
+   for i := gc_HeroDollSlotsCount to gc_HeroInventoryCount-1 do
+   begin
+      if battle.hero[battle.curhero].arritems[i]=0 then
+      begin
+         Result := i;
+         break;
+      end;
+   end;
+end;
+
+// _inet_GetUnitIndex
+//
+function _inet_GetUnitIndex(rank, slotIndex : Integer) : Integer;
+begin
+   var index : Integer = 1;
+   case rank of
+      1 : index := 1+slotIndex;
+      2 : index := 7+slotIndex;
+      3 : index := 11+slotIndex;
+      4 : index := 14+slotIndex;
+   end;
+   if (index>(gc_MaxArmyCount-1)) then
+   begin
+      Result := 0;
+      ErrorLog('_inet_GetUnitIndex index out of bounds');
+   end
+   else
+   Result := index;
+end;
+
+// _inet_GetUnitRank
+//
+function _inet_GetUnitRank(slotIndex : Integer) : Integer;
+begin
+   var rank : Integer = 0;
+   if slotIndex>=14 then
+      rank := 4
+   else
+   begin
+      if slotIndex>=11 then
+         rank := 3
+      else
+      begin
+         if slotIndex>=7 then
+            rank := 2
+         else
+         begin
+            if (slotIndex>=1) then
+               rank := 1;
+         end;
+      end;
+   end;
+   Result := rank;
+end;
+
+// _inet_GetHeroUnit
+//
+function _inet_GetHeroUnit() : Integer;
+begin
+   Result := 0;
+   var plHandle : Integer = GetPlayerHandleByName('lan');
+   if (plHandle<>0) then
+      Result := GetGameObjectHandleByIndex(0, plHandle);
+end;
+
+// _inet_CreateHeroUnit
+//
+function _inet_CreateHeroUnit(var battle : TInetBattle) : Integer;
+begin
+   procedure _inet_HeroCreateParser(var hero : TInetHero; heroUID, pMyParser : Integer);
+   begin
+      var myClass1 : Integer = hero.class1;
+      var myClass2 : Integer = hero.class2;
+
+      var i, j : Integer;
+
+      // setting hero name
+      ParserSetValueByKeyByHandle(pMyParser, 'Name', hero.name);
+      ParserSetValueByKeyByHandle(pMyParser, 'Portrait', hero.portrait);
+
+      var pMyUnits : Integer = ParserAddChildByIndex(pMyParser, 'Units');
+      var pMySpells : Integer = ParserAddChildByIndex(pMyParser, 'Spells');
+      var pMySkills : Integer = ParserAddChildByIndex(pMyParser, 'Skills');
+
+      // setting hero inventory
+      var pMyDoll : Integer = ParserAddChildByIndex(pMyParser, 'Doll');
+      for i := 0 to gc_HeroInventoryCount-1 do
+      begin
+         var pMyDollItem : Integer = ParserAddChildByIndex(pMyDoll, '*');
+
+         case i of
+            0  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 9);
+            1  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 4);
+            2  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 6);
+            3  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 1);
+            4  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 12);
+            5  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 10);
+            6  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 3);
+            7  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 5);
+            8  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 2);
+            9  : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 13);
+            10 : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 10);
+            11 : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 8);
+            12 : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 7);
+            13, 14, 15, 16 : ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 11)
+            else ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemSlot', 0);
+         end;
+
+         ParserSetIntValueByKeyByHandle(pMyDollItem, 'ItemID', 0);
+         ParserSetIntValueByKeyByHandle(pMyDollItem, 'Durability', 0);
+         ParserSetBoolValueByKeyByHandle(pMyDollItem, 'Picked', False);
+      end;
+   end;
+
+   procedure _inet_HeroFillParser(var hero : TInetHero; heroUID, pMyParser : Integer);
+   begin
+      var heroClass : Integer = hero.class1;
+
+      function _inet_GetDollItemSlot(index : Integer) : Integer;
+      begin
+         var itemSlot : Integer = 0;
+         case index of
+            0  : itemSlot := 9;
+            1  : itemSlot := 4;
+            2  : itemSlot := 6;
+            3  : itemSlot := 1;
+            4  : itemSlot := 12;
+            5  : itemSlot := 10;
+            6  : itemSlot := 3;
+            7  : itemSlot := 5;
+            8  : itemSlot := 2;
+            9  : itemSlot := 13;
+            10 : itemSlot := 10;
+            11 : itemSlot := 8;
+            12 : itemSlot := 7;
+            13, 14, 15, 16 : itemSlot := 11;
+            else
+               itemSlot := 0;
+         end;
+
+         Result := itemSlot;
+      end;
+
+      procedure TakeItem(pMyParser, itemID, index : Integer; picked : Boolean);
+      begin
+         var pItem : Integer = ParserSelectByHandleByIndex(gPrototypeData.extitems.handle, itemID);
+         var itemDur : Integer = ParserGetIntValueByKeyByHandle(pItem, 'Durability');
+         var pGODoll : Integer = ParserSelectByHandleByKey(pMyParser, 'Doll');
+
+         var pDollSlot : Integer = ParserSelectByHandleByIndex(pGODoll, index);
+         //ParserSetIntValueByKeyByHandle(pDollSlot, 'ItemSlot', itemSlot);
+         ParserSetIntValueByKeyByHandle(pDollSlot, 'ItemID', itemID);
+         ParserSetIntValueByKeyByHandle(pDollSlot, 'Durability', itemDur);
+         ParserSetBoolValueByKeyByHandle(pDollSlot, 'Picked', picked);
+      end;
+
+      procedure TakeUnit(pMyParser, unitID, exp : Integer);
+      begin
+         var pUnit : Integer = _unit_GetUnitParserByID(unitID);
+         var rank : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'Rank');
+         var pGOArmy : Integer = ParserSelectByHandleByKey(pMyParser, 'Units');
+
+         IntRegister0 := pGOArmy;
+         IntRegister1 := unitID;
+         IntRegister2 := exp;
+         IntRegister3 := 0;
+         MapExecuteState('AddUnitToParser');
+      end;
+
+      // set hero skills for different classes
+      var pGOUnits : Integer = ParserSelectByHandleByKey(pMyParser, 'Units');
+      var pGOSkills : Integer = ParserAddChildByIndex(pMyParser, 'Skills');
+      var pGODoll : Integer = ParserAddChildByIndex(pMyParser, 'Doll');
+
+      IntRegister0 := pGOUnits;
+      IntRegister1 := 39+hero.class1;
+      IntRegister2 := 0;
+      IntRegister3 := 0;
+      MapExecuteState('AddUnitToParser');
+      var pGOUnit : Integer = IntRegister4;
+      ParserSetIntValueByKeyByHandle(pGOUnit, 'HeroUID', heroUID);
+      ParserSetBoolValueByKeyByHandle(pGOUnit, 'IsHero', true);
+
+      var i : Integer;
+      for i:=0 to gc_HeroInventoryCount-1 do
+      begin
+         if (hero.arritems[i]<>0) then
+         begin
+            var picked : Boolean = (i=gIntRegister_InetPickedItemSlot);
+            TakeItem(pMyParser, hero.arritems[i], i, picked);
+         end;
+      end;
+
+      for i:=1 to gc_MaxArmyCount-1 do
+      begin
+         if (hero.arrunits[i].unitid<>0) then
+         TakeUnit(pMyParser, hero.arrunits[i].unitid, 0);
+      end;
+
+      for i:=0 to gc_MaxHeroSkillCount-1 do
+      begin
+         if (hero.arrskills[i].id<>0) then
+         begin
+            var pNewSkill : Integer = ParserAddChildByIndex(pGOSkills, '*');
+            ParserSetIntValueByKeyByHandle(pNewSkill, 'SkillID', hero.arrskills[i].id);
+            ParserSetIntValueByKeyByHandle(pNewSkill, 'Level', hero.arrskills[i].level);
+         end;
+      end;
+   end;
+
+   var pLanCurHero : Integer = _misc_ParserGetOrCreateByKey('LanCurHero', True);
+
+   var plHandle : Integer = GetPlayerHandleByName('lan');
+   if (plHandle=0) then
+      plHandle := CreatePlayer('lan', 'map.unit', 'cmNone')
+   else
+      ClearPlayerGameObjectsByHandle(plHandle);
+
+   var baseName : String = 'map.langame';
+   var goHandle : Integer = CreatePlayerGameObjectHandleByHandle(plHandle, 'map.unit', baseName, 0, 0, 0);
+   var pGo : Integer = ParserSelectGameObject(goHandle);
+   ParserClearByHandle(pGo);
+   var heroUID : Integer = GetGameObjectUniqueIdByHandle(goHandle);
+
+   SetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iLeader, battle.hero[battle.curhero].leader);
+   SetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iHealth, battle.hero[battle.curhero].health);
+   SetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iMagic, battle.hero[battle.curhero].magic);
+   SetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iLife, battle.hero[battle.curhero].life);
+
+   _inet_HeroCreateParser(battle.hero[battle.curhero], heroUID, pLanCurHero);
+   _inet_HeroFillParser(battle.hero[battle.curhero], heroUID, pLanCurHero);
+
+   ParserSelectByHandle(pGo);
+   ParserCopyFromByHandle(pLanCurHero);
+   SetGameObjectVisibleByHandle(goHandle, False);
+
+   Result := goHandle;
+end;
+
+// _inet_GetInetGameParamsMy
+//
+procedure _inet_GetInetGameParamsMy(var myName : String; var myPoints, myAllowPointsDif, myHeroClass1, myHeroClass2, myAllowedHeroClasses, myAllowedTerrains : Integer);
+begin
+   myName := LanMyInfoName;
+   myPoints := _inet_CalcHeroPrice(gInetBattle.hero[gInetBattle.curhero]);
+   myAllowPointsDif := gInetShell.allowpointsdif;
+   myHeroClass1 := gInetBattle.hero[gInetBattle.curhero].class1;
+   myHeroClass2 := gInetBattle.hero[gInetBattle.curhero].class2;
+   myAllowedHeroClasses := gInetShell.allowedheroclasses;
+   myAllowedTerrains := gInetShell.allowedterrains;
+end;
+
+// _inet_GetInetGameParamsByGameName
+//
+procedure _inet_GetInetGameParamsByGameName(gameName : String; var enName : String; var enPoints, enAllowPointsDif, enHeroClass1, enHeroClass2, enAllowedHeroClasses, enAllowedTerrains : Integer; bCustom : Boolean; var password : String);
+begin
+   _gui_GetDelimiterValueByIndex(gameName, 0, enName);
+   enPoints := _gui_GetDelimiterIntValueByIndex(gameName, 1);
+   enAllowPointsDif := _gui_GetDelimiterIntValueByIndex(gameName, 2);
+   enHeroClass1 := _gui_GetDelimiterIntValueByIndex(gameName, 3);
+   enHeroClass2 := _gui_GetDelimiterIntValueByIndex(gameName, 4);
+   enAllowedHeroClasses := _gui_GetDelimiterIntValueByIndex(gameName, 5);
+   enAllowedTerrains := _gui_GetDelimiterIntValueByIndex(gameName, 6);
+   bCustom := _gui_GetDelimiterBoolValueByIndex(gameName, 14);
+   _gui_GetDelimiterValueByIndex(gameName, 15, password);
+end;
+
+// _inet_MakeInetGameParamsString
+//
+procedure _inet_MakeInetGameParamsString(var gameName : String; bCustom : Boolean; password : String);
+begin
+   gameName := LanMyInfoName+gc_gui_DelimiterCharStr+IntToStr(_inet_CalcHeroPrice(gInetBattle.hero[gInetBattle.curhero]));
+   gameName := gameName+gc_gui_DelimiterCharStr+IntToStr(gInetShell.allowpointsdif);
+   gameName := gameName+gc_gui_DelimiterCharStr+IntToStr(gInetBattle.hero[gInetBattle.curhero].class1);
+   gameName := gameName+gc_gui_DelimiterCharStr+IntToStr(gInetBattle.hero[gInetBattle.curhero].class2);
+   gameName := gameName+gc_gui_DelimiterCharStr+IntToStr(gInetShell.allowedheroclasses);
+   gameName := gameName+gc_gui_DelimiterCharStr+IntToStr(gInetShell.allowedterrains);
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+'0';
+   gameName := gameName+gc_gui_DelimiterCharStr+BoolToStr(bCustom); //should be index 14, hence the zeroes above
+   gameName := gameName+gc_gui_DelimiterCharStr+password; //should be index 15
+end;
+
+// _inet_AssignProfileToHotseatProfile
+//
+procedure _inet_AssignProfileToHotseatProfile(fromProfile : TProfile; var toHotseatProfile : THotseatProfile);
+begin
+   toHotseatProfile.name := fromProfile.name;
+   toHotseatProfile.land := fromProfile.land;
+   toHotseatProfile.color1 := fromProfile.color1;
+   toHotseatProfile.color2 := fromProfile.color2;
+   toHotseatProfile.sign := fromProfile.sign;
+   toHotseatProfile.avatar := fromProfile.avatar;
+end;
+
+// _inet_ClearHotseatProfile
+//
+procedure _inet_ClearHotseatProfile(var hotseatProfile : THotseatProfile);
+begin
+   hotseatProfile.name := '';
+   hotseatProfile.land := '';
+   hotseatProfile.color1 := -1;
+   hotseatProfile.color2 := -1;
+   hotseatProfile.sign := 0;
+   hotseatProfile.avatar := 17;
+end;
+
+// _inet_ClearLanShardGame
+//
+procedure _inet_ClearLanShardGame();
+begin
+   gLanShardGame.masterid := 0;
+	
+	var i : Integer;
+   for i := 0 to gc_MaxCustomMapPlayer-1 do
+   begin
+      gLanShardGame.arrlanplayers[i].lanid := 0;
+      _inet_ClearHotseatProfile(gLanShardGame.arrlanplayers[i].profile);
+   end;
+end;
+
+// _inet_InitRandomHotseatProfiles
+//
+procedure _inet_InitRandomHotseatProfiles();
+begin
+   var i : Integer;
+
+   _inet_AssignProfileToHotseatProfile(gProfile, gArrHotseatProfiles[0]);
+   for i:=1 to gc_MaxMapPlayers-1 do
+   begin
+      _inet_ClearHotseatProfile(gArrHotseatProfiles[i]);
+      gArrHotseatProfiles[i].name := GetLocaleTableListItemByID('gui', '50')+' '+IntToStr(i);
+      gArrHotseatProfiles[i].land := GetLocaleTableListItemByID('players', IntToStr(i)+'.castlename');
+      gArrHotseatProfiles[i].color1 := Floor(Random*gc_MaxHerbColor);
+      gArrHotseatProfiles[i].color2 := Floor(Random*gc_MaxHerbColor);
+      gArrHotseatProfiles[i].sign := Floor(Random*gc_MaxHerbSign);
+      gArrHotseatProfiles[i].avatar := 1+Floor(Random*19);
+   end;
+end;
+
+// _inet_AssignHotseatProfile
+//
+procedure _inet_AssignHotseatProfile(fromHotseatProfile : THotseatProfile; var toHotseatProfile : THotseatProfile);
+begin
+   toHotseatProfile.name := fromHotseatProfile.name;
+   toHotseatProfile.land := fromHotseatProfile.land;
+   toHotseatProfile.color1 := fromHotseatProfile.color1;
+   toHotseatProfile.color2 := fromHotseatProfile.color2;
+   toHotseatProfile.sign := fromHotseatProfile.sign;
+   toHotseatProfile.avatar := fromHotseatProfile.avatar;
+end;
+
+// mapname params string:
+// [0] - master id ( <0 for save game)
+// [1] - password string / save name - full but without .map extension
+// [2] - save game uid
+// [3] - total number of players
+// [4-6] // unused
+// [7] - humans in game / total number of human players in save game
+// [8-23]  - ids of players / ids for human players
+function _inet_IsSaveGameMapName(_mapName : String) : Boolean;
+begin
+   if _sa_GetAsInt(_mapName,0) < 0 then
+      Result := true
+   else
+      Result := false;
+end;
+
+procedure _inet_MakeInetShardMapParamsString(var _mapName : String; password : String);
+begin
+   var humanSlotsCount : Integer = 0;
+   var i : Integer;
+   var mapName : String;
+
+   for i:=1 to (gMapSettings.players+2)-1 do
+      if (gMapSettings.arrplayers[i].control=1) then
+         humanSlotsCount := humanSlotsCount+1;
+
+   mapName := '';
+   _sa_AddAsInt(mapName,LanMyInfoID()); // master id;
+   _sa_Add(mapName,password);
+   _sa_AddAsInt(mapName,0);
+   _sa_AddAsInt(mapName,gMapSettings.players+2);
+   _sa_AddAsInt(mapName,0);
+   _sa_AddAsInt(mapName,0);
+   _sa_AddAsInt(mapName,0);
+   _sa_AddAsInt(mapName,humanSlotsCount);
+   for i:=0 to gc_MaxCustomMapPlayer-1 do
+      _sa_AddAsInt(mapName,gMapSettings.arrplayers[i].id);
+
+   _mapName := mapName;
+end;
+
+procedure _inet_MakeInetShardMapParamsForSave(var _mapName : String; save_name : String; game_uid : Integer; player_ids : String);
+begin
+   var i,n : Integer;
+   var dst : String;
+
+   dst := '';
+   _sa_AddAsInt(dst,-1*LanMyInfoID()); // master id;
+   _sa_Add(dst,'"'+save_name+'"');
+   _sa_AddAsInt(dst,game_uid);
+   _sa_AddAsInt(dst,0);
+   _sa_AddAsInt(dst,0);
+   _sa_AddAsInt(dst,0);
+   _sa_AddAsInt(dst,0);
+   n := _sa_GetNum(player_ids);
+   _sa_AddAsInt(dst,n);
+   for i := 0 to n-1 do
+      _sa_AddAsInt(dst,_sa_GetAsInt(player_ids,i));
+
+   _mapName := dst;
+end;
+
+procedure _inet_GetInetShardSaveParamsFromMap(mapName : String; var save_name : String; var game_uid : Integer; var player_ids : String);
+begin
+   var i,n : Integer;
+   var pid : String;
+
+   _sa_Get(mapName,1,pid);
+   if SubStr(pid,1,1) = '"' then
+      save_name := SubStr(pid,2,StrLength(pid)-2)
+   else
+      save_name := pid;
+   game_uid := _sa_GetAsInt(mapName,2);
+   n := _sa_GetAsInt(mapName,7);
+   pid := '';
+   for i := 0 to n-1 do
+      _sa_AddAsInt(pid,_sa_GetAsint(mapName,8+i));
+   player_ids := pid;
+end;
+
+function _inet_GetInetShardMasterIDByMapName(mapName : String) : Integer;
+begin
+   Result := _sa_GetAsInt(mapName,0);
+end;
+
+procedure _inet_GetInetShardPasswordByMapName(mapName : String; var password : String);
+begin
+   _sa_Get(mapName,1,password);
+end;
+
+function _inet_GetInetShardMaxPlayersByMapName(mapName : String) : Integer;
+begin
+   Result := _sa_GetAsInt(mapName,3);
+end;
+
+function _inet_GetInetShardHumanSlotsByMapName(mapName : String) : Integer;
+begin
+   Result := _sa_GetAsInt(mapName,7);
+end;
+
+
+// _inet_SendShardGameSettings
+//
+procedure _inet_SendShardGameSettings();
+begin
+   var pLanGame : Integer = _misc_ParserGetOrCreateByKey('lan_shard_settings', True);
+   var pTmp : Integer = _misc_ParserGetOrCreateByKey('temp', True);
+   StateMachineGlobalVariablesSaveToParser(pTmp, 'gMapSettings', False, False);
+   ParserAddChildByIndex(pLanGame, 'gMapSettings');
+   ParserCopyFromByHandle(pTmp);
+   ParserClearByHandle(pTmp);
+   StateMachineGlobalVariablesSaveToParser(pTmp, 'gLanShardGame', False, False);
+   ParserAddChildByIndex(pLanGame, 'gLanShardGame');
+   ParserCopyFromByHandle(pTmp);
+   ParserClearByHandle(pTmp);
+   
+   _lan_LanSendParser(gc_LAN_SHARD_SETTINGS, pLanGame);
+end;
+
+
+function _inet_GetConnectionIP(var address : String; var port : Integer) : Boolean;
+begin
+   var connectIP : String = '';
+
+   if (gConnectIPIndex>=0) and (gConnectIPIndex<gConnectIPCount) then
+      connectIP := gConnectIPList[gConnectIPIndex];
+
+   if connectIP = '' then
+   begin
+      gConnectIPIndex := -1;
+      address := '0.0.0.0';
+      port := 0;
+      Result := false;
+   end
+   else
+   begin
+      var connectHost : String;
+      var connectPort : Integer;
+
+      connectPort := StrPos(':', connectIP);
+      if connectPort > 0 then
+      begin
+         connectHost := SubStr(connectIP, 1, connectPort-1);
+         connectPort := StrToInt(SubStr(connectIP, connectPort+1, StrLength(connectIP)));
+      end
+      else
+      begin
+         connectHost := connectIP;
+         connectPort := 31523;
+      end;
+      address := connectHost;
+      port := connectPort;
+      Result := true;
+   end;
+
+   if Result then
+      gConnectHost := address + ':' + IntToStr(port);
+end;
+
+// network profile info
+// [0] - color1
+// [1] - color2
+// [2] - sign type
+// [3] - avatar icon id
+// [4] - battle mode points rule (0 if not applicable)
+// [5] - battle mode current hero price (0 if not applicable)
+// [6] - logged player mode (1-shard,2-battle,0-none)
+// [7] - unused
+// [8] - data mod name
+// [9] - data mod version
+// [10] - profile message
+procedure _inet_UpdateNetworkProfileInfo(use_battle_variables, update_inet_profile : Boolean);
+begin
+   var oi : String = LanPublicServerProfInfo; 
+   var info : String = '';
+
+   _sa_AddAsInt(info,gProfile.color1);
+   _sa_AddAsInt(info,gProfile.color2);
+   _sa_AddAsInt(info,gProfile.sign);
+   _sa_AddAsInt(info,gProfile.avatar);
+   if use_battle_variables then
+   begin
+      _sa_AddAsInt(info,gIntRegister_InetPointsMode);
+      _sa_AddAsInt(info,_inet_CalcHeroPrice(gInetBattle.hero[gInetBattle.curhero]));
+   end
+   else
+   begin
+      _sa_AddAsInt(info,0);
+      _sa_AddAsInt(info,0);
+   end;
+
+   if gGame.gametype = gc_GameTypeLanShard then
+      _sa_AddAsInt(info,1)
+   else if gGame.gametype = gc_GameTypeLanBattle then
+      _sa_AddAsInt(info,2)
+   else 
+      _sa_AddAsInt(info,0);
+      
+   if gc_TestVersion then
+      _sa_AddAsInt(info, 1)
+   else
+      _sa_AddAsInt(info, 0);
+   _sa_Add(info, gc_DataModName);
+   _sa_Add(info, gc_DataModVersion);
+
+   _sa_Add(info, gProfile.profilemessage);
+   
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 11));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 12));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 13));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 14));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 15));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 16));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 17));
+   _sa_AddAsInt(info, _sa_GetAsInt(oi, 18));
+   //_sa_Add(info, 'Eador'); // gonna need this if using a server from another game
+
+   if update_inet_profile then
+   begin
+      gInetProfile.color1 := gProfile.color1;
+      gInetProfile.color2 := gProfile.color2;
+      gInetProfile.sign   := gProfile.sign;
+      gInetProfile.avatar := gProfile.avatar;
+   end;
+
+   LanSetMyProfInfo(info);
+end;
+
+function _inet_IsPasswordValid(text : String) : Boolean;
+begin
+   var i : Integer;
+   var sym : String;
+
+   Result := True;
+   for i:=1 to StrLength(text) do
+   begin
+      sym := SubStr(text, i, 1);
+      if (sym<#33) or (sym>#123) then
+      begin
+         Result := False;
+         break;
+      end;
+   end;
+end;
+
+function _inet_IsNicknameValid(text : String) : Boolean;
+begin
+   var i,l : Integer;
+   var symbol : String;
+
+   Result := True;
+   l := StrLength(text);
+   for i:=1 to l do
+   begin
+      symbol := SubStr(text,i,1);
+      if ((symbol < #45) or ((symbol >= #58) and (symbol <= #64)) or ((symbol >= #123) and (symbol <= #128)) or (StrExists('/\^_`',symbol))) then
+      //if ((symbol < #45) or ((symbol >= #58) and (symbol <= #64)) or (symbol >= #123) or (StrExists('/\^_`',symbol))) then
+      begin
+         Result := false;
+         break;
+      end;
+   end;
+end;
+
+function _inet_CorrectNickname(text : String; var dt : String) : Boolean;
+begin
+   var i,l : Integer;
+   var symbol,t : String;
+   var d : String = '';
+
+   Result := True;
+   l := StrLength(text);
+   if l < 4 then
+      t := text+SubStr('....',1,4-l)
+   else
+   begin
+      if l > 16 then
+         t := Substr(text,1,16)
+      else
+         t := text;
+   end;
+   l := StrLength(text);
+   for i:=0 to l-1 do
+   begin
+      symbol := SubStr(t,i+1,1);
+      if ((symbol < #45) or ((symbol >= #58) and (symbol <= #64)) or (symbol >= #123) or (StrExists('/\^_`',symbol))) then
+      begin
+         d := d + '.';
+         Result := false;
+      end
+      else
+         d := d + symbol;
+   end;
+   dt := d;
+end;
+
+procedure _inet_GetClientModVersion(clientInfo : String; var versionStr : String);
+begin
+   var modName, modVersion : String = '';
+   _gui_GetDelimiterValueByIndex(clientInfo, 8, modName);
+   _gui_GetDelimiterValueByIndex(clientInfo, 9, modVersion);
+   if (modName <> '') and (modVersion <> '') then
+      versionStr := modName+'_'+modVersion
+   else
+      versionStr := '';
+end;
+
+
+function _inet_IsSameVersionByID(clientID : Integer; myModVersion : String) : Boolean;
+begin
+   var modVersion : String = '';
+   var pClient : Integer = _misc_ParserGetOrCreateByKey('client_info', True);
+   LanPublicServerGetClientInfoToParserByClientID(clientID, pClient);
+   var info : String = ParserGetValueByKeyByHandle(pClient, 'Info');
+   _inet_GetClientModVersion(info, modVersion);
+   Result := SameText(modVersion, myModVersion);
+end;
+
+
+function _inet_ShowChatMessage(elmHandle : Integer; msg : String; roomChat : Boolean; idTo, idFrom : Integer) : Boolean;
+begin
+   Result := False;
+   if (elmHandle<>0) and GetGUIElementVisible(elmHandle) then
+   begin
+      var wrapMsg : String = GetGUIWrappedTextByFont(GetGUIElementFont(elmHandle), msg, GetGUIElementWidth(elmHandle)-8);
+      var l : Integer = 0;
+      repeat
+         var lprev : Integer = l+1;
+         var sl : String;
+         l := StrPosEx(gc_gui_BreakLine, wrapMsg, l+1);
+         if (l=0) then
+            sl := SubStr(wrapMsg, lprev, StrLength(wrapMsg))
+         else
+            sl := SubStr(wrapMsg, lprev, l-lprev);
+
+         if (roomchat) then
+         begin
+            if (idTo=0) or (idTo=LanMyInfoID) or (idFrom=LanMyInfoID) then
+            GUIListBoxAddItem(elmHandle, sl, idFrom);
+         end
+         else
+         begin
+            if (idTo=0) or (idto=LanMyInfoID) or (idfrom=LanMyInfoID) then
+            GUIListBoxAddItem(elmHandle, sl, idFrom);
+         end;
+         Result := True;
+      until l<=0;
+
+      SetGUIListBoxItemIndexSilent(elmHandle, GetGUIListBoxItemsCount(elmHandle));
+      SetGUIListBoxTopIndex(elmHandle, GetGUIListBoxItemsCount(elmHandle));
+   end;
+end;
+
+         
+function _inet_IdenticalNickExists(id : Integer; nick : String) : Boolean;
+begin
+   Result := false;
+   
+   var i, pClient : Integer;
+   var pClients : Integer = _misc_ParserGetOrCreateByKey('all_clients',false);
+   for i:=0 to ParserGetCountByHandle(pClients)-1 do
+   begin
+      pClient := ParserSelectByHandleByIndex(pClients, i);
+      if (ParserGetIntValueByKeyByHandle(pClient, 'id') <> id) and (ParserGetValueByKeyByHandle(pClient, 'Nick') = nick) then
+      begin
+         Result := true;
+         break;
+      end;
+   end;
+end;
+
+procedure _inet_AddChatMessage(roomChat : Boolean; elmName : String);
+begin
+   procedure UpdateListBoxScrollerPos(elmHandle : Integer);
+   begin
+      var count : Integer = GetGUIListBoxItemsCount(elmHandle);
+      var topIndex  : Integer = GetGUIListBoxTopIndex(elmHandle);
+      var elmScrollHandle : Integer = GetGUIListBoxScrollerHandle(elmHandle);
+      var rowheight : Integer = GetGUIListBoxRowHeight(elmHandle);
+      var step : Float = ((GetGUIElementHeight(elmHandle)-rowheight)/rowheight);
+      SetGUIScrollBarPosition(elmScrollHandle, (topIndex/(count-step)));
+   end;
+   
+   var idFrom : Integer = LanPublicServerGetRegIDFrom();
+   var pMutes : Integer = _misc_ParserGetOrCreateByKey('shell.mute', false);
+   //var pMutes : Integer = ParserSelectByHandleByKey(ParserSelectUser(), 'shell.mute');
+
+   if (not ParserGetBoolValueByKeyByHandle(pMutes, IntToStr(idFrom))) then
+   begin
+      var idTo : Integer = LanPublicServerGetRegIDTo();
+      var msg : String = LanPublicServerGetRegMessage();
+
+      // filter messages separately for battle and shard room (legacy)
+      if (msg<>'') and (StrLength(msg) > 3) then
+      begin
+         var pfx,old_msg : String;
+
+         pfx := SubStr(msg,1,3);
+         old_msg := SubStr(msg,4,StrLength(msg)-3);
+         msg := '';
+         //if (gGame.gametype = gc_GameTypeLanShard) and (pfx = '[S]') then
+         //   msg := old_msg
+         //else
+         //begin
+         //   if (gGame.gametype = gc_GameTypeLanBattle) and (pfx = '[B]') then
+         //      msg := old_msg;
+         //end;
+         msg := old_msg;
+      end;
+      //else
+      //   msg := '';
+
+      if (msg <> '') then
+      begin
+         var myID : Integer = LanMyInfoID;
+         
+         var pClientFrom : Integer = _misc_ParserGetOrCreateByKey('client_info', True);
+         LanPublicServerGetClientInfoToParserByClientID(idFrom, pClientFrom);
+         var clientFromNick : String = ParserGetValueByKeyByHandle(pClientFrom, 'nick');
+         
+         var msgTmp : String = clientFromNick;
+         if _inet_IdenticalNickExists(idFrom, clientFromNick) then
+            msgTmp := msgTmp + ' [' + IntToStr(idFrom) + ']'; // show the ID of the other client if there are more than one with the same name.
+
+         var messageType : Integer = 2;
+         if(idTo<>0) then
+         begin
+            if (idfrom <> myID) and (idTo <> myID) then // private message to someone else, don't display at all
+               msg := ''
+            else
+            begin
+               var pClientTo : Integer = _misc_ParserGetOrCreateByKey('client_info', True);
+               LanPublicServerGetClientInfoToParserByClientID(idTo, pClientTo);
+               var clientToNick : String = ParserGetValueByKeyByHandle(pClientTo, 'nick');
+               
+               msgTmp := msgTmp  + ' >> '+clientToNick;
+               if idTo = myID then
+                  messageType := 3 // private message to me
+               else
+               if _inet_IdenticalNickExists(idTo, clientToNick) then
+                  msgTmp := msgTmp + ' [' + IntToStr(idTo) + ']';
+            end;
+         end;
+
+         if msg <> '' then
+         begin
+            msg := msgTmp + ': '+msg;
+            
+            var pChat : Integer;
+            if (not roomChat) then
+               pChat := _misc_ParserGetOrCreateByKey('shell.commonchat',false)
+            else
+               pChat := _misc_ParserGetOrCreateByKey('shell.roomchat',false);
+            
+            var pChatMsg : Integer = ParserAddChildByIndex(pChat, '*');
+            ParserSetValueByKeyByHandle(pChatMsg, 'm', msg);
+            ParserSetIntValueByKeyByHandle(pChatMsg, 'f', idFrom);
+            ParserSetIntValueByKeyByHandle(pChatMsg, 't', idTo);
+            
+            var elmHandle : Integer = _gui_GetWindow(elmName);
+            if (elmHandle<>0) then
+               _inet_ShowChatMessage(elmHandle, msg, roomChat, idTo, idFrom);
+            UpdateListBoxScrollerPos(elmHandle);
+
+            if idFrom = myID then
+               messageType := 0; // my message, no notification
+
+            if ((gProfile.chatnotifications and messageType) > 0) and (_gui_GetWindow('internetshell.rightpanel.chat.history') = 0) then
+               _gui_CreateBlinkElement('btnOpenChatBlink', _gui_GetWindow('open_chat_button.btnOpen'), gc_gui_material_blink_btn_round, false, 0, 0, 0, 0);
+         end;
+      end;
+   end;
+end;
+
+function _inet_GetAstralChatWidth() : Integer;
+begin
+   var viewWidth : Integer = GetViewerWidth();
+   Result := Min(600, viewWidth div 2 - 240);
+end;
+
+function _inet_AstralChatModal() : Boolean;  // use modal chat window during room game settings and while waiting other player turn and in main menu when the resolution is small.
+begin
+   Result := false;
+			      
+   if gGame.gameType = gc_GameTypeNone then
+   begin
+      if (_inet_GetAstralChatWidth < 450) then
+         Result := true;
+   end;
+					 
+   if (not Result) then 
+   begin
+      if (_gui_GetWindow('NewGame') <> 0) or (_gui_GetWindow(cQuestionDialogWindowName) <> 0) then
+         Result := true
+      else
+		begin
+			var i : Integer;
+			for i := 0 to gc_max_lan_wait_timers-1 do
+			begin
+				if ((gArr_LanTimers[i].flags and 4) > 0) and (_gui_GetWindow('LanDialog_'+IntToStr(i)) <> 0) then
+				begin
+					Result := True;
+					break;
+				end;
+			end;
+		end;
+   end;
+end;
+
+function _inet_IsPlayerOnlineByID(const id : Integer) : Boolean;
+begin
+	Result := False;
+	var pClients : Integer = _misc_ParserGetOrCreateByKey('all_clients',true);
+	LanPublicServerClientsToParser(pClients);
+
+	var i, pClient : Integer;
+	for i:=0 to ParserGetCountByHandle(pClients)-1 do
+	begin
+		pClient := ParserSelectByHandleByIndex(pClients, i);
+		if ParserGetIntValueByKeyByHandle(pClient, 'ID') = id then
+		begin
+			Result := True;
+			break;
+		end;
+	end;
+end;
+
+procedure _inet_PlayerSelected(elmHandle : Integer; targetMsg, redoChatWindow : Boolean);
+begin
+   var ind : Integer = GetGUIListBoxItemIndex(elmHandle);
+   if (ind>=0) then
+   begin
+      var id : Integer = GetGUIListBoxItemTag(elmHandle, ind);
+      
+      var pClient : Integer;
+      var clientInfo, modVersion : String = '';
+      if id > 0 then
+      begin
+         pClient := _misc_ParserGetOrCreateByKey('client_info', True);
+         LanPublicServerGetClientInfoToParserByClientID(id, pClient);
+         clientInfo := ParserGetValueByKeyByHandle(pClient, 'Info');
+         _inet_GetClientModVersion(clientInfo, modVersion);
+      end;
+      
+      var itemValue : String = GetGUIListBoxItemValue(elmHandle, ind);
+      var nick : String = itemValue;
+      var gamestate : String = '';
+      if (GetDelimiterStringCount(itemValue, 9, gc_gui_QuoteChar)>1) then
+         gamestate := GetDelimiterStringByIndex(itemValue, 9, gc_gui_QuoteChar, 0);
+
+      var elmChatInputText : Integer = _gui_GetWindow('internetshell.rightpanel.chat.chatinput.text');
+      if targetMsg then
+      begin
+         var msg : String = GetGUIElementText(elmChatInputText);
+         var strChatUnsupport : String = 'menu|chat_unsupported';
+         _gui_ConvertTableKeyToText(strChatUnsupport);
+         if SameText(msg, strChatUnsupport) then
+            msg := '';
+         
+         if modVersion <> '' then
+		 begin
+            if (StrPos('-->', msg)=1) then
+            begin
+               var pos : Integer = StrPos(':', msg);
+               msg := SubStr(msg, pos+2, StrLength(msg)-pos);
+            end;
+
+            if (GetDelimiterStringCount(nick, 9, gc_gui_QuoteChar)>1) then
+               nick := GetDelimiterStringByIndex(nick, 9, gc_gui_QuoteChar, 1);
+
+            if _inet_IdenticalNickExists(id, nick) then
+               nick := nick + ' [' + IntToStr(id) + ']';
+
+            msg := '-->'+nick+': '+msg;
+         end
+         else
+		 begin
+		    if ParserGetBoolValueByKeyByHandle(pClient, 'states.scsPlayed') then // players without mod cannot see your messages unless they are in lobby.
+		    begin
+               msg := strChatUnsupport;
+		    end;
+		 end;
+			
+         SetGUIElementText(elmChatInputText, msg);
+      end;
+	  
+      SetGUIElementFocusedHandle(elmChatInputText);
+    
+      if id > 0 then
+      begin
+         var fontHandle, fontHandle2, fontHandle5 : String;
+         _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_small,'',fontHandle);   // HeaderS
+         _gui_GetFont(gc_gui_fontsection_menu,'Text',gc_gui_fontsize_default,'',fontHandle2);
+         //_gui_GetFont(gc_gui_fontsection_astral,'Text',gc_gui_fontsize_largest,'',fontHandle5);
+         var cStyleWhite : String = '%color('+FormatColorToHex3(gc_gui_fontcolor_NormalWhiteR, gc_gui_fontcolor_NormalWhiteG, gc_gui_fontcolor_NormalWhiteB)+')%';
+         //const cStyleDefault = '%color(default)%';
+            
+         //if (GetLanMode = 0) and ((gGame.gametype = gc_GameTypeLanShard) or (gGame.gametype = gc_GameTypeLanBattle)) then
+            gIntRegister_InetSelectedPlayerID := id;
+         
+         var elmProfileBar : Integer = _gui_GetWindow('internetshell.rightpanel.profile');
+         var elmShowProfile : Integer = GetGUIElementIndexByNameParent('expand_button', elmProfileBar);
+         SetGUIElementEnabled(elmShowProfile, true);
+         SetGUIElementUserBlend(elmShowProfile, 1.0);
+         
+         var myID : Integer = LanMyInfoID;
+         var elmMute : Integer = GetGUIElementIndexByNameParent('mute', elmProfileBar);
+         if id <> myID then
+         begin
+            SetGUIElementEnabled(elmMute, true);
+            SetGUIElementUserBlend(elmMute, 1.0);
+         end
+         else
+         begin
+            SetGUIElementEnabled(elmMute, false);
+            SetGUIElementUserBlend(elmMute, 0.4);
+         end;
+
+         var pMutes : Integer = _misc_ParserGetOrCreateByKey('shell.mute', false);
+         if ParserGetBoolValueByKeyByHandle(pMutes, IntToStr(id)) then
+            SetGUIElementChecked(elmMute, true)
+         else
+            SetGUIElementChecked(elmMute, false);
+
+         var myModVersion : String = gc_DataModName + '_' + gc_DataModVersion;
+         //_misc_GetBuildVersionExt(myModVersion);
+         var sameGameVersion : Boolean = SameText(modVersion, myModVersion);
+            
+         modVersion := StrReplace(modVersion, '_', ' ');
+         if modVersion = '' then
+         begin
+            modVersion := 'menu|null_version';
+            _gui_ConvertTableKeyToText(modVersion);
+         end;
+         
+         // show profile info
+         //SetGUIElementText(GetGUIElementIndexByNameParent('name', elmProfileBar), cStyleWhite+nick+' ['+IntToStr(id)+']');
+         if GetGUIElementChecked(elmShowProfile) then
+         begin
+            var rowHeight : Integer = (GetGUIElementFontHeight(fontHandle2)+4);
+            var versionString : String = modVersion;
+            
+            SetGUIElementText(GetGUIElementIndexByNameParent('version', elmProfileBar), versionString);
+            
+            var profileMessage : String;
+            if id <> myID then
+               _gui_GetDelimiterValueByIndex(clientInfo, 10, profileMessage)
+            else
+               profileMessage := gProfile.profilemessage;
+               
+            profileMessage := StrReplace(profileMessage, '_', ' ');
+            var textWraped : String = GetGUIWrappedTextFormatByFont(fontHandle, profileMessage, GetGUIElementWidth(elmProfileBar)-8);
+            
+            SetGUIElementText(_gui_GetWindow('internetshell.rightpanel.profile.textlayer.message'), textWraped);
+            
+            if redoChatWindow then
+            begin
+			   if ((gGame.gametype = gc_GameTypeLanShard) or (gGame.gametype = gc_GameTypeLanBattle)) and (GetLanMode = 0) then
+                  GUIExecuteState('ShowInternetShell')
+			   else
+			   begin
+			      if _inet_AstralChatModal() then
+                     IntRegister0 := 2
+                  else
+                     IntRegister0 := 0;
+                  GUIExecuteState('ShowAstralChat');
+			   end;
+            end;
+         end;
+
+         //  update join button state
+         var lobby : Integer = _sa_GetAsInt(clientInfo, 6);
+         if (((gGame.gametype = gc_GameTypeLanShard) and (lobby = 1)) or ((gGame.gametype = gc_GameTypeLanBattle) and (lobby = 2))) and (GetLanMode = 0) then
+         begin
+	        var elmJoinHandle : Integer = _gui_GetWindow('internetshell.rightpanel.players.btnjoin');
+            if (elmJoinHandle<>0) then
+            begin
+               var bState : Boolean = (sameGameVersion and StrExists(gamestate, '.session') and (gIntRegister_InetSelectedPlayerID<>0)); //((gamestate='shell.session') or (gamestate='shell.session.lock') or (gamestate='shell.session.unlock')));
+               SetGUIElementEnabled(elmJoinHandle, bState);
+            
+               var hint : String = GetLocaleTableListItemByID('menu', '212.ext');
+               if (not sameGameVersion) then
+                  hint := GetLocaleTableListItemByID('menu', 'multiplayer_version_reminder')
+               else
+               if (not bState) then
+                  hint := hint+gc_gui_BreakLine+gc_gui_BreakLine+GetLocaleTableListItemByID('menu', '213');
+            
+               SetGUIElementHint(elmJoinHandle, hint);
+            end;
+         end;
+      end;
+   end;
+end;
+
+
+procedure _inet_UpdateShardGamesList(elmName : String);
+begin
+   if (gGame.gameType = gc_GameTypeLanShard) and (gIntRegister_CurGameMode = gc_GameModeMenu) then
+   begin
+      IntRegister0 := 1;
+      StringRegister0 := elmName;
+      GUIExecuteState('vvk.LanUpdateGUIElements');
+   end;
+end;
+
+procedure _inet_UpdateClientsList(elmName : String; exclude_id : Integer);
+begin
+   var _log : Boolean = true;
+   var _fake_clients : Integer = 0; // warning: will cause endless loop somewhere when a fake client is selected
+   
+   procedure UpdateListBoxScrollerPos(elmHandle : Integer);
+   begin
+      var count : Integer = GetGUIListBoxItemsCount(elmHandle);
+      var topIndex  : Integer = GetGUIListBoxTopIndex(elmHandle);
+      var elmScrollHandle : Integer = GetGUIListBoxScrollerHandle(elmHandle);
+      var rowheight : Integer = GetGUIListBoxRowHeight(elmHandle);
+      var step : Float = ((GetGUIElementHeight(elmHandle)-rowheight)/rowheight);
+      SetGUIScrollBarPosition(elmScrollHandle, (topIndex/(count-step)));
+   end;
+   
+   procedure UpdateJoinButtonState(bState, sameVersion : Boolean);
+   begin
+      var elmHandle : Integer = _gui_GetWindow('internetshell.rightpanel.players.btnjoin');
+      if (elmHandle<>0) then
+      begin
+         SetGUIElementEnabled(elmHandle, bState);
+         var hint : String = GetLocaleTableListItemByID('menu', '212.ext');
+         if (not sameVersion) then
+            hint := GetLocaleTableListItemByID('menu', 'multiplayer_version_reminder')
+         else
+         if (not bState) then
+            hint := hint+gc_gui_BreakLine+gc_gui_BreakLine+GetLocaleTableListItemByID('menu', '213');
+         SetGUIElementHint(elmHandle, hint);
+      end;
+   end;
+   
+   procedure GetPlayerListString(pClient : Integer; var _sline : String);
+   begin
+      var clientID : Integer = ParserGetIntValueByKeyByHandle(pClient, 'ID');
+      var clientInfo : String = ParserGetValueByKeyByHandle(pClient, 'Info');
+      var statePlayed : Boolean = ParserGetBoolValueByKeyByHandle(pClient, 'states.scsPlayed');
+      var stateMaster : Boolean = ParserGetBoolValueByKeyByHandle(pClient, 'states.scsMaster');
+      var bTacticalRoom : Boolean = (_sa_GetAsInt(clientInfo,5)>0);
+      var modVersion, shardPlayers : String;
+      _inet_GetClientModVersion(clientInfo, modVersion);
+      var myModVersion : String = gc_DataModName + '_' + gc_DataModVersion;
+      //_misc_GetBuildVersionExt(myModVersion);
+	  
+      var i : Integer;
+      var sLine : String = _sline;
+      var roomLoadGame : Boolean = false;
+   
+      if (statePlayed) then
+         sLine := sLine + 'shell.battle' + #9
+      else
+      begin
+         if (stateMaster) then
+         begin
+            var pSessions : Integer = _misc_ParserGetOrCreateByKey('sessions',true);
+            LanPublicServerSessionsToParser(pSessions);
+            var count : Integer = ParserGetCountByHandle(pSessions);
+            if (count<>0) then
+            begin
+               for i:=0 to ParserGetCountByHandle(pSessions)-1 do
+               begin
+                  var pSession : Integer = ParserSelectByHandleByIndex(pSessions, i);
+                  var masterID : Integer = ParserGetIntValueByKeyByHandle(pSession, 'Master');
+                  if (masterID=clientID) then
+                  begin
+                     if (bTacticalRoom) then
+                     begin
+                        var gameName : String = ParserGetValueByKeyByHandle(pSession, 'GameName');
+                        var bCustom : Boolean = _gui_GetDelimiterBoolValueByIndex(gameName, 14);
+                        var password : String = '';
+                        _gui_GetDelimiterValueByIndex(gameName, 15, password);
+                        
+                        if (bCustom) then
+                        begin
+                           if (password<>'') then
+                              sLine := sLine + 'shell.session.lock' + #9
+                           else
+                              sLine := sLine + 'shell.session.unlock' + #9;
+                        end
+                        else
+                           sLine := sLine + 'shell.session' + #9;
+                     end
+                     else if (_sa_GetAsInt(clientInfo,6)>0) then
+                     begin
+                        var clientplayers : Integer = ParserGetIntValueByKeyByHandle(pSession, 'Clients');
+                        var mapname : String = ParserGetValueByKeyByHandle(pSession, 'MapName');
+                        var maxplayers, humanslots, players : Integer;
+                        var password : String = '';
+                        _inet_GetInetShardPasswordByMapName(mapName, password);
+                        masterID := _inet_GetInetShardMasterIDByMapName(mapName);
+                        maxplayers := _inet_GetInetShardMaxPlayersByMapName(mapName);
+                        humanslots := _inet_GetInetShardHumanSlotsByMapName(mapName);
+                        
+                        if masterID < 0 then
+                           roomLoadGame := true;
+                        
+                        if (password<>'') then
+                           sLine := sLine + 'shell.session.lock' + #9  // 'shell.shard.session.lock' + #9
+                        else
+                           sLine := sLine + 'shell.session.unlock' + #9;  // 'shell.shard.session.unlock' + #9;
+                        
+                        //Log(mapname);
+                        players := clientplayers + (maxplayers - humanslots) - 1;
+                        //Log('players '+IntToStr(players)+'  maxplayers '+IntToStr(maxplayers)+'  humanslots '+IntToStr(humanslots));
+                        shardPlayers := ' (' + IntToStr(players)+ '/' +IntToStr(maxplayers) + ')';
+                     end
+                     else
+                        sLine := sLine + '""' + #9;
+                  end;
+               end;
+            end;
+         end
+         else
+            sLine := sLine + '""' + #9;
+      end;
+      
+      var sameGameVersion : Boolean = SameText(modVersion, myModVersion);
+      if (not sameGameVersion) then
+      begin
+         if (not statePlayed) then
+         sLine := 'map.provhud.shops' + #9;
+      
+         // check if the client has a newer version of the same mod, display update notice if positive
+		 if _gui_GetDelimiterIntValueByIndex(clientInfo, 7) = 0 then // not a test version
+         begin
+            var dataModName : String;
+            _gui_GetDelimiterValueByIndex(clientInfo, 8, dataModName);
+            if (dataModName = gc_DataModName) then
+            begin
+               var dataModVersion : String;
+               _gui_GetDelimiterValueByIndex(clientInfo, 9, dataModVersion);
+               if (dataModVersion <> gc_DataModVersion) and (dataModVersion <> gProfile.latestmodversion) then
+               begin
+                  if _misc_IsUpdatedVersion(gProfile.latestmodversion, dataModVersion) then
+                  begin
+                     gProfile.latestmodversion := dataModVersion;
+			         var displayText : String = 'menu|new_version';
+                     _gui_ConvertTableKeyToText(displayText);
+			         displayText := displayText + ':' + gc_gui_BreakLine + StrReplace(dataModName, '_', ' ') + ' ' + dataModVersion;
+			   
+			         _gui_ShowQuestionDialog(displayText, '', 0, '', 0, false, true);
+                  end;
+               end;
+			end;
+		 end;
+      end;
+      
+      var nick : String = ParserGetValueByKeyByHandle(pClient, 'nick');
+      if _inet_IdenticalNickExists(clientID, nick) then
+         nick := nick + ' [' + IntToStr(clientID) + ']'; // show the ID of the other client if there are more than one with the same name.
+      
+      sLine := sLine + nick;
+   
+      if roomLoadGame then
+      begin
+         var tmpText : String = 'menu|45';
+         _gui_ConvertTableKeyToText(tmpText);
+         sLine := sLine + #9 + '('+tmpText+')';
+      end
+      else
+      if (bTacticalRoom) and ((statePlayed) or (stateMaster)) and (clientInfo<>'') then
+      begin
+         var score : Integer = _sa_GetAsInt(clientInfo, 5);
+         if (score>0) then
+            sLine := sLine + #9 + '('+IntToStr(score)+')';
+      end
+      else if shardPlayers <> '' then
+         sLine := sLine + #9 + shardPlayers;
+                
+      //if (not bTacticalRoom) and (stateMaster) and (clientInfo<>'') then
+      //begin
+      //   sLine := sLine + #9 + (GetLocaleTableListItemByID());
+      //end;     
+   
+      // dont show player when in wrong lobby
+      //if ((gGame.gametype = gc_GameTypeLanShard) or (gGame.gametype = gc_GameTypeLanBattle)) then
+      //begin
+      //   i := _sa_GetAsInt(clientInfo, 6);
+      //   if i > 0 then
+      //   begin
+      //      if _log and (i=0) then _log_lan('Warning - wrong client mode for ID '+IntToStr(clientID));
+      //      if (gGame.gametype = gc_GameTypeLanShard) and (i<>1) then
+      //         sLine := '';
+      //      if (gGame.gametype = gc_GameTypeLanBattle) and (i<>2) then
+      //         sLine := '';
+      //   end;
+      //end;
+   
+      if (gIntRegister_InetSelectedPlayerID<>0) and (gIntRegister_InetSelectedPlayerID=clientID) then
+      begin
+         var elmHandle : Integer = _gui_GetWindow('internetshell.rightpanel.players.btnjoin');
+         if (elmHandle<>0) then
+         begin
+            if (StrExists(sLine, '.session')) and sameGameVersion then
+               UpdateJoinButtonState(True, true)
+            else
+               UpdateJoinButtonState(False, sameGameVersion);
+   
+            i := _sa_GetAsInt(clientInfo, 6);
+            if _log and (i=0) then _log_lan('Warning - wrong client mode for ID '+IntToStr(clientID));
+            if (gGame.gametype = gc_GameTypeLanShard) and (i<>1) then
+               UpdateJoinButtonState(false, sameGameVersion)
+            else if (gGame.gametype = gc_GameTypeLanBattle) and (i<>2) then
+               UpdateJoinButtonState(false, sameGameVersion);
+         end;
+      end;
+      
+      _sline := sLine;
+      //Log(sLine);
+   end;
+   
+   procedure UpdateClientsList(elmName : String; exclude_id : Integer);
+   begin
+      var elmHandle : Integer = _gui_GetWindow(elmName);
+      if elmHandle <> 0 then
+      begin
+         var itemIndex : Integer = GetGUIListBoxItemIndex(elmHandle);
+         
+         var topIndex  : Integer = GetGUIListBoxTopIndex(elmHandle);
+         var pickedIndex : Integer = -1;
+         var sLine, sInfo, tempStr : String;
+         var i,cidx,pClient,id,maxVisibleCount : Integer;
+         var pMutes : Integer = ParserSelectByHandleByKey(ParserSelectUser(), 'shell.mute');
+         var pClients : Integer = _misc_ParserGetOrCreateByKey('all_clients',true);
+         LanPublicServerClientsToParser(pClients);
+   
+         maxVisibleCount := GetGUIListBoxVisibleRows(elmHandle);
+         GUIListBoxClearSilent(elmHandle);
+   
+         cidx := 0;
+         if _log then _log_values('Clients',ParserGetCountByHandle(pClients),0,0,0,0,0);
+         for i:=0 to ParserGetCountByHandle(pClients)-1 do
+         begin
+            pClient := ParserSelectByHandleByIndex(pClients, i);
+            sInfo := ParserGetValueByKeyByHandle(pClient, 'Info');
+            if sInfo <> '' then
+				begin
+					//_sa_Get(sInfo, 19, tempStr);
+					//if tempStr = 'Eador' then // gonna need this if using a server from another game
+					begin
+						id := ParserGetIntValueByKeyByHandle(pClient, 'ID');
+						sLine := '';
+						if id <> exclude_id then
+							GetPlayerListString(pClient,sLine);
+						if _log then _log_lan('ID: '+ParserGetValueByKeyByHandle(pClient,'ID')+', CSTRING: '+sLine+', INFO: '+sInfo);
+						if sLine <> '' then
+						begin
+							GUIListBoxAddItem(elmHandle, sLine, id);
+							if (gIntRegister_InetSelectedPlayerID<>0) and (gIntRegister_InetSelectedPlayerID=id) then
+								pickedIndex := cidx;
+							cidx := cidx + 1;
+						end;
+					end;
+				end;
+         end;
+   
+         if _fake_clients > 0 then
+         begin
+            for i := 0 to _fake_clients-1 do
+            begin
+               sLine := 'shell.battle' + #9 + 'Dummy number '+IntToStr(i)+#9+'(200)';
+               GUIListBoxAddItem(elmHandle, sLine, $10000+i);
+            end;
+         end;
+   
+         SetGUIListBoxItemIndexSilent(elmHandle, pickedIndex);
+   
+         if topIndex>=GetGUIListBoxItemsCount(elmHandle) then
+            topIndex := GetGUIListBoxItemsCount(elmHandle)-1;
+         SetGUIListBoxTopIndex(elmHandle, topIndex);
+   
+         i := GetGUIListBoxItemsCount(elmHandle);
+         if (i>maxVisibleCount) then
+            i := maxVisibleCount;
+         SetGUIElementAllPositionRect(elmHandle, GetGUIElementPositionX(elmHandle), GetGUIElementPositionY(elmHandle), GetGUIElementWidth(elmHandle), GetGUIListBoxRowHeight(elmHandle)*i);
+         SetGUIElementLogicHeight(elmHandle, GetGUIListBoxRowHeight(elmHandle)*i);
+         var elmScroll : Integer = GetGUIListBoxScrollerHandle(elmHandle);
+         //var height : Integer = GetGUIElementHeight(elmScroll)-18;
+         //SetGUIElementHeight(elmScroll, height);
+         //SetGUIElementLogicHeight(elmScroll, height);
+   
+         UpdateListBoxScrollerPos(elmHandle);
+      end;
+   end;
+   
+   UpdateClientsList(elmName, exclude_id);
+end;
+
+procedure _inet_RefreshLoadGameProgress(dis_client : Integer);
+begin
+   var whd  : Integer;
+
+   whd := _gui_GetWindow(cLanLoadGameSyncName);
+   if whd <> 0 then
+   begin
+      const cBtnRefreshTag = 103;
+      SetValueByName('Press','c');
+      SetIntValueByName('Tag',cBtnRefreshTag);
+      SetIntValueByName('ElementHandle',whd);
+      SetIntValueByName('DisconnectedClientID',dis_client);
+      GUIExecuteState('VVK.EventLanLoadGameProgress');
+   end;
+end;
+
+
+function _inet_IsSaveValidForClient(const client_id : Integer; const mapname : String) : Integer;
+begin
+	var _log : Boolean = False;
+
+   Result := 0;
+	
+   if _log then _log_lan('CHECK MAP: '+mapname);
+   if _inet_IsSaveGameMapName(mapname) then
+   begin
+      var players,save_name,lan_postfix : String;
+      var game_uid,i,n : Integer;
+      var valid_save : Boolean;
+
+      _inet_GetInetShardSaveParamsFromMap(mapname,save_name,game_uid,players);
+      n := _sa_GetNum(players);
+      if _log then _log_valuesL(save_name+'|PLAYERS',game_uid,n,0,0,0,0);
+      
+      if Round(Abs(_sa_GetAsInt(mapname,0))) = LanMyInfoID then // I'm the master
+      begin
+         Result := n;
+      end
+      else
+      begin
+         valid_save := false;
+         for i := 0 to n-1 do
+         if _sa_GetAsInt(players,i) = client_id then
+         begin
+            valid_save := true;
+            break;
+         end;
+         if valid_save then
+         begin
+            valid_save := false;
+            _prof_SyncCustomsFolderExt(gc_GameTypeFlagInternet,game_uid,0);
+            _misc_GetSaveNameLanPostFix(lan_postfix);
+            if _log then
+            begin
+               _log_lan('gStringRegister_ProfileSavesFolderLast '+gStringRegister_ProfileSavesFolderLast);
+               _log_lan('save_name '+save_name);
+               _log_lan('lan_postfix '+lan_postfix);
+               _log_lan('FULL NAME: '+gStringRegister_ProfileSavesFolderLast+save_name+lan_postfix+'.map');
+            end;
+            if IsFileExists(gStringRegister_ProfileSavesFolderLast+save_name+lan_postfix+'.map') then
+               valid_save := true;
+         end;
+         if valid_save then
+            Result := _sa_GetNum(players);
+      end;
+   end;
+end;
+
+
+procedure _inet_InitAstralChat(const bRegisterMust : Boolean);
+begin
+   if (not bRegisterMust) or ((gProfile.netemail <> '') and (gProfile.netkey <> '')) then
+   begin
+      if IsLanPublicServerMode then
+      begin
+         _inet_UpdateNetworkProfileInfo(false,true);
+         LanPublicServerRegister();
+         LanPublicServerUpdateClientInfo(LanMyInfoID());
+      end;
+      
+      var mainMenuModal : Boolean = false;
+			      
+      if gGame.gameType = gc_GameTypeNone then
+      begin
+         if (_inet_GetAstralChatWidth < 450) then
+            mainMenuModal := true;
+      end;
+      
+      if mainMenuModal then
+         IntRegister0 := 1
+      else
+      if (gIntRegister_CurGameMode = gc_GameModeTactics) then
+         IntRegister0 := 3 // always minimize in battle
+      else
+         IntRegister0 := gIntRegister_AstralChatMode;
+      GUIExecuteState('ShowAstralChat');
+      if (not IsLanPublicServerMode) and gProfile.serverautoconnect and (gGame.gameType = gc_GameTypeNone) and (not mainMenuModal) then
+      begin
+         gConnectIPIndex := 0;
+         _gui_DelayExecuteStateOneInstance('DoLanConnect', gc_gui_FadeTime0_2); // for some reason has to be delayed a bit or it wont work on game startup.
+         //GUIExecuteState('DoLanConnect');
+      end;
+   end;
+end;
+
+function _inet_GetClass(hero : TInetHero) : Integer;
+begin
+   if (hero.class2=0) then
+      Result := hero.class1
+   else
+      Result := 4*hero.class1+hero.class2;
+
+   if (hero.level>=20) then
+      Result := Result+16;
+end;
+
+function _inet_AddHeroBonusNew(var hero : TInetHero; level : Integer) : Integer;
+begin
+   var bonusType, bonusValue : Integer = 0;
+	
+   _unit_GetFixedHeroBonus(_inet_GetClass(hero), level, bonusType, bonusValue);
+   case bonusType of
+      0 : hero.leader := hero.leader+bonusValue;
+      1 : hero.magic := hero.magic+bonusValue;
+      2 : hero.health := hero.health+bonusValue;
+      3 : hero.life := hero.life+bonusValue;
+   end;
+   Result := bonusType;
+end;
+
+procedure _inet_SwapSkill(var skill1, skill2 : TInetHeroSkill);
+begin
+   // skill1 to tmpskill
+   var tmpSkill : TInetHeroSkill;
+   tmpSkill.id := skill1.id;
+   tmpSkill.level := skill1.level;
+
+   //skill2 to skill1
+   skill1.id := skill2.id;
+   skill1.level := skill2.level;
+
+   //tmpSkill to skill2
+   skill2.id := tmpSkill.id;
+   skill2.level := tmpSkill.level;
+end;
+
+procedure _inet_UpdateHeroSkills(var hero : TInetHero);
+begin
+   var skillsReqNotMet : Integer = 0;
+   var pSkills : Integer = gPrototypeData.skills.handle;
+   
+   var i, j : Integer;
+      
+   // downgrade skills level 4-5 to max level 3
+   if (hero.class1 <> hero.class2) or (hero.level < 10) then
+   for i:=0 to gc_MaxHeroSkillCount-1 do
+   begin
+      var mySkillID : Integer = hero.arrskills[i].id;
+      var mySkillLevel : Integer = hero.arrskills[i].level;
+      if (mySkillLevel>3) then
+      begin
+         skillsReqNotMet := skillsReqNotMet + mySkillLevel - 3;
+         hero.arrskills[i].level := 3;
+         mySkillLevel := 3;
+      end;
+   end;
+      
+   // remove unsupported skills for current class
+   if (hero.level - skillsReqNotMet < 10) then
+   begin
+      hero.class2 := 0;
+      for i:=0 to gc_MaxHeroSkillCount-1 do
+      begin
+         var mySkillID : Integer = hero.arrskills[i].id;
+         var pSkill : Integer = ParserSelectByHandleByIndex(pSkills, mySkillID);
+         var skClass : Integer = ParserGetIntValueByKeyByHandle(pSkill, 'Class');
+         if (skClass>0) and (skClass<>hero.class1) then
+         begin
+            skillsReqNotMet := skillsReqNotMet + hero.arrskills[i].level;
+            hero.arrskills[i].id := 0;
+            hero.arrskills[i].level := 0;
+            for j:=i to gc_MaxHeroSkillCount-2 do
+               _inet_SwapSkill(hero.arrskills[j], hero.arrskills[j+1]);
+            i:=i-1;
+         end;
+      end;
+   end;
+   hero.level := hero.level - skillsReqNotMet;
+end;
+
+procedure _inet_UpdateHeroParams(var hero : TInetHero);
+begin
+   var tmpHero : TInetHero;
+   tmpHero.class1 := hero.class1;
+   
+   case tmpHero.class1 of
+      1 : tmpHero.health := 1;
+      2 : tmpHero.health := 1;
+      3 : tmpHero.leader := 1;
+      4 : tmpHero.magic := 1;
+   end;
+      
+   var i : Integer;
+   for i:=1 to hero.level do
+   begin
+      tmpHero.level := i;
+      if i = 10 then
+         tmpHero.class2 := hero.class2;
+      
+      _inet_AddHeroBonusNew(tmpHero, tmpHero.level);
+   end;
+   hero.health := tmpHero.health;
+   hero.leader := tmpHero.leader;
+   hero.magic := tmpHero.magic;
+   hero.life := tmpHero.life;
+end;
+
+procedure _inet_UpdateAllHeroes(var battle : TInetBattle);
+begin
+   var i : Integer;
+   for i := 0 to gc_MaxInetHeroCount-1 do
+   begin
+      if battle.hero[i].class1 > 0 then
+      begin
+         _inet_UpdateHeroSkills(battle.hero[i]);
+         _inet_UpdateHeroParams(battle.hero[i]);
+      end;
+   end;
+end;
+
+{function _inet_CheckAbility(hero : TInetHero; abilityID : Integer) : Integer;
+begin
+   var level : Integer = hero.level;
+   var myIndex : Integer = 40+(hero.class1-1);
+
+   var pUnit : Integer = ParserSelectByHandleByIndex(gPrototypeData.units.handle, myIndex);
+
+   var pUnitLevels : Integer = gPrototypeData.unitLevels.handle;
+   var pHealthLevels : Integer = ParserSelectByHandleByKey(pUnitLevels, 'Health');
+
+   var i, j, k : Integer;
+   var class1 : Integer = hero.class1;
+   var class2 : Integer = hero.class2;
+   var health : Integer = hero.health;
+
+   var value : Integer = 0;
+
+   if (abilityID>0) then
+   begin
+      // check hero skills
+      value := value+CheckAbilityInSkillsParser(hero, abilityID, 'HeroUpgrades');
+      value := value+CheckAbilityInSkillsParser(hero, abilityID, 'SquadUpgrades');
+
+      // check class talents
+      IntRegister0 := class1;
+      IntRegister1 := class2;
+      MapExecuteState('GetExtHeroClassParserByIndices');
+      var pHeroClass1 : Integer = IntRegister2;
+      var pHeroClass2 : Integer = IntRegister3;
+
+      var pClassAbilities : Integer = ParserSelectByHandleByKey(pHeroClass1, 'Abilities');
+      for i:=ParserGetCountByHandle(pClassAbilities)-1 downto 0 do
+      begin
+         var pClassAbility : Integer =  ParserSelectByHandleByIndex(pClassAbilities, i);
+         var abilID : Integer = ParserGetIntValueByKeyByHandle(pClassAbility, 'AbilityID');
+
+         if (abilID=abilityID) then
+         begin
+            var power : Integer = ParserGetIntValueByKeyByHandle(pClassAbility, 'Power');
+            value := value+power;
+         end;
+      end;
+
+      if (level>=20) then
+      begin
+         pClassAbilities := ParserSelectByHandleByKey(pHeroClass2, 'Abilities');
+         for i:=ParserGetCountByHandle(pClassAbilities)-1 downto 0 do
+         begin
+            var pClassAbility : Integer =  ParserSelectByHandleByIndex(pClassAbilities, i);
+            var abilID : Integer = ParserGetIntValueByKeyByHandle(pClassAbility, 'AbilityID');
+
+            if (abilID=abilityID) then
+            begin
+               var power : Integer = ParserGetIntValueByKeyByHandle(pClassAbility, 'Power');
+               value := value+power;
+            end;
+         end;
+      end;
+
+      // check hero inventory
+      for i:=0 to gc_HeroDollSlotsCount-1 do
+      begin
+         var picked : Boolean = (i=gIntRegister_InetPickedItemSlot);
+         if (not picked) then
+         begin
+            var itemID : Integer = hero.arritems[i];
+            if (itemID<>0) then
+            begin
+               IntRegister0 := itemID;
+               MapExecuteState('GetItemParserByID');
+               var pItem : Integer = IntRegister1;
+               var pItemAbilities : Integer = ParserSelectByHandleByKey(pItem, 'Abilities');
+
+               for j:=ParserGetCountByHandle(pItemAbilities)-1 downto 0 do
+               begin
+                  var pItemAbility : Integer = ParserSelectByHandleByIndex(pItemAbilities, j);
+                  var abilID : Integer = ParserGetIntValueByKeyByHandle(pItemAbility, 'AbilityID');
+
+                  if (abilID=abilityID) then
+                  begin
+                     var power : Integer = ParserGetIntValueByKeyByHandle(pItemAbility, 'Power');
+                     value := value+power;
+                  end;
+               end;
+            end;
+         end;
+      end;
+   end;
+
+   case abilityID of
+      1 :
+      begin
+         for i := 0 to health-1 do
+         begin
+            var pLevel : Integer = ParserSelectByHandleByIndex(pHealthLevels, i);
+            value := value+ParserGetIntValueByKeyByHandle(pLevel, 'Life');
+         end;
+
+         value := value+hero.life;
+      end;
+      8 :
+      begin
+         for i:=gc_HeroDollSlotsCount-1 downto 0 do
+         begin
+            var itemSlot : Integer = i;
+            var itemID : Integer = hero.arritems[i];
+
+            if (itemSlot=12) and (itemID>0) then
+            begin
+               IntRegister0 := itemID;
+               MapExecuteState('GetItemParserByID');
+               var pItem : Integer = IntRegister1;
+               var itemType : Integer = ParserGetIntValueByKeyByHandle(pItem, 'ItemType');
+
+               // bow
+               case itemType of
+                  3 :
+                  begin
+                     value := value+_inet_CheckAbility(hero, 993);;
+                  end;
+                  4 :
+                  begin
+                     value := value+_inet_CheckAbility(hero, 994);;
+                  end;
+               end;
+               break;
+            end;
+         end;
+      end;
+      11 :
+      begin
+         for i := 0 to health-1 do
+         begin
+            var pLevel : Integer = ParserSelectByHandleByIndex(pHealthLevels, i);
+            value := value+ParserGetIntValueByKeyByHandle(pLevel, 'Stamina');
+         end;
+      end;
+      12 :
+      begin
+         for i := 0 to health-1 do
+         begin
+            var pLevel : Integer = ParserSelectByHandleByIndex(pHealthLevels, i);
+            value := value+ParserGetIntValueByKeyByHandle(pLevel, 'Moral');
+         end;
+      end;
+   end;
+
+   Result := value;
+end;}
+
+_inet_ShellAllowSetDefault(gInetShell);
+

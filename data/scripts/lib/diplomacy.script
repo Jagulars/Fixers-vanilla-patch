@@ -1,0 +1,813 @@
+//
+// diplomacy.script
+//
+
+// _diplomacy_ClearTrade
+//
+procedure _diplomacy_ClearTrade(var trade : TTrade);
+begin
+   var i : Integer;
+   trade.trade := false;
+   trade.gold := 0;
+   trade.gem := 0;
+
+   for i := 0 to gc_MaxTradeResCount-1 do
+      trade.arrResources[i] := false;
+
+   for i := 0 to gc_MaxTradeProvCount-1 do
+      trade.arrProvinces[i] := -1;
+
+   for i := 0 to gc_MaxTradeItemCount-1 do
+   begin
+      trade.arrItems[i][0] := 0;
+      trade.arrItems[i][1] := 0;
+   end;
+end;
+
+// _diplomacy_ClearMessage
+//
+procedure _diplomacy_ClearMessage(var dMessage : TDiplMessage);
+begin
+   dMessage.mType := 0;
+   dMessage.treaty := 0;
+   dMessage.text := '';
+   dMessage.deal := 0;
+   _diplomacy_ClearTrade(dMessage.tradeGive);
+   _diplomacy_ClearTrade(dMessage.tradeTake);
+end;
+
+// _diplomacy_AssignTrade
+//
+procedure _diplomacy_AssignTrade(var dstTrade : TTrade; srcTrade : TTrade);
+begin
+   var i : Integer;
+   dstTrade.trade := srcTrade.trade;
+   dstTrade.gold := srcTrade.gold;
+   dstTrade.gem := srcTrade.gem;
+
+   for i := 0 to gc_MaxTradeResCount-1 do
+      dstTrade.arrResources[i] := srcTrade.arrResources[i];
+
+   for i := 0 to gc_MaxTradeProvCount-1 do
+      dstTrade.arrProvinces[i] := srcTrade.arrProvinces[i];
+
+   for i := 0 to gc_MaxTradeItemCount-1 do
+   begin
+      dstTrade.arrItems[i][0] := srcTrade.arrItems[i][0];
+      dstTrade.arrItems[i][1] := srcTrade.arrItems[i][1];
+   end;
+end;
+
+// _diplomacy_IsTradeFree
+//
+function _diplomacy_IsTradeFree(cTrade : TTrade) : Boolean;
+begin
+   var i : Integer;
+
+   Result := true;
+   if cTrade.gold > 0 then
+      Result := false;
+
+   if cTrade.gem > 0 then
+      Result := false;
+
+   if Result then
+   begin
+      for i := 0 to gc_MaxTradeResCount-1 do
+      begin
+         if cTrade.arrResources[i] then
+         begin
+            Result := false;
+            break;
+         end;
+      end;
+   end;
+
+   if Result then
+   begin
+      for i := 0 to gc_MaxTradeProvCount-1 do
+      begin
+         if cTrade.arrProvinces[i] > 0 then
+         begin
+            Result := false;
+            break;
+         end;
+      end;
+   end;
+
+   if Result then
+   begin
+      for i := 0 to gc_MaxTradeItemCount-1 do
+      begin
+         if cTrade.arrItems[i][0] > 0 then
+         begin
+            Result := false;
+            break;
+         end;
+      end;
+   end;
+end;
+
+// _diplomacy_AssignMessage
+//
+procedure _diplomacy_AssignMessage(var dstMessage : TDiplMessage; srcMessage : TDiplMessage);
+begin
+   dstMessage.mType := srcMessage.mType;
+   dstMessage.treaty := srcMessage.treaty;
+   dstMessage.text := srcMessage.text;
+   dstMessage.deal := srcMessage.deal;
+   _diplomacy_AssignTrade(dstMessage.tradeGive, srcMessage.tradeGive);
+   _diplomacy_AssignTrade(dstMessage.tradeTake, srcMessage.tradeTake);
+end;
+
+// _diplomacy_InitDiplomacy
+//
+procedure _diplomacy_InitDiplomacy(var cDiplomacy : TDiplomacy);
+begin
+   var i, j : Integer;
+
+   cDiplomacy.treaty := 0;
+   cDiplomacy.pass := 0;
+   cDiplomacy.attitude := 0;
+   cDiplomacy.answer := 0;
+   cDiplomacy.lanAnswer := false;
+   cDiplomacy.canKill := 0;
+   cDiplomacy.power := 0;
+   cDiplomacy.meet := -1;
+   cDiplomacy.random := 0;
+
+   _diplomacy_ClearTrade(cDiplomacy.trade);
+   //cDiplomacy.trade.gold := 0; // ???
+   _diplomacy_ClearMessage(cDiplomacy.message);
+
+   for i := 0 to 3 do
+      cDiplomacy.arrTraitor[i] := 0;
+
+   for i := 0 to 7 do
+      for j := 0 to 2 do
+         cDiplomacy.arrTalk[i, j] := 0;
+end;
+
+// _diplomacy_InitAllDiplomacy
+//
+procedure _diplomacy_InitAllDiplomacy;
+begin
+   var i, j : Integer;
+
+   for i := 0 to gc_MaxMapPlayers-1 do
+      for j := 0 to gc_MaxMapPlayers-1 do
+         _diplomacy_IniTDiplomacy(gArrDiplomacy[i,j]);
+
+   gBoolRegister_DiplomacyInited := true;
+end;
+
+// _diplomacy_AssignDiplomacy
+//
+procedure _diplomacy_AssignDiplomacy(fromDiplomacy : TDiplomacy; var toDiplomacy : TDiplomacy);
+begin
+   var i, j : Integer;
+
+   toDiplomacy.treaty := fromDiplomacy.treaty;
+   toDiplomacy.pass := fromDiplomacy.pass;
+   toDiplomacy.attitude := fromDiplomacy.attitude;
+   toDiplomacy.answer := fromDiplomacy.answer;
+   toDiplomacy.lanAnswer := fromDiplomacy.lanAnswer;
+   toDiplomacy.canKill := fromDiplomacy.canKill;
+   toDiplomacy.power := fromDiplomacy.power;
+   toDiplomacy.meet := fromDiplomacy.meet;
+
+   _diplomacy_AssignTrade(toDiplomacy.trade, fromDiplomacy.trade);
+   _diplomacy_AssignMessage(toDiplomacy.message, fromDiplomacy.message);
+
+   for i := 0 to 3 do
+      toDiplomacy.arrTraitor[i] := fromDiplomacy.arrTraitor[i];
+
+   for i := 0 to 7 do
+      for j := 0 to 2 do
+         toDiplomacy.arrTalk[i, j] := fromDiplomacy.arrTalk[i, j];
+end;
+
+
+procedure _diplomacy_PackToParser(players_no, parser : Integer);
+begin
+   IntRegister0 := 0;
+   IntRegister1 := players_no;
+   IntRegister2 := parser;
+   GUIExecuteState('VVK.DiplomacyHelper');
+//   StateMachineGlobalVariablesSaveToParser(pDiplomacy, 'gArrDiplomacy', false, false);
+end;
+
+procedure _diplomacy_UnpackFromParser(players_no, parser : Integer);
+begin
+   IntRegister0 := 1;
+   IntRegister1 := players_no;
+   IntRegister2 := parser;
+   GUIExecuteState('VVK.DiplomacyHelper');
+//   StateMachineGlobalVariablesLoadFromParser(pSyncDiplomacy, 'gArrDiplomacy', false, false);
+end;
+
+procedure _diplomacy_UpdateDisplayPriority(myPlIndex, value : Integer);
+begin
+   var i, displayPriority : Integer;
+   for i := 0 to gGame.map.players-1 do
+   if (myPlIndex <> i) then
+   begin
+      displayPriority := gArrDiplomacy[i][myPlIndex].displayPriority;
+      if (((displayPriority and $ff) > 0) and (value < $100)) or (((displayPriority and $ff00) > 0) and (value >= $100) and (value < $10000)) or (((displayPriority and $ff0000) > 0) and (value >= $10000)) then
+         gArrDiplomacy[i][myPlIndex].displayPriority := displayPriority + value;
+   end;
+end;
+
+function _diplomacy_GetReservedGold(plIndex, excludeInd, mType : Integer) : Integer;
+begin
+   // excludeInd should be +gc_MaxMapPlayers when all but that player should be excluded
+   
+   Result := 0;
+   
+   var i : Integer;
+   if (excludeInd >= gc_MaxMapPlayers) then // exclude everyone but this player
+   begin
+      excludeInd := excludeInd - gc_MaxMapPlayers;
+      if gArrDiplomacy[excludeInd][plIndex].message.deal > 0 then
+      begin
+         if gArrDiplomacy[excludeInd][plIndex].message.mType = mType then
+            Result := Result + gArrDiplomacy[excludeInd][plIndex].message.tradeTake.gold;
+         
+         if gArrDiplomacy[plIndex][excludeInd].message.mType = mType then
+            Result := Result - gArrDiplomacy[plIndex][excludeInd].message.tradeGive.gold; // don't account for the escrow of my own offer when accepted the offer of the other player.
+      end
+      else
+      if gArrDiplomacy[plIndex][excludeInd].message.mType = mType then
+         Result := Result + gArrDiplomacy[plIndex][excludeInd].message.tradeGive.gold;
+   end
+   else
+   for i := 0 to gGame.map.players-1 do
+   begin
+      if (i <> plIndex) and (i <> excludeInd) then
+      begin
+         if gArrDiplomacy[i][plIndex].message.deal > 0 then
+         begin
+            if gArrDiplomacy[i][plIndex].message.mType = mType then
+               Result := Result + gArrDiplomacy[i][plIndex].message.tradeTake.gold;
+         end
+         else
+         if gArrDiplomacy[plIndex][i].message.mType = mType then
+            Result := Result + gArrDiplomacy[plIndex][i].message.tradeGive.gold;
+      end;
+   end;
+end;
+
+function _diplomacy_GetReservedGem(plIndex, excludeInd, mType : Integer) : Integer;
+begin
+   Result := 0;
+   
+   var i : Integer;
+   if (excludeInd >= gc_MaxMapPlayers) then // exclude everyone but this player
+   begin
+      excludeInd := excludeInd - gc_MaxMapPlayers;
+      if gArrDiplomacy[excludeInd][plIndex].message.deal > 0 then
+      begin
+         if gArrDiplomacy[excludeInd][plIndex].message.mType = mType then
+            Result := Result + gArrDiplomacy[excludeInd][plIndex].message.tradeTake.gem;
+         
+         if gArrDiplomacy[plIndex][excludeInd].message.mType = mType then
+            Result := Result - gArrDiplomacy[plIndex][excludeInd].message.tradeGive.gem; // don't account for the escrow of my own offer when accepted the offer of the other player.
+      end
+      else
+      if gArrDiplomacy[plIndex][excludeInd].message.mType = mType then
+         Result := Result + gArrDiplomacy[plIndex][excludeInd].message.tradeGive.gem;
+   end
+   else
+   for i := 0 to gGame.map.players-1 do
+   begin
+      if (i <> plIndex) and (i <> excludeInd) then
+      begin
+         if gArrDiplomacy[i][plIndex].message.deal > 0 then
+         begin
+            if gArrDiplomacy[i][plIndex].message.mType = mType then
+               Result := Result + gArrDiplomacy[i][plIndex].message.tradeTake.gem;
+         end
+         else
+         if gArrDiplomacy[plIndex][i].message.mType = mType then
+            Result := Result + gArrDiplomacy[plIndex][i].message.tradeGive.gem;
+      end;
+   end;
+end;
+
+function _diplomacy_GetReservedItem(plIndex, excludeInd, itemID, durability : Integer) : Integer;
+begin
+   Result := 0;
+   
+   var i, j : Integer;
+   if (excludeInd >= gc_MaxMapPlayers) then // exclude everyone but this player
+   begin
+      excludeInd := excludeInd - gc_MaxMapPlayers;
+      if gArrDiplomacy[excludeInd][plIndex].message.deal > 0 then
+      begin
+         for j := 0 to gc_MaxTradeItemCount-1 do
+         if (gArrDiplomacy[excludeInd][plIndex].message.tradeTake.arrItems[j][0] = itemID) and (gArrDiplomacy[excludeInd][plIndex].message.tradeTake.arrItems[j][1] = durability) then
+            Result := Result + 1;
+      end
+      else
+      for j := 0 to gc_MaxTradeItemCount-1 do
+      if (gArrDiplomacy[plIndex][excludeInd].message.tradeGive.arrItems[j][0] = itemID) and (gArrDiplomacy[plIndex][excludeInd].message.tradeGive.arrItems[j][1] = durability) then
+         Result := Result + 1;
+   end
+   else
+   for i := 0 to gGame.map.players-1 do
+   begin
+      if (i <> plIndex) and (i <> excludeInd) then
+      begin
+         if gArrDiplomacy[i][plIndex].message.deal > 0 then
+         begin
+            for j := 0 to gc_MaxTradeItemCount-1 do
+            if (gArrDiplomacy[i][plIndex].message.tradeTake.arrItems[j][0] = itemID) and (gArrDiplomacy[i][plIndex].message.tradeTake.arrItems[j][1] = durability) then
+               Result := Result + 1;
+         end
+         else
+         for j := 0 to gc_MaxTradeItemCount-1 do
+         if (gArrDiplomacy[plIndex][i].message.tradeGive.arrItems[j][0] = itemID) and (gArrDiplomacy[plIndex][i].message.tradeGive.arrItems[j][1] = durability) then
+            Result := Result + 1;
+      end;
+   end;
+end;
+
+function _diplomacy_GetReservedProvince(plIndex, excludeInd, provInd : Integer) : Integer;
+begin
+   Result := 0;
+   
+   var i, j : Integer;
+   if (excludeInd >= gc_MaxMapPlayers) then // exclude everyone but this player
+   begin
+      excludeInd := excludeInd - gc_MaxMapPlayers;
+      if gArrDiplomacy[excludeInd][plIndex].message.deal > 0 then
+      begin
+         for j := 0 to gc_MaxTradeProvCount-1 do
+         if (gArrDiplomacy[excludeInd][plIndex].message.tradeTake.arrProvinces[j] = provInd) then
+            Result := Result + 1;
+      end
+      else
+      for j := 0 to gc_MaxTradeProvCount-1 do
+      if (gArrDiplomacy[plIndex][excludeInd].message.tradeGive.arrProvinces[j] = provInd) then
+         Result := Result + 1;
+   end
+   else
+   for i := 0 to gGame.map.players-1 do
+   begin
+      if (i <> plIndex) and (i <> excludeInd) then
+      begin
+         if gArrDiplomacy[i][plIndex].message.deal > 0 then
+         begin
+            for j := 0 to gc_MaxTradeProvCount-1 do
+            if (gArrDiplomacy[i][plIndex].message.tradeTake.arrProvinces[j] = provInd) then
+               Result := Result + 1;
+         end
+         else
+         for j := 0 to gc_MaxTradeProvCount-1 do
+         if (gArrDiplomacy[plIndex][i].message.tradeGive.arrProvinces[j] = provInd) then
+            Result := Result + 1;
+      end;
+   end;
+end;
+
+function _diplomacy_GetReservedResCount(plIndex, excludeInd, resID : Integer) : Integer;
+begin
+   Result := 0;
+   
+   var i : Integer;
+   if (excludeInd >= gc_MaxMapPlayers) then // exclude everyone but this player
+   begin
+      excludeInd := excludeInd - gc_MaxMapPlayers;
+      if gArrDiplomacy[excludeInd][plIndex].message.deal > 0 then
+      begin
+         if gArrDiplomacy[excludeInd][plIndex].message.tradeTake.arrResources[resID-1] then
+            Result := Result + 1;
+      end
+      else
+      if gArrDiplomacy[plIndex][excludeInd].message.tradeGive.arrResources[resID-1] then
+         Result := Result + 1;
+   end
+   else
+   for i := 0 to gGame.map.players-1 do
+   begin
+      if (i <> plIndex) and (i <> excludeInd) then
+      begin
+         if gArrDiplomacy[i][plIndex].message.deal > 0 then
+         begin
+            if gArrDiplomacy[i][plIndex].message.tradeTake.arrResources[resID-1] then
+               Result := Result + 1;
+         end
+         else
+         if gArrDiplomacy[plIndex][i].message.tradeGive.arrResources[resID-1] then
+            Result := Result + 1;
+      end;
+   end;
+end;
+
+function _diplomacy_IsTradeIdentical(trade1, trade2 : TTrade) : Boolean;
+begin
+   Result := true;
+
+   if (trade1.gold <> trade2.gold) or (trade1.gem <> trade2.gem) then
+   begin
+      Result := false;
+      exit;
+   end;
+
+   var i : Integer;
+   for i := 0 to gc_MaxTradeResCount-1 do
+   if (trade1.arrResources[i] xor trade2.arrResources[i]) then
+   begin
+      Result := false;
+      exit;
+   end;
+
+   for i := 0 to gc_MaxTradeProvCount-1 do
+   if trade1.arrProvinces[i] <> trade2.arrProvinces[i] then
+   begin
+      Result := false;
+      exit;
+   end;
+
+   for i := 0 to gc_MaxTradeItemCount-1 do
+   if (trade1.arrItems[i][0] <> trade2.arrItems[i][0]) or (trade1.arrItems[i][1] <> trade2.arrItems[i][1]) then
+   begin
+      Result := false;
+      exit;
+   end;
+end;
+
+
+function _diplomacy_CheckTrade(takeFromPlInd, giveToPlInd, mType : Integer; cTrade : TTrade) : Boolean;
+begin
+   var plHandle : Integer = GetPlayerHandleByIndex(takeFromPlInd);
+   var plName : String = GetPlayerNameByHandle(plHandle);
+      
+   var plGold : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iGold) + _diplomacy_GetReservedGold(takeFromPlInd, giveToPlInd+gc_MaxMapPlayers, mType);
+   var plGem : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iGem) + _diplomacy_GetReservedGem(takeFromPlInd, giveToPlInd+gc_MaxMapPlayers, mType);
+   
+   var pPlParser : Integer = ParserSelectPlayer(plHandle);
+   var pPlTreasury : Integer = ParserSelectByHandleByKey(pPlParser, 'Treasury');
+   
+   var i : Integer;
+   Result := true;
+   
+   case mType of
+      gc_MessageExchange : 
+      begin
+         if (cTrade.gold > 0) and (plGold < cTrade.gold) then
+            Result := false;
+   
+         if (cTrade.gem > 0) and (plGem < cTrade.gem) then
+            Result := false;
+   
+         var pProvinces : Integer = gStratHexCells.handle;
+   
+         if Result then
+         begin
+            for i := 0 to gc_MaxTradeProvCount-1 do
+            if cTrade.arrProvinces[i] >= 0 then
+            begin
+               var ind : Integer = cTrade.arrProvinces[i];
+               var pProvince : Integer = ParserSelectByHandleByIndex(pProvinces, ind);
+               var provPlName : String = ParserGetValueByKeyByHandle(pProvince, 'Player');
+   
+               if (not SameText(plName, provPlName)) or (_diplomacy_GetReservedProvince(takeFromPlInd, giveToPlInd, ind) > 0) then
+               begin
+                  Result := false;
+                  break;
+               end;
+            end;
+         end;
+   
+         if Result then
+         begin
+            var j, k ,pSlot, count, itemID, itemDur, reservedPlIndex : Integer;
+            var takenItems : array [0..gc_MaxTradeItemCount] of Integer;
+            for i := 0 to gc_MaxTradeItemCount-1 do
+               takenItems[i] := -1;
+   
+            for i := 0 to gc_MaxTradeItemCount-1 do
+            if cTrade.arrItems[i][0] > 0 then
+            begin
+               count := 0;
+               itemID := cTrade.arrItems[i][0];
+               itemDur := cTrade.arrItems[i][1];
+   
+               for j := 0 to gc_TreasurySize-1 do
+               begin
+                  pSlot := ParserSelectByHandleByIndex(pPlTreasury, j);
+   
+                  if (itemID = ParserGetIntValueByKeyByHandle(pSlot, 'ItemID')) and (itemDur = ParserGetIntValueByKeyByHandle(pSlot, 'Durability')) then
+                  begin
+                     reservedPlIndex := _pars_ParserGetIntValueExt(pSlot, 'ReservedPlayer');
+                     if (reservedPlIndex < 0) or (reservedPlIndex = giveToPlInd) then
+                     begin
+                        count := count + 1;
+                        if i = 0 then
+                           takenItems[i] := j
+                        else
+                        for k := 0 to i-1 do // check earlier items that are part of the deal
+                        begin
+                           if takenItems[k] = j then // more than one of the same item, earlier item is taken
+                           begin
+                              count := count - 1;
+                              break;
+                           end
+                           else
+                           if (k = i-1) then
+                              takenItems[i] := j;
+                        end;
+                     end;
+                  end;
+               end;
+                  
+               //count := count - _diplomacy_GetReservedItem(takeFromPlInd, giveToPlInd, itemID, itemDur);
+   
+               if count <= 0 then
+               begin
+                  Result := false;
+                  break;
+               end;
+            end;
+         end;
+      end;
+      gc_MessageTrade : 
+      begin
+         if (cTrade.gold > 0) then
+         begin
+            var goldInc : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iGoldInc) - _diplomacy_GetReservedGold(takeFromPlInd, giveToPlInd, mType);
+            if (plGold + goldInc < cTrade.gold) and (goldInc < cTrade.gold) then
+               Result := false;
+         end;
+            
+         if Result and (cTrade.gem > 0) then
+         begin
+            var gemInc : Integer = GetPlayerIntValueIndByHandle(plHandle, gc_map_PLStack_MapUnit_iGemInc) - _diplomacy_GetReservedGem(takeFromPlInd, giveToPlInd, mType);
+            if (plGem + gemInc < cTrade.gem) and (gemInc < cTrade.gem) then
+               Result := false;
+         end;
+            
+         if Result then
+         for i := 0 to gc_MaxTradeResCount-1 do
+         if cTrade.arrResources[i] then
+         begin
+            IntRegister0 := i+1;
+            PlayerExecuteStateByHandle(plHandle, 'GetResCount');
+            var res : Integer = IntRegister1 - _diplomacy_GetReservedResCount(takeFromPlInd, giveToPlInd, i+1);
+            if res <= 0 then
+            begin
+               Result := false;
+               break;
+            end;
+         end;
+      end;
+   end;
+end;
+
+
+function _diplomacy_IsProposal(message : TDiplMessage) : Boolean;
+begin
+   Result := (message.treaty <> gc_TreatyWar) and (message.treaty <> gc_TreatyCancelUnion) and (message.mType <> gc_MessageCancelTrade) and (message.mType <> gc_MessageGreetings) and (message.mType <> gc_MessageSurrender);
+end;
+
+
+function _diplomacy_IsMessageValid(proposePlInd, answerPlInd : Integer; message : TDiplMessage) : Boolean;
+begin
+   Result := true;
+   
+   var mType : Integer = message.mType;
+   if (mType > 0) and (mType <> gc_MessageGreetings) and (mType <> gc_MessageSurrender) then
+   begin
+      if (gArrDiplomacy[answerPlInd][proposePlInd].treaty = gc_TreatyWar) and (message.treaty <> gc_TreatyPeace) then // cannot propose anything if not peace during war
+         Result := false
+      else
+      if (message.treaty = gc_TreatyUnion) then
+      begin
+          PlayerExecuteStateByHandle(GetPlayerHandleByIndex(proposePlInd), 'GetUnionCount');
+          if (IntRegister0 > 0) then
+             Result := false;
+      end;
+   
+      if Result and ((mType = gc_MessageExchange) or (mType = gc_MessageTrade)) then
+      begin
+         Result := _diplomacy_CheckTrade(proposePlInd, answerPlInd, message.mType, message.tradeGive);
+      end;
+   end;
+end;
+
+procedure _diplomacy_Escrow(proposePlInd, answerPlInd : Integer; bDeposit : Boolean);
+begin
+   if (gArrDiplomacy[proposePlInd][answerPlInd].message.mType = gc_MessageExchange) then
+   begin
+      var i, j, pPlTreasury, pTreasurySlot, itemID, itemReservedPlInd : Integer;
+	  
+      // the proposer stores an escrow when sending the proposal.
+      if (not bDeposit) or (gArrDiplomacy[proposePlInd][answerPlInd].message.deal = 0) then // only deposit for propose player on sending the message
+	  begin
+         var proposePlHandle : Integer = GetPlayerHandleByIndex(proposePlInd);
+   
+         var giveGold : Integer = gArrDiplomacy[proposePlInd][answerPlInd].message.tradeGive.gold;
+         var giveGem : Integer = gArrDiplomacy[proposePlInd][answerPlInd].message.tradeGive.gem;
+   
+         if giveGold > 0 then
+         begin
+            var proposePlGold : Integer = GetPlayerIntValueIndByHandle(proposePlHandle, gc_map_PLStack_MapUnit_iGold);
+            if bDeposit then
+               proposePlGold := proposePlGold - giveGold
+		    else // release
+               proposePlGold := proposePlGold + giveGold;
+         
+            SetPlayerIntValueIndByHandle(proposePlHandle, gc_map_PLStack_MapUnit_iGold, proposePlGold);
+         end;
+   
+         if giveGem > 0 then
+         begin
+            var proposePlGem : Integer = GetPlayerIntValueIndByHandle(proposePlHandle, gc_map_PLStack_MapUnit_iGem);
+            if bDeposit then
+               proposePlGem := proposePlGem - giveGem
+		    else
+               proposePlGem := proposePlGem + giveGem;
+			
+            SetPlayerIntValueIndByHandle(proposePlHandle, gc_map_PLStack_MapUnit_iGem, proposePlGem);
+         end;
+         
+         pPlTreasury := ParserSelectByHandleByKey(ParserSelectPlayer(proposePlHandle), 'Treasury');
+         
+         for i := 0 to gc_MaxTradeItemCount-1 do
+         begin
+            itemID := gArrDiplomacy[proposePlInd][answerPlInd].message.tradeGive.arrItems[i][0];
+            if itemID > 0 then
+            for j := 0 to gc_TreasurySize-1 do
+            begin
+               pTreasurySlot := ParserSelectByHandleByIndex(pPlTreasury, j);
+               if (itemID = ParserGetIntValueByKeyByHandle(pTreasurySlot, 'ItemID')) and (gArrDiplomacy[proposePlInd][answerPlInd].message.tradeGive.arrItems[i][1] = ParserGetIntValueByKeyByHandle(pTreasurySlot, 'Durability')) then
+			   begin
+			      itemReservedPlInd := _pars_ParserGetIntValueExt(pTreasurySlot, 'ReservedPlayer');
+			      if bDeposit then
+				  begin
+				     if (itemReservedPlInd < 0) then
+			         begin
+                     Log('item ID '+IntToStr(itemID)+' deposit itemReservedPlInd: '+IntToStr(itemReservedPlInd));
+				        ParserSetIntValueByKeyByHandle(pTreasurySlot, 'ReservedPlayer', answerPlInd);
+			            break;
+			         end;
+				  end
+				  else
+				  if (itemReservedPlInd = answerPlInd) then
+				  begin
+                     Log('item ID '+IntToStr(itemID)+' take itemReservedPlInd: '+IntToStr(itemReservedPlInd));
+				     ParserSetIntValueByKeyByHandle(pTreasurySlot, 'ReservedPlayer', -1);
+			         break;
+			      end;
+	           end;
+			end;
+		 end;
+      end;
+   
+      // the recipient only stores an escrow when accepting the proposal.
+      if (gArrDiplomacy[proposePlInd][answerPlInd].message.deal > 0) then
+	  begin
+         var answerPlHandle : Integer = GetPlayerHandleByIndex(answerPlInd);
+         
+         var takeGold : Integer = gArrDiplomacy[proposePlInd][answerPlInd].message.tradeTake.gold;
+         var takeGem : Integer = gArrDiplomacy[proposePlInd][answerPlInd].message.tradeTake.gem;
+		 
+         if takeGold > 0 then
+         begin
+            var answerPlGold : Integer = GetPlayerIntValueIndByHandle(answerPlHandle, gc_map_PLStack_MapUnit_iGold);
+            if bDeposit then
+               answerPlGold := answerPlGold - takeGold
+		    else
+               answerPlGold := answerPlGold + takeGold;
+			
+            SetPlayerIntValueIndByHandle(answerPlHandle, gc_map_PLStack_MapUnit_iGold, answerPlGold);
+         end;
+   
+         if takeGem > 0 then
+         begin
+            var answerPlGem : Integer = GetPlayerIntValueIndByHandle(answerPlHandle, gc_map_PLStack_MapUnit_iGem);
+            if bDeposit then
+               answerPlGem := answerPlGem - takeGem
+		    else
+               answerPlGem := answerPlGem + takeGem;
+			
+            SetPlayerIntValueIndByHandle(answerPlHandle, gc_map_PLStack_MapUnit_iGem, answerPlGem);
+         end;
+         
+         pPlTreasury := ParserSelectByHandleByKey(ParserSelectPlayer(answerPlHandle), 'Treasury');
+         
+         for i := 0 to gc_MaxTradeItemCount-1 do
+         begin
+            itemID := gArrDiplomacy[proposePlInd][answerPlInd].message.tradeTake.arrItems[i][0];
+            if itemID > 0 then
+            for j := 0 to gc_TreasurySize-1 do
+            begin
+               pTreasurySlot := ParserSelectByHandleByIndex(pPlTreasury, j);
+               if (itemID = ParserGetIntValueByKeyByHandle(pTreasurySlot, 'ItemID')) and (gArrDiplomacy[proposePlInd][answerPlInd].message.tradeTake.arrItems[i][1] = ParserGetIntValueByKeyByHandle(pTreasurySlot, 'Durability')) then
+			   begin
+			      itemReservedPlInd := _pars_ParserGetIntValueExt(pTreasurySlot, 'ReservedPlayer');
+			      if bDeposit then
+				  begin
+				     if (itemReservedPlInd < 0) then
+			         begin
+				        ParserSetIntValueByKeyByHandle(pTreasurySlot, 'ReservedPlayer', proposePlInd);
+			            break;
+			         end;
+				  end
+				  else
+				  if (itemReservedPlInd = proposePlInd) then
+				  begin
+				     ParserSetIntValueByKeyByHandle(pTreasurySlot, 'ReservedPlayer', -1);
+			         break;
+			      end;
+	           end;
+			end;
+		 end;
+      end;
+   end;
+end;
+
+
+function _diplomacy_IsMessageDraftValid(var hint : String) : Boolean;
+begin
+   Result := false;
+   hint := '';
+   
+   var myPlIndex : Integer = GetPlayerIndexByHandle(GetPlayerHandleInterfaceIO);
+   var plIndex : Integer = gIntRegister_DiplomacyActivePlayerID;
+   
+   if (myPlIndex >= 0) and (plIndex >= 0) then
+   begin
+      var mType : Integer = gDiplMessage.mType;
+      var mTreaty : Integer = gDiplMessage.treaty;
+   
+      if ((mTreaty>0) or (mType=gc_MessageTreaty) or (mType=gc_MessageCancelTrade) or (not _diplomacy_IsTradeFree(gDiplMessage.tradeGive)) or (not _diplomacy_IsTradeFree(gDiplMessage.tradeTake))) then   // ensure the message has content
+      begin
+         // if changing trade agreement, ensure it does not match with the already existing trade agreement
+         if (mType<>gc_MessageTrade) or (mTreaty>0)
+           or (not _diplomacy_IsTradeIdentical(gDiplMessage.tradeGive, gArrDiplomacy[myPlIndex][plIndex].trade)) or (not _diplomacy_IsTradeIdentical(gDiplMessage.tradeTake, gArrDiplomacy[plIndex][myPlIndex].trade)) then
+         begin
+            // and that the message differs from something the other player is already offering (or his offer has been refused/withdrawn).
+            if (gArrDiplomacy[plIndex][myPlIndex].message.deal < 0) or (mTreaty <> gArrDiplomacy[plIndex][myPlIndex].message.treaty) 
+              or (not _diplomacy_IsTradeIdentical(gDiplMessage.tradeGive, gArrDiplomacy[plIndex][myPlIndex].message.tradeTake)) or (not _diplomacy_IsTradeIdentical(gDiplMessage.tradeTake, gArrDiplomacy[plIndex][myPlIndex].message.tradeGive)) then
+            begin
+			   // check that I meet the requirements
+			   if _diplomacy_IsMessageValid(myPlIndex, plIndex, gDiplMessage) then
+			   begin
+			      // ensure the message differs from an offer I have already sent.
+                  if (gArrDiplomacy[myPlIndex][plIndex].message.deal < 0) or (mTreaty <> gArrDiplomacy[myPlIndex][plIndex].message.treaty) or (mType <> gArrDiplomacy[myPlIndex][plIndex].message.mType)
+                    or (not _diplomacy_IsTradeIdentical(gDiplMessage.tradeGive, gArrDiplomacy[myPlIndex][plIndex].message.tradeGive)) or (not _diplomacy_IsTradeIdentical(gDiplMessage.tradeTake, gArrDiplomacy[myPlIndex][plIndex].message.tradeTake)) then
+                  begin
+                     Result := true;
+                  end
+                  else
+                     hint := 'gui|172'; // message sent
+			   end
+               else
+                  hint := 'gui|246'; // insufficient means
+            end
+            else
+            begin
+               PlayerExecuteStateByHandle(GetPlayerHandleByIndex(gIntRegister_DiplomacyActivePlayerID), 'GetName');
+               gStringRegister_EnemyPlayerName := StringRegister0;
+               hint := 'gui|196';        
+            end;
+         end
+         else
+            hint := 'gui|180'; // edit message
+      end
+      else
+         hint := 'gui|173'; // no message
+   end;
+end;
+
+procedure _diplomacy_ShuffleRandom(plIndex, plIndex2, amount : Integer);
+begin
+   gArrDiplomacy[plIndex][plIndex2].random := amount - _rand_Random(amount * 2);
+   if gArrDiplomacy[plIndex][plIndex2].random <= 0 then // ensure the random is never zero and the probabilities are equal on both sides of zero.
+      gArrDiplomacy[plIndex][plIndex2].random := gArrDiplomacy[plIndex][plIndex2].random - 1;
+end;
+
+procedure _diplomacy_SwitchRandom(plIndex, plIndex2, amount : Integer);
+begin
+   var curRandom : Integer = gArrDiplomacy[plIndex][plIndex2].random;
+   if curRandom > 0 then
+   begin
+      if curRandom > amount then
+         _diplomacy_ShuffleRandom(plIndex, plIndex2, amount)
+      else
+         gArrDiplomacy[plIndex][plIndex2].random := -curRandom - amount;
+   end
+   else
+   if curRandom < 0 then
+   begin
+      if curRandom < -amount then
+         _diplomacy_ShuffleRandom(plIndex, plIndex2, amount)
+      else
+         gArrDiplomacy[plIndex][plIndex2].random := -curRandom + amount;
+   end
+   else
+   if amount <> 0 then
+     _diplomacy_ShuffleRandom(plIndex, plIndex2, amount);
+end;

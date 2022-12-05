@@ -1,0 +1,219 @@
+//
+// log.script
+//
+
+// _log_battle_Clear
+//
+procedure _log_battle_Clear();
+begin
+   var pMapParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle());
+   var pBattleLog : Integer = ParserSelectByHandleByKey(pMapParser, 'BattleLog');
+   ParserClearByHandle(pBattleLog);
+end;
+
+// _log_battle_AddUnitInfoToParser
+//
+function _log_battle_AddUnitInfoToParser(var parser : Integer) : Integer;
+begin
+   var pUnitInfo : Integer = ParserAddChildByIndex(parser, '*');
+   ParserSetIntValueByKeyByHandle(pUnitInfo, 'UID', 0);
+   ParserSetIntValueByKeyByHandle(pUnitInfo, 'ActionResult', 0);
+   ParserAddChildByIndex(pUnitInfo, 'ChangedParams');
+
+   Result := pUnitInfo;
+end;
+
+// _log_battle_AddChangedParamToParser
+//
+function _log_battle_AddChangedParamToParser(var parser : Integer) : Integer;
+begin
+   var pChangedParam : Integer = ParserAddChildByIndex(parser, '*');
+   ParserSetIntValueByKeyByHandle(pChangedParam, 'ParamID', 0);
+   ParserSetIntValueByKeyByHandle(pChangedParam, 'ActionResult', 0);
+
+   Result := pChangedParam;
+end;
+
+// _log_battle_AddNewElement
+//
+function _log_battle_AddNewElement : Integer;
+begin
+   var pMapParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle);
+   var pBattleLog : Integer = ParserSelectByHandleByKey(pMapParser, 'BattleLog');
+
+   if ParserGetCountByHandle(pBattleLog) >= gc_MaxBattleLogSize then
+      ParserFreeByHandle(ParserSelectByHandleByIndex(pBattleLog, 0));
+
+   var pBattleLogElement : Integer = ParserAddChildByIndex(pBattleLog, '*');
+   ParserSetIntValueByKeyByHandle(pBattleLogElement, 'Action', 0);
+   ParserSetIntValueByKeyByHandle(pBattleLogElement, 'Param', 0);
+
+   var pSrcUnit : Integer = ParserAddChildByIndex(pBattleLogElement, 'SrcUnit');
+   ParserSetIntValueByKeyByHandle(pSrcUnit, 'UID', 0);
+   ParserSetIntValueByKeyByHandle(pSrcUnit, 'ActionResult', 0);
+   ParserAddChildByIndex(pSrcUnit, 'ChangedParams');
+   ParserAddChildByIndex(pBattleLogElement, 'DestUnits');
+
+   Result := pBattleLogElement;
+end;
+
+// _log_battle_GetLastLogElement
+//
+function _log_battle_GetLastLogElement() : Integer;
+begin
+   var pMapParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle);
+   var pBattleLog : Integer = ParserSelectByHandleByKey(pMapParser, 'BattleLog');
+   var count : Integer = ParserGetCountByHandle(pBattleLog);
+
+   Result := ParserSelectByHandleByIndex(pBattleLog, count-1);
+end;
+
+// _log_battle_GetLastLogElementByAction
+//
+function _log_battle_GetLastLogElementByAction(uid, action : Integer) : Integer;
+begin
+   var pMapParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle);
+   var pBattleLog : Integer = ParserSelectByHandleByKey(pMapParser, 'BattleLog');
+   var count : Integer = ParserGetCountByHandle(pBattleLog);
+   var i : Integer;
+   Result := 0;
+
+   for i := count-1 downto 0 do
+   begin
+      var pBattleLogElement : Integer = ParserSelectByHandleByIndex(pBattleLog, i);
+      var pSrcUnit : Integer = ParserSelectByHandleByKey(pBattleLogElement, 'SrcUnit');
+      var srcUID : Integer = ParserGetIntValueByKeyByHandle(pSrcUnit, 'UID');
+      var logAction : Integer = ParserGetIntValueByKeyByHandle(pBattleLogElement, 'Action');
+
+      if (srcUID = uid) and (logAction = action) then
+      begin
+         Result := pBattleLogElement;
+         break;
+      end;
+   end;
+end;
+
+// _log_battle_GetDestUnitParseryUID
+//
+function _log_battle_GetDestUnitParseryUID(pLogElement, uid : Integer) : Integer;
+begin
+   var pDestUnits : Integer = ParserSelectByHandleByKey(pLogElement, 'DestUnits');
+   var i : Integer;
+   Result := 0;
+
+   for i := ParserGetCountByHandle(pDestUnits)-1 downto 0 do
+   begin
+      var pDestUnit : Integer = ParserSelectByHandleByIndex(pDestUnits, i);
+      var dstUID : Integer = ParserGetIntValueByKeyByHandle(pDestUnit, 'UID');
+
+      if dstUID = uid then
+      begin
+         Result := pDestUnit;
+         break;
+      end;
+   end;
+end;
+
+// _log_battle_ShowElement
+//
+procedure _log_battle_ShowElementByIndex(elmIndex : Integer);
+begin
+   var pMapParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle);
+   var pBattleLog : Integer = ParserSelectByHandleByKey(pMapParser, 'BattleLog');
+   var pElmLog : Integer = ParserSelectByHandleByIndex(pBattleLog, elmIndex);
+
+   if pElmLog <> 0 then
+   begin
+      var i, j : Integer;
+
+      var action : Integer = ParserGetIntValueByKeyByHandle(pElmLog, 'Action');
+      var param : Integer = ParserGetIntValueByKeyByHandle(pElmLog, 'Param');
+
+      var pSrcUnit : Integer = ParserSelectByHandleByKey(pElmLog, 'SrcUnit');
+      var uid : Integer = ParserGetIntValueByKeyByHandle(pSrcUnit, 'UID');
+
+      var pDestUnits : Integer = ParserSelectByHandleByKey(pElmLog, 'DestUnits');
+      var pDestUnit : Integer = ParserSelectByHandleByIndex(pDestUnits, 0);
+      var dstUID : Integer = ParserGetIntValueByKeyByHandle(pDestUnit, 'UID');
+
+      var s : String = '';
+
+      if uid > 0 then
+      begin
+         var goHandle : Integer = GetGameObjectHandleByUniqueId(uid);
+         var baseName : String = GetGameObjectBaseNameByHandle(goHandle);
+         s := s + baseName;
+
+         case action of
+            1 : begin
+               s := s + ' attacks';
+            end;
+            2 : begin
+               s := s + ' counterattacks';
+            end;
+            3 : begin
+               s := s + ' shoots';
+            end;
+            4 : begin
+               var spellName : String = GetLocaleTableListItemByID('spell', IntToStr(param));
+               s := s + ' casts ' + spellName;
+            end;
+            5 : begin
+               s := s + ' heals';
+            end;
+            6 : begin
+               var x : Integer = param mod gc_battle_GridSize;
+               var y : Integer = param div gc_battle_GridSize;
+               s := s + ' moves to [' + IntToStr(x) + ', ' + IntToStr(y) + ']';
+            end;
+            7 : begin
+               s := s + ' gathers ammo';
+            end;
+            8 : begin
+               s := s + ' eats corpse';
+            end;
+         end;
+
+         if dstUID > 0 then
+         begin
+            var dstGOHandle : Integer = GetGameObjectHandleByUniqueId(dstUID);
+            var dstBaseName : String = GetGameObjectBaseNameByHandle(dstGOHandle);
+            s := s + ' ' + dstBaseName;
+         end;
+
+         case action of
+            5 : begin
+               var pChangedParams : Integer = ParserSelectByHandleByKey(pDestUnit, 'ChangedParams');
+               var pChangedParam : Integer = ParserSelectByHandleByIndex(pChangedParams, 0);
+               var value : Integer = ParserGetIntValueByKeyByHandle(pChangedParam, 'Value');
+               s := s + ' (+' + IntToStr(value) + ' HP)';
+            end;
+         end;
+
+         var dstActionResult : Integer = ParserGetIntValueByKeyByHandle(pDestUnit, 'ActionResult');
+
+         if dstActionResult = 1 then
+         s := s + ' and kills him';
+      end;
+      
+      ParserSetBoolValueByKeyByHandle(pElmLog, 'Logged', True);
+      _Log_gui(s);
+   end;
+end;
+
+// _log_battle_Show
+//
+procedure _log_battle_Show();
+begin
+   if gBoolRegister_ShowBattleLog then
+   begin
+      var pMapParser : Integer = ParserSelectStateMachineByHandle(GetMapInitMachineHandle());
+      var pBattleLog : Integer = ParserSelectByHandleByKey(pMapParser, 'BattleLog');
+      var latestIndex : Integer = ParserGetCountByHandle(pBattleLog)-1;
+      var pElmLog : Integer = ParserSelectByHandleByIndex(pBattleLog, latestIndex);
+      if not ParserGetBoolValueByKeyByHandle(pElmLog, 'Logged') then
+      begin
+         _log_battle_ShowElementByIndex(latestIndex);
+      end;
+   end;
+end;

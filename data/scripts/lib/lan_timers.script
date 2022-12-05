@@ -1,0 +1,244 @@
+// lan wait timers
+procedure _lan_timer_InitTimers();
+begin
+   var i : Integer;
+
+   for i := 0 to gc_max_lan_wait_timers-1 do
+   begin
+      gArr_LanTimers[i].timer := -1;
+      gArr_LanTimers[i].flags := 0; // 1 = sync with other players, 2 = don't block interface unless turn is passed, 4 = create astral chat button
+      case i of
+         gc_lt_connect, gc_lt_server_answer, gc_lt_auth : begin
+            gArr_LanTimers[i].event_state := 'EvLanConnect';
+            gArr_LanTimers[i].event_tag := 10;
+            gArr_LanTimers[i].event_command := '';
+            gArr_LanTimers[i].cancel_delay := 1;
+         end;
+         else begin
+            gArr_LanTimers[i].event_state := 'EventLanDialogs';
+            gArr_LanTimers[i].event_tag := gc_lt_cancel_base_tag+i;
+            gArr_LanTimers[i].event_command := 'showmenulantimer';
+         end;
+      end;
+      case i of
+         gc_lt_connect : gArr_LanTimers[i].text := 'menu|192';
+         gc_lt_server_answer : gArr_LanTimers[i].text := 'menu|192';
+         gc_lt_auth : gArr_LanTimers[i].text := 'menu|191';
+         gc_lt_loading : begin
+            gArr_LanTimers[i].text := 'menu|193';
+            gArr_LanTimers[i].cancel_delay := 90;
+         end;
+         gc_lt_placement : begin
+            gArr_LanTimers[i].text := 'menu|194';
+            gArr_LanTimers[i].cancel_delay := 120;
+         end;
+         gc_lt_map_end_turn : begin
+            gArr_LanTimers[i].flags := 5;
+            gArr_LanTimers[i].text := 'gui|wait_others';
+            gArr_LanTimers[i].cancel_delay := -1;
+         end;
+         gc_lt_conflicts : begin
+            gArr_LanTimers[i].flags := 4;
+            gArr_LanTimers[i].text := 'gui|wait_others';
+            gArr_LanTimers[i].cancel_delay := -1;
+         end;
+         gc_lt_map_loading_sync : begin
+            gArr_LanTimers[i].flags := 5;
+            gArr_LanTimers[i].text := 'gui|810';
+            gArr_LanTimers[i].cancel_delay := -1;
+         end;
+         gc_lt_map_start_turn: begin
+            gArr_LanTimers[i].flags := 7;
+            gArr_LanTimers[i].text := 'gui|wait_others';
+            gArr_LanTimers[i].cancel_delay := -1;
+         end;
+         gc_lt_restart_session: begin
+            gArr_LanTimers[i].flags := 7;
+            gArr_LanTimers[i].text := 'gui|wait_others';
+            gArr_LanTimers[i].cancel_delay := 60;
+         end;
+         else begin
+            gArr_LanTimers[i].cancel_delay := -1;
+            gArr_LanTimers[i].text := '';
+         end;
+      end;
+   end;
+end;
+
+procedure _lan_stimer_Idle(timer_id : Integer);
+begin
+// going through hand picked timers specific timer
+   if(timer_id=gc_lt_ALL) then
+   begin
+      var i : Integer;
+
+      for i := 0 to gc_max_lan_wait_timers-1 do
+      begin
+         IntRegister0 := 4;
+         IntRegister1 := i;
+         GUIExecuteState('vvk.lan.LoadingSync');
+      end;
+   end
+   else
+   begin
+      IntRegister0 := 4;
+      IntRegister1 := timer_id;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+end;
+
+procedure _lan_timer_Reset(timer_id : Integer; do_progress : Boolean; _state : String);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $110;
+      IntRegister1 := timer_id;
+      BoolRegister0 := do_progress;
+      StringRegister0 := _state;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   if (timer_id=gc_lt_ALL) then
+   begin
+      var i : Integer;
+      for i := 0 to gc_max_lan_wait_timers-1 do
+         gArr_LanTimers[i].timer := -1;
+   end
+   else
+   begin
+      if timer_id < gc_max_lan_wait_timers then
+         gArr_LanTimers[timer_id].timer := -1;
+   end;
+   if do_progress then
+      _lan_stimer_Idle(timer_id);
+end;
+
+procedure _lan_timer_Arm(timer_id : Integer; value : Float; do_progress : Boolean);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $111;
+      IntRegister1 := timer_id;
+      FloatRegister0 := value;
+      BoolRegister0 := do_progress;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   if timer_id < gc_max_lan_wait_timers then
+      gArr_LanTimers[timer_id].timer := GetCurrentTime()+value;
+   if do_progress then
+      _lan_stimer_Idle(timer_id);
+end;
+
+procedure _lan_stimer_Start(timer_id : Integer; do_progress : Boolean);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $100;
+      IntRegister1 := timer_id;
+      BoolRegister0 := do_progress;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   IntRegister0 := 0;
+   IntRegister1 := timer_id;
+   BoolRegister0 := do_progress;
+   GUIExecuteState('vvk.lan.LoadingSync');
+end;
+
+procedure _lan_stimer_Ready(timer_id,lan_id : Integer);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $101;
+      IntRegister1 := timer_id;
+      IntRegister2 := lan_id;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   IntRegister0 := 1;
+   IntRegister1 := timer_id;
+   IntRegister2 := lan_id;
+   GUIExecuteState('vvk.lan.LoadingSync');
+end;
+
+procedure _lan_stimer_Revoke(timer_id,lan_id : Integer; do_progress : Boolean);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $106;
+      IntRegister1 := timer_id;
+      IntRegister2 := lan_id;
+      BoolRegister0 := do_progress;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   IntRegister0 := 6;
+   IntRegister1 := timer_id;
+   IntRegister2 := lan_id;
+   BoolRegister0 := do_progress;
+   GUIExecuteState('vvk.lan.LoadingSync');
+end;
+
+procedure _lan_stimer_ChangeState(timer_id,lan_id,ready_i : Integer);
+begin
+   var ready : Boolean;
+
+   if ready_i <> 0 then ready := true
+   else ready := false;
+
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $107;
+      IntRegister1 := timer_id;
+      IntRegister2 := lan_id;
+      BoolRegister0 := ready;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   IntRegister0 := 7;
+   IntRegister1 := timer_id;
+   IntRegister2 := lan_id;
+   BoolRegister0 := ready;
+   GUIExecuteState('vvk.lan.LoadingSync');
+end;
+
+procedure _lan_stimer_Release(timer_id : Integer);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $102;
+      IntRegister1 := timer_id;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   IntRegister0 := 2;
+   IntRegister1 := timer_id;
+   GUIExecuteState('vvk.lan.LoadingSync');
+end;
+
+function _lan_stimer_Status(timer_id : Integer) : Integer;
+begin
+   IntRegister0 := 3;
+   IntRegister1 := timer_id;
+   GUIExecuteState('vvk.lan.LoadingSync');
+   Result := IntRegister0;
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $103;
+      IntRegister1 := timer_id;
+      IntRegister2 := Result;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+end;
+
+procedure _lan_stimer_Reset(timer_id : Integer; do_progress : Boolean);
+begin
+   if ((gIntRegister_GVLogging and gc_gvlog_lantimers) <> 0) then
+   begin
+      IntRegister0 := $105;
+      IntRegister1 := timer_id;
+      BoolRegister0 := do_progress;
+      GUIExecuteState('vvk.lan.LoadingSync');
+   end;
+   IntRegister0 := 5;
+   IntRegister1 := timer_id;
+   BoolRegister0 := do_progress;
+   GUIExecuteState('vvk.lan.LoadingSync');
+end;
+
+_lan_timer_InitTimers();
+

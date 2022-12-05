@@ -1,0 +1,6717 @@
+section.begin
+   Name = PFXFire
+   PFXType = pfxFire
+   FireDir : struct.begin
+      X = 0
+      Y = 1
+      Z = 0
+   struct.end
+   InitialDir : struct.begin
+      X = 0
+      Y = 0.5
+      Z = 0
+   struct.end
+   MaxParticles = 128
+   ParticleSize = 0.150000005960464
+   InnerColor : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   OuterColor : struct.begin
+      Red = 1
+      Green = 0.5
+      Blue = 0
+      Alpha = 1
+   struct.end
+   FireDensity = 0.600000023841858
+   FireEvaporation = 0.860000014305115
+   FireCrown = 0
+   ParticleLife = 2
+   FireBurst = 1
+   FireRadius = 0.100000001490116
+   Disabled = False
+   Paused = False
+   ParticleInterval = 0.0299999993294477
+   UseInterval = True
+   NoZWrite = True
+section.end
+
+section.begin
+   Name = PFXElectro
+   PFXType = pfxPerlin
+   TexMapSize = 3
+   Smoothness = 0.699999988079071
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 123415
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.0500000007450581
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0.121568627655506
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.200000002980232
+      RotateAngle = 3000
+      SizeScale = 1
+      ColorInner : struct.begin
+         Red = 0.380392163991928
+         Green = 0.380392163991928
+         Blue = 0.380392163991928
+         Alpha = 0.254999995231628
+      struct.end
+      ColorOuter : struct.begin
+         Red = 1
+         Green = 0.501960813999176
+         Blue = 0.250980406999588
+         Alpha = 1
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = PFXRail
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.100000001490116
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0.501960813999176
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.7843137383461
+      Green = 0.39215686917305
+      Blue = 0
+      Alpha = 1
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 20
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.501960813999176
+            Green = 0
+            Blue = 0.501960813999176
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.400000005960464
+         RotateAngle = 40
+         SizeScale = 0.5
+         ColorInner : struct.begin
+            Red = 0
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 0.501960813999176
+            Alpha = 1
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 0.800000011920929
+         RotateAngle = 80
+         SizeScale = 0.200000002980232
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.501960813999176
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 2
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = PFXBurning
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 6545
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.200000002980232
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0.7843137383461
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = 30
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.25
+         RotateAngle = 50
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.125490203499794
+            Green = 0.125490203499794
+            Blue = 0.125490203499794
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 0
+         SizeScale = 0.100000001490116
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 32
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = PFXBlueArea
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.150000005960464
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = 10
+         SizeScale = 0.5
+         ColorInner : struct.begin
+            Red = 0.580392181873321
+            Green = 0.776470601558685
+            Blue = 0.647058844566345
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 50
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 1
+         RotateAngle = 100
+         SizeScale = 0.100000001490116
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0.250980406999588
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = PFXRedArea
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.150000005960464
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.737254917621613
+            Blue = 0.588235318660736
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 50
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.501960813999176
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2
+         RotateAngle = 100
+         SizeScale = 0.100000001490116
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = PFXWaterfall
+   PFXType = pfxPerlin
+   TexMapSize = 5
+   Smoothness = 0.699999988079071
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 67334
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.5
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 10
+         SizeScale = 1.10000002384186
+         ColorInner : struct.begin
+            Red = 0.0823529437184334
+            Green = 0.0862745121121407
+            Blue = 0.117647059261799
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.400000005960464
+         RotateAngle = 20
+         SizeScale = 1.20000004768372
+         ColorInner : struct.begin
+            Red = 0.113725490868092
+            Green = 0.113725490868092
+            Blue = 0.160784319043159
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 0.600000023841858
+         RotateAngle = 30
+         SizeScale = 1.29999995231628
+         ColorInner : struct.begin
+            Red = 0.129411771893501
+            Green = 0.152941182255745
+            Blue = 0.180392161011696
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [3] : struct.begin
+         LifeTime = 0.800000011920929
+         RotateAngle = 40
+         SizeScale = 1.39999997615814
+         ColorInner : struct.begin
+            Red = 0.0823529437184334
+            Green = 0.0823529437184334
+            Blue = 0.0941176488995552
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [4] : struct.begin
+         LifeTime = 1
+         RotateAngle = 50
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 5
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -10
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = BloodBoom
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.25
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 0
+      Blue = 0
+      Alpha = 0.0500000007450581
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0
+      Blue = 0
+      Alpha = 0.0500000007450581
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0
+            Blue = 0
+            Alpha = 0.25
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 20
+         SizeScale = 0.100000001490116
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 1
+   Friction = 10
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 10
+      Y = -10.8000001907349
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = ArrowTracer
+   PFXType = pfxTracer
+   FXRenderMode = tfxLineMode
+   MaterialName = 
+   MatScrollSpeed = 0
+   Frequency = 0
+   LineWidth = 3
+   MaxPoints = 20
+   MinStep = 0.300000011920929
+   Offset : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   UpVector : struct.begin
+      X = 0
+      Y = 1
+      Z = 0
+   struct.end
+   UpVectorCameraFactor = 0
+   RayCast = False
+   Repeatable = False
+   UseSorting = False
+   InternSorting = False
+   WriteZ = False
+   AutoDivide = False
+   SmoothAlphaStartLength = 0
+   SmoothAlphaEndLength = 0
+   SmoothEndColor : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   SmoothStartColor : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   DispersionMatScrollSpeed = 0
+   DispersionFrequency = 0
+   DispersionLineWidth = 0
+   DispersionOffset : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   DispersionPresset : struct.begin
+      Color : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+      LifeTime = 0
+      MatTileLength = 0
+      TraceSize = 0
+      WaveLength = 0
+      Amplitude = 0
+      ScaleRotation = 0
+      Rotation = 0
+   struct.end
+   DispersionPhaseOffset = 0
+   DispersionMatOffset = 0
+   Presets : struct.begin
+      [*] : struct.begin
+         Color : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.230000004172325
+         struct.end
+         LifeTime = 0.400000005960464
+         MatTileLength = 0
+         TraceSize = 0
+         WaveLength = 0
+         Amplitude = 0
+         ScaleRotation = 0
+         Rotation = 0
+      struct.end
+      [*] : struct.begin
+         Color : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         LifeTime = 0
+         MatTileLength = 0
+         TraceSize = 0
+         WaveLength = 0
+         Amplitude = 0
+         ScaleRotation = 0
+         Rotation = 0
+      struct.end
+   struct.end
+section.end
+
+section.begin
+   Name = ArrowTracerFire
+   PFXType = pfxTracer
+   FXRenderMode = tfxLineMode
+   MaterialName = 
+   MatScrollSpeed = 0
+   Frequency = 0
+   LineWidth = 1.89999997615814
+   MaxPoints = 20
+   MinStep = 0.00499999988824129
+   Offset : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   UpVector : struct.begin
+      X = 0
+      Y = 1
+      Z = 0
+   struct.end
+   UpVectorCameraFactor = 0
+   RayCast = False
+   Repeatable = False
+   UseSorting = False
+   InternSorting = False
+   WriteZ = False
+   AutoDivide = False
+   SmoothAlphaStartLength = 0
+   SmoothAlphaEndLength = 0
+   SmoothEndColor : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   SmoothStartColor : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   DispersionMatScrollSpeed = 0
+   DispersionFrequency = 0
+   DispersionLineWidth = 0
+   DispersionOffset : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   DispersionPresset : struct.begin
+      Color : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+      LifeTime = 0
+      MatTileLength = 0
+      TraceSize = 0
+      WaveLength = 0
+      Amplitude = 0
+      ScaleRotation = 0
+      Rotation = 0
+   struct.end
+   DispersionPhaseOffset = 0
+   DispersionMatOffset = 0
+   Presets : struct.begin
+      [*] : struct.begin
+         Color : struct.begin
+            Red = 1
+            Green = 0.745098054409027
+            Blue = 0
+            Alpha = 0.611000001430511
+         struct.end
+         LifeTime = 0.600000023841858
+         MatTileLength = 0
+         TraceSize = 0
+         WaveLength = 0
+         Amplitude = 0
+         ScaleRotation = 0
+         Rotation = 0
+      struct.end
+      [*] : struct.begin
+         Color : struct.begin
+            Red = 1
+            Green = 0.10196078568697
+            Blue = 0
+            Alpha = 0
+         struct.end
+         LifeTime = 0
+         MatTileLength = 0
+         TraceSize = 0
+         WaveLength = 0
+         Amplitude = 0
+         ScaleRotation = 0
+         Rotation = 0
+      struct.end
+   struct.end
+section.end
+
+section.begin
+   Name = Fog
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 0.00100000004749745
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 20
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.745098054409027
+            Green = 0.858823537826538
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.800000011920929
+            Green = 0.874509811401367
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 4
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.745098054409027
+            Green = 0.866666674613953
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.874509811401367
+            Green = 0.91372549533844
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 1.10000002384186
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 10
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = clouds
+   PFXType = pfxPerlin
+   TexMapSize = 3
+   Smoothness = 0.00100000004749745
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2.20000004768372
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = 10
+         SizeScale = 0.800000011920929
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [3] : struct.begin
+         LifeTime = 6
+         RotateAngle = 0
+         SizeScale = 1.35000002384186
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1.00999999046326
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = True
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fogofwar
+   PFXType = pfxPerlin
+   TexMapSize = 3
+   Smoothness = 0.00100000004749745
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.0313725508749485
+            Green = 0.0313725508749485
+            Blue = 0.0313725508749485
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.0313725508749485
+            Green = 0.0313725508749485
+            Blue = 0.0313725508749485
+            Alpha = 1
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 1
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.0313725508749485
+            Green = 0.0313725508749485
+            Blue = 0.0313725508749485
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.0313725508749485
+            Green = 0.0313725508749485
+            Blue = 0.0313725508749485
+            Alpha = 1
+         struct.end
+      struct.end
+      [3] : struct.begin
+         LifeTime = 2
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0.0313725508749485
+            Green = 0.0313725508749485
+            Blue = 0.0313725508749485
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.0313725508749485
+            Green = 0.0313725508749485
+            Blue = 0.0313725508749485
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fogofwar
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.400000005960464
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = defsprite
+   PFXType = pfxSprite
+   Sorting = ssBackward
+section.end
+
+section.begin
+   Name = fxsprite
+   PFXType = pfxSprite
+   Sorting = ssBackward
+section.end
+
+section.begin
+   Name = fxanimatedsprite
+   PFXType = pfxAnimatedSprite
+section.end
+
+section.begin
+   Name = PFXTrail
+   PFXType = pfxTrail
+section.end
+
+section.begin
+   Name = fx_spr_round
+   PFXType = pfxSprite
+   Sorting = ssBackward
+section.end
+
+section.begin
+   Name = astralfog
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 0.00100000004749745
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 20
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.745098054409027
+            Green = 0.858823537826538
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.800000011920929
+            Green = 0.874509811401367
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 4
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.745098054409027
+            Green = 0.866666674613953
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.874509811401367
+            Green = 0.91372549533844
+            Blue = 1
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 1.10000002384186
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 10
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_clouds
+   PFXType = pfxSprite
+   Sorting = ssBackward
+section.end
+
+section.begin
+   Name = fx_comet_core
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 1.5
+   ColorInner : struct.begin
+      Red = 0.588235318660736
+      Green = 0.729411780834198
+      Blue = 1
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.25
+      RotateAngle = 0
+      SizeScale = 0.25
+      ColorInner : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet_aura
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 3
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0.541176497936249
+      Blue = 0.0235294122248888
+      Alpha = 0.261999994516373
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.800000011920929
+      RotateAngle = 0
+      SizeScale = 0
+      ColorInner : struct.begin
+         Red = 1
+         Green = 1
+         Blue = 1
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet_trail
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0.52549022436142
+      Blue = 1
+      Alpha = 0.254000008106232
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.25
+         RotateAngle = 0
+         SizeScale = 5
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.501960813999176
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 5
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet_trail_2
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 0.474509805440903
+      Green = 0
+      Blue = 0.572549045085907
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.400000005960464
+         RotateAngle = 0
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 0.501960813999176
+            Green = 0
+            Blue = 1
+            Alpha = 0.0799999982118607
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet2_core
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0.556862771511078
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 1
+      Alpha = 1
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.200000002980232
+      RotateAngle = 0
+      SizeScale = 1
+      ColorInner : struct.begin
+         Red = 1
+         Green = 0
+         Blue = 0
+         Alpha = 1
+      struct.end
+      ColorOuter : struct.begin
+         Red = 1
+         Green = 0
+         Blue = 1
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet2_aura
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 1.39999997615814
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0.43529412150383
+      Blue = 0.380392163991928
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.5
+      RotateAngle = 0
+      SizeScale = 1
+      ColorInner : struct.begin
+         Red = 1
+         Green = 1
+         Blue = 0
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet2_trail
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.25
+         RotateAngle = 0
+         SizeScale = 5
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.301960796117783
+            Blue = 0.23137255012989
+            Alpha = 0.100000001490116
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_comet2_trail_2
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 1.29999995231628
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.300000011920929
+         RotateAngle = 0
+         SizeScale = 4
+         ColorInner : struct.begin
+            Red = 0.533333361148834
+            Green = 0.176470592617989
+            Blue = 0.333333343267441
+            Alpha = 0.109999999403954
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.482352942228317
+            Green = 0
+            Blue = 0.682352960109711
+            Alpha = 0.109999999403954
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 0
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.372549027204514
+            Blue = 0
+            Alpha = 0.109999999403954
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.490196079015732
+            Green = 0
+            Blue = 1
+            Alpha = 0.109999999403954
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 0.5
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.517647087574005
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_swamp_fog
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 12
+   ColorInner : struct.begin
+      Red = 0.858823537826538
+      Green = 1
+      Blue = 0.858823537826538
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.69803923368454
+            Green = 0.815686285495758
+            Blue = 0.34901961684227
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 9
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 2
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.600000023841858
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_fog2_volcano
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 9
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.8
+            Green = 0.8
+            Blue = 0.8
+            Alpha = 0.140000000596046
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 7
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 2
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.150000005960464
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_fog2
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 9
+   ColorInner : struct.begin
+      Red = 0.858823537826538
+      Green = 1
+      Blue = 0.858823537826538
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.69803923368454
+            Green = 0.815686285495758
+            Blue = 0.34901961684227
+            Alpha = 0.140000000596046
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 7
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 2
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.150000005960464
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_firebug
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 10
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.0549999959766865
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.7843137383461
+      Green = 0.39215686917305
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 40
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 3
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_firebug2_volcano
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 10
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.0549999959766865
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.7843137383461
+      Green = 0.39215686917305
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 40
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 3
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_desert_sand
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 5
+   ColorInner : struct.begin
+      Red = 0.372549027204514
+      Green = 0.352941185235977
+      Blue = 0.352941185235977
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = -120
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.352941185235977
+            Green = 0.345098048448563
+            Blue = 0.235294118523598
+            Alpha = 0.409999996423721
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.490196079015732
+            Green = 0.466666668653488
+            Blue = 0.427450984716415
+            Alpha = 0.0500000007450581
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 4.25
+         RotateAngle = -180
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.313725501298904
+            Green = 0.313725501298904
+            Blue = 0.274509817361832
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.501960813999176
+            Green = 0.482352942228317
+            Blue = 0.427450984716415
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 10.5
+      Y = 5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_desert_sand2
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2.25
+   ColorInner : struct.begin
+      Red = 0.372549027204514
+      Green = 0.352941185235977
+      Blue = 0.352941185235977
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = -60
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.372549027204514
+            Green = 0.352941185235977
+            Blue = 0.333333343267441
+            Alpha = 0.189999997615814
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.411764711141586
+            Green = 0.380392163991928
+            Blue = 0.356862753629684
+            Alpha = 0.0850000008940697
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 3
+         RotateAngle = -180
+         SizeScale = 2.25
+         ColorInner : struct.begin
+            Red = 0.286274522542954
+            Green = 0.301960796117783
+            Blue = 0.286274522542954
+            Alpha = 0.25
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.431372553110123
+            Green = 0.431372553110123
+            Blue = 0.427450984716415
+            Alpha = 0.180000007152557
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 5.15000009536743
+         RotateAngle = -240
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.364705890417099
+            Green = 0.356862753629684
+            Blue = 0.356862753629684
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.317647069692612
+            Green = 0.294117659330368
+            Blue = 0.294117659330368
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 9.99999974737875E-5
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 30
+      Y = 8
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_build_boom
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0.300000011920929
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2.5
+         RotateAngle = -10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_kartach_2
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = 10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0.300000011920929
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 5
+         RotateAngle = -10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 0.15
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_build_boom_light
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0.065
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 1
+            Blue = 0.7
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2.5
+         RotateAngle = -10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = build_boom_light
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = dwarfcatapult_smoke
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0.300000011920929
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2
+         RotateAngle = -10
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.5
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 1.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_sentinel_smoke
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0.300000011920929
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2.5
+         RotateAngle = -10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.25
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_fire
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0.300000011920929
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2.5
+         RotateAngle = -10
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.25
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fx_fire
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = combined_lighting
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.1
+         RotateAngle = 0
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.2
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 0.3
+         RotateAngle = 0
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -1.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = combined_lighting
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+
+section.begin
+   Name = fx_snowwolf_fx
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.176470592617989
+      Green = 0.176470592617989
+      Blue = 0.176470592617989
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.8
+         RotateAngle = 0
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1.6
+         RotateAngle = 90
+         SizeScale = 0.3
+         ColorInner : struct.begin
+            Red = 0.2
+            Green = 0.2
+            Blue = 0.2
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.176470592617989
+            Green = 0.176470592617989
+            Blue = 0.176470592617989
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 2.2
+         RotateAngle = -90
+         SizeScale = 0.3
+         ColorInner : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.235294118523598
+            Green = 0.235294118523598
+            Blue = 0.235294118523598
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.9
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxsnowflakeall
+   MixLSDiff0 = True
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_build_boom2
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 1.10000002384186
+   ColorInner : struct.begin
+      Red = 0.196078434586525
+      Green = 0.196078434586525
+      Blue = 0.196078434586525
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.25
+         RotateAngle = 0
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.196078434586525
+            Green = 0.196078434586525
+            Blue = 0.196078434586525
+            Alpha = 0.5
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = 0
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 0.196078434586525
+            Green = 0.196078434586525
+            Blue = 0.196078434586525
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 4
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 0.25
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fowclouds
+   PFXType = pfxSprite
+   Sorting = ssForward
+section.end
+
+section.begin
+   Name = trail
+   PFXType = pfxTrail
+section.end
+
+section.begin
+   Name = shotvioletball0perlin
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.550000011920929
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 1
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.250980406999588
+      Green = 0.250980406999588
+      Blue = 0.250980406999588
+      Alpha = 1
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = -20
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.215686276555061
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0.250980406999588
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.300000011920929
+         RotateAngle = -30
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.501960813999176
+            Green = 0.501960813999176
+            Blue = 0.501960813999176
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.250980406999588
+            Green = 0.250980406999588
+            Blue = 0.250980406999588
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball0
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = shotvioletball0perlin_dark
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.550000011920929
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 1
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.250980406999588
+      Green = 0.250980406999588
+      Blue = 0.250980406999588
+      Alpha = 1
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = -20
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.215686276555061
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0.250980406999588
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.300000011920929
+         RotateAngle = -30
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.501960813999176
+            Green = 0.501960813999176
+            Blue = 0.501960813999176
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.250980406999588
+            Green = 0.250980406999588
+            Blue = 0.250980406999588
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball0_dark
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = shotvioletball0perlin_green
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.550000011920929
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 1
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.250980406999588
+      Green = 0.250980406999588
+      Blue = 0.250980406999588
+      Alpha = 1
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = -20
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.215686276555061
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0.250980406999588
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.300000011920929
+         RotateAngle = -30
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.501960813999176
+            Green = 0.501960813999176
+            Blue = 0.501960813999176
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.250980406999588
+            Green = 0.250980406999588
+            Blue = 0.250980406999588
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball0_green
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = shotvioletball0flash
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 3
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 5
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball0flash
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = shotvioletball0flash_dark
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 3
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 9.99999997475243E-7
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 5
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball0flash_dark
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = shotshamanflash
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.34901961684227
+      Green = 0
+      Blue = 0.815686285495758
+      Alpha = 0.75
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.200000002980232
+      RotateAngle = 0
+      SizeScale = 3
+      ColorInner : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 1
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = clouds
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = shotslugperlin
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.75
+   ColorInner : struct.begin
+      Red = 0.737254917621613
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.25
+      RotateAngle = 0
+      SizeScale = 1
+      ColorInner : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = cloud
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = BloodBoomGreen
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 1
+      Blue = 0
+      Alpha = 0.0500000007450581
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0
+      Blue = 0
+      Alpha = 0.0500000007450581
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.100000001490116
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 1
+            Blue = 0
+            Alpha = 0.25
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.752941191196442
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0.792156875133514
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 10
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 7
+      Y = -10.8000001907349
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fireballperlin
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0.556862771511078
+      Blue = 1
+      Alpha = 0.699999988079071
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.200000002980232
+      RotateAngle = -100
+      SizeScale = 4
+      ColorInner : struct.begin
+         Red = 0.356862753629684
+         Green = 0
+         Blue = 1
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball4
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = spellboomperlin1
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0.556862771511078
+      Blue = 1
+      Alpha = 0.699999988079071
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.200000002980232
+      RotateAngle = -100
+      SizeScale = 4
+      ColorInner : struct.begin
+         Red = 0.356862753629684
+         Green = 0
+         Blue = 1
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball2
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = spellboomperlin2
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.649999976158142
+   ColorInner : struct.begin
+      Red = 0.164705887436867
+      Green = 0.517647087574005
+      Blue = 1
+      Alpha = 0.474999994039536
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.174999997019768
+      RotateAngle = 45
+      SizeScale = 3
+      ColorInner : struct.begin
+         Red = 0
+         Green = 1
+         Blue = 1
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball4
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = spellboomperlin3
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0.556862771511078
+      Alpha = 0.449999988079071
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 0.400000005960464
+      RotateAngle = 5
+      SizeScale = 4
+      ColorInner : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 1
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = shotvioletball0
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxstoneperlin
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.5
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_firework_asterisk_0
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.5
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0
+         RotateAngle = 10
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [2] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.713725507259369
+            Blue = 0.0862745121121407
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [3] : struct.begin
+         LifeTime = 2
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = hotspot
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+section.begin
+   Name = fx_firework_asterisk_1
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.5
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0
+         RotateAngle = 10
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [2] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.0
+            Blue = 0.5
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [3] : struct.begin
+         LifeTime = 2
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = hotspot
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+section.begin
+   Name = fx_firework_asterisk_2
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.5
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0
+         RotateAngle = 10
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [2] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.9
+            Blue = 0.1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [3] : struct.begin
+         LifeTime = 2
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = hotspot
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+section.begin
+   Name = fx_firework_asterisk_3
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.5
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0
+         RotateAngle = 10
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [2] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.5
+            Green = 0.0
+            Blue = 0.9
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [3] : struct.begin
+         LifeTime = 2
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = hotspot
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+section.begin
+   Name = fx_firework_asterisk_4
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.5
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0
+         RotateAngle = 10
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [2] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.2
+            Green = 1
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+	  [3] : struct.begin
+         LifeTime = 2
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = hotspot
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsilvana4
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 8
+         RotateAngle = 10
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.54
+            Green = 0.65
+            Blue = 0.2
+            Alpha = 0.07
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 16
+         RotateAngle = 20
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.54
+            Blue = 0.27
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 1
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 0.2
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = 0.3
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+
+section.begin
+   Name = fxsilvana1
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 1.5
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = 10
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 5
+         RotateAngle = 20
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -0.15
+      Z = 0
+   struct.end
+   ShareLibMaterialName = test_green_star
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsilvana2
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 1.5
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = 10
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 5
+         RotateAngle = 20
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = test_green_star
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsilvana3
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 390
+   NoiseAmplitude = 20
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 1.5
+   ColorInner : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.39215686917305
+      Green = 0.39215686917305
+      Blue = 0.39215686917305
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 8
+         RotateAngle = -50
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 0.2
+            Alpha = 0.6
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 16
+         RotateAngle = -100
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 0.2
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.39215686917305
+            Green = 0.39215686917305
+            Blue = 0.39215686917305
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = build_boom_light
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_crystals_glow
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 1
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0.52549022436142
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.1
+         RotateAngle = 0
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 1
+            Alpha = 0.075
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = 0
+         SizeScale = 4
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.5
+            Blue = 1
+            Alpha = 0.3
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 1
+            Alpha = 0.15
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 4
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 1
+            Alpha = 0.225
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0.5
+            Blue = 1
+            Alpha = 0.15
+         struct.end
+      struct.end
+      [3] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 4
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0.5
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fx_swamp_crystals_fog
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 16
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0.5
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.5
+            Green = 0.25
+            Blue = 0.5
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 9
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.5
+            Green = 0.25
+            Blue = 0.5
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 2
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.600000023841858
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_crystals_fog2
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 9
+   ColorInner : struct.begin
+      Red = 0.5
+      Green = 0.25
+      Blue = 0.78
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.5
+            Green = 0.25
+            Blue = 0.78
+            Alpha = 0.16
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.0599999986588955
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 7
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 2
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.150000005960464
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_firebug_crystal
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 10
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.0549999959766865
+   ColorInner : struct.begin
+      Red = 0
+      Green = 1
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 1
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 0.200000002980232
+         RotateAngle = 40
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 1
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 3
+         RotateAngle = 0
+         SizeScale = 1.5
+         ColorInner : struct.begin
+            Red = 0.5
+            Green = 0
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 1
+            Alpha = 1
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end
+
+section.begin
+   Name = fxsnowstorm0
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.125
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = -60
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = -180
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = -360
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 45
+   Friction = 0.5
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 2
+      Y = -2
+      Z = 1
+   struct.end
+   ShareLibMaterialName = fxsnowflake0
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsnowstorm3
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.125
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = -60
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = -180
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = -360
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 45
+   Friction = 0.5
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 2
+      Y = -2
+      Z = 1
+   struct.end
+   ShareLibMaterialName = fxsnowflake3
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsnowstorm2
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = -60
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = -180
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = -360
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 45
+   Friction = 0.5
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 2
+      Y = -2
+      Z = -1
+   struct.end
+   ShareLibMaterialName = fxsnowflake3
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsnowstorm1
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = -60
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2
+         RotateAngle = -180
+         SizeScale = 2
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 4
+         RotateAngle = -360
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 45
+   Friction = 0.5
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 2
+      Y = -2
+      Z = -1
+   struct.end
+   ShareLibMaterialName = fxsnowflake2
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxspiral0
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.8
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 0
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 6
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.319999992847443
+            Green = 0.490000009536743
+            Blue = 0.46000000834465
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 9
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -0.200000002980232
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxstarblue0
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = True
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxsentinelli
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.8
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 2
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 4
+         RotateAngle = 90
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 6
+         RotateAngle = 180
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -0.200000002980232
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxsentinel
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = True
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxring0
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmFade
+   SpritesPerTexture = sptOne
+   ParticleSize = 0.6
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1.5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0.7843137383461
+            Blue = 0.501960813999176
+            Alpha = 0.600000023841858
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 2.5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxstarblue0
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = True
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxvolcano0
+   PFXType = pfxPerlin
+   TexMapSize = 6
+   Smoothness = 1
+   Brightness = 1
+   Gamma = 1
+   NoiseSeed = 0
+   NoiseScale = 100
+   NoiseAmplitude = 50
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.25
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0.5
+      Blue = 0
+      Alpha = 1
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   LifeColors[0] : struct.begin
+      LifeTime = 7
+      RotateAngle = 0
+      SizeScale = 1
+      ColorInner : struct.begin
+         Red = 1
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+      ColorOuter : struct.begin
+         Red = 0
+         Green = 0
+         Blue = 0
+         Alpha = 0
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -1
+      Z = 0
+   struct.end
+   ShareLibMaterialName = 
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fx_swamp_fog_vulcan
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmInner
+   SpritesPerTexture = sptFour
+   ParticleSize = 14
+   ColorInner : struct.begin
+      Red = 0
+      Green = 0
+      Blue = 0
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 5
+         RotateAngle = 0
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.1875
+            Green = 0.125
+            Blue = 0.03125
+            Alpha = 0.3
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0
+            Green = 0
+            Blue = 0
+            Alpha = 0.0599999986588955
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 9
+         RotateAngle = 5
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 2
+   Rotation = 0
+   Friction = 0.00999999977648258
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.600000023841858
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+
+section.begin
+   Name = fx_snow
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 2.25
+   ColorInner : struct.begin
+      Red = 0.372549027204514
+      Green = 0.352941185235977
+      Blue = 0.352941185235977
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 1
+         RotateAngle = -60
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.372549027204514
+            Green = 0.352941185235977
+            Blue = 0.9
+            Alpha = 0.189999997615814
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.411764711141586
+            Green = 0.380392163991928
+            Blue = 0.9
+            Alpha = 0.0850000008940697
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 3
+         RotateAngle = -180
+         SizeScale = 2.25
+         ColorInner : struct.begin
+            Red = 0.286274522542954
+            Green = 0.301960796117783
+            Blue = 0.9
+            Alpha = 0.25
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.431372553110123
+            Green = 0.431372553110123
+            Blue = 0.9
+            Alpha = 0.180000007152557
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 5.15000009536743
+         RotateAngle = -240
+         SizeScale = 1
+         ColorInner : struct.begin
+            Red = 0.364705890417099
+            Green = 0.356862753629684
+            Blue = 0.9
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 0.317647069692612
+            Green = 0.294117659330368
+            Blue = 0.9
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 0
+   Friction = 9.99999974737875E-5
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 30
+      Y = 8
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fog
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = True
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxfoliage
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = -60
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 6
+         RotateAngle = -180
+         SizeScale = 4
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 9
+         RotateAngle = -360
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 45
+   Friction = 0.5
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0.5
+      Y = 0
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxfoliage
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxgold
+   PFXType = pfxPerlin
+   TexMapSize = 4
+   Smoothness = 1
+   Brightness = 8
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 100
+   NoiseAmplitude = 100
+   ColorMode = scmFade
+   SpritesPerTexture = sptFour
+   ParticleSize = 0.1
+   ColorInner : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 1
+      Green = 1
+      Blue = 1
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = -60
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.100000001490116
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 6
+         RotateAngle = -180
+         SizeScale = 4
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 1
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0.200000002980232
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 9
+         RotateAngle = -360
+         SizeScale = 0.75
+         ColorInner : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 1
+            Blue = 1
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 45
+   Friction = 0.8
+   BlendingMode = bmTransparency
+   Acceleration : struct.begin
+      X = 0
+      Y = -0.2
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxgold
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 1
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = False
+section.end
+
+section.begin
+   Name = fxjumpballs
+   PFXType = pfxPerlin
+   TexMapSize = 3
+   Smoothness = 100
+   Brightness = 1000
+   Gamma = 10
+   NoiseSeed = 1222891
+   NoiseScale = 0
+   NoiseAmplitude = 0
+   ColorMode = scmInner
+   SpritesPerTexture = sptOne
+   ParticleSize = 1.20000004768372
+   ColorInner : struct.begin
+      Red = 1
+      Green = 0
+      Blue = 0.10196078568697
+      Alpha = 0
+   struct.end
+   ColorOuter : struct.begin
+      Red = 0.960784316062927
+      Green = 0.898039221763611
+      Blue = 0.882352948188782
+      Alpha = 0
+   struct.end
+   LifeColors : struct.begin
+      [0] : struct.begin
+         LifeTime = 3
+         RotateAngle = -60
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [1] : struct.begin
+         LifeTime = 1
+         RotateAngle = -180
+         SizeScale = 3
+         ColorInner : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+      [2] : struct.begin
+         LifeTime = 3
+         RotateAngle = -360
+         SizeScale = 0
+         ColorInner : struct.begin
+            Red = 0.960784316062927
+            Green = 0.062745101749897
+            Blue = 0.10196078568697
+            Alpha = 0.532000005245209
+         struct.end
+         ColorOuter : struct.begin
+            Red = 1
+            Green = 0
+            Blue = 0
+            Alpha = 0
+         struct.end
+      struct.end
+   struct.end
+   AspectRatio = 1
+   Rotation = 90
+   Friction = 1
+   BlendingMode = bmAdditive
+   Acceleration : struct.begin
+      X = 0
+      Y = -1.5
+      Z = 0
+   struct.end
+   ShareLibMaterialName = fxspherered0
+   MixLSDiff0 = False
+   MixLSDiff0Factor = 0.25
+   ZTest = False
+   ZSort = False
+   PointLightImage = False
+   NoFog = True
+section.end

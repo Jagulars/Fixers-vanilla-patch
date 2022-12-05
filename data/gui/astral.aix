@@ -1,0 +1,1028 @@
+section.begin
+   Name = DoCreate
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoCreate.inc
+section.end
+
+section.begin
+   Name = GUIInitialize
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\GUIInitialize.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = OnAfterFullLoad
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\OnAfterFullLoad.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = DoProgressGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = DoDestroy
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoDestroy.inc
+section.end
+
+section.begin
+   Name = DoUpdate
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoUpdate.inc
+section.end
+
+section.begin
+   Name = GUICreateMouseControls
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\GUICreateMouseControls.inc
+section.end
+
+section.begin
+   Name = VVK.AchievementsCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.AchievementsCore.inc
+section.end
+
+section.begin
+   Name = VVK.ShowAchievement
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowAchievement.inc
+section.end
+
+section.begin
+   Name = VVK.GetAchievementFromQuery
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.GetAchievementFromQuery.inc
+section.end
+
+section.begin
+   Name = ------------------- console commands ----------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = VVK.HelperMethods
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HelperMethods.inc
+section.end
+
+section.begin
+   Name = SwitchToChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\SwitchToChat.inc
+section.end
+
+section.begin
+   Name = OnEventChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnEventChat.inc
+section.end
+
+section.begin
+   Name = CreateChatLayer
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateChatLayer.inc
+section.end
+
+section.begin
+   Name = VVK.ChatCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ChatCommands.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = DoInitSound
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoInitSound.inc
+section.end
+
+section.begin
+   Name = DoOnMouseEnter
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnMouseEnter.inc
+section.end
+
+section.begin
+   Name = DoOnMouseLeave
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnMouseLeave.inc
+section.end
+
+section.begin
+   Name = OnGUIMouseDown
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\OnGUIMouseDown.inc
+section.end
+
+section.begin
+   Name = DoOnMouseMove
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnMouseMove.inc
+section.end
+
+section.begin
+   Name = OnMouseWheel
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnMouseWheel.inc
+section.end
+
+section.begin
+   Name = DoOnClickGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnClickGUI.inc
+section.end
+
+section.begin
+   Name = DoResizeGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoResizeGUI.inc
+section.end
+
+section.begin
+   Name = OnMouseHook
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\OnMouseHook.inc
+section.end
+
+section.begin
+   Name = DoMouseHookSliderControl
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoMouseHookSliderControl.inc
+section.end
+
+section.begin
+   Name = DoMouseUnPressSliderControl
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoMouseUnPressSliderControl.inc
+section.end
+
+section.begin
+   Name = UpdateCameraRestrict
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\UpdateCameraRestrict.inc
+section.end
+
+section.begin
+   Name = ResizeCamera
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ResizeCamera.inc
+section.end
+
+section.begin
+   Name = SwitchToGame
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\SwitchToGame.inc
+section.end
+
+section.begin
+   Name = CreateControlPanel
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\CreateControlPanel.inc
+section.end
+
+section.begin
+   Name = EventControlPanel
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\EventControlPanel.inc
+section.end
+
+section.begin
+   Name = ShowBeforeBattleWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ShowBeforeBattleWindow.inc
+section.end
+
+section.begin
+   Name = EventBeforeBattleWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\EventBeforeBattleWindow.inc
+section.end
+
+section.begin
+   Name = StartBattle
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\StartBattle.inc
+section.end
+
+section.begin
+   Name = vvk.OnClickHint
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.OnClickHint.inc
+section.end
+
+section.begin
+   Name = VVK.FloatingTooltipsCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FloatingTooltipsCore.inc
+section.end
+
+section.begin
+   Name = VVK.FitTooltipToScreen
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FitTooltipToScreen.inc
+section.end
+
+section.begin
+   Name = VVK.HintCommonCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintCommonCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintUnitStatsCallback
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.HintUnitStatsCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintASERCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintASERCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintAchievementIcon
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintAchievementIcon.inc
+section.end
+
+section.begin
+   Name = vvk.ShowUnitInfoModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowUnitInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowAchievListModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowAchievListModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowSpellInfoModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowSpellInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowDefenderInfoModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowDefenderInfoModal.inc
+section.end
+
+section.begin
+   Name = vvk.ShowOuterBuildInfoModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.ShowOuterBuildInfoModal.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipInnerBuilding
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipInnerBuilding.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipItem
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipItem.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipUnit
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipUnit.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipResource
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipResource.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipSpell
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipSpell.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipDefender
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipDefender.inc
+section.end
+
+section.begin
+   Name = VVK.FTooltipOuterBuild
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FTooltipOuterBuild.inc
+section.end
+
+section.begin
+   Name = VVK.AstralProcessHintGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.AstralProcessHintGUI.inc
+section.end
+
+section.begin
+   Name = DoOnHintGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnHintGUI.inc
+section.end
+
+section.begin
+   Name = DoOnHintGUIExt
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnHintGUIExt.inc
+section.end
+
+section.begin
+   Name = CheckAttackShard
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\CheckAttackShard.inc
+section.end
+
+section.begin
+   Name = DoAttackShard
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoAttackShard.inc
+section.end
+
+section.begin
+   Name = SetCameraAttack
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\SetCameraAttack.inc
+section.end
+
+section.begin
+   Name = ControlCamera
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ControlCamera.inc
+section.end
+
+section.begin
+   Name = --------------- Commands --------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = VVK.ProcessCommandsShortcuts
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ProcessCommandsShortcuts.inc
+section.end
+
+section.begin
+   Name = VVK.GameCommandsCore
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.GameCommandsCore.inc
+section.end
+
+section.begin
+   Name = VVK.ModalCommandsBlock
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ModalCommandsBlock.inc
+section.end
+
+section.begin
+   Name = VVK.AstralCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.AstralCommands.inc
+section.end
+
+section.begin
+   Name = VVK.AstralTopCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.AstralTopCommands.inc
+section.end
+
+section.begin
+   Name = VVK.DebugCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.DebugCommands.inc
+section.end
+
+section.begin
+   Name = -----------------------------------------
+   UsedFileName =
+section.end
+
+section.begin
+   Name = RequestQueryWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\RequestQueryWindow.inc
+section.end
+
+section.begin
+   Name = ToolQueryWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ToolQueryWindow.inc
+section.end
+
+section.begin
+   Name = EventQueryWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\EventQueryWindow.inc
+section.end
+
+section.begin
+   Name = EventQueryWindowModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventQueryWindowModal.inc
+section.end
+
+section.begin
+   Name = CreateHUD
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\CreateHUD.inc
+section.end
+
+section.begin
+   Name = UpdateHUD
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\UpdateHUD.inc
+section.end
+
+section.begin
+   Name = UpdateHUDRestict
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\UpdateHUDRestict.inc
+section.end
+
+section.begin
+   Name = UpdateHUDShard
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\UpdateHUDShard.inc
+section.end
+
+section.begin
+   Name = DoOnPressHUD
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoOnPressHUD.inc
+section.end
+
+section.begin
+   Name = DoCaptureShard
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoCaptureShard.inc
+section.end
+
+section.begin
+   Name = SetCameraTarget
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\SetCameraTarget.inc
+section.end
+
+section.begin
+   Name = DoFadeInInfoPanel
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoFadeInInfoPanel.inc
+section.end
+
+section.begin
+   Name = DoFadeOutInfoPanel
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoFadeOutInfoPanel.inc
+section.end
+
+section.begin
+   Name = CreateShardTooltip
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\CreateShardTooltip.inc
+section.end
+
+section.begin
+   Name = UpdateCursor
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\UpdateCursor.inc
+section.end
+
+section.begin
+   Name = GUIInvokeMouseMove
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\GUIInvokeMouseMove.inc
+section.end
+
+section.begin
+   Name = ResetHint
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ResetHint.inc
+section.end
+
+section.begin
+   Name = ShowListMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowListMenu.inc
+section.end
+
+section.begin
+   Name = ShowMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ShowMenu.inc
+section.end
+
+section.begin
+   Name = VVK.MainMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.MainMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.DifficultyMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.DifficultyMenuCommands.inc
+section.end
+
+section.begin
+   Name = VVK.ExitMenuCommands
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\VVK.ExitMenuCommands.inc
+section.end
+
+section.begin
+   Name = ShowMenuHeader
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowMenuHeader.inc
+section.end
+
+section.begin
+   Name = ShowHeader
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ShowHeader.inc
+section.end
+
+section.begin
+   Name = ShowExit
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ShowExit.inc
+section.end
+
+section.begin
+   Name = EventMenu
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\EventMenu.inc
+section.end
+
+section.begin
+   Name = ShowSettings
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowSettings.inc
+section.end
+
+section.begin
+   Name = EventSettings
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventSettings.inc
+section.end
+
+section.begin
+   Name = ShowLoadMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowLoadMap.inc
+section.end
+
+section.begin
+   Name = EventLoadMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventLoadMap.inc
+section.end
+
+section.begin
+   Name = ShowSaveMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowSaveMap.inc
+section.end
+
+section.begin
+   Name = EventSaveMap
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventSaveMap.inc
+section.end
+
+section.begin
+   Name = ShowChangeDifficulty
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ShowChangeDifficulty.inc
+section.end
+
+section.begin
+   Name = ShowQuestionDialog
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowQuestionDialog.inc
+section.end
+
+section.begin
+   Name = EventQuestionDialog
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventQuestionDialog.inc
+section.end
+
+section.begin
+   Name = FadeIn
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\FadeIn.inc
+section.end
+
+section.begin
+   Name = FadeOut
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\FadeOut.inc
+section.end
+
+section.begin
+   Name = FadeControl
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\FadeControl.inc
+section.end
+
+section.begin
+   Name = OnMouseUnPressGUI
+   UsedFileName = .\data\gui\common.inc\OnMouseUnPressGUI.inc
+section.end
+
+section.begin
+   Name = VVK.ShowInfoWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowInfoWindow.inc
+section.end
+
+section.begin
+   Name = VVK.CloseOneButtonWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CloseOneButtonWindow.inc
+section.end
+
+section.begin
+   Name = ShowFinishCampaign
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\ShowFinishCampaign.inc
+section.end
+
+section.begin
+   Name = EventFinishCampaign
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\EventFinishCampaign.inc
+section.end
+
+section.begin
+   Name = CheckZarrDialog
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\CheckZarrDialog.inc
+section.end
+
+section.begin
+   Name = ShowTutorial
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowTutorial.inc
+section.end
+
+section.begin
+   Name = ShowTutorialAligned
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowTutorialAligned.inc
+section.end
+
+section.begin
+   Name = EventTutorial
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventTutorial.inc
+section.end
+
+section.begin
+   Name = CloseTutorial
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CloseTutorial.inc
+section.end
+
+section.begin
+   Name = DestroyTutorial
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DestroyTutorial.inc
+section.end
+
+section.begin
+   Name = CreateShowTutorialButton
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateShowTutorialButton.inc
+section.end
+
+section.begin
+   Name = VVK.CloseCommonTooltip
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CloseCommonTooltip.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindow.inc
+section.end
+
+section.begin
+   Name = VVK.ShowDynamicAsModal
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowDynamicAsModal.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowBuildingCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowBuildingCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowUnitCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowUnitCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowItemCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowItemCallback.inc
+section.end
+
+section.begin
+   Name = VVK.DynamicWindowAchievCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DynamicWindowAchievCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowSpellCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowSpellCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowDefenderCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowDefenderCallback.inc
+section.end
+
+section.begin
+   Name = vvk.DynamicWindowOuterBuildCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\vvk.DynamicWindowOuterBuildCallback.inc
+section.end
+
+section.begin
+   Name = VVK.EventUpdateSteamAchievements
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.EventUpdateSteamAchievements.inc
+section.end
+
+section.begin
+   Name = DoResetDragElement
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\DoResetDragElement.inc
+section.end
+
+section.begin
+   Name = VVK.ShowBuildingTooltip
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ShowBuildingTooltip.inc
+section.end
+
+section.begin
+   Name = VVK.DoProgressGUI
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.DoProgressGUI.inc
+section.end
+
+section.begin
+   Name = VVK.ReorderInterfaceLayers
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.ReorderInterfaceLayers.inc
+section.end
+
+section.begin
+   Name = VVK.RootWindowOperations
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.RootWindowOperations.inc
+section.end
+
+section.begin
+   Name = VVK.FadeWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FadeWindow.inc
+section.end
+
+section.begin
+   Name = VVK.FadeWindowTrigger
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.FadeWindowTrigger.inc
+section.end
+
+section.begin
+   Name = EventModalBackgroundClick
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventModalBackgroundClick.inc
+section.end
+
+section.begin
+   Name = DebugXYZ
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DebugXYZ.inc
+section.end
+
+section.begin
+   Name = EvLanConnect
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanConnect.inc
+section.end
+
+section.begin
+   Name = EvLanShellChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanShellChat.inc
+section.end
+
+section.begin
+   Name = VVK.CreateLanChatLayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.CreateLanChatLayer.inc
+section.end
+
+section.begin
+   Name = VVK.OnLanEventChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.OnLanEventChat.inc
+section.end
+
+section.begin
+   Name = VVK.LanChatCommands
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.LanChatCommands.inc
+section.end
+
+section.begin
+   Name = VVK.SwitchToLanChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.SwitchToLanChat.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChatExt
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChatExt.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChat2
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChat2.inc
+section.end
+
+section.begin
+   Name = VVK.HideLanChat
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HideLanChat.inc
+section.end
+
+section.begin
+   Name = CreateAstralStatistics
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\CreateAstralStatistics.inc
+section.end
+
+section.begin
+   Name = EventAstralStatistics
+   UsedFile = True
+   UsedFileName = .\data\gui\astral.inc\EventAstralStatistics.inc
+section.end
+
+section.begin
+   Name = ShowItemDetailedWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowItemDetailedWindow.inc
+section.end
+
+section.begin
+   Name = ShowAstralChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\ShowAstralChat.inc
+section.end
+
+section.begin
+   Name = EventAstralChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventAstralChat.inc
+section.end
+
+section.begin
+   Name = EvLanShellChat
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EvLanShellChat.inc
+section.end
+
+section.begin
+   Name = LanEventDefault
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\LanEventDefault.inc
+section.end
+
+section.begin
+   Name = DoLanConnect
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoLanConnect.inc
+section.end
+
+section.begin
+   Name = lan.OnLanEvent
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\lan\lan.OnLanEvent.inc
+section.end
+
+section.begin
+   Name = VVK.LanLogHelper
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.LanLogHelper.inc
+section.end
+
+section.begin
+   Name = CreateAstralHeroWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateAstralHeroWindow.inc
+section.end
+
+section.begin
+   Name = EventAstralHeroWindow
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventAstralHeroWindow.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroSkillCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroSkillCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintHeroClassCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\VVK.HintHeroClassCallback.inc
+section.end
+
+section.begin
+   Name = VVK.HintUnitMedalsCallback
+   UsedFile = True
+   UsedFileName = .\data\gui\gui.inc\VVK.HintUnitMedalsCallback.inc
+section.end
+
+section.begin
+   Name = DoProgressMusic
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\DoProgressMusic.inc
+section.end
+
+section.begin
+   Name = CreateWindowFromParser
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CreateWindowFromParser.inc
+section.end
+
+section.begin
+   Name = CheckScenery
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\CheckScenery.inc
+section.end
+
+section.begin
+   Name = EventGenesisMode
+   UsedFile = True
+   UsedFileName = .\data\gui\common.inc\EventGenesisMode.inc
+section.end
+
+section.begin
+   CurrentState = DoProgressGUI
+   SaveVariables = False
+section.end
+

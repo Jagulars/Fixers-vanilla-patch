@@ -1,0 +1,1419 @@
+//
+// unit.script
+//
+
+// _unit_GetUnitParserByID
+//
+function _unit_GetUnitParserByID(const id : Integer) : Integer;
+begin
+   if id>0 then
+      Result := ParserSelectByHandleByIndex(gPrototypeData.units.handle, id)
+   else
+      Result := 0;
+end;
+
+// _unit_GetUpgradeParserByID
+//
+function _unit_GetUpgradeParserByID(const id : Integer) : Integer;
+begin
+   if id>0 then
+      Result := ParserSelectByHandleByIndex(gPrototypeData.unitUpgrades.handle, id)
+   else
+      Result := 0;
+end;
+
+// _unit_IsShootEndPoint
+//
+procedure _unit_IsShootEndPoint(const goHnd, tnHnd, range, rangedAttack, ammo : Integer; const placeMode : Boolean; var isShoot : Boolean; var isShootable : Boolean);
+begin
+// special case when ammo == 0x1000000 then skip ammo, range and ranged attack checks (for IsMyShootEndPoint)
+   isShoot := False;
+   isShootable := False;
+
+   if not placeMode then
+   begin
+      if ((ammo = $1000000) or ((ammo>0) and (range>0) and (rangedAttack>0))) and (GetGameObjectIntValueIndByHandle(goHnd, gc_stack_unit_iMovePoints)>0) then
+      begin
+         var hexHnd : Integer = _map_GetHexByTNHandle(tnHnd);
+         if (hexHnd)<>0 then
+         begin
+            var uid : Integer = ParserGetIntValueByKeyByHandle(hexHnd, 'uid');
+            var shoot : Integer = ParserGetIntValueByKeyByHandle(hexHnd, 'shoot');
+            if uid<>0 then
+            begin
+               var goHandle : Integer = GetGameObjectHandleByUniqueId(uid);
+               var stealthMode : Boolean = GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bStealthMode);
+               var curLife : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurLife);
+               if (curLife > 0) and (not stealthMode) and GetIsEnemyPlayersByHandle(GetGameObjectPlayerHandleByHandle(goHnd), GetGameObjectPlayerHandleByHandle(goHandle)) then
+                  isShoot := (shoot = 2);
+            end
+            else
+               isShootable := (shoot > 0);
+         end;
+      end;
+   end;
+end;
+
+// _unit_IsMyShootEndPoint
+//
+procedure _unit_IsMyShootEndPoint(const goHnd, tnHnd : Integer; const placeMode : Boolean; var isShoot : Boolean; var isShootable : Boolean);
+begin
+   _unit_IsShootEndPoint(goHnd,tnHnd,0,0,$1000000,placeMode,isShoot,isShootable);
+end;
+
+// _unit_GetHandleByPosition
+//
+function _unit_GetHandleByPosition(const x, y : Integer) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for [MAIN]i:=GetCountOfPlayers()-1 downto 0 do
+   begin
+      var plHandle : Integer = GetPlayerHandleByIndex(i);
+      if GetPlayerRaceTagByHandle(plHandle)=gc_player_Units_RaceTag then
+      begin
+         var j : Integer;
+         for j:=GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+         begin
+            var goHandle : Integer = GetGameObjectHandleByIndex(j, plHandle);
+            var playable : Boolean = GetGameObjectPlayableObjectByHandle(goHandle);
+            var gox : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurrentX);
+            var goy : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurrentY);
+            if (playable) and (gox=x) and (goy=y) then
+            begin
+               Result := goHandle;
+               break(MAIN);
+            end;
+         end;
+      end;
+   end;
+end;
+
+// _unit_IsShootEndPointByCoords
+//
+procedure _unit_IsShootEndPointByCoords(const goHnd, x, y : Integer;  const placeMode : Boolean; var isShoot : Boolean; var enUID : Integer);
+begin
+   isShoot := False;
+   enUID := 0;
+
+   if (not placeMode) then
+   begin
+      var movePoints : Integer = GetGameObjectIntValueIndByHandle(goHnd, gc_stack_unit_iMovePoints);
+      if (movePoints>0) then
+      begin
+         IntRegister0 := gc_battle_unit_iShootingRange;
+         GameObjectExecuteStateByHandle(goHnd, 'GetProperty');
+         var range : Integer = IntRegister1;
+         if (range>0) then
+         begin
+            IntRegister0 := gc_battle_unit_iRangedAttack;
+            GameObjectExecuteStateByHandle(goHnd, 'GetProperty');
+            var rangedAttack : Integer = IntRegister1;
+            if (rangedAttack>0) then
+            begin
+               IntRegister0 := gc_battle_unit_iCurAmmo;
+               GameObjectExecuteStateByHandle(goHnd, 'GetProperty');
+               var ammo : Integer = IntRegister1;
+               if (ammo>0) then
+               begin
+                  var enHnd : Integer = _unit_GetHandleByPosition(x, y);
+                  if (enHnd<>0) and (GetIsEnemyPlayersByHandle(GetGameObjectPlayerHandleByHandle(goHnd), GetGameObjectPlayerHandleByHandle(enHnd))) then
+                  begin
+                     var gox : Integer = GetGameObjectIntValueIndByHandle(goHnd, gc_stack_unit_iCurrentX);
+                     var goy : Integer = GetGameObjectIntValueIndByHandle(goHnd, gc_stack_unit_iCurrentY);
+                     var dist : Integer = Round(Abs(x-gox));
+                     if (dist>1) and (dist<=range+movePoints-1) then
+                     begin
+                        isShoot := true;
+                        enUID := GetGameObjectUniqueIdByHandle(enHnd);
+                     end;
+                  end;
+               end;
+            end;
+         end;
+      end;
+   end;
+end;
+
+// _unit_GetProperty
+//
+function _unit_GetProperty(const goHnd, prIndex : Integer) : Integer;
+begin
+   IntRegister0 := prIndex;
+   GameObjectExecuteStateByHandle(goHnd, 'GetProperty');
+   Result := IntRegister1;
+end;
+
+// _unit_GetHeroHandle
+//
+function _unit_GetHeroHandle(plHnd : Integer) : Integer;
+begin
+   var i,goHnd : Integer;
+
+   Result := 0;
+   for i := 0 to GetPlayerGameObjectsCountByHandle(plHnd)-1 do
+   begin
+      goHnd := GetGameObjectHandleByIndex(i, plHnd);
+      if (GetGameObjectBoolValueIndByHandle(goHnd,gc_stack_unit_bIsHero)) then
+      begin
+         Result := goHnd;
+         break;
+      end;
+   end;
+end;
+
+function _unit_GetMapHeroHandle(goHnd : Integer) : Integer;
+begin
+   var heroHandle : Integer = _unit_GetHeroHandle(GetGameObjectPlayerHandleByHandle(goHnd));
+   var uid : Integer = GetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iHeroUID);
+   Result := GetGameObjectHandleByUniqueId(uid);
+end;
+
+// _unit_CheckUnitAbility
+//
+function _unit_CheckUnitAbility(goHnd, pGOPars, mapHeroHnd, inAbilityID : Integer) : Integer;
+begin
+   var goHandle : Integer = goHnd;
+   var pGOParser : Integer = pGOPars;
+   var heroHandle : Integer = mapHeroHnd;
+   var abilityID : Integer = inAbilityID;
+      //Log('_unit_CheckUnitAbility '+GetGameObjectCustomNameByHandle(goHandle)+' abilID: '+IntToStr(abilityID));
+
+   if goHandle <> 0 then
+      pGOParser := ParserSelectGameObject(goHandle);
+
+   var isHero : Boolean;
+   var unitID : Integer;
+
+   if goHandle <> 0 then
+   begin
+      isHero := GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bIsHero);
+      unitID := GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID);
+
+      var batHeroHandle : Integer = _unit_GetHeroHandle(GetGameObjectPlayerHandleByHandle(goHandle));
+      if GetGameObjectIntValueIndByHandle(batHeroHandle, gc_stack_unit_iCurLife) = 0 then
+         heroHandle := 0;
+   end
+   else
+   begin
+      isHero := ParserGetBoolValueByKeyByHandle(pGOParser, 'IsHero');
+      unitID := ParserGetIntValueByKeyByHandle(pGOParser, 'UnitID');
+   end;
+
+   var pUnit : Integer = _unit_GetUnitParserByID(unitID);
+
+   var i, j, k : Integer;
+   var pGOUpgrades : Integer = ParserSelectByHandleByKey(pGOParser, 'Upgrades');
+   if (pGOUpgrades=0) then
+      pGOUpgrades := ParserSelectByHandleByKey(pGOParser, 'StartUpgrades');
+   var pGOEffects : Integer = ParserSelectByHandleByKey(pGOParser, 'Effects');
+   var pGOAbilities : Integer = ParserSelectByHandleByKey(pGOParser, 'Abilities');
+   var pGOHeroAbilities : Integer = ParserSelectByHandleByKey(pGOParser, 'HeroAbilities');
+   var pGOSpellAbilities : Integer = ParserSelectByHandleByKey(pGOParser, 'SpellAbilities');
+
+   var heroParser : Integer = ParserSelectGameObject(heroHandle);
+   var pHeroInventory : Integer = ParserSelectByHandleByKey(heroParser, 'Doll');
+
+   var value : Integer = 0;
+
+   function CheckHeroBonus(cAbilityID : Integer) : Integer;
+   begin
+      Result := 0;
+
+      var bFromHero : Boolean = true;
+
+      if (not isHero) and ((abilityID = gc_ability_ranged_attack) or (abilityID = gc_ability_shoot_range) or (abilityID = gc_ability_ammo)) then
+      begin
+         var bSummoned : Boolean = False;
+         if (goHandle<>0) then
+            bSummoned := GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bSummoned);
+         var unitClass : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'UnitClass');
+
+         {IntRegister0 := goHandle;
+         IntRegister1 := pGOParser;
+         IntRegister2 := heroHandle;
+         IntRegister3 := 24;
+         ExecuteState('CheckUnitAbility');}
+         var abil24 : Integer = _unit_CheckUnitAbility(goHandle, pGOParser, heroHandle, gc_ability_healing);
+
+         case abilityID of
+            gc_ability_ranged_attack : bFromHero := (not bSummoned) and (abil24 = 0) and (unitClass = 2);
+            gc_ability_shoot_range : bFromHero := (not bSummoned) and (abil24 = 0) and (unitClass = 2);
+            gc_ability_ammo : begin
+               var rAttack : Integer =  0;
+               if goHandle <> 0 then
+               begin
+                  IntRegister0 := gc_battle_unit_iRangedAttack;
+                  GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+                  rAttack := IntRegister1;
+               end
+               else
+               begin
+                  IntRegister0 := pGOParser;
+                  IntRegister1 := 0;
+                  IntRegister2 := gc_battle_unit_iRangedAttack;
+                  MapExecuteState('GetUnitPropertyByParser');
+                  rAttack := IntRegister3;
+               end;
+
+               bFromHero := (not bSummoned) and (abil24 = 0) and (unitClass = 2) and (rAttack > 0);
+            end;
+         end;
+      end;
+
+      if isHero or bFromHero then
+      begin
+         if goHandle <> 0 then
+         begin
+            var pTmpGOAbility : Integer = 0;
+            if cAbilityID < 900 then
+                pTmpGOAbility := ParserSelectByHandleByIndex(pGOAbilities, cAbilityID)
+            else
+            begin
+               if cAbilityID < 1000 then
+                   pTmpGOAbility := ParserSelectByHandleByIndex(pGOHeroAbilities, cAbilityID - 900)
+               else
+               begin
+                  if cAbilityID > 2000 then
+                      pTmpGOAbility := ParserSelectByHandleByIndex(pGOSpellAbilities, cAbilityID - 2000);
+               end;
+            end;
+
+            Result := Result + ParserGetIntValueByKeyByHandle(pTmpGOAbility, 'Hero');
+
+            if bFromHero then
+            begin
+               Result := Result + ParserGetIntValueByKeyByHandle(pTmpGOAbility, 'Squad');
+               Result := Result + ParserGetIntValueByKeyByHandle(pTmpGOAbility, 'Inventory');
+            end;
+         end
+         else
+         begin
+            IntRegister0 := goHandle;
+            IntRegister1 := pGOParser;
+            IntRegister2 := heroHandle;
+            IntRegister3 := cAbilityID;
+            MapExecuteState('CalcUnitHeroBonus');
+            Result := IntRegister4;
+         end;
+      end;
+   end;
+
+   if (abilityID > 0) then
+   begin
+      value := value + CheckHeroBonus(abilityID);
+
+      if abilityID = 8 then
+      begin
+         for i := ParserGetCountByHandle(pHeroInventory)-1 downto 0 do
+         begin
+            var pDollSlot : Integer = ParserSelectByHandleByIndex(pHeroInventory, i);
+            var itemSlot : Integer = ParserGetIntValueByKeyByHandle(pDollSlot, 'ItemSlot');
+            var itemID : Integer = ParserGetIntValueByKeyByHandle(pDollSlot, 'ItemID');
+
+            if (itemSlot = 12) and (itemID > 0) then
+            begin
+               var pItem : Integer = ParserSelectByHandleByIndex(gPrototypeData.items.handle, itemID);
+               var itemType : Integer = ParserGetIntValueByKeyByHandle(pItem, 'ItemType');
+
+               case itemType of
+                  // bow
+                  3 : value := value + CheckHeroBonus(993);
+                  // stick
+                  4 : value := value + CheckHeroBonus(994);
+               end;
+            end;
+         end;
+      end;
+
+      var rAttack : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'RangedAttack');
+      var shRange : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'ShootingRange');
+
+      if not (((abilityID = 8) and (rAttack + value = 0)) or ((abilityID = 9) and (shRange + value <= 1))) then
+      begin
+         if goHandle <> 0 then
+         begin
+            var pGOAbility : Integer = 0;
+            if abilityID < 900 then
+                pGOAbility := ParserSelectByHandleByIndex(pGOAbilities, abilityID)
+            else
+            begin
+               if abilityID < 1000 then
+                   pGOAbility := ParserSelectByHandleByIndex(pGOHeroAbilities, abilityID - 900)
+               else
+               begin
+                  if abilityID > 2000 then
+                      pGOAbility := ParserSelectByHandleByIndex(pGOSpellAbilities, abilityID - 2000);
+               end;
+            end;
+            value := value + ParserGetIntValueByKeyByHandle(pGOAbility, 'Value');
+
+            // check in effects
+            if (abilityID <> 1) and (abilityID <> 11) and (abilityID <> 12) and (abilityID <> 25) then
+            begin
+               var abilID : Integer = abilityID;
+               if abilID < 0 then
+               abilID := -abilID;
+
+               for i := ParserGetCountByHandle(pGOEffects)-1 downto 0 do
+               begin
+                  var pGOEffect : Integer = ParserSelectByHandleByIndex(pGOEffects, i);
+                  var bEveryTurn : Boolean = ParserGetBoolValueByKeyByHandle(pGOEffect, 'EveryTurn');
+                  var id : Integer = ParserGetIntValueByKeyByHandle(pGOEffect, 'AbilityID');
+
+                  if (id = abilID) then
+                  begin
+                     var power : Integer = ParserGetIntValueByKeyByHandle(pGOEffect, 'Power');
+                     value := value + power;
+                  end;
+               end;
+            end;
+         end
+         else
+         begin
+            {IntRegister0 := goHandle;
+            IntRegister1 := pGOParser;
+            IntRegister2 := 0;
+            IntRegister3 := abilityID;
+            ExecuteState('CalcUnitAbility');
+            var abil24 : Integer = value + IntRegister4;}
+            value := value + _unit_CheckUnitAbility(goHandle, pGOParser, 0, abilityID);
+         end;
+      end;
+   end;
+
+   IntRegister4 := value;
+   Result := IntRegister4;
+end;
+
+// _unit_CheckAbility
+//
+function _unit_CheckAbility(const goHnd, abilityID : Integer) : Integer;
+begin
+   if goHnd <> 0 then
+   begin
+      var heroHandle : Integer = _unit_GetHeroHandle(GetGameObjectPlayerHandleByHandle(goHnd));
+      var uid : Integer = GetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iHeroUID);
+      var mapHeroHandle : Integer = GetGameObjectHandleByUniqueId(uid);
+      //var heroParser : Integer = ParserSelectGameObject(mapHeroHandle);
+
+      Result := _unit_CheckUnitAbility(goHnd, 0, mapHeroHandle, abilityID);
+
+      {IntRegister0 := abilityID;
+      GameObjectExecuteStateByHandle(goHnd, 'CheckAbility');
+      Result := IntRegister1;}
+   end
+   else
+      Result := 0;
+end;
+
+// _unit_CheckAbilityExt
+//
+function _unit_CheckAbilityExt(const goHnd, abilityID : Integer) : Integer;
+begin
+   if goHnd <> 0 then
+   begin
+      Result := _unit_CheckAbility(goHnd, abilityID);
+      if ((abilityID = gc_ability_spell_power) or (abilityID = gc_ability_spell_duration) or (abilityID =  gc_ability_summoning_power)) and (Result = 0) then
+         Result := _unit_CheckAbility(goHnd, gc_ability_witchery);
+   end
+   else
+      Result := 0;
+end;
+
+// _unit_GetMoveType
+//
+function _unit_GetMoveType(goHnd : Integer) : Integer;
+begin
+   var movementType : Integer = 0;
+   if (_unit_CheckAbility(goHnd, gc_ability_low_flying) > 0) then
+       movementType := 1
+   else
+   begin
+      if (_unit_CheckAbility(goHnd, gc_ability_flying)>0) then
+          movementType := 2;
+   end;
+   Result := movementType;
+end;
+
+// _unit_IsValidEndPoint
+//
+procedure _unit_IsValidEndPoint(goHandle, tnHandle : Integer; pathNeeded, useMaxSpeed : Boolean; var isValidPoint : Boolean; var enemyGOUID : Integer);
+begin
+   var x, y, z : Float;
+
+   {IntRegister0 := tnHandle;
+   BoolRegister0 := pathNeeded;
+   GameObjectExecuteStateByHandle(goHandle, 'IsValidEndPoint');
+   isValidPoint := BoolRegister1;
+   enemyGOUID := IntRegister1;}
+
+   GetTrackNodePositionByHandle(tnHandle, x, y, z);
+
+   var PlHandle : Integer = GetGameObjectPlayerHandleByHandle(goHandle);
+   var moveType : Integer = _unit_GetMoveType(goHandle);
+   var goX : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurrentX);
+   var goY : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurrentY);
+   var tnStart : Integer = GetTrackNodeHandleByIndex(gc_battle_GridSize * goY + goX);
+
+   GetTrackNodePositionByHandle(tnStart, x, y, z);
+
+   isValidPoint := true;
+   enemyGOUID := 0;
+
+   if (tnHandle = tnStart) then
+   begin
+      GetTrackNodePathByHandle(tnStart, tnHandle);
+      isValidPoint := true;
+   end
+   else
+   begin
+      if tnHandle <> 0 then
+      begin
+         var tnParser : Integer = _map_GetHexByTNHandle(tnHandle);
+
+         if tnParser <> 0 then
+         begin
+            var endDistFactor : Float = GetTrackNodeDistFactorByHandle(tnHandle);
+            var tnX : Integer = ParserGetIntValueByKeyByHandle(tnParser, 'X');
+            var tnY : Integer = ParserGetIntValueByKeyByHandle(tnParser, 'Y');
+
+            if gBoolRegister_BattlePlaceMode then
+            begin
+               enemyGOUID := 0;
+
+               if ((GetPlayerIntValueIndByHandle(PlHandle, gc_battle_PLStack_iAttackMode) = 1) and (tnX < 2)) or
+               ((GetPlayerIntValueIndByHandle(PlHandle, gc_battle_PLStack_iAttackMode) = 0) and (tnX > gc_battle_GridSize - 2 - 1)) then
+                  isValidPoint := true
+               else
+                  isValidPoint := false;
+            end
+            else
+            begin
+               var UID : Integer = ParserGetIntValueByKeyByHandle(tnParser, 'UID');
+               var endUID : Integer;
+               var tnGoHandle : Integer = GetGameObjectHandleByUniqueId(UID);
+               var stealthMode : Boolean = GetGameObjectBoolValueIndByHandle(tnGOHandle, gc_stack_unit_bStealthMode);
+               var curLife : Integer = GetGameObjectIntValueIndByHandle(tnGoHandle, gc_stack_unit_iCurLife);
+               var tnPlHandle : Integer = GetGameObjectPlayerHandleByHandle(tnGoHandle);
+
+               //if (tnGoHandle <> 0) and (stealthMode or (curLife = 0) or (tnPlHandle = PlHandle)) then
+               if (tnGoHandle <> 0) and ((curLife = 0) or (tnPlHandle = PlHandle)) then
+                  isValidPoint := false;
+
+               var layer : Integer = ParserGetIntValueByKeyByHandle(tnParser, 'Layer');
+               if (layer = 1) and (moveType <> 2) and (tnGoHandle = 0) then
+                  isValidPoint := false;
+
+               if pathNeeded and isValidPoint and (tnStart <> 0) then
+               begin
+                  var movePoints : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iMovePoints);
+
+                  // TODO: check for march
+                  var actAbility : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iActiveAbility);
+
+                  IntRegister0 := gc_battle_unit_iSpeed;
+                  GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+                  var maxMovePoints : Integer = IntRegister1;
+
+                  if (useMaxSpeed) then
+                     movePoints := maxMovePoints;
+
+                  var path : Boolean = GetTrackNodePathByHandle(tnStart, tnHandle);
+                  var tpCount : Integer = GetTrackNodeTPCount;
+                  var pathDist : Float = GetTrackNodePathLength();
+                  pathDist := pathDist / (gc_HexSize * Sqrt(3));
+                  var dist : Integer = Round(pathDist);
+
+                  if not path then
+                     isValidPoint := false;
+
+                  if tnGoHandle = 0 then
+                  begin
+                     if ((movePoints = 0) and (maxMovePoints > 0)) then
+                         isValidPoint := false;
+                     if ((dist > movePoints) and ((tpCount > 2) or (movePoints < maxMovePoints))) then
+                         isValidPoint := false;
+                  end
+                  else
+                  // enemy
+                  begin
+                     var lunge : Boolean = GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bLunge);
+                     var ddist : Integer = _misc_GetHexDist(goX, goY, tnX, tnY);
+                     var doLunge : Boolean = false;
+                     if lunge and (tpCount = 3) then
+                     begin
+                        var trXn, trYn, mXn, mYn, dXn, dYn: Float;
+                        GetTrackNodeTPByIndex(0, mXn, mYn);
+                        GetTrackNodeTPByIndex(1, trXn, trYn);
+                        GetTrackNodeTPByIndex(2, dXn, dYn);
+                        var angle : Float = VectorAngle(dXn - mXn, 0, dYn - mYn, trXn - mXn, 0, trYn - mYn);
+                        if angle < 10 then  doLunge := true;
+                     end;
+                     if lunge then isValidPoint := false;
+                     if doLunge then
+                     begin
+                        BoolRegister1 := true;
+                        isValidPoint := true;
+                        enemyGOUID := UID;
+                     end
+                     else if (not lunge) then
+                     begin
+                        //if ((dist-endDistFactor > movePoints) and (tpCount > 3)) or ((tpCount = 3) and (movePoints = 0)) then
+                        if (dist-endDistFactor > movePoints) and ((tpCount > 3) or (movePoints < maxMovePoints)) then
+                            isValidPoint := false
+                        else
+                        begin
+                           if tpCount > 2 then
+                           begin
+                           // found path to enemy
+                              var x, y : Float;
+                              GetTrackNodeTPByIndex(tpCount-2, x, y);
+
+                              var endTNHandle : Integer = GetTrackNodeHandleByPosition(x, 0, y);
+                              var pEndHandle : Integer = _map_GetHexByTNHandle(endTNHandle);
+
+                              endUID := ParserGetIntValueByKeyByHandle(pEndHandle, 'UID');
+
+                              if endUID <> 0 then
+                              begin
+                                 var path : Boolean = true;
+                                 while path and (endUID <> 0) and (tpCount-1 <= movePoints+1) do
+                                 begin
+                                    SetTrackNodeEnabledByHandle(endTNHandle, false);
+                                    path := GetTrackNodePathByHandle(tnStart, tnHandle);
+                                    tpCount := GetTrackNodeTPCount;
+
+                                    if tpCount < 3 then
+                                        break;
+
+                                    GetTrackNodeTPByIndex(tpCount-2, x, y);
+                                    endTNHandle := GetTrackNodeHandleByPosition(x, 0, y);
+
+                                    pEndHandle := _map_GetHexByTNHandle(endTNHandle);
+
+                                    endUID := ParserGetIntValueByKeyByHandle(pEndHandle, 'UID');
+                                 end;
+
+                                 if (not path) or (tpCount-1 > movePoints+1) then
+                                     isValidPoint := false;
+
+                                 //tnHandle := goHandle;
+                                 GameObjectExecuteStateByHandle(goHandle, 'UpdateTrackNodes');
+                              end;
+                           end;
+
+                           if (endUID = 0) and (curLife > 0) then
+                               enemyGOUID := UID;
+                        end;
+                     end;
+                  end;
+               end;
+            end;
+         end;
+      end;
+   end;
+end;
+
+// _unit_AddEffect
+//
+function _unit_AddEffect(const goHnd, abilityID, power, duration : Integer) : Integer;
+begin
+   IntRegister0 := abilityID;
+   IntRegister1 := power;
+   IntRegister2 := duration;
+   GameObjectExecuteStateByHandle(goHnd, 'AddEffect');
+   Result := IntRegister3;
+end;
+
+// _unit_PlaySound
+//
+function _unit_PlaySound(const goHnd : Integer; const libName, animation : String) : Integer;
+begin
+   // reduce sound volume when a lot of units make noise at the same time.
+   var soundsPlaying : Integer = 1;
+   var plHandle : Integer = GetGameObjectPlayerHandleByHandle(goHnd);
+   var i, goHandle, prevSoundHnd : Integer;
+   for i := 0 to GetPlayerGameObjectsCountByHandle(plHandle)-1 do
+   begin
+      goHandle := GetGameObjectHandleByIndex(i, plHandle);
+      if goHandle <> goHnd then
+      begin
+         prevSoundHnd := SndGetOrCreateSound(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iSoundTag), 'units', goHandle);
+         if GetSndSoundPlaying(prevSoundHnd) and SameText(GetSndSoundSourceName(prevSoundHnd), GetGameObjectBaseNameByHandle(goHandle)+'_'+animation) then
+         begin
+            soundsPlaying := soundsPlaying + 1;
+         end;
+      end;
+   end;
+   
+   var sndTag : Integer = GetGameObjectIntValueIndByHandle(goHnd, gc_stack_unit_iSoundTag);
+   sndTag := sndTag+1;
+   SetGameObjectIntValueIndByHandle(goHnd, gc_stack_unit_iSoundTag, sndTag);
+   var sndHandle : Integer = SndGetOrCreateSound(sndTag, libName, goHnd);
+   SetSndSoundSourceName(GetGameObjectBaseNameByHandle(goHnd)+'_'+animation, sndHandle);
+   SetSndSoundRandomOffset(0, sndHandle);
+   SetSndSoundRadius(8000, sndHandle); //80 - for 3D sound, 8000 for isometric sound
+   SetSndSoundMaxRadius(0, sndHandle);
+   var volume : Float = GetSndSoundVolume(sndHandle);
+   SetSndSoundVolume(volume / soundsPlaying, sndHandle);
+   SetSndSoundPlaying(True, sndHandle);
+   Result := sndHandle;
+end;
+
+// _unit_PlaySoundLoop
+//
+function _unit_PlaySoundLoop(const goHnd : Integer; const libName, animation : String; const sndLoopTag : Integer; const playLoop : Boolean) : Integer;
+begin
+   var sndHandle : Integer = SndGetOrCreateSound(sndLoopTag, libName, goHnd);
+
+   SetSndSoundSourceName(GetGameObjectBaseNameByHandle(goHnd)+'_'+animation, sndHandle);
+   SetSndSoundRandomOffset(0, sndHandle);
+   SetSndSoundRadius(8000, sndHandle); //80 - for 3D sound, 8000 for isometric sound
+   SetSndSoundMaxRadius(0, sndHandle);
+   SetSndSoundFadePlaying(playLoop, gc_SoundFadeTime, sndHandle);
+   SetSndSoundLoop(playLoop, sndHandle);
+   Result := sndHandle;
+end;
+
+// _unit_PlaySoundLoopExt
+//
+function _unit_PlaySoundLoopExt(const goHnd : Integer; const libName, srcName : String; const sndLoopTag : Integer; const playLoop : Boolean) : Integer;
+begin
+   var sndHandle : Integer = SndGetOrCreateSound(sndLoopTag, libName, goHnd);
+
+   SetSndSoundSourceName(srcName, sndHandle);
+   SetSndSoundRandomOffset(0, sndHandle);
+   SetSndSoundRadius(8000, sndHandle); //80 - for 3D sound, 8000 for isometric sound
+   SetSndSoundMaxRadius(0, sndHandle);
+   SetSndSoundFadePlaying(playLoop, gc_SoundFadeTime, sndHandle);
+   SetSndSoundLoop(playLoop, sndHandle);
+   Result := sndHandle;
+end;
+
+// _unit_ModifyAnimIntervalFactor
+//
+function _unit_ModifyAnimIntervalFactor(goHnd : Integer; modifier : Float) : Float;
+begin
+   var battlespeed : Float = _misc_GetBattleSpeed();
+   var speed : Float = (gc_battle_speed_min+battlespeed*(gc_battle_speed_max-gc_battle_speed_min))-1;
+   if battlespeed = 1 then
+      speed := gc_battle_speed_absolute_max;
+   speed := 1.0+(speed*modifier);
+   SetGameObjectIntervalFactorByHandle(goHnd, speed);
+   Result := speed;
+end;
+
+
+function _unit_GetNeededExpForLevel(level,unit_idx,go_handle : Integer) : Integer;
+begin
+   var pMyUnit : Integer = ParserSelectByHandleByIndex(gPrototypeData.units.handle, unit_idx);
+   var exp : Integer = 0;
+   var i : Integer;
+   var adder : Integer = 2 * gc_map_Unit_Exp_First_Level;
+   var expAdd : Integer = gc_map_Unit_Exp_Add;
+   var expMod : Integer = ParserGetIntValueByKeyByHandle(pMyUnit, 'ExpMod');
+
+   adder := Floor(adder * expMod / 100);
+   for i := 0 to level-1 do
+   begin
+      exp := exp + adder;
+      adder := adder + (expAdd * (3 + Floor((i + 1) / 10) * 3 + Floor((i + 1) / 20) * 3));
+   end;
+
+   if go_handle <> 0 then
+   begin
+      var myPlHandle : Integer = GetGameObjectPlayerHandleByHandle(go_handle);
+      var cMode : String = GetPlayerControlModeByHandle(myPlHandle);
+
+      if SameText(cMode, 'cmPlayer') then
+      begin
+         var diffMod : Integer = (round((100*100/gGame.arrplayerdifficulty[GetPlayerIndexByHandle(myPlHandle)].expmod)) div 5)*5;
+         exp := Floor(exp * diffMod / 100);
+      end
+      else
+         exp := Floor(exp * (1 - gGame.arrplayerdifficulty[GetPlayerIndexByHandle(myPlHandle)].basediff / 20));
+   end;
+   Result := exp;
+end;
+
+procedure _unit_GetFixedHeroBonus(heroClass, level : Integer; var bonusType, bonusValue : Integer);
+begin
+   bonusValue := 0;
+   
+   if (level<>10) then
+   begin
+      // add property bonus
+      if (level>20) then
+         bonusType := 3 // life
+      else
+      begin
+         if heroClass > 20 then
+            heroClass := heroClass - 16;
+         
+         var pClass : Integer = ParserSelectByHandleByIndex(gPrototypeData.heroBonuses.handle, heroClass);
+         var pLanBonusTypes : Integer = ParserSelectByHandleByKey(pClass, 'LanBonusTypes');
+         var bonusIndex : Integer;
+         if (heroClass<=4) then
+            bonusIndex := level
+         else
+            bonusIndex := level-11;
+         bonusType :=  ParserGetIntValueByKeyByHandle(ParserSelectByHandleByIndex(pLanBonusTypes, bonusIndex), 'BonusType');
+      end;
+
+      bonusValue := 1;
+   end;
+end;
+
+procedure _unit_ModifyHeroAttributes(myGOHandle, lifeChange, stamChange, moralChange : Integer);
+begin
+   case gIntRegister_CurGameMode of
+      gc_GameModeStrategy : 
+      begin
+         var myParser : Integer = ParserSelectGameObject(myGOHandle);
+         var pMyUnits : Integer = ParserSelectByHandleByKey(myParser, 'Units');
+         var pMyUnit0 : Integer = ParserSelectByHandleByIndex(pMyUnits, 0);
+         
+         if ParserGetIntValueByKeyByHandle(pMyUnit0, 'CurLife') > 0 then
+         begin
+            IntRegister0 := lifeChange;
+            GameObjectExecuteStateByHandle(myGOHandle, 'AddLife');
+         end;
+   
+         var curMoral : Integer = ParserGetIntValueByKeyByHandle(pMyUnit0, 'CurMoral');
+         curMoral := max(1, curMoral + moralChange);
+         ParserSetIntValueByKeyByHandle(pMyUnit0, 'CurMoral', curMoral);
+      end;
+      gc_GameModeTactics : 
+      begin
+         var batPlHandle : Integer;
+         if myGOHandle = gIntRegister_BattleAttackHeroHandle then
+            batPlHandle := GetPlayerHandleByName(gc_battle_attackPlayerName)
+         else
+            batPlHandle := GetPlayerHandleByName(gc_battle_defendPlayerName);
+   
+         var heroHandle : Integer = GetGameObjectHandleByIndex(0, batPlHandle);
+   
+         var curLife : Integer = GetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iCurLife);
+         if curLife > 0 then
+         begin
+            var maxLife : Integer = _unit_GetProperty(heroHandle, gc_battle_unit_iMaxLife);
+            curLife := Round(Clamp(curLife + lifeChange, 1, maxLife));
+            SetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iCurLife, curLife);
+         end;
+   
+         var maxStam : Integer = _unit_GetProperty(heroHandle, gc_battle_unit_iMaxStamina);
+         var curStamina : Integer = GetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iCurStamina);
+         curStamina := Round(Clamp(curStamina + stamChange, 1 , maxStam));
+         SetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iCurStamina, curStamina);
+   
+         var curMoral : Integer = GetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iCurMoral);
+         if curMoral > 0 then
+         begin
+            curMoral := max(1, curMoral + moralChange);
+            SetGameObjectIntValueIndByHandle(heroHandle, gc_stack_unit_iCurMoral, curMoral);
+         end;
+      end;
+   end;
+end;
+
+function _unit_GetAttackSide(attFacing, tGOHandle : Integer) : Integer;
+begin
+   var tFacing : Integer = GetGameObjectIntValueIndByHandle(tGOHandle, gc_stack_unit_iFacing);
+
+   Result := Round(abs(attFacing - tFacing));
+   if Result > 3 then
+      Result := 6 - Result;
+end;
+
+function _unit_CanRest(goHandle : Integer) : Boolean;
+begin
+   Result := false;
+   
+   if not GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bActionTaken) then
+   begin
+      var canAct : Boolean = GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bCanAct);
+      var canMarch : Boolean = GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bCanMarch);
+      var movePoints : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iMovePoints);
+   
+      IntRegister0 := gc_battle_unit_iSpeed;
+      GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+      var speed : Integer = IntRegister1;
+   
+      if (movePoints >= speed) or (canAct and (_unit_CheckAbility(goHandle, gc_ability_cantmove) > 0)) and (canMarch or (_unit_CheckAbility(goHandle, gc_ability_march) = 0)) then
+      begin
+         var curStamina : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurStamina);
+         var curAmmo : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurAmmo);
+         var curLife : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurLife);
+   
+         IntRegister0 := gc_battle_unit_iMaxStamina;
+         GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+         var maxStamina : Integer = IntRegister1;
+   
+         IntRegister0 := gc_battle_unit_iMaxAmmo;
+         GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+         var maxAmmo : Integer = IntRegister1;
+   
+         IntRegister0 := gc_battle_unit_iMaxLife;
+         GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+         var maxLife : Integer = IntRegister1;
+   
+         if ((curStamina < maxStamina) and (_unit_CheckAbility(goHandle, gc_ability_tireless) = 0)) 
+         or ((curAmmo < maxAmmo) and (_unit_CheckAbility(goHandle, gc_ability_meditation) > 0)) 
+         or ((curLife < maxLife) and (_unit_CheckAbility(goHandle, gc_ability_first_aid) > 0)) then
+            Result := true;
+      end;
+   end;
+end;
+
+function _unit_DeathInProcess() : Boolean;
+begin
+   Result := false;
+   
+   var pHexCells : Integer = gHexCells.handle;
+   var x, y, uid : Integer;
+   
+   for x := 0 to gc_battle_GridSize-1 do
+   for y := 0 to gc_battle_GridSize-1 do
+   begin
+      uid := ParserGetIntValueByKeyByHandle(ParserSelectByHandleByIndex(pHexCells, gc_battle_GridSize * y + x), 'UID');
+      if uid <> 0 then // UID is zero if AfterDeath has been run.
+      begin
+         if GetGameObjectIntValueIndByHandle(GetGameObjectHandleByUniqueId(uid), gc_stack_unit_iCurLife) = 0 then
+         begin
+            Result := true;
+            break;
+         end;
+      end;
+   end;
+end;
+
+// in vanilla patch only used for estimation of battle results before engaging.
+function _unit_GetUnitLootExp(goHandle : Integer) : Float;
+begin
+   Result := 0;
+   
+   GameObjectExecuteStateByHandle(goHandle, 'GetLevel');
+   var goLevel : Integer = IntRegister0;
+   
+   if GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bIsHero) then
+   begin
+      Result := 20 + 5 * goLevel;
+      if goLevel >= 10 then
+      begin
+         Result := Result + 30;
+         Result := Result + 10 * (goLevel-10);
+      end;
+      if goLevel >= 20 then
+      begin
+         Result := Result + 50;
+         Result := Result + 10 * (goLevel-20);
+      end;
+   end
+   else
+   begin
+      var pUnit : Integer = _unit_GetUnitParserByID(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID));
+      var goExp : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'Exp');
+      Result := goExp * (1 + 0.05 * goLevel);
+   end;
+end;
+
+
+procedure _unit_GUIUpdateUnitHUD(myGOHandle : Integer);
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+   begin
+      // update floating stat bar
+      var lX, lY, lZ, rX, rY, rZ : Float = 0;
+      ScreenToWorldRayCast(0, (GetViewerHeight div 2), lX, lY, lZ);
+      ScreenToWorldRayCast(GetViewerWidth, (GetViewerHeight div 2), rX, rY, rZ);
+      var perspectiveFactor : Float = (GetGameObjectPositionXByHandle(myGOHandle)-lX)/(rX-lX);
+      IntRegister0 := myGOHandle;
+      FloatRegister0 := perspectiveFactor;
+      GUIExecuteState('battle.GUIUpdateUnitHUD');
+   end;
+end;
+
+
+function _unit_GetParamsParserByUID(myGOHandle, attackerUID : Integer; create : Boolean) : Integer;
+begin
+   var myUID : Integer = GetGameObjectUniqueIdByHandle(myGOHandle);
+   var pMyParser : Integer = ParserSelectGameObject(myGOHandle);
+   var pMyParams : Integer = ParserSelectByHandleByKey(pMyParser, 'ChangedParams');
+   
+   var i : Integer;
+   var pParams : Integer = 0;
+   for i := 0 to ParserGetCountByHandle(pMyParams)-1 do
+   begin
+      var pMyParam : Integer = ParserSelectByHandleByIndex(pMyParams, i);
+      var attUID : Integer = ParserGetIntValueByKeyByHandle(pMyParam, 'AttackerUID');
+      var tarUID : Integer = ParserGetIntValueByKeyByHandle(pMyParam, 'TargetUID');
+   
+      if (attUID = attackerUID) and (tarUID = myUID) then
+      begin
+         pParams := pMyParam;
+         break;
+      end;
+   end;
+   
+   if (pParams = 0) and create then
+   begin
+      pParams := ParserAddChildByIndex(pMyParams, '*');
+      ParserSetIntValueByKeyByHandle(pParams, 'AttackerUID', attackerUID);
+      ParserSetIntValueByKeyByHandle(pParams, 'TargetUID', myUID);
+   end;
+   
+   Result := pParams;
+end;
+
+
+procedure _unit_SetupStatsTextData(goHandle, attUID, oldLife, oldStamina, oldMoral : Integer);
+begin
+   var UID : Integer = GetGameObjectUniqueIdByHandle(goHandle);
+
+   var pElmLog : Integer = _log_battle_GetLastLogElementByAction(attUID, 3);
+
+   var pDestUnits : Integer = ParserSelectByHandleByKey(pElmLog, 'DestUnits');
+   var pDestUnit : Integer = _log_battle_AddUnitInfoToParser(pDestUnits);
+   ParserSetIntValueByKeyByHandle(pDestUnit, 'UID', UID);
+
+   var newLife : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurLife);
+   var newStamina : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurStamina);
+   var newMoral : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurMoral);
+   var deltaLife : Integer = newLife-oldLife;
+   var deltaStamina : Integer = newStamina-oldStamina;
+   var deltaMoral : Integer = newMoral-oldMoral;
+
+   var pParams : Integer = _unit_GetParamsParserByUID(goHandle, attUID, true);
+
+   var pChangedParams : Integer = ParserSelectByHandleByKey(pDestUnit, 'ChangedParams');
+
+   if (deltaLife<>0) then
+   begin
+      var life : Integer = ParserGetIntValueByKeyByHandle(pParams, 'Life');
+      ParserSetIntValueByKeyByHandle(pParams, 'Life', life + deltaLife);
+
+      var pChangedParam : Integer = _log_battle_AddChangedParamToParser(pChangedParams);
+      ParserSetIntValueByKeyByHandle(pChangedParam, 'ParamID', 1);
+      ParserSetIntValueByKeyByHandle(pChangedParam, 'Value', deltaLife);
+      var visLifeMod : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iVisualLifeMod);
+      SetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iVisualLifeMod, visLifeMod-deltaLife);
+   end;
+
+   if (deltaStamina<>0) then
+   begin
+      var stam : Integer = ParserGetIntValueByKeyByHandle(pParams, 'Stamina');
+      ParserSetIntValueByKeyByHandle(pParams, 'Stamina', stam + deltaStamina);
+
+      var pChangedParam : Integer = _log_battle_AddChangedParamToParser(pChangedParams);
+      ParserSetIntValueByKeyByHandle(pChangedParam, 'ParamID', 2);
+      ParserSetIntValueByKeyByHandle(pChangedParam, 'Value', deltaStamina);
+      var visStaminaMod : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iVisualStaminaMod);
+      SetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iVisualStaminaMod, visStaminaMod-deltaStamina);
+   end;
+
+   if (deltaMoral<>0) then
+   begin
+      var moral : Integer = ParserGetIntValueByKeyByHandle(pParams, 'Moral');
+      ParserSetIntValueByKeyByHandle(pParams, 'Moral', moral + deltaMoral);
+
+      var pChangedParam : Integer = _log_battle_AddChangedParamToParser(pChangedParams);
+      ParserSetIntValueByKeyByHandle(pChangedParam, 'ParamID', 3);
+      ParserSetIntValueByKeyByHandle(pChangedParam, 'Value', deltaMoral);
+      var visMoralMod : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iVisualMoralMod);
+      SetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iVisualMoralMod, visMoralMod-deltaMoral);
+   end;
+
+   _log_battle_Show();
+end;
+
+
+procedure _unit_ModifyVisualParams(myGOHandle, attUID : Integer);
+begin
+   var pParam : Integer = _unit_GetParamsParserByUID(myGOHandle, attUID, false);
+   
+   if pParam <> 0 then
+   begin
+      var life : Integer = ParserGetIntValueByKeyByHandle(pParam, 'Life');
+      var stamina : Integer = ParserGetIntValueByKeyByHandle(pParam, 'Stamina');
+      var moral : Integer = ParserGetIntValueByKeyByHandle(pParam, 'Moral');
+   
+      ParserFreeByHandle(pParam);
+   
+      var visLifeMod : Integer = GetGameObjectIntValueIndByHandle(myGOHandle, gc_stack_unit_iVisualLifeMod);
+      SetGameObjectIntValueIndByHandle(myGOHandle, gc_stack_unit_iVisualLifeMod, visLifeMod + life);
+   
+      var visMoralMod : Integer = GetGameObjectIntValueIndByHandle(myGOHandle, gc_stack_unit_iVisualMoralMod);
+      SetGameObjectIntValueIndByHandle(myGOHandle, gc_stack_unit_iVisualMoralMod, visMoralMod + moral);
+   
+      var visStaminaMod : Integer = GetGameObjectIntValueIndByHandle(myGOHandle, gc_stack_unit_iVisualStaminaMod);
+      SetGameObjectIntValueIndByHandle(myGOHandle, gc_stack_unit_iVisualStaminaMod, visStaminaMod + stamina);
+   
+      _unit_GUIUpdateUnitHUD(myGOHandle);
+   end;
+end;
+
+
+procedure _unit_ModifyAllVisualParams(plHandle, attUID : Integer);
+begin
+   var i : Integer;
+   for i := 0 to GetPlayerGameObjectsCountByHandle(plHandle)-1 do
+   begin
+      var goHandle : Integer = GetGameObjectHandleByIndex(i, plHandle);
+      _unit_ModifyVisualParams(goHandle, attUID);
+   end;
+end;
+
+
+procedure _unit_CreateFlyTexts(goHandle, attUID : Integer);
+begin
+   var pParams : Integer = _unit_GetParamsParserByUID(goHandle, attUID, false);
+
+   if pParams <> 0 then
+   begin
+      var life : Integer = ParserGetIntValueByKeyByHandle(pParams, 'Life');
+      var stamina : Integer = ParserGetIntValueByKeyByHandle(pParams, 'Stamina');
+      var moral : Integer = ParserGetIntValueByKeyByHandle(pParams, 'Moral');
+    
+      _fx_CreateFlyText_VVK(goHandle, gc_flytext_CategoryParam, gc_battle_unit_iCurLife, life);
+      if (stamina<>0) then
+      begin
+         _fx_CreateFlyText_VVK(goHandle, gc_flytext_CategoryParam, gc_battle_unit_iCurStamina, stamina);
+         if GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurStamina) <= 0 then
+            _fx_CreateFlyText_VVK(goHandle, gc_flytext_CategoryAbility, gc_ability_immobilized, 0);
+      end;
+      if (moral<>0) then
+         _fx_CreateFlyText_VVK(goHandle, gc_flytext_CategoryParam, gc_battle_unit_iCurMoral, moral);
+      
+      var pFlyTexts : Integer = ParserSelectByHandleByKey(pParams, 'FlyTexts');
+      if pFlyTexts <> 0 then
+	  begin
+	     var i, pFlyText, category, index, amount : Integer;
+	     for i := 0 to ParserGetCountByHandle(pFlyTexts)-1 do
+		 begin
+		    pFlyText := ParserSelectByHandleByIndex(pFlyTexts, i);
+		    
+		    category := ParserGetIntValueByKeyByHandle(pFlyText, 'Category');
+		    index := ParserGetIntValueByKeyByHandle(pFlyText, 'Index');
+		    amount := ParserGetIntValueByKeyByHandle(pFlyText, 'Amount');
+           
+            _fx_CreateFlyText_VVK(goHandle, category, index, amount);
+		 end;
+	  end;
+   end;
+end;
+
+
+procedure _unit_CreateAllFlyTexts(plHandle, attUID : Integer);
+begin
+   var i : Integer;
+   for i := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+   begin
+      var goHandle : Integer = GetGameObjectHandleByIndex(i, plHandle);
+      _unit_CreateFlyTexts(goHandle, attUID);
+   end;
+end;
+
+
+procedure _unit_SetupFlyText(goHandle, attUID, category, index, amount : Integer);
+begin
+   var pParams : Integer = _unit_GetParamsParserByUID(goHandle, attUID, true);
+
+   var pFlyTexts : Integer = ParserSelectByHandleByKey(pParams, 'FlyTexts');
+   if pFlyTexts = 0 then
+      pFlyTexts := ParserAddChildByIndex(pParams, 'FlyTexts');
+
+   var pFlyText : Integer = ParserAddChildByIndex(pFlyTexts, '*');
+   ParserSetIntValueByKeyByHandle(pFlyText, 'Category', category);
+   ParserSetIntValueByKeyByHandle(pFlyText, 'Index', index);
+   ParserSetIntValueByKeyByHandle(pFlyText, 'Amount', amount);
+end;
+
+
+procedure _unit_ApplyNeighbourVisuals(goHandle, tx, ty, areaEffectType : Integer; friend : Boolean); // area effect type: 1 = flaming missiles, 2 = death explosion.
+begin
+   var pGOParser : Integer = ParserSelectGameObject(goHandle);
+   var pGONeighbours : Integer = ParserSelectByHandleByKey(pGOParser, 'Neighbours');
+   var uid : Integer = GetGameObjectUniqueIdByHandle(goHandle);
+
+   var i : Integer;
+   
+   procedure ApplyVisuals();
+   begin
+      for i := ParserGetCountByHandle(pGONeighbours)-1 downto 0 do
+      begin
+         var pGONeighbour : Integer = ParserSelectByHandleByIndex(pGONeighbours, i);
+         var nUID : Integer = ParserGetIntValueByKeyByHandle(pGONeighbour, 'UID');
+         var nGOHandle : Integer = GetGameObjectHandleByUniqueId(nUID);
+	  
+	     if ((areaEffectType = 1) and (_unit_CheckAbility(nGOHandle, gc_ability_fire_immunity) = 0)) or (areaEffectType = 2) then
+	     begin
+            _unit_CreateFlyTexts(nGOHandle, uid);
+            _unit_ModifyVisualParams(nGOHandle, uid);
+
+            GameObjectExecuteStateByHandle(nGOHandle, 'DeathAnimReady');
+            GameObjectExecuteStateByHandle(nGOHandle, 'CheckDeathAnimation');
+         end;
+      end;
+   end;
+
+   // alive neighbours
+   BoolRegister0 := friend;
+   IntRegister0 := tx;
+   IntRegister1 := ty;
+   GameObjectExecuteStateByHandle(goHandle, 'FindNeighbour'); // this script updates pGONeighbours
+   ApplyVisuals();
+
+   // dead neighbours
+   BoolRegister0 := friend;
+   BoolRegister1 := true;
+   IntRegister0 := tx;
+   IntRegister1 := ty;
+   GameObjectExecuteStateByHandle(goHandle, 'FindNeighbourEx');
+   ApplyVisuals();
+end;
+
+procedure _unit_CheckMaterial(goHandle : Integer; ignoreNode : String);
+begin
+   if (not gBoolRegister_QuickBattle) and (not gBoolRegister_BattleSimulate) then
+   begin
+      var nodeID : Integer = _fx_GetIDByNodeName('fx_freeze');
+      if (_fx_FindFXHandleByID(goHandle, true, nodeID)<>0) and (not SameText(ignoreNode, 'fx_freeze')) then
+         _fx_GetOrCreateFXByID(goHandle, 'fx_freeze', 0, 0, 0, 0, 0, nodeID)
+      else
+	  begin
+         nodeID := _fx_GetIDByNodeName('fxstone');
+         if (_fx_FindFXHandleByID(goHandle, true, nodeID)<>0) and (not SameText(ignoreNode, 'fxstone')) then
+            _fx_GetOrCreateFXByID(goHandle, 'fxstone', 0, 0, 0, 0, 0, nodeID)
+         else
+         begin
+            nodeID := _fx_GetIDByNodeName('fx_stoneskin');
+            if (_fx_FindFXHandleByID(goHandle, true, nodeID)<>0) and (not SameText(ignoreNode, 'fx_stoneskin')) then
+               _fx_GetOrCreateFXByID(goHandle, 'fx_stoneskin', 0, 0, 0, 0, 0, nodeID);
+         end;
+      end;
+   end;
+end;
+
+
+function _hero_GetArmyBoostPower(const mapHeroHandle : Integer) : Float;
+begin
+   Result := 0;
+   
+   if mapHeroHandle <> 0 then
+   begin
+      // commander skills
+      if (GetGameObjectIntValueIndByHandle(mapHeroHandle, gc_map_GOStack_MapUnit_iClassInd1) = 3) or (GetGameObjectIntValueIndByHandle(mapHeroHandle, gc_map_GOStack_MapUnit_iClassInd2) = 3) then
+      begin
+         var heroParser : Integer = ParserSelectGameObject(mapHeroHandle);
+         var pHeroSkills : Integer = ParserSelectByHandleByKey(heroParser, 'Skills');
+      
+         var commanderSkills : Integer = 0;
+      
+         var i, pHeroSkill : Integer;
+         for i := ParserGetCountByHandle(pHeroSkills)-1 downto 0 do
+         begin
+            pHeroSkill := ParserSelectByHandleByIndex(pHeroSkills, i);
+            IntRegister0 := ParserGetIntValueByKeyByHandle(pHeroSkill, 'SkillID');
+            if IntRegister0 <> 1 then // logistics doesn't boost army in battle
+            begin
+               MapExecuteState('GetSkillParserByID');
+               if ParserGetIntValueByKeyByHandle(IntRegister1, 'Class') = 3 then // is commander skill
+                  commanderSkills := commanderSkills + ParserGetIntValueByKeyByHandle(pHeroSkill, 'Level');
+            end;
+         end;
+      
+         Result := Result + commanderSkills * 2;
+      end;
+   end;
+end;
+
+
+// _unit_GetRemainingPower - Reduce the current state of the unit from its value in full strength
+//
+function _unit_GetRemainingPowerPerc(const goHandle : Integer) : Float;
+begin
+   const safeStamina = 5;
+   const safeMorale = 5;
+	
+   var curLife : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurLife);
+	var curMoral : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurMoral);
+   var curStamina : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurStamina);
+		
+	IntRegister0 := gc_battle_unit_iMaxLife;
+	GameObjectExecuteStateByHandle(goHandle, 'GetProperty');
+	var hpRatio : Float = curLife / IntRegister1;
+		
+   var staminaEffect : Float = 0.6 + 0.08 * _unit_CheckAbility(goHandle, gc_ability_stamina_recovery); // the higher the value, the less significance low stamina has because it could be replenished easily.
+   if staminaEffect > 1 then
+      staminaEffect := 1;
+		
+	var staminaMultiplier : Float = (staminaEffect + curStamina * (1 - staminaEffect) / safeStamina);
+		 
+   if GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bIsHero) then
+   begin
+      var mapHeroHandle : Integer = _unit_GetMapHeroHandle(goHandle);
+      
+      var leader : Integer = GetGameObjectIntValueIndByHandle(mapHeroHandle, gc_map_GOStack_MapUnit_iLeader);
+      var health : Integer = GetGameObjectIntValueIndByHandle(mapHeroHandle, gc_map_GOStack_MapUnit_iHealth);
+      var magic : Integer = GetGameObjectIntValueIndByHandle(mapHeroHandle, gc_map_GOStack_MapUnit_iMagic);
+      var total : Integer = leader + health + magic;
+      var healthWeight, magicWeight : Float = 0;
+      
+      if health > 0 then
+      begin
+         healthWeight := health / total;
+			healthWeight := healthWeight * hpRatio;
+			if (hpRatio < 0.5) and (_unit_CheckAbility(goHandle, gc_ability_no_pain) = 0) then
+				healthWeight := healthWeight * (0.5 + 0.1 * Floor(hpRatio * 10));
+   
+         if (curMoral <= safeMorale) then
+            healthWeight := healthWeight * (0.4 + curMoral * 0.1);
+   
+         if (curStamina < safeStamina) then
+            healthWeight := healthWeight * staminaMultiplier;
+      end;
+      
+      if magic > 0 then
+      begin
+         magicWeight := magic / total;
+   
+         if (curStamina < safeStamina) then
+            magicWeight := magicWeight * staminaMultiplier;
+      end;
+      
+      Result := healthWeight + magicWeight; // the strength from command stat comes from the units themselves. Commander is quite powerless after his units are dead.
+   end
+   else
+   begin
+		Result := 1;
+	
+      var pUnit : Integer = _unit_GetUnitParserByID(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID));
+		var unitClass : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'UnitClass');
+   
+		if (unitClass <> 2) and (unitClass <> 4) then // hp is not important for shooters and casters, they die in a hit or two anyway.
+			Result := Result * hpRatio;
+			
+      if (hpRatio < 0.5) and (_unit_CheckAbility(goHandle, gc_ability_no_pain) = 0) then
+         Result := Result * (0.5 + 0.1 * Floor(hpRatio * 10));
+   
+      if (curMoral <= safeMorale) then
+         Result := Result * (0.4 + curMoral * 0.1);
+   
+      if (curStamina < safeStamina) then
+         Result := Result * staminaMultiplier;
+   
+      var rangedAttack : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'RangedAttack');
+      if rangedAttack > 0 then
+      begin
+         var attack : Integer = ParserGetIntValueByKeyByHandle(pUnit, 'Attack');
+         var curAmmo : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurAmmo);
+         if (curAmmo <= 2) and (rangedAttack >= attack) then
+         begin
+            if (attack > 0) then
+            begin
+               var ratio : Float = attack / rangedAttack;
+               Result := Result * (ratio + (1 - ratio) / 3 * curAmmo);
+            end;
+         end;
+      end;
+   end;
+end;
+
+
+
+function _army_CalcRemainingPower(const plHandle : Integer) : Integer;
+begin
+	var _log : Boolean = true;
+
+   var bAIPlayer : Boolean = not SameText(GetPlayerControlModeByHandle(gIntRegister_BattleAttackPlayer), 'cmPlayer');
+	var bAccurateCheck : Boolean = (not bAIPlayer or gGame.improvedai or (gProfile.improvedai and (gGame.gameType <> gc_GameTypeLanShard))); // by default use accurate estimation only when human player is given hint on potential battle results
+		
+   var fArmyPower : Float = 1;
+   var fArmyFullPower : Float = 1;
+   var fValue, fFullValue : Float;
+   var i, goHandle, pUnit : Integer;
+   
+   if _log then
+   begin
+      if (plHandle = GetPlayerHandleByName(gc_battle_attackPlayerName)) or (plHandle = GetPlayerHandleByName(gc_battle_virtAttackPlayerName)) then
+         _log_Map('Attack player :')
+      else
+         _log_Map('Defend player :');
+   end;
+   
+	if bAccurateCheck then
+	begin
+		var heroHandle : Integer = GetGameObjectHandleByIndex(0, plHandle);
+		var fHeroArmyBoost : Float = _hero_GetArmyBoostPower(_unit_GetMapHeroHandle(heroHandle));
+		var bActiveHeroBoost : Boolean = (fHeroArmyBoost > 0) and GetGameObjectPlayableObjectByHandle(heroHandle);
+      if _log then _log_Map('Hero Army Boost = ' + IntToStr(Round(fHeroArmyBoost)));
+		
+		for i := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+		begin
+			goHandle := GetGameObjectHandleByIndex(i, plHandle);
+		
+			fFullValue := _unit_GetUnitLootExp(goHandle) + fHeroArmyBoost;
+		
+			fArmyFullPower := fArmyFullPower + fFullValue;
+			
+			if _log then
+			begin 
+				_log_Map('UnitID = ' + IntToStr(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID)));
+				_log_Map('Life = ' + IntToStr(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurLife)));
+				_log_Map('Power = ' + IntToStr(Round(fValue)));
+			end;
+		
+			if GetGameObjectPlayableObjectByHandle(goHandle) then
+			begin
+				fValue := fFullValue;
+				if not bActiveHeroBoost then 
+					fValue := fValue - fHeroArmyBoost;
+					
+				fValue := fValue * _unit_GetRemainingPowerPerc(goHandle);
+				fArmyPower := fArmyPower + fValue;
+			end
+			else
+				fValue := 0;
+		
+			if _log then _log_Map('Remaining Power = ' + IntToStr(Round(fValue)));
+		end;
+	end
+	else
+	begin
+		for i := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+		begin
+			goHandle := GetGameObjectHandleByIndex(i, plHandle);
+
+			if GetGameObjectBoolValueIndByHandle(goHandle, gc_stack_unit_bIsHero) then
+			begin
+				fValue := 10;
+			end
+			else
+			begin
+				pUnit := _unit_GetUnitParserByID(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID));
+				fValue := ParserGetIntValueByKeyByHandle(pUnit, 'Rank');
+			end;
+
+			fArmyFullPower := fArmyFullPower + fValue;
+
+			if GetGameObjectPlayableObjectByHandle(goHandle) then
+				fArmyPower := fArmyPower + fValue
+			else
+				fValue := 0;
+			
+			if _log then
+			begin 
+				_Log_Map('UnitID = ' + IntToStr(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iUnitID)));
+				_Log_Map('Life = ' + IntToStr(GetGameObjectIntValueIndByHandle(goHandle, gc_stack_unit_iCurLife)));
+				_Log_Map('Power = ' + IntToStr(Round(fValue)));
+				_Log_Map('Remaining Power = ' + IntToStr(Round(fValue)));
+			end;
+		end;
+	end;
+   
+   if _log then _log_Map('Total power = ' + IntToStr(Round(fArmyFullPower))+ '; Total remaining power = ' + IntToStr(Round(fArmyPower)));
+   
+   Result := Round(100 * fArmyPower / fArmyFullPower);
+end;
+

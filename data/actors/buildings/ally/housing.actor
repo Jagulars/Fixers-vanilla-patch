@@ -1,0 +1,662 @@
+section.begin
+   AutoCentering : struct.begin
+      macCenterX = False
+      macCenterY = False
+      macCenterZ = False
+      macUseBarycenter = False
+   struct.end
+   Direction : struct.begin
+      X = 0
+      Y = 1
+      Z = 0
+   struct.end
+   Up : struct.begin
+      X = 1
+      Y = 0
+      Z = 0
+   struct.end
+   Position : struct.begin
+      X = 0
+      Y = 0
+      Z = 0
+   struct.end
+   Scale : struct.begin
+      X = 1
+      Y = 1
+      Z = 1
+   struct.end
+   HorizonRadiusFactor = 2
+   CustomExtents = False
+   MeshPooled = False
+   MeshChildPooled = poNone
+   MeshPoolMinDist = 0
+   MeshPoolMaxDist = 0
+   MeshChildPoolMaxDist = 0
+   ShaderLODList : struct.begin
+      Enabled = True
+      ChildPooled = poFull
+      ChildPoolMax = 2500
+      List : struct.begin
+         [*] : struct.begin
+            ShaderID = -1
+            ShaderIDNoBones = -1
+            ShaderIDIM = -2
+            MatDisableInIMMode = False
+            NoRenderInIMMode = True
+            MinDist = 0
+            MaxDist = 2500
+            MinDistIM = 0
+            MaxDistIM = 2500
+         struct.end
+      struct.end
+   struct.end
+   DistanceMax = 2500
+   RollAngle = 0
+   PitchAngle = 0
+   TurnAngle = 0
+   ShowAxes = False
+   Tag = 0
+   TagFloat = 0
+   VisibilityCulling = vcInherited
+   Visible = True
+   NormalsOrientation = mnoDefault
+   ObjectsSorting = osInherited
+   Options : struct.begin
+      aoNone = False
+      aoRenderOptimize = True
+   struct.end
+   RenderOptimizeOptions.baroCompileFrameOnRequest = True
+   ObjectStyle : struct.begin
+      osDirectDraw = True
+      osDoesTemperWithColorsOrFaceWinding = True
+      osIgnoreDepthBuffer = False
+      osNoVisibilityCulling = False
+   struct.end
+   AnimationMode = aamNone
+   CurrentFrame = 0
+   CurrentFrameDelta = 0
+   StartFrame = 0
+   EndFrame = 0
+   FrameInterpolation = afpNone
+   Interval = 100
+   Reference = aarNone
+   MaterialName = 
+   MaterialIndex = -1
+   Animations.LoadFromFile = 
+   TransformationFrameList.LoadFromFile = 
+   UseMeshMaterials = False
+   IgnoreMissingTextures = False
+   LODIndex = 0
+   ActorIndex = 0
+   ActorList.Items : struct.begin
+      [*] : struct.begin
+         Name = housing01.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing01.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing01_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing02.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing02.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing02_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing03.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing03.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing03_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing04.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing04.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing04_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing05.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing05.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing05_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing06.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing06.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing06_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing07.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing07.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing07_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+      [*] : struct.begin
+         Name = housing08.mesh
+         LODList.Items : struct.begin
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 0
+               DistanceMax = 20
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing08.osm
+            struct.end
+            [*] : struct.begin
+               ScaleFrames = 1
+               DistanceMin = 20
+               DistanceMax = 500
+               FrameInterpolation = afpNone
+               TangentSpace = False
+               TangentSpaceFake = False
+               BinormalsTexCoordIndex = 1
+               TangentsTexCoordIndex = 1
+               WeightsTexCoordIndex = 4
+               MatIndicesTexCoordIndex = 5
+               NumBonesTexCoordIndex = 6
+               TangentSpaceFileName = 
+               MeshObjects.LoadFromFile = .\data\actors\buildings\ally\housing08_lod.osm
+            struct.end
+         struct.end
+         ImposterBuilder : struct.begin
+            Impostored = False
+            ImposterFrame = 0
+            SampleSize = 128
+            SamplingRatioBias = 1.8
+            Samples = 8
+            Coronas[*] : struct.begin
+               Elevation = 0
+               Samples = 8
+            struct.end
+            Lighting = 2
+            SamplesAlphaScale = 1
+            BackColor : struct.begin
+               Red = 0
+               Green = 0
+               Blue = 0
+               Alpha = 0
+            struct.end
+            BuildOffset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            ImposterOptions : struct.begin
+					impoBlended = False
+					impoAlphaTest = True
+					impoPerspectiveCorrection = False
+					impoRotated = False
+            struct.end
+            ImposterReference = 0
+            AlphaTreshold = 0.3
+            Compression = tcHighSpeed
+            MagFilter = maLinear
+            MinFilter = miLinearMipmapLinear
+            MinDistance = 0
+         struct.end
+      struct.end
+   struct.end
+section.end
+

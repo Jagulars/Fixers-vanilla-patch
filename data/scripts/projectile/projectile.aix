@@ -1,0 +1,89 @@
+section.begin
+   Name = Nothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\Initial.inc
+section.end
+
+section.begin
+   Name = InitialFly
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\InitialFly.inc
+section.end
+
+section.begin
+   Name = CreateBoom
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\CreateBoom.inc
+section.end
+
+section.begin
+   Name = OnPathTravelStop
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\OnPathTravelStop.inc
+section.end
+
+section.begin
+   Name = InitialFlySpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\InitialFlySpell.inc
+section.end
+
+section.begin
+   Name = OnPathTravelStopSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\OnPathTravelStopSpell.inc
+section.end
+
+section.begin
+   Name = CreateBoomSpell
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\CreateBoomSpell.inc
+section.end
+
+section.begin
+   Name = Destroy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\Destroy.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = Recycle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\projectile\projectile.inc\Recycle.inc
+section.end
+
+section.begin
+   CurrentState = Nothing
+   SaveVariables = False
+section.end
+

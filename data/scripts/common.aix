@@ -1,0 +1,2168 @@
+section.begin
+   Name = OnInit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnInit.inc
+section.end
+
+section.begin
+   Name = OnSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnSave.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnLoad.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = DoNothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\DoNothing.inc
+section.end
+
+section.begin
+   Name = OnLoadFull
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnLoadFull.inc
+section.end
+
+section.begin
+   Name = SaveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\SaveMap.inc
+section.end
+
+section.begin
+   Name = LoadMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\LoadMap.inc
+section.end
+
+section.begin
+   Name = InitRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\InitRegisters.inc
+section.end
+
+section.begin
+   Name = SetHexVertices
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\menu\SetHexVertices.inc
+section.end
+
+// VVK.Menu.Helper
+section.begin
+   Name = VVK.Menu.Helper
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\menu\VVK.Menu.Helper.inc
+section.end
+
+section.begin
+   Name = MakeStratHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\MakeStratHexGrid.inc
+section.end
+
+section.begin
+   Name = SetupGridVertices
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\SetupGridVertices.inc
+section.end
+
+section.begin
+   Name = RandomizeVertices
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\RandomizeVertices.inc
+section.end
+
+section.begin
+   Name = MakeTerrain
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\MakeTerrain.inc
+section.end
+
+section.begin
+   Name = StartTutorial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\StartTutorial.inc
+section.end
+
+section.begin
+   Name = AstralBorders
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\AstralBorders.inc
+section.end
+
+section.begin
+   Name = ShardEdges
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ShardEdges.inc
+section.end
+
+section.begin
+   Name = ShardEdgesScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ShardEdgesScenery.inc
+section.end
+
+section.begin
+   Name = TerrainScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\TerrainScenery.inc
+section.end
+
+section.begin
+   Name = ShardWater
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ShardWater.inc
+section.end
+
+section.begin
+   Name = MountainScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\MountainScenery.inc
+section.end
+
+section.begin
+   Name = WaterScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\WaterScenery.inc
+section.end
+
+section.begin
+   Name = ProvinceScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ProvinceScenery.inc
+section.end
+
+section.begin
+   Name = Roads
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\Roads.inc
+section.end
+
+section.begin
+   Name = Landmarks
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\Landmarks.inc
+section.end
+
+section.begin
+   Name = TownScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\TownScenery.inc
+section.end
+
+section.begin
+   Name = InnerBuildScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\InnerBuildScenery.inc
+section.end
+
+section.begin
+   Name = ProvinceFlags
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ProvinceFlags.inc
+section.end
+
+section.begin
+   Name = ProvinceFX
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ProvinceFX.inc
+section.end
+
+section.begin
+   Name = Comets
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\Comets.inc
+section.end
+
+section.begin
+   Name = CreateTown
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateTown.inc
+section.end
+
+section.begin
+   Name = CreateSeasons
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateSeasons.inc
+section.end
+
+section.begin
+   Name = CreateCameras
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateCameras.inc
+section.end
+
+section.begin
+   Name = CreateDemoGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateDemoGame.inc
+section.end
+
+section.begin
+   Name = CreateDemoBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateDemoBattle.inc
+section.end
+
+section.begin
+   Name = CreateDemoBattleAfterGen
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateDemoBattleAfterGen.inc
+section.end
+
+section.begin
+   Name = CreateInetGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateInetGame.inc
+section.end
+
+section.begin
+   Name = CreateInetBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateInetBattle.inc
+section.end
+
+section.begin
+   Name = CreateInetBattleAfterGen
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CreateInetBattleAfterGen.inc
+section.end
+
+section.begin
+   Name = ResizeCamera
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ResizeCamera.inc
+section.end
+
+section.begin
+   Name = CalcUnitInvAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CalcUnitInvAbility.inc
+section.end
+
+section.begin
+   Name = CalcUnitHeroBonus
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CalcUnitHeroBonus.inc
+section.end
+
+section.begin
+   Name = CalcUnitAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CalcUnitAbility.inc
+section.end
+
+section.begin
+   Name = CheckUnitAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CheckUnitAbility.inc
+section.end
+
+section.begin
+   Name = DrawStratHexGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\DrawStratHexGrid.inc
+section.end
+
+section.begin
+   Name = ShowProvinceInfo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ShowProvinceInfo.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+   Code[*] = ;
+section.end
+
+section.begin
+   Name = GetEventParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetEventParserByID.inc
+section.end
+
+// GetUnitSlotsByRank
+section.begin
+   Name = GetUnitSlotsByRank
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitSlotsByRank.inc
+section.end
+
+section.begin
+   Name = GetUnitIDByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitIDByName.inc
+section.end
+
+section.begin
+   Name = GetProvinceParserByUID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetProvinceParserByUID.inc
+section.end
+
+section.begin
+   Name = GetSpellParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetSpellParserByID.inc
+section.end
+
+section.begin
+   Name = GetInnerBuildParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetInnerBuildParserByID.inc
+section.end
+
+section.begin
+   Name = GetOuterBuildParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetOuterBuildParserByID.inc
+section.end
+
+section.begin
+   Name = GetBuildGroupByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetBuildGroupByID.inc
+section.end
+
+section.begin
+   Name = GetMedalParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetMedalParserByID.inc
+section.end
+
+section.begin
+   Name = GetAbilityParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetAbilityParserByID.inc
+section.end
+
+section.begin
+   Name = GetAbilityParserByIndex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetAbilityParserByIndex.inc
+section.end
+
+section.begin
+   Name = GetSkillParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetSkillParserByID.inc
+section.end
+
+section.begin
+   Name = GetEffectParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetEffectParserByID.inc
+section.end
+
+section.begin
+   Name = GetEffectParserByAbilityID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetEffectParserByAbilityID.inc
+section.end
+
+section.begin
+   Name = GetHeroBonusParserByClass
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetHeroBonusParserByClass.inc
+section.end
+
+section.begin
+   Name = GetSiteParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetSiteParserByID.inc
+section.end
+
+section.begin
+   Name = GetTerrainParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetTerrainParserByID.inc
+section.end
+
+section.begin
+   Name = GetTerrainParserByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetTerrainParserByName.inc
+section.end
+
+section.begin
+   Name = GetGuardParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetGuardParserByID.inc
+section.end
+
+section.begin
+   Name = GetGuardTypeParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetGuardTypeParserByID.inc
+section.end
+
+section.begin
+   Name = GetHeroClassParserByIndex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetHeroClassParserByIndex.inc
+section.end
+
+section.begin
+   Name = GetExtHeroClassParserByIndices
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetExtHeroClassParserByIndices.inc
+section.end
+
+section.begin
+   Name = GetResourceParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetResourceParserByID.inc
+section.end
+
+section.begin
+   Name = GetResourceParserByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetResourceParserByName.inc
+section.end
+
+section.begin
+   Name = GetItemParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetItemParserByID.inc
+section.end
+
+section.begin
+   Name = GetExtItemParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetExtItemParserByID.inc
+section.end
+
+section.begin
+   Name = GetExtItemIDByType
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetExtItemIDByType.inc
+section.end
+
+section.begin
+   Name = GetItemTypeParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetItemTypeParserByID.inc
+section.end
+
+section.begin
+   Name = GetItemSetParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetItemSetParserByID.inc
+section.end
+
+section.begin
+   Name = GetItemSlotParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetItemSlotParserByID.inc
+section.end
+
+section.begin
+   Name = GetDefenderParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetDefenderParserByID.inc
+section.end
+
+section.begin
+   Name = GetRitualParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetRitualParserByID.inc
+section.end
+
+section.begin
+   Name = GetProvLevelParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetProvLevelParserByID.inc
+section.end
+
+section.begin
+   Name = GetHeroPriceParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetHeroPriceParserByID.inc
+section.end
+
+section.begin
+   Name = GetRaceParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetRaceParserByID.inc
+section.end
+
+section.begin
+   Name = GetRaceParserByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetRaceParserByName.inc
+section.end
+
+section.begin
+   Name = GetResourceNameByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetResourceNameByID.inc
+section.end
+
+section.begin
+   Name = GetProvTypeParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetProvTypeParserByID.inc
+section.end
+
+section.begin
+   Name = GetProvTypeParserByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetProvTypeParserByName.inc
+section.end
+
+section.begin
+   Name = GetProfileParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetProfileParserByID.inc
+section.end
+
+section.begin
+   Name = GetBFObjectParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetBFObjectParserByID.inc
+section.end
+
+section.begin
+   Name = GetBFObjectParserByName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetBFObjectParserByName.inc
+section.end
+
+section.begin
+   Name = GetEncounterParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetEncounterParserByID.inc
+section.end
+
+section.begin
+   Name = GetQuestParserByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetQuestParserByID.inc
+section.end
+
+section.begin
+   Name = GetQuestParserCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetQuestParserCount.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = GetUnitExpByLevel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitExpByLevel.inc
+section.end
+
+section.begin
+   Name = GetUnitLevelByExp
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitLevelByExp.inc
+section.end
+
+section.begin
+   Name = AddMedalByUnitParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\AddMedalByUnitParser.inc
+section.end
+
+section.begin
+   Name = GetFreePosInArmy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetFreePosInArmy.inc
+section.end
+
+section.begin
+   Name = IsPosFreeInArmy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\IsPosFreeInArmy.inc
+section.end
+
+section.begin
+   Name = AddUnitToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\AddUnitToParser.inc
+section.end
+
+section.begin
+   Name = MakeUnitStartUpgrades
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\MakeUnitStartUpgrades.inc
+section.end
+
+section.begin
+   Name = GetUnitPropertyByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitPropertyByParser.inc
+section.end
+
+section.begin
+   Name = StringReplaceParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\StringReplaceParams.inc
+section.end
+
+section.begin
+   Name = CheckItemAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CheckItemAbility.inc
+section.end
+
+section.begin
+   Name = CheckDefenderAbility
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CheckDefenderAbility.inc
+section.end
+
+section.begin
+   Name = AddSite
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\AddSite.inc
+section.end
+
+section.begin
+   Name = GetUnitPaymentByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitPaymentByParser.inc
+section.end
+
+section.begin
+   Name = GetUnitPowerByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitPowerByID.inc
+section.end
+
+section.begin
+   Name = GetDefArmyPayment
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetDefArmyPayment.inc
+section.end
+
+section.begin
+   Name = IsInnerBuildNeeded
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\IsInnerBuildNeeded.inc
+section.end
+
+section.begin
+   Name = GetDefenderPowerByID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetDefenderPowerByID.inc
+section.end
+
+section.begin
+   Name = GetDefenderArmyPower
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetDefenderArmyPower.inc
+section.end
+
+section.begin
+   Name = GetDefenderPower
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetDefenderPower.inc
+section.end
+
+section.begin
+   Name = GetUnitArmyMoralBonus
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitArmyMoralBonus.inc
+section.end
+
+section.begin
+   Name = GetUnitNeededExpForLevel
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitNeededExpForLevel.inc
+section.end
+
+section.begin
+   Name = CheckHumanPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CheckHumanPlayer.inc
+section.end
+
+section.begin
+   Name = GetUnitRandomUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetUnitRandomUpgrade.inc
+section.end
+
+section.begin
+   Name = AddUnitUpgrade
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\AddUnitUpgrade.inc
+section.end
+
+section.begin
+   Name = UnitLevelUpByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\UnitLevelUpByParser.inc
+section.end
+
+section.begin
+   Name = CalcUnitLevelByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CalcUnitLevelByParser.inc
+section.end
+
+section.begin
+   Name = GetCurrentArmyParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetCurrentArmyParser.inc
+section.end
+
+section.begin
+   Name = GetGuardTypeByGuardID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetGuardTypeByGuardID.inc
+section.end
+
+section.begin
+   Name = CheckTutorialProgress
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\CheckTutorialProgress.inc
+section.end
+
+section.begin
+   Name = ResetButtonsBlink
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\ResetButtonsBlink.inc
+section.end
+
+section.begin
+   Name = SetButtonsEnabled
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\SetButtonsEnabled.inc
+section.end
+
+section.begin
+   Name = SaveConvertBatRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\SaveConvertBatRegisters.inc
+section.end
+
+section.begin
+   Name = LoadConvertBatRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\LoadConvertBatRegisters.inc
+section.end
+
+section.begin
+   Name = SaveBattleRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\SaveBattleRegisters.inc
+section.end
+
+section.begin
+   Name = LoadBattleRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\LoadBattleRegisters.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = bat.InitGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.InitGrid.inc
+section.end
+
+section.begin
+   Name = bat.ClearGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.ClearGrid.inc
+section.end
+
+section.begin
+   Name = bat.FieldScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.FieldScenery.inc
+section.end
+
+section.begin
+   Name = bat.BackgroundScenery
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.BackgroundScenery.inc
+section.end
+
+section.begin
+   Name = bat.AddPlayers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.AddPlayers.inc
+section.end
+
+section.begin
+   Name = bat.DoAddPlayers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.DoAddPlayers.inc
+section.end
+
+section.begin
+   Name = bat.GenerateMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GenerateMap.inc
+section.end
+
+section.begin
+   Name = bat.ProceedHeroDeath
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.ProceedHeroDeath.inc
+section.end
+
+section.begin
+   Name = bat.ProceedHeroesDeath
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.ProceedHeroesDeath.inc
+section.end
+
+section.begin
+   Name = bat.ExitBattleMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.ExitBattleMode.inc
+section.end
+
+section.begin
+   Name = bat.DoExitBattleMode
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.DoExitBattleMode.inc
+section.end
+
+section.begin
+   Name = bat.AfterBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.AfterBattle.inc
+section.end
+
+section.begin
+   Name = bat.AfterVirtualBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.AfterVirtualBattle.inc
+section.end
+
+section.begin
+   Name = bat.CheckNewBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.CheckNewBattle.inc
+section.end
+
+section.begin
+   Name = bat.DoCheckNewBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.DoCheckNewBattle.inc
+section.end
+
+section.begin
+   Name = bat.EndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.EndTurn.inc
+section.end
+
+section.begin
+   Name = bat.GetHexByPosition
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetHexByPosition.inc
+section.end
+
+section.begin
+   Name = bat.GetWinPlayerHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetWinPlayerHandle.inc
+section.end
+
+section.begin
+   Name = bat.GetTerrainType
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetTerrainType.inc
+section.end
+
+section.begin
+   Name = bat.IsPointInHex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.IsPointInHex.inc
+section.end
+
+section.begin
+   Name = bat.SetQuickBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.SetQuickBattle.inc
+section.end
+
+section.begin
+   Name = bat.CheckEndBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.CheckEndBattle.inc
+section.end
+
+section.begin
+   Name = bat.AddUnitsExperience
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.AddUnitsExperience.inc
+section.end
+
+// bat.DoFinishBattle
+section.begin
+   Name = bat.DoFinishBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.DoFinishBattle.inc
+section.end
+
+// bat.GetAfterBattleHandles
+section.begin
+   Name = bat.GetAfterBattleHandles
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetAfterBattleHandles.inc
+section.end
+
+section.begin
+   Name = bat.FinishBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.FinishBattle.inc
+section.end
+
+section.begin
+   Name = bat.WinBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.WinBattle.inc
+section.end
+
+section.begin
+   Name = bat.LoseBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.LoseBattle.inc
+section.end
+
+section.begin
+   Name = bat.CalcActions
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.CalcActions.inc
+section.end
+
+section.begin
+   Name = bat.GetEffectIDByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetEffectIDByParser.inc
+section.end
+
+section.begin
+   Name = bat.IsTeleportHex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.IsTeleportHex.inc
+section.end
+
+section.begin
+   Name = bat.IsNeighbourHexes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.IsNeighbourHexes.inc
+section.end
+
+section.begin
+   Name = bat.ResetData
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.ResetData.inc
+section.end
+
+section.begin
+   Name = bat.GetMageTowerPosition
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetMageTowerPosition.inc
+section.end
+
+section.begin
+   Name = bat.TowerShoot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.TowerShoot.inc
+section.end
+
+section.begin
+   Name = bat.GetHit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetHit.inc
+section.end
+
+section.begin
+   Name = bat.CheckSiege
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.CheckSiege.inc
+section.end
+
+section.begin
+   Name = bat.CheckSabotage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.CheckSabotage.inc
+section.end
+
+section.begin
+   Name = bat.AfterWatchBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.AfterWatchBattle.inc
+section.end
+
+section.begin
+   Name = bat.ShowUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.ShowUnits.inc
+section.end
+
+section.begin
+   Name = bat.DoProjectileDamage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.DoProjectileDamage.inc
+section.end
+
+section.begin
+   Name = bat.SwitchInterfacePlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.SwitchInterfacePlayer.inc
+section.end
+
+section.begin
+   Name = bat.SwitchToMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.SwitchToMap.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = map.InitGrid
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.InitGrid.inc
+section.end
+
+section.begin
+   Name = map.CalcTurnResouruces
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CalcTurnResouruces.inc
+section.end
+
+section.begin
+   Name = map.ChangeResPrice
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ChangeResPrice.inc
+section.end
+
+section.begin
+   Name = map.GetHexByCoord
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetHexByCoord.inc
+section.end
+
+section.begin
+   Name = map.IsProvincePlayable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.IsProvincePlayable.inc
+section.end
+
+section.begin
+   Name = map.GetNeighbourHexByIndex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetNeighbourHexByIndex.inc
+section.end
+
+section.begin
+   Name = map.GetArmyUnitsList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetArmyUnitsList.inc
+section.end
+
+section.begin
+   Name = map.GetArmyUnitsCount
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetArmyUnitsCount.inc
+section.end
+
+section.begin
+   Name = map.GetArmyDebugUnitsList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetArmyDebugUnitsList.inc
+section.end
+
+section.begin
+   Name = map.GetArmyFullUnitsList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetArmyFullUnitsList.inc
+section.end
+
+section.begin
+   Name = map.AddGuard
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.AddGuard.inc
+section.end
+
+section.begin
+   Name = map.RestoreUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.RestoreUnits.inc
+section.end
+
+section.begin
+   Name = map.ChangeArmyLife
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ChangeArmyLife.inc
+section.end
+
+section.begin
+   Name = map.GetFreeGarrisonSlot
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetFreeGarrisonSlot.inc
+section.end
+
+section.begin
+   Name = map.GetGarrisonSlotUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetGarrisonSlotUnit.inc
+section.end
+
+section.begin
+   Name = map.IsGarrisonSlotAvailable
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.IsGarrisonSlotAvailable.inc
+section.end
+
+section.begin
+   Name = map.AddUnitToGarrison
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.AddUnitToGarrison.inc
+section.end
+
+section.begin
+   Name = map.ArrangeUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ArrangeUnits.inc
+section.end
+
+section.begin
+   Name = map.CompareArmiesStrength
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CompareArmiesStrength.inc
+section.end
+
+section.begin
+   Name = map.SetProvincePort
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.SetProvincePort.inc
+section.end
+
+section.begin
+   Name = map.GetSiegePowerByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetSiegePowerByParser.inc
+section.end
+
+section.begin
+   Name = map.ContinueSiegeByParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ContinueSiegeByParser.inc
+section.end
+
+section.begin
+   Name = map.CheckSiegeAction
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CheckSiegeAction.inc
+section.end
+
+section.begin
+   Name = map.GetArmyHeroHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetArmyHeroHandle.inc
+section.end
+
+section.begin
+   Name = map.ChangeArmyMoral
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ChangeArmyMoral.inc
+section.end
+
+section.begin
+   Name = map.ClearMoveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ClearMoveMap.inc
+section.end
+
+section.begin
+   Name = map.MakeMoveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.MakeMoveMap.inc
+section.end
+
+section.begin
+   Name = map.IsParentBuilding
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.IsParentBuilding.inc
+section.end
+
+section.begin
+   Name = map.ApplyBonuses
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ApplyBonuses.inc
+section.end
+
+section.begin
+   Name = map.SetupShardPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.SetupShardPlayer.inc
+section.end
+
+section.begin
+   Name = map.ShardFinishGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ShardFinishGame.inc
+section.end
+
+section.begin
+   Name = map.CheckQueryExecute
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CheckQueryExecute.inc
+section.end
+
+section.begin
+   Name = map.CalcMoveMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CalcMoveMap.inc
+section.end
+
+section.begin
+   Name = map.GetActivePlayers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetActivePlayers.inc
+section.end
+
+section.begin
+   Name = map.GetResPriceValue
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetResPriceValue.inc
+section.end
+
+section.begin
+   Name = map.AddTutorialHero
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.AddTutorialHero.inc
+section.end
+
+section.begin
+   Name = map.FadeToBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.FadeToBattle.inc
+section.end
+
+section.begin
+   Name = map.LanSetupBattleIDs
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.LanSetupBattleIDs.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = map.StartHumanTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.StartHumanTurn.inc
+section.end
+
+section.begin
+   Name = map.ProcessAIPlayers
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ProcessAIPlayers.inc
+section.end
+
+section.begin
+   Name = map.BeforeEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.BeforeEndTurn.inc
+section.end
+
+section.begin
+   Name = map.CheckNextPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CheckNextPlayer.inc
+section.end
+
+section.begin
+   Name = map.EndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.EndTurn.inc
+section.end
+
+section.begin
+   Name = map.FillProvMoveHeroes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.FillProvMoveHeroes.inc
+section.end
+
+section.begin
+   Name = map.MoveHeroes
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.MoveHeroes.inc
+section.end
+
+section.begin
+   Name = map.FindConflicts
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.FindConflicts.inc
+section.end
+
+section.begin
+   Name = map.AfterEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.AfterEndTurn.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = map.LanCheckEndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.LanCheckEndTurn.inc
+section.end
+
+section.begin
+   Name = map.LanSyncInfo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.LanSyncInfo.inc
+section.end
+
+section.begin
+   Name = map.LanCreatePlayersParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.LanCreatePlayersParser.inc
+section.end
+
+section.begin
+   Name = map.SyncConflicts
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.SyncConflicts.inc
+section.end
+
+section.begin
+   Name = map.UpdateConflictsInfo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.UpdateConflictsInfo.inc
+section.end
+
+section.begin
+   Name = map.LanSendPlayersInfo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.LanSendPlayersInfo.inc
+section.end
+
+section.begin
+   Name = map.SaveQueryRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.SaveQueryRegisters.inc
+section.end
+
+section.begin
+   Name = map.LoadQueryRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.LoadQueryRegisters.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = map.FogHideObjects
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.FogHideObjects.inc
+section.end
+
+section.begin
+   Name = map.CalcFogMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.CalcFogMap.inc
+section.end
+
+section.begin
+   Name = map.DoFogOfWar
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoFogOfWar.inc
+section.end
+
+section.begin
+   Name = map.DoFogFadeOff
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoFogFadeOff.inc
+section.end
+
+section.begin
+   Name = map.DoHideFog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoHideFog.inc
+section.end
+
+section.begin
+   Name = map.DoShowFog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoShowFog.inc
+section.end
+
+section.begin
+   Name = map.DoDestroyFog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoDestroyFog.inc
+section.end
+
+section.begin
+   Name = map.DoCreateMapShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoCreateMapShadow.inc
+section.end
+
+section.begin
+   Name = map.DoHideMapShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoHideMapShadow.inc
+section.end
+
+section.begin
+   Name = map.DoShowMapShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoShowMapShadow.inc
+section.end
+
+section.begin
+   Name = map.DoCreateBattleShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoCreateBattleShadow.inc
+section.end
+
+section.begin
+   Name = map.DoHideBattleShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoHideBattleShadow.inc
+section.end
+
+section.begin
+   Name = map.DoShowBattleShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoShowBattleShadow.inc
+section.end
+
+section.begin
+   Name = map.DoCreateCastleShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoCreateCastleShadow.inc
+section.end
+
+section.begin
+   Name = map.DoHideCastleShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoHideCastleShadow.inc
+section.end
+
+section.begin
+   Name = map.DoShowCastleShadow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoShowCastleShadow.inc
+section.end
+
+section.begin
+   Name = map.DoUpdateCastleClouds
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoUpdateCastleClouds.inc
+section.end
+
+section.begin
+   Name = map.DoCreateMapRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoCreateMapRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoDestroyMapRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoDestroyMapRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoShowMapRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoShowMapRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoHideMapRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoHideMapRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoCreateCastleRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoCreateCastleRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoDestroyCastleRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoDestroyCastleRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoShowCastleRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoShowCastleRainbow.inc
+section.end
+
+section.begin
+   Name = map.DoHideCastleRainbow
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.DoHideCastleRainbow.inc
+section.end
+
+section.begin
+   Name = map.GetProvinceName
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetProvinceName.inc
+section.end
+
+section.begin
+   Name = map.ShopRoller
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ShopRoller.inc
+section.end
+
+section.begin
+   Name = map.GetDefenderArmyLifePercent
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.GetDefenderArmyLifePercent.inc
+section.end
+
+section.begin
+   Name = map.SetQueryRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.SetQueryRegisters.inc
+section.end
+
+section.begin
+   Name = map.ResetEncRegisters
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.ResetEncRegisters.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = astral.Create
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.Create.inc
+section.end
+
+section.begin
+   Name = astral.Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.Initial.inc
+section.end
+
+section.begin
+   Name = astral.DoCreateBackground
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.DoCreateBackground.inc
+section.end
+
+section.begin
+   Name = astral.DoCreateSpaceFog
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.DoCreateSpaceFog.inc
+section.end
+
+section.begin
+   Name = astral.DoCreateMeteors
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.DoCreateMeteors.inc
+section.end
+
+section.begin
+   Name = astral.InitCampaign
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.InitCampaign.inc
+section.end
+
+section.begin
+   Name = astral.NewCampaign
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.NewCampaign.inc
+section.end
+
+section.begin
+   Name = astral.LoadShards
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.LoadShards.inc
+section.end
+
+section.begin
+   Name = astral.BackToCampaign
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.BackToCampaign.inc
+section.end
+
+section.begin
+   Name = astral.CreateMainShard
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CreateMainShard.inc
+section.end
+
+section.begin
+   Name = astral.CreateBuildingList
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CreateBuildingList.inc
+section.end
+
+section.begin
+   Name = astral.CreateShard
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CreateShard.inc
+section.end
+
+section.begin
+   Name = astral.AddShards
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.AddShards.inc
+section.end
+
+section.begin
+   Name = astral.AttackShard
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.AttackShard.inc
+section.end
+
+section.begin
+   Name = astral.CaptureShard
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CaptureShard.inc
+section.end
+
+section.begin
+   Name = astral.CaptureShardLogic
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CaptureShardLogic.inc
+section.end
+
+section.begin
+   Name = astral.EndTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.EndTurn.inc
+section.end
+
+section.begin
+   Name = astral.SaveShardCoords
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.SaveShardCoords.inc
+section.end
+
+section.begin
+   Name = astral.AddHiddenBuildings
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.AddHiddenBuildings.inc
+section.end
+
+section.begin
+   Name = astral.FinishCampaign
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.FinishCampaign.inc
+section.end
+
+section.begin
+   Name = astral.BanishPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.BanishPlayer.inc
+section.end
+
+section.begin
+   Name = astral.AttackPlayer
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.AttackPlayer.inc
+section.end
+
+section.begin
+   Name = astral.ResetData
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.ResetData.inc
+section.end
+
+section.begin
+   Name = astral.Main
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.Main.inc
+section.end
+
+section.begin
+   Name = astral.IsEndGame
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.IsEndGame.inc
+section.end
+
+section.begin
+   Name = astral.WorldAttack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.WorldAttack.inc
+section.end
+
+section.begin
+   Name = astral.CheckQuest
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CheckQuest.inc
+section.end
+
+section.begin
+   Name = astral.CheckEndTutorial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.CheckEndTutorial.inc
+section.end
+
+section.begin
+   Name = astral.GenerateTutorialMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.GenerateTutorialMap.inc
+section.end
+
+section.begin
+   Name = astral.PickAllBonuses
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\astral\astral.PickAllBonuses.inc
+section.end
+
+section.begin
+   Name = ----------------------------------------
+   LanClientExecute = True
+   UsedFileName =
+section.end
+
+section.begin
+   Name = menu.DoInitial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\menu\menu.DoInitial.inc
+section.end
+
+section.begin
+   Name = menu.DoCreateBack
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\menu\menu.DoCreateBack.inc
+section.end
+
+section.begin
+   Name = menu.DoCreateShards
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\menu\menu.DoCreateShards.inc
+section.end
+
+section.begin
+   Name = bat.GetOppositeHex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetOppositeHex.inc
+section.end
+
+// bat.KillDeadUnits
+section.begin
+   Name = bat.KillDeadUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.KillDeadUnits.inc
+section.end
+
+section.begin
+   Name = map.vvk.GenerateMiniMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.vvk.GenerateMiniMap.inc
+section.end
+
+section.begin
+   Name = map.vvk.MiniMapHelper
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.vvk.MiniMapHelper.inc
+section.end
+
+section.begin
+   Name = vvk.bat.GetWallTowerDataByIndex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\vvk.bat.GetWallTowerDataByIndex.inc
+section.end
+
+section.begin
+   Name = map.vvk.ImportHeroFromAstral
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\map\map.vvk.ImportHeroFromAstral.inc
+section.end
+
+section.begin
+   Name = UnitFromParserToArray
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\UnitFromParserToArray.inc
+section.end
+
+section.begin
+   Name = UnitFromArrayToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\UnitFromArrayToParser.inc
+section.end
+
+section.begin
+   Name = GetHeroImportData
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\GetHeroImportData.inc
+section.end
+
+section.begin
+   Name = vvk.RebuildGlobals
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\vvk.RebuildGlobals.inc
+section.end
+
+section.begin
+   Name = DataBanReplacement
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\DataBanReplacement.inc
+section.end
+
+section.begin
+   Name = bat.GetStrengthDisparity
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\bat\bat.GetStrengthDisparity.inc
+section.end
+
+section.begin
+   CurrentState = OnInit
+   SaveVariables = False
+section.end
+

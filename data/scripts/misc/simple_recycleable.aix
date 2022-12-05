@@ -1,0 +1,40 @@
+section.begin
+   Name = DoNothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\DoNothing.inc
+section.end
+
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\misc\simple_recycleable.inc\Initial.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\OnAfterLoad.inc
+section.end
+
+section.begin
+   Name = Recycle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\common.inc\Recycle.inc
+section.end
+
+section.begin
+   CurrentState = DoNothing
+   SaveVariables = False
+section.end
+

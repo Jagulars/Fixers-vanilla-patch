@@ -1,0 +1,378 @@
+//
+// pars.script
+//
+
+// _pars_ParserReset
+//
+procedure _pars_ParserReset(var parser : TParserData);
+begin
+   parser.handle := 0;
+   parser.number := 0;
+end;
+
+// _pars_ParserIsEmpty
+//
+function _pars_ParserIsEmpty(var parser : TParserData) : Boolean;
+begin
+   parser.number := ParserGetCountByHandle(parser.handle);
+   Result := (parser.number=0);
+end;
+
+// _pars_EmptyParser
+//
+function _pars_ParserEmpty() : Integer;
+begin
+   Result := _misc_ParserGetOrCreateByKey('empty',true);
+end;
+
+// _pars_ParserCreate
+//
+function _pars_ParserCreate(const key : String; var parser : TParserData) : Integer;
+begin
+   //parser.handle := ParserCreate(key);
+   parser.handle := _misc_ParserGetOrCreateByKey(key,true);
+   parser.number := ParserGetCountByHandle(parser.handle);
+   Result := parser.handle;
+end;
+
+// _pars_ParserClear
+//
+procedure _pars_ParserClear(var parser : TParserData);
+begin
+   ParserClearByHandle(parser.handle);
+   //parser.handle := 0;
+   parser.number := ParserGetCountByHandle(parser.handle);
+end;
+
+// _pars_ParserFree
+//
+procedure _pars_ParserFree(var parser : TParserData);
+begin
+   ParserFreeByHandle(parser.handle);
+   parser.handle := 0;
+   parser.number := 0;
+end;
+
+// _pars_ParserAddChild
+//
+function _pars_ParserAddChild(var parent : TParserData; const key : String; var child : TParserData) : Integer;
+begin
+   child.handle := ParserAddChildByIndex(parent.handle, key);
+   child.number := ParserGetCountByHandle(child.handle);
+   parent.number := ParserGetCountByHandle(parent.handle);
+   Result := child.handle;
+end;
+
+// _pars_ParserLoadFromFile
+//
+function _pars_ParserLoadFromFile(const fileName : String; var parser : TParserData) : Boolean;
+begin
+   ParserSelectByHandle(parser.handle);
+   Result := ParserLoadFromFile(fileName);
+   parser.number := ParserGetCountByHandle(parser.handle);
+end;
+
+// _pars_ParserAssign
+//
+procedure _pars_ParserAssign(const source : TParserData; var destination : TParserData);
+begin
+   ParserSelectByHandle(destination.handle);
+   ParserCopyFromByHandle(source.handle);
+   destination.number := ParserGetCountByHandle(destination.handle);
+end;
+
+// _pars_ParserSelect
+//
+function _pars_ParserSelect(const key : String; var parser : TParserData) : Integer;
+begin
+   //parser.handle := ParserSelectByKey(key);
+   parser.handle := _misc_ParserGetOrCreateByKey(key,false);
+   parser.number := ParserGetCountByHandle(parser.handle);
+   Result := parser.handle;
+end;
+
+// _pars_ParserSelectByHandle
+//
+function _pars_ParserSelectByHandle(var parser : TParserData) : Integer;
+begin
+   parser.number := ParserGetCountByHandle(parser.handle);
+   Result := ParserSelectByHandle(parser.handle);
+end;
+
+// _pars_ParserSelectByKey
+//
+function _pars_ParserSelectByKey(const parent : TParserData; const key : String; var child : TParserData) : Integer;
+begin
+   child.handle := ParserSelectByHandleByKey(parent.handle, key);
+   child.number := ParserGetCountByHandle(child.handle);
+   Result := child.handle;
+end;
+
+// _pars_ParserSelectByIndex
+//
+function _pars_ParserSelectByIndex(const parent : TParserData; const index : Integer; var child : TParserData) : Integer;
+begin
+   child.handle := ParserSelectByHandleByIndex(parent.handle, index);
+   child.number := ParserGetCountByHandle(child.handle);
+   Result := child.handle;
+end;
+
+// _pars_ParserSelectByKeyIndex
+//
+function _pars_ParserSelectByKeyIndex(const parent : TParserData; const key : String; const index : Integer; var child : TParserData) : Integer;
+begin
+   child.handle := ParserSelectByHandleByIndex(ParserSelectByHandleByKey(parent.handle, key), index);
+   child.number := ParserGetCountByHandle(child.handle);
+   Result := child.handle;
+end;
+
+// _pars_ParserGetOrCreateByKey
+//
+function _pars_ParserGetOrCreateByKey(var parent : TParserData; const key : String; var child : TParserData; const clear : Boolean) : Integer;
+begin
+   _pars_ParserSelectByKey(parent, key, child);
+   if (child.handle=0) then
+      _pars_ParserAddChild(parent, key, child)
+   else
+   begin
+      if (clear) then
+         _pars_ParserClear(child);
+   end;
+   Result := child.handle;
+end;
+
+// _pars_ParserGetOrCreateByKeyExt
+//
+function _pars_ParserGetOrCreateByKeyExt(const parent : Integer; const key : String; var child : TParserData; const clear : Boolean) : Integer;
+begin
+   child.handle := ParserSelectByHandleByKey(parent, key);
+   if (child.handle=0) then
+      child.handle := ParserAddChildByIndex(parent, key)
+   else
+   begin
+      if (clear) then
+         ParserClearByHandle(child.handle);
+   end;
+   child.number := ParserGetCountByHandle(child.handle);
+   Result := child.handle;
+end;
+
+// _pars_ParserGetValue
+//
+procedure _pars_ParserGetValue(const parser : TParserData; const key : String; var value : String);
+begin
+   value := ParserGetValueByKeyByHandle(parser.handle, key);
+end;
+
+// _pars_ParserGetIntValue
+//
+function _pars_ParserGetIntValue(const parser : TParserData; const key : String) : Integer;
+begin
+   Result := ParserGetIntValueByKeyByHandle(parser.handle, key);
+end;
+
+// _pars_ParserGetFloatValue
+//
+function _pars_ParserGetFloatValue(const parser : TParserData; const key : String) : Float;
+begin
+   Result := ParserGetFloatValueByKeyByHandle(parser.handle, key);
+end;
+
+// _pars_ParserGetBoolValue
+//
+function _pars_ParserGetBoolValue(const parser : TParserData; const key : String) : Boolean;
+begin
+   Result := ParserGetBoolValueByKeyByHandle(parser.handle, key);
+end;
+
+// _pars_ParserSetValue
+//
+procedure _pars_ParserSetValue(const parser : TParserData; const key, value : String);
+begin
+   ParserSetValueByKeyByHandle(parser.handle, key, value);
+end;
+
+// _pars_ParserSetIntValue
+//
+procedure _pars_ParserSetIntValue(const parser : TParserData; const key : String; const value : Integer);
+begin
+   ParserSetIntValueByKeyByHandle(parser.handle, key, value);
+end;
+
+// _pars_ParserSetFloatValue
+//
+procedure _pars_ParserSetFloatValue(const parser : TParserData; const key : String; const value : Float);
+begin
+   ParserSetFloatValueByKeyByHandle(parser.handle, key, value);
+end;
+
+// _pars_ParserSetBoolValue
+//
+procedure _pars_ParserSetBoolValue(const parser : TParserData; const key : String; const value : Boolean);
+begin
+   ParserSetBoolValueByKeyByHandle(parser.handle, key, value);
+end;
+
+// _pars_ParserGetValueByIndex
+//
+procedure _pars_ParserGetValueByIndex(const parser : TParserData; const index : Integer; var value : String);
+begin
+   value := ParserGetValueByIndexByHandle(parser.handle, index);
+end;
+
+// _pars_ParserGetIntValueByIndex
+//
+function _pars_ParserGetIntValueByIndex(const parser : TParserData; const index : Integer) : Integer;
+begin
+   Result := ParserGetIntValueByIndexByHandle(parser.handle, index);
+end;
+
+// _pars_ParserGetFloatValueByIndex
+//
+function _pars_ParserGetFloatValueByIndex(const parser : TParserData; const index : Integer) : Float;
+begin
+   Result := ParserGetFloatValueByIndexByHandle(parser.handle, index);
+end;
+
+// _pars_ParserGetBoolValueByIndex
+//
+function _pars_ParserGetBoolValueByIndex(const parser : TParserData; const index : Integer) : Boolean;
+begin
+   Result := ParserGetBoolValueByIndexByHandle(parser.handle, index);
+end;
+
+// _pars_ParserGetIntValueExt
+//
+function _pars_ParserGetIntValueExt(const parser : Integer; const key : String) : Integer;
+begin
+   var s : String;
+   s := ParserGetValueByKeyByHandle(parser, key);
+   if s = '' then
+      Result := -1
+   else
+      Result := ParserGetIntValueByKeyByHandle(parser, key);
+end;
+
+// _pars_CheckBoolValue
+//
+function _pars_CheckBoolValue(parser : Integer; key : String; value : Boolean) : Boolean;
+begin
+   Result := ParserIsValueExistsByKeyByHandle(parser, key);
+   if not Result then
+      ParserSetBoolValueByKeyByHandle(parser, key, value);
+end;
+
+// _pars_CheckIntValue
+//
+function _pars_CheckIntValue(parser : Integer; key : String; value : Integer) : Boolean;
+begin
+   Result := ParserIsValueExistsByKeyByHandle(parser, key);
+   if not Result then
+      ParserSetIntValueByKeyByHandle(parser, key, value);
+end;
+
+// _pars_CheckFloatValue
+//
+function _pars_CheckFloatValue(parser : Integer; key : String; value : Float) :  Boolean;
+begin
+   Result := ParserIsValueExistsByKeyByHandle(parser, key);
+   if not Result then
+      ParserSetFloatValueByKeyByHandle(parser, key, value);
+end;
+
+// _pars_CheckValue
+//
+function _pars_CheckValue(parser : Integer; key, value : String) : Boolean;
+begin
+   Result := ParserIsValueExistsByKeyByHandle(parser, key);
+   if not Result then
+      ParserSetValueByKeyByHandle(parser, key, value);
+end;
+
+procedure _pars_PackValue(p,value : Integer; key : String);
+begin
+   if value <> 0 then
+      ParserSetIntValueByKeyByHandle(p,key,value);
+end;
+
+procedure _pars_PackBoolValue(p : Integer; value : Boolean; key : String);
+begin
+   if value then
+      ParserSetIntValueByKeyByHandle(p,key,1);
+end;
+
+procedure _pars_PackStrValue(p : Integer; value : String; key : String);
+begin
+   if value <> '' then
+      ParserSetValueByKeyByHandle(p,key,value);
+end;
+
+function _pars_UnPackValue(p : Integer; key : String) : Integer;
+begin
+   Result := ParserGetIntValueByKeyByHandle(p,key);
+end;
+
+function _pars_UnPackBoolValue(p : Integer; key : String) : Boolean;
+begin
+   var v : Integer = ParserGetIntValueByKeyByHandle(p,key);
+
+   if v <> 0 then Result := true
+   else Result := false;
+end;
+
+procedure _pars_UnPackStrValue(p : Integer; var value : String; key : String);
+begin
+   var s : String = ParserGetValueByKeyByHandle(p,key);
+   if s <> '' then
+      value := s
+   else
+      value := '';
+end;
+
+function _pars_GetBoolValueByKeyByHandleDef(const struct : Integer; const key : String; const def : Boolean) : Boolean;
+begin
+   if (ParserGetValueByKeyByHandle(struct, key)<>'') then
+   Result := ParserGetBoolValueByKeyByHandle(struct, key)
+   else
+   Result := def;
+end;
+
+function _pars_GetIntValueByKeyByHandleDef(const struct : Integer; const key : String; const def : Integer) : Integer;
+begin
+   if (ParserGetValueByKeyByHandle(struct, key)<>'') then
+   Result := ParserGetIntValueByKeyByHandle(struct, key)
+   else
+   Result := def;
+end;
+
+function _pars_GetFloatValueByKeyByHandleDef(const struct : Integer; const key : String; const def : Float) : Float;
+begin
+   if (ParserGetValueByKeyByHandle(struct, key)<>'') then
+   Result := ParserGetFloatValueByKeyByHandle(struct, key)
+   else
+   Result := def;
+end;
+
+function _pars_SelectOrCreateByKey(p : Integer; key : String) : Integer;
+begin
+   Result := ParserSelectByHandleByKey(p, key);
+   if Result = 0 then
+      Result := ParserAddChildByIndex(p, key);
+end;
+
+
+function _pars_ExistsByID(pParser, id : Integer) : Boolean;
+begin
+   Result := False;
+   
+   var i, pChild : Integer;
+   for i := 0 to ParserGetCountByHandle(pParser)-1 do
+   begin
+      pChild := ParserSelectByHandleByIndex(pParser, i);
+      if ParserGetIntValueByKeyByHandle(pChild, 'ID') = id then
+      begin
+         Result := True;
+         break;
+      end;
+   end;
+end;

@@ -1,0 +1,4300 @@
+// constants
+section.begin
+
+   gc_DataModName = 'Fixers_Vanilla_Patch';       // don't use whitespace here, underscores will be converted to whitespace in game.
+   gc_DataModVersion = '0.9.5103';                  // example: 10.0 is greater than 2.0 whereas 1.2 is greater than 1.10
+   gc_DataModFile = 'data.600.pak';               // this should be the distribution name of the .PAK file that contains the mod.
+   gc_TestVersion = False;                         // if true, won't give an update notice when another player with an earlier version detects this version. Also, turns on logging if not enabled in the configuration file.
+
+
+   // Stack Variables
+   //__________________________________________
+
+   // battle unit stack, each added/changed/removed variable should also be done in object_types.cfg
+   gc_stack_unit_iUnitID            = 0; // 'id'   - unit id
+   gc_stack_unit_iCurLife           = 1; // 'chp'  - unit current hp
+   gc_stack_unit_iMovePoints        = 2; // 'cmp'  - unit current move points
+   gc_stack_unit_iCurMoral          = 3; // 'cmor' - unit current moral
+   gc_stack_unit_iFear              = 4; // 'fear' - unit fear
+   gc_stack_unit_iCurStamina        = 5; // 'cst'  - unit current stamina
+   gc_stack_unit_iCurAmmo           = 6; // 'cam'  - unit current ammo
+   gc_stack_unit_iMeleeDamageDone   = 7; // 'mdd'  - unit melee damage done
+   gc_stack_unit_iRangeDamageDone   = 8; // 'rdd'  - unit range damage done
+   gc_stack_unit_iMeleeDamageTaken  = 9; // 'mdt'  - unit melee damage taken
+   gc_stack_unit_iRangeDamageTaken  = 10; // 'rdt' - unit range damage taken
+   gc_stack_unit_iSpellDamageTaken  = 11; // 'sdt' - unit spell damage taken
+   gc_stack_unit_iPoisonDamageTaken = 12; // 'pdt' - unit poison damage taken
+   gc_stack_unit_iDamageHealed      = 13; // 'dh'  - unit damage healed
+   gc_stack_unit_iSpellCast         = 14; // 'spc' - unit spell cast
+   gc_stack_unit_iEnemyShooted      = 15; // 'esh' - unit enemy shooted
+   gc_stack_unit_iEnemySlayed       = 16; // 'esl' - unit enemy slayed
+   gc_stack_unit_iStaminaUsed       = 17; // 'stu' - unit stamina used
+   gc_stack_unit_iSurvived          = 18; // 'sur' - unit survived
+   gc_stack_unit_iActiveAbility     = 19; // 'ab'  - unit active ability
+   gc_stack_unit_bIsHero            = 20; // 'hero' - is unit hero
+   gc_stack_unit_bCanAct            = 21; // 'act'  - unit can act
+   gc_stack_unit_bResting           = 22; // 'rest' - unit in rest mode
+   gc_stack_unit_bCanMarch          = 23; // 'mar'  - unit can do march
+   gc_stack_unit_bParry             = 24; // 'par'  - unit can parry
+   gc_stack_unit_bSummoned          = 25; // 'sum'  - unit is summoned
+   gc_stack_unit_iTargetUID         = 26; // 'tuid' - target game object UID
+   gc_stack_unit_bActionTaken       = 27; // 'ad'   - has unit done something on current turn
+   gc_stack_unit_iShotFrame         = 28; // 'sfr'  - shot animation frame index
+   gc_stack_unit_iExperience        = 29; // 'exp'  - experience
+   gc_stack_unit_iLevel             = 30; // 'lvl'  - level
+   gc_stack_unit_iBattleX           = 31; // 'bx'   - x coord on battle grid
+   gc_stack_unit_iBattleY           = 32; // 'by'   - y coord on battle grid
+   gc_stack_unit_iCurrentX          = 33; // 'cx'   - current x coord on battle grid
+   gc_stack_unit_iCurrentY          = 34; // 'cy'   - current y coord on battle grid
+   gc_stack_unit_iParserHandle      = 35; // 'phnd' - army unit parser handle
+   gc_stack_unit_iHeroUID           = 36; // 'huid' - uid of parent hero handle if unit is hero
+   gc_stack_unit_bArchmage          = 37; // 'am'   - is unit archmage
+   gc_stack_unit_iActionType        = 38; // 'at'   - target action type (0 - none, 1 - melee attack, 2 - ranged attack, 3 - heal)
+   gc_stack_unit_bDoubleShot        = 39; // 'ds'   - is double shot activated
+   gc_stack_unit_bRoundAttack       = 40; // 'ra'   - is round attack activated
+   gc_stack_unit_bCrush             = 41; // 'cr'   - is crush activated
+   gc_stack_unit_iArmyIndex         = 42; // 'aind' - unit index in army parser
+   gc_stack_unit_iRemainsUID        = 43; // 'ruid' - remains game object uid
+   gc_stack_unit_iSpellTargetUID    = 44; // 'stuid' - spell target game object UID
+   gc_stack_unit_iSpellID           = 45; // 'sid'  - spellID, unit are casting
+   gc_stack_unit_iTargetX           = 46; // 'tx'   - target x coord on battle grid, used for spells
+   gc_stack_unit_iTargetY           = 47; // 'ty'   - target y coord on battle grid, used for spells
+   gc_stack_unit_iCastFrame         = 48; // 'cfr'  - cast animation frame index
+   gc_stack_unit_iCAttackCount      = 49; // 'cac'  - counter attack counter
+   gc_stack_unit_iTrueFormUID       = 50; // 'tf'   - uid of true form game object (for polymorph ability)
+   gc_stack_unit_iKillerUID         = 51; // 'kuid' - UID of killer unit
+   gc_stack_unit_bRaiseCorpse       = 52; // 'rc'   - raise corpse after death animation
+   gc_stack_unit_iLastX             = 53; // 'lx'   - last x coord on battle grid
+   gc_stack_unit_iLastY             = 54; // 'ly'   - last y coord on battle grid
+   gc_stack_unit_bTurnDone          = 55; // 'td'   - is turn done
+   gc_stack_unit_bBlocked           = 56; // 'bl'   - is unit blocked
+   gc_stack_unit_iSoundTag          = 57; // 'st'   - sound emitter tag
+   gc_stack_unit_iDamageFrame       = 58; // 'dfr'  - damage animation frame index
+   gc_stack_unit_iArrowsCount       = 59; // 'arr'  - flying arrows count
+   gc_stack_unit_iAddHealPoints     = 60; // 'ahp'  - additional heal points
+   gc_stack_unit_iShotCount         = 61; // 'shc'  - shot count
+   gc_stack_unit_iVisualLifeMod     = 62; // 'vlm'  - unit visual hp modificator
+   gc_stack_unit_iVisualMoralMod    = 63; // 'vmm'  - unit visual moral modificator
+   gc_stack_unit_iVisualStaminaMod  = 64; // 'vsm'  - unit visual stamina modificator
+   gc_stack_unit_bStealthMode       = 65; // 'sm'   - is stealth ability activated
+   gc_stack_unit_bFireBreath        = 66; // 'fb'   - is fire breath ability activated
+   gc_stack_unit_bPoisonBite        = 67; // 'pb'   - is poison bite ability activated
+   gc_stack_unit_bAstralStrike      = 68; // 'astr' - is astral strike ability activated
+   gc_stack_unit_bLunge             = 69; // 'lun'  - is lunge ability activated
+   gc_stack_unit_bRunBack           = 70; // 'run'  - need to run back
+   gc_stack_unit_bStatic            = 71; // 'stat' - is unit static
+   gc_stack_unit_iTransformTimer    = 72; // 'trt'  - transformation to another unit timer
+   gc_stack_unit_iTransformUnitID   = 73; // 'trid' - transformation unit id
+   gc_stack_unit_iDeathAnimReady    = 74; // 'dar'  - how many hits need to be animated before death animation
+   gc_stack_unit_iFacing            = 75; // 'face' - facing hex of the unit for non-graphical calculations, 0 - left, 1 - left up, 2 - right up, 3 - right, 4 - right down, 5 - left down
+   gc_stack_unit_bCanCast           = 76; // 'ccs'  - can cast spell
+   gc_stack_unit_bCanShoot          = 77; // 'csh'  - can shoot
+   gc_stack_unit_bCanMelee          = 78; // 'cme'  - can attack in melee
+   gc_BattleUnitStackVarsCount      = 79; // used for safety check, the actual count is determined in object_types.cfg
+
+   // battle unit properties
+   gc_battle_unit_iMaxLife       = 0; // unit max hp property index
+   gc_battle_unit_iMaxStamina    = 1; // unit max stamina property index
+   gc_battle_unit_iMaxMoral      = 2; // unit max morale property index
+   gc_battle_unit_iAttack        = 3; // unit attack property index
+   gc_battle_unit_iCounterAttack = 4; // unit counter attack property index
+   gc_battle_unit_iSpeed         = 5; // unit speed property index
+   gc_battle_unit_iDefence       = 6; // unit defence property index
+   gc_battle_unit_iRangedDefence = 7; // unit ranged defence property index
+   gc_battle_unit_iResist        = 8; // unit resist property index
+   gc_battle_unit_iRangedAttack  = 9; // unit ranged atack property index
+   gc_battle_unit_iShootingRange = 10; // unit shooting range property index
+   gc_battle_unit_iMaxAmmo       = 11; // unit max ammo property index
+   gc_battle_unit_iCurLife       = 12; // unit cur hp property index
+   gc_battle_unit_iCurStamina    = 13; // unit cur stamina property index
+   gc_battle_unit_iMovePoints    = 14; // unit move points property index
+   gc_battle_unit_iCurMoral      = 15; // unit cur moral property index
+   gc_battle_unit_iCurAmmo       = 16; // unit cur ammo property index
+
+  // projectile stack, each added/changed/removed variable should also be done also in object_types.cfg
+   gc_stack_projectile_iOwner      = 0; // 'own'  - ownerUID of projectile
+   gc_stack_projectile_iType       = 1; // 'typ'  - type of projectile (stone, arrow, fire,...)
+   gc_stack_projectile_iTarget     = 2; // 'tar'  - targetUID of projectile
+   gc_stack_projectile_iTPosX      = 3; // 'tpx'  - target pos X, in case when targetUID=0
+   gc_stack_projectile_iTPosY      = 4; // 'tpy'  - target pos Y, in case when targetUID=0
+   gc_stack_projectile_iFlyTextUID = 5; // 'ft'   - fly text UID
+
+   gc_player_Units_RaceTag       = 50;
+   gc_player_Buildings_RaceTag   = 10;
+
+   gc_projectile_iEmpty           = 0;
+   gc_projectile_iTower           = 1;
+   gc_projectile_iMagicTower1     = 2; // sorcererscircle2
+   gc_projectile_iMagicTower2     = 3; // library5
+   gc_projectile_iMagicTower3     = 4; // magetower2
+   gc_projectile_iMagicTower4     = 5; // magictower
+   gc_projectile_iMagicTower5     = 6; // bf_magictower (lightningtower)
+   gc_projectile_iSpell           = 100;
+
+   gc_stack_flytext_iValue          = 0; // 'val' - value
+   gc_stack_flytext_iType           = 1; // 'typ' - type
+   gc_stack_flytext_TUID            = 2; // 'tuid' - target object uid
+
+   gc_flytext_fLevelDeltaTime       = 0.64; // fly text level delay
+   gc_flytext_QueueDelay            = 0.64;  // see gFloatRegister_BattleFlyTextTime
+   gc_flytext_CategoryShift         = $18;
+   gc_flytext_CategoryMask          = $f;
+   gc_flytext_IDMask                = $ffffff;
+   gc_flytext_CategoryMisc          = 0;
+   gc_flytext_CategoryParam         = 1;
+   gc_flytext_CategorySpell         = 2;
+   gc_flytext_CategoryAbility       = 3;
+   gc_flytext_AttrValue             = 1;
+   gc_flytext_AttrPlusSign          = 2;
+   gc_flytext_AttrMinusSign         = 4;
+   gc_flytext_AttrSkipZero          = 8;
+   gc_flytext_AttrValueAsID         = $10;
+   gc_flytext_AttrIDAsKey           = $20;
+
+   // global map constants
+
+   gc_map_GOStack_Province_iParserHandle = 0; // 'prov' - province parser handle
+   //gc_map_GOStack_Province_iUpdate       = 1; // 'upd' - update province hud
+
+   // map hero stack, each added/changed/removed variable should also be done also in object_types.cfg
+   gc_map_GOStack_MapUnit_iIndex       = 0; // 'ind'   - unit index in parser
+   gc_map_GOStack_MapUnit_iLevel       = 1; // 'lvl'   - unit level
+   gc_map_GOStack_MapUnit_iLeader      = 2; // 'lead'  - unit leader property
+   gc_map_GOStack_MapUnit_iHealth      = 3; // 'hlth'  - unit health property
+   gc_map_GOStack_MapUnit_iMagic       = 4; // 'mag'   - unit magic property
+   gc_map_GOStack_MapUnit_iExp         = 5; // 'exp'   - unit experience
+   gc_map_GOStack_MapUnit_iCurHP       = 6; // 'chp'   - unit current health points property
+   gc_map_GOStack_MapUnit_iClassInd1   = 7; // 'cl1'   - unit class1 index
+   gc_map_GOStack_MapUnit_iClassInd2   = 8; // 'cl2'   - unit class2 index
+   gc_map_GOStack_MapUnit_iTargetUID   = 9; // 'tuid'  - unit target province uid
+   gc_map_GOStack_MapUnit_iCurrentUID  = 10; // 'cuid' - unit current province uid
+   gc_map_GOStack_MapUnit_iBeforeTargetUID = 11; // 'buid' - unit before target province uid
+   gc_map_GOStack_MapUnit_iTask        = 12; // 'task' - unit task (action type) // 0 - rest, 1 - move, 2 - province exploration, 3 - robber, 4 - attack site, 5 - siege castle
+   gc_map_GOStack_MapUnit_iAITask      = 13; // 'ait'  - unit AI task (action type) // 0 - attack, 1 - hire units, 2 - learn spells, 3 - buy items, 4 - explore province, 5 - neutralize siege
+   gc_map_GOStack_MapUnit_iActionType  = 14; // 'atyp' - unit action type // 0 - rest, 1 - move, 2 - province exploration, 3 - robber, 4 - attack site, 5 - siege castle
+   gc_map_GOStack_MapUnit_iSiteIndex   = 15; // 'sind' - index of site in province to attack
+   gc_map_GOStack_MapUnit_iCampUID     = 16; // 'cp'   - attacked camper province uid
+   gc_map_GOStack_MapUnit_iCampTurn    = 17; // 'ct'   - camper province turn counter
+   gc_map_GOStack_MapUnit_bIsDead      = 18; // 'dead' - is unit dead
+   gc_map_GOStack_MapUnit_iCastleDist  = 19; // 'cd'   - distance to castle
+   gc_map_GOStack_MapUnit_iNotInBattle = 20; // 'nib'  - turns without battle
+   gc_map_GOStack_MapUnit_iMaxTargets  = 21; // 'mt'   - max attack targets
+   gc_map_GOStack_MapUnit_iTargetPower = 22; // 'tp'   - target province army power
+   gc_map_GOStack_MapUnit_iExploreTarget = 23; // 'et'   - explore target province
+   gc_map_GOStack_MapUnit_iGarrisonUID   = 24; // 'guid' - nearest available province with garrison
+   gc_map_GOStack_MapUnit_iMoveBonus     = 25; // 'mb'   - unit move bonus
+   gc_map_GOStack_MapUnit_iUpdate        = 26; // 'upd'  - update interface
+   gc_map_GOStack_MapUnit_fCurToMaxLife  = 27; // 'cml'  - ratio current life to maximum life
+   gc_map_GOStack_MapUnit_iLife          = 28; // 'life' - unit life bonus
+   gc_map_GOStack_MapUnit_iReachPoint    = 29; // 'rp'   - last reachable track point in track point list
+   gc_map_GOStack_MapUnit_iReachUID      = 30; // 'ruid' - reachable province uid
+   gc_map_GOStack_MapUnit_iUID           = 31; // 'uid'  - hero uid
+   gc_map_GOStack_MapUnit_iAIPower       = 32; // 'aip'  - strongest guard power defeated by ai hero
+   gc_map_GOStack_MapUnit_bBuried        = 33; // 'bur'  - hero permanently gone
+   gc_ShardHeroStackVarsCount            = 34;
+
+   // shard player stack, each added/changed/removed variable should also be done also in object_types.cfg
+   gc_map_PLStack_MapUnit_iGold            = 0; // 'gold'  - player gold amount
+   gc_map_PLStack_MapUnit_iGem             = 1; // 'gem'   - player gems amount
+   gc_map_PLStack_MapUnit_iKarma           = 2; // 'krm'   - player karma
+   gc_map_PLStack_MapUnit_iProfile         = 3; // 'pr'    - AI player's profile
+   gc_map_PLStack_MapUnit_iDifficulty      = 4; // 'dif'   - player difficulty
+   gc_map_PLStack_MapUnit_iCorruption      = 5; // 'cor'   - player corruption
+   gc_map_PLStack_MapUnit_iGoldInc         = 6; // 'igold' - player gold income
+   gc_map_PLStack_MapUnit_iGemInc          = 7; // 'igem'  - player gem income
+   gc_map_PLStack_MapUnit_iGoldLimit       = 8; // 'gol'   - player gold limit
+   gc_map_PLStack_MapUnit_iGemLimit        = 9; // 'gel'   - player gem limit
+   gc_map_PLStack_MapUnit_iCanInnerBuild   = 10; // 'cib'  - allowed inner buildings count per turn
+   gc_map_PLStack_MapUnit_iCanOuterBuild   = 11; // 'cob'  - allowed outer buildings count per turn
+   gc_map_PLStack_MapUnit_iCanHire         = 12; // 'ch'   - allowed defenders count per turn
+   gc_map_PLStack_MapUnit_iCanCast         = 13; // 'cc'   - allowed rituals count
+   gc_map_PLStack_MapUnit_iPlanned         = 14; // 'pib'  - planned inner building ID
+   gc_map_PLStack_MapUnit_iUnion           = 15; // 'ur'   - race ID with which player has union
+   gc_map_PLStack_MapUnit_bCampPlayer      = 16; // 'cp'   - is player from campaign
+   gc_map_PLStack_MapUnit_iAIUnionRace     = 17; // 'aiur' - race ID with which AI player wants union
+   gc_map_PLStack_MapUnit_iAIUnionCounter  = 18; // 'aiuc' - timer of reaching union with race
+   gc_map_PLStack_MapUnit_bCanSpend        = 19; // 'cs'   - can player spend money
+   gc_map_PLStack_MapUnit_bExpandHalted    = 20; // 'bex'  - does player have targets for attack
+   gc_map_PLStack_MapUnit_iCastleProvIndex = 21; // 'cind' - castle province index
+   gc_map_PLStack_MapUnit_bIsInGame        = 22; // 'game' - is player still in game
+   gc_map_PLStack_MapUnit_iWinCount        = 23; // 'wc'   - win count
+   gc_map_PLStack_MapUnit_iLoseCount       = 24; // 'lc'   - lose count
+   gc_map_PLStack_MapUnit_iQuestDone       = 25; // 'qd'   - completed quests count
+   gc_map_PLStack_MapUnit_iDragonHunt      = 26; // 'dh'   - count of robbed dragon's lair
+   gc_map_PLStack_MapUnit_iExplore         = 27; // 'exp'  - total exploration value
+   gc_map_PLStack_MapUnit_iTimeShift       = 28; // 'ts'   - back in the past count
+   gc_map_PLStack_MapUnit_iPillage         = 29; // 'pil'  - total pillaged gold
+   gc_map_PLStack_MapUnit_iArenaWinCount   = 30; // 'awc'  - arena win count (for the strongest league)
+   gc_map_PLStack_MapUnit_bSet             = 31; // 'set'  - is set of rare items collected
+   gc_map_PLStack_MapUnit_bNoLoss          = 32; // 'nl'   - no lost units in battles
+   gc_map_PLStack_MapUnit_iLordIndex       = 33; // 'lord' - AI player's lord index
+   gc_map_PLStack_MapUnit_iCampGoldAdd     = 34; // 'cgold' - campaign gold add
+   gc_map_PLStack_MapUnit_iCampGemAdd      = 35; // 'cgem'  - campaign gem add
+   gc_map_PLStack_MapUnit_iCampScore       = 36; // 'csc'   - campaign score gained on shard
+   gc_map_PLStack_MapUnit_iLastInnerBuilding  = 37; // 'lib'   - last inner built building id or 0 if nothing built yet
+   gc_map_PLStack_MapUnit_iLastOuterBuilding = 38; // 'lob'   - last outer built building id or 0 if nothing built yet
+   gc_map_PLStack_MapUnit_iInnerBuildingsQueue = 39; // 'ibq'   - string array of queued buildings
+   gc_map_PLStack_MapUnit_iAchievemntsFlags = 40; // 'acf'   - dword - achievements flags: &1 - shop was attacked, &0xff00 - counter for undead
+   gc_map_PLStack_MapUnit_iSelectedUID     = 41; // 'suid'   - selected hero uid
+   gc_map_PLStack_MapUnit_bAllowHireHero   = 42; // 'ahh'  - allow hire hero
+   gc_map_PLStack_MapUnit_bTurnFinished    = 43; // 'turn'  - is human player turn finished
+   gc_map_PLStack_MapUnit_iGoldGain        = 44; // 'goga'  - total gold gain from irregular sources, no losses are accounted, used to estimate how quickly gold can be gained when not spending any.
+   gc_map_PLStack_MapUnit_iGemGain         = 45; // 'gega'  - total gem gain from irregular sources
+   gc_map_PLStack_MapUnit_iGoldIncIrreg    = 46; // 'goir'  - approximate gold income from irregular sources per turn
+   gc_map_PLStack_MapUnit_iGemIncIrreg     = 47; // 'geir'  - approximate gem income from irregular sources per turn
+   gc_ShardPlayerStackVarsCount            = 48;
+
+   // names
+   gc_map_PLStack_MapUnit_nLastInnerBuilding  = 'lib'; // 'lib'   - last inner built building id or 0 if nothing built yet
+   gc_map_PLStack_MapUnit_nLastOuterBuilding = 'lob'; // 'lob'   - last outer built building id or 0 if nothing built yet
+   gc_map_PLStack_MapUnit_nInnerBuildingsQueue = 'ibq'; // 'ibq'   - string array of queued buildings
+   gc_map_PLStack_MapUnit_nAchievemntsFlags = 'acf'; // 'acf'
+
+   // fx
+   gc_GOStack_fx_init          = 0;  // 'init'       initialized [0..1] : (0 is empty, 1 is initialized)
+   gc_GOStack_fx_status        = 1;  // 'status'     status [0..3] : (0 just was born, 1 - run, 2 - sleep, 3 - finished)
+   gc_GOStack_fx_bornTime      = 2;  // 'borntime'   created time
+   gc_GOStack_fx_progTime      = 3;  // 'progtime'   last progress time
+   gc_GOStack_fx_nodeName      = 4;  // 'nodename'   runned node name
+   gc_GOStack_fx_nextNode      = 5;  // 'nextnode'   order to nextNode
+   gc_GOStack_fx_nodeTarget    = 6;  // 'nodetarget' gIntRegister_fxTree_NodeTarget
+   gc_GOStack_fx_coordTargetX  = 7;  // 'coordtargetx' gFloatRegister_fxTree_CoordTargetX
+   gc_GOStack_fx_coordtargetY  = 8;  // 'coordtargety' gFloatRegister_fxTree_CoordTargetY
+   gc_GOStack_fx_coordtargetZ  = 9;  // 'coordtargetz' gFloatRegister_fxTree_CoordTargetZ
+   gc_GOStack_fx_sleepTime     = 10; // 'sleepTime'    gFloatRegister_fxTree_SleepTime sleep time on run node
+   gc_GOStack_fx_destroyNode   = 11; // 'destroyNode'   run node before destroy
+   gc_GOStack_fx_destroyBehav  = 12; // 'destroyBehav'  destroy owned behaviours
+   gc_GOStack_fx_destroyEffect = 13; // 'destroyEffect' destroy owned effects
+   gc_GOStack_fx_destroyDecal  = 14; // 'destroyDecal'  destroy owned decals
+   gc_GOStack_fx_destroyObject = 15; // 'destroyObject' destroy owned objects
+   gc_GOStack_fx_id            = 16; // 'id'
+
+   // fow
+   gc_GOStack_fowcloud_init   = 0; // 'init'    initialized [0..1] : (0 is empty, 1 is initialized)
+   gc_GOStack_fowcloud_status = 1; // 'status'  status [0..4] : (default 0 born, 1 idle, 2 flash, 3 lightning)
+   gc_GOStack_fowcloud_prohnd = 2; // 'prohnd'  province handle
+   gc_GOStack_fowcloud_proind = 3; // 'proind'  province index
+   gc_GOStack_fowcloud_proacc = 4; // 'proacc'  province accurate [0..1] : (default 0 false, 1 true)
+   gc_GOStack_fowcloud_profog = 5; // 'profog'  province fogtype [0..2] : (default 0 fog, 1 easy fog, 2 no fog)
+   gc_GOStack_fowcloud_curind = 6; // 'curind'  current index effects : (0 empty (default), 1 fog, 2 accurate, 3 light, 4 flashfog, 5 flashaccurate, 6 flashlight)
+   gc_GOStack_fowcloud_tarind = 7; // 'tarind'  target index effects (to lerp)
+   gc_GOStack_fowcloud_flanum = 8; // 'flanum'  flash counter
+   gc_GOStack_fowcloud_lignum = 9; // 'lignum'  lightning counter
+
+   gc_GOStack_fowshadow_init  = 0; // 'init'    initialized [0..1] : (0 is empty, 1 is initialized)
+
+   gc_GOStack_fowrainbow_init = 0; // 'init'    initialized [0..2] : (0 is empty, 1 is map, 2 is castle)
+   gc_GOStack_fowrainbow_prov = 1; // 'prov'    province index
+
+   // astral stack variables
+   gc_astral_GOStack_bCaptured = 0; // 'cap' - is shard captured
+
+   // units\global
+   gc_battle_PLStack_iAttackMode    = 0; // 'amod' - player attack mode (0 - defence, 1 - attack)
+   gc_battle_PLStack_bAutoBattle    = 1; // 'auto' - player auto battle mode
+   gc_battle_PLStack_iLifeMod       = 2; // 'lmod' - player life modificator
+   gc_battle_PLStack_iCastMode      = 3; // 'cmod' - player cast mode (0 - no cast, 1 - cast no sacrifice spells, 2 - cast all spells)
+   gc_battle_PLStack_iGemSpent      = 4; // 'gsp'  - player gem spent during virtual battle
+   gc_battle_PLStack_iMoralBonus    = 5; // 'mb'   - player moral bonus from province buildings during defending fortifications
+   gc_battle_PLStack_iTargetUID     = 6; // 'tuid' - player towers target uid
+   gc_battle_PLStack_bInPanic       = 7; // 'pan'  - is player in panic
+   gc_battle_PLStack_bUnitPlacement = 8; // 'upl'  - if unit placement not finished
+   gc_battle_PLStack_iIdleMode      = 9; // 'idle' - see gc_battle_idle_ constants
+   gc_battle_PLStack_bCheckSabotage = 10; // 'csb'  - sabotage checked
+
+   // hero property indices
+   gc_map_hero_iLeaderProperty = 0;  // hero commander property index
+   gc_map_hero_iHealthProperty = 1;  // hero health property index
+   gc_map_hero_iMagicProperty  = 2;  // hero magic property index
+   gc_map_hero_iInitiative     = 3;  // hero initiative property index
+   gc_map_hero_iSiege          = 4;  // hero siege property index
+   gc_map_hero_iMobility       = 5;  // hero mobility property index
+   gc_map_hero_iLife           = 6;  // hero life property index
+   gc_map_hero_iAttack         = 7;  // hero attack property index
+   gc_map_hero_iCounterAttack  = 8;  // hero counter attack property index
+   gc_map_hero_iDefence        = 9;  // hero defence property index
+   gc_map_hero_iRangedDefence  = 10; // hero ranged defence property index
+   gc_map_hero_iResist         = 11; // hero resist property index
+   gc_map_hero_iSpeed          = 12; // hero speed property index
+   gc_map_hero_iRangedAttack   = 13; // hero ranged attack property index
+   gc_map_hero_iShootingRange  = 14; // hero shooting range property index
+   gc_map_hero_iAmmo           = 15; // hero ammo property index
+   gc_map_hero_iStamina        = 16; // hero stamina property index
+   gc_map_hero_iMoral          = 17; // hero moral property index
+
+
+   // Prototype IDs
+   //__________________________________________
+
+   // skills - should be here from the start of port!
+   gc_skill_scouting = 24;
+   gc_skill_diplomacy = 27;
+
+   // item types
+   gc_itemtype_spell = 10;
+   gc_itemtype_contract = 11;
+   gc_itemtype_scheme = 12;
+   gc_itemtype_ritual = 13;
+   gc_itemtype_innerscheme = 14;
+   gc_itemtype_setinfo = $10000;
+
+   // units
+   gc_unit_type_dragon = 60;
+   gc_unit_type_spideregg = 107;
+
+   // spells
+   gc_spell_web = 18;
+   gc_spell_stone_skin = 33;
+   gc_spell_word_of_ice = 40;
+   gc_spell_reincarnation = 59;
+
+   // abilities
+   gc_ability_life = 1;
+   gc_ability_attack = 2;
+   gc_ability_counterattack = 3;
+   gc_ability_defense = 4;
+   gc_ability_ranged_defense = 5;
+   gc_ability_resistance = 6;
+   gc_ability_speed = 7;
+   gc_ability_ranged_attack = 8;
+   gc_ability_shoot_range = 9;
+   gc_ability_ammo = 10;
+   gc_ability_stamina = 11;
+   gc_ability_morale = 12;
+   gc_ability_no_pain = 13;
+   gc_ability_flying = 14;
+   gc_ability_low_flying = 15;
+   gc_ability_first_strike = 16;
+   gc_ability_armor_piercing_shot = 17;
+   gc_ability_tireless = 18;
+   gc_ability_fearless = 19;
+   gc_ability_double_shot = 20;
+   gc_ability_stamina_recovery = 21;
+   gc_ability_meditation = 22;
+   gc_ability_ammo_gather = 23;
+   gc_ability_healing = 24;
+   gc_ability_berserk = 25;
+   gc_ability_cunning = 26; 
+   gc_ability_magic_strike = 27;
+   gc_ability_magic_shot = 28;
+   gc_ability_march = 29;
+   gc_ability_spell_immunity = 30;
+   gc_ability_dispel = 31;
+   gc_ability_forests_knowledge = 32;
+   gc_ability_hills_knowledge = 33;
+   gc_ability_swamps_knowledge = 34;
+   gc_ability_first_aid = 35;
+   gc_ability_immobilized = 36;
+   gc_ability_charge = 37;
+   gc_ability_does_not_fight = 38;
+   gc_ability_armorpierce_strike = 39;
+   gc_ability_stunning_blow = 40;
+   gc_ability_poison_attack = 41;
+   gc_ability_poison_immunity = 42;
+   gc_ability_hex = 43;
+   gc_ability_weapons_thief = 44;
+   gc_ability_armor_damage = 45;
+   gc_ability_stoned = 46;
+   gc_ability_web = 47;
+   gc_ability_regeneration = 48;
+   gc_ability_flesh_eater = 49;
+   gc_ability_fear = 50;
+   gc_ability_hamstring_bite = 51; 
+   gc_ability_damage_weapon = 52;
+   gc_ability_parry = 53;
+   gc_ability_forager = 54;
+   gc_ability_siege = 55;
+   gc_ability_marauder = 56;
+   gc_ability_soul_stealer = 57;
+   gc_ability_plunderer = 58;
+   gc_ability_crushing_blow = 59;
+   gc_ability_fire_arrows = 60;
+   gc_ability_crush_of_evil = 61;
+   gc_ability_unit_type_change = 62;
+   gc_ability_trumpling = 63;
+   gc_ability_necromant = 64;
+   gc_ability_common_attack = 65;
+   gc_ability_round_attack = 66;
+   gc_ability_roots = 67;
+   gc_ability_vampire = 68;
+   gc_ability_heavy_ammo = 69;
+   gc_ability_destroy_on_hit = 70;
+   gc_ability_life_drain = 71;
+   gc_ability_friendly_fire = 72;
+   gc_ability_change_side = 73;
+   gc_ability_reincarnation = 74;
+   gc_ability_extra_turn = 75;
+   gc_ability_precise_strike = 76;
+   gc_ability_precise_shot = 77;
+   gc_ability_poison_shot = 78;
+   gc_ability_vulnerability = 79;
+   gc_ability_disease = 80;
+   gc_ability_gold_income = 81;
+   gc_ability_gem_income = 82;
+   gc_ability_spells_learning = 83;
+   gc_ability_summon = 84;
+   gc_ability_undead_summon = 85;
+   gc_ability_fast_draw = 86;
+   gc_ability_sabotage = 87;
+   gc_ability_cantmove = 88;
+   gc_ability_teleport = 89;
+   gc_ability_phantom_form = 90;
+   gc_ability_dark_pact = 91;
+   gc_ability_suicide = 92;
+   gc_ability_cure_poison = 93;
+   gc_ability_looting = 94;
+   gc_ability_energy_control = 95;
+   gc_ability_poison_flesh = 96;
+   gc_ability_reincarnated = 97;
+   gc_ability_province_explorer = 98;
+   gc_ability_lower_upkeep = 99;
+   gc_ability_pathfinder = 100;
+   gc_ability_initiative = 101;
+   gc_ability_transformed = 102;
+   gc_ability_summoned = 103;
+   gc_ability_deadlands_knowledge = 104;
+   gc_ability_desert_knowledge = 105;
+   gc_ability_second_breath = 106;
+   gc_ability_swiftness = 107;
+   gc_ability_stone_immunity = 108;
+   gc_ability_web_immunity = 109;
+   gc_ability_heal_aura = 110;
+   gc_ability_stealth = 111;
+   gc_ability_oviposition = 112;
+   gc_ability_fire_ammo = 113;
+   gc_ability_fire_breath = 114;
+   gc_ability_fire_aura = 115;
+   gc_ability_witchery = 120;
+   gc_ability_fire_immunity = 121;
+   gc_ability_death_explosion = 122;
+   gc_ability_desecration = 123;         
+   gc_ability_zombie = 124;   
+   gc_ability_lightning = 125;
+   gc_ability_poison_bite = 126;
+   gc_ability_astral_strike = 127;
+   gc_ability_absorb_magic = 129;
+   gc_ability_stunning_missiles = 130;
+   gc_ability_repair = 132;
+   gc_ability_engineer = 133;
+   gc_ability_lunge = 134;
+   gc_ability_bolo = 135;
+   gc_ability_battle_cry = 136;
+   gc_ability_looter = 137;
+   gc_ability_sly_boots = 138;
+   gc_ability_backstab = 139;
+   gc_ability_backstab_immunity = 140;
+   // >= 900 - hero abilities
+   gc_ability_spell_power = 905;
+   gc_ability_spell_duration  = 906;
+   gc_ability_summoning_power = 907;
+   gc_ability_resistance_overrule = 908;
+   gc_ability_necro_summoning_power = 909;
+   gc_ability_necromancer_call = 910;
+   gc_ability_fast_draw = 980;
+   gc_ability_sabotage = 981;
+   gc_ability_plunder_bonus = 982;
+   gc_ability_low_spells_cost = 983;
+   gc_ability_archmage = 984;
+   gc_ability_diplomacy = 985;
+   gc_ability_army_exp_bonus = 990;
+   gc_ability_hero_exp_bonus = 991;
+   gc_ability_spoils = 992;
+   gc_ability_hero_ranged_attack = 993;
+   gc_ability_wand_mastery = 994;
+   gc_ability_item_maintenance = 995;
+   gc_ability_exploration = 996;
+   gc_ability_pay_army_less = 997;
+   gc_ability_mobility = 998;
+   gc_ability_initiative = 999;
+
+   gc_upgrade_stoned = 76;
+   gc_upgrade_web = 77;
+   gc_upgrade_desecration = 165;
+   gc_upgrade_bolo = 200;
+
+   // inner buildings abilities
+   gc_inner_build_shop = 1;
+   gc_inner_build_spells = 2;
+   gc_inner_build_goldgem_bonus = 5;
+   gc_inner_build_unit = 8;
+   gc_inner_build_resources_bonus = 9;
+   gc_inner_build_outer_build = 11;
+   gc_inner_build_population_mood = 12;
+   gc_inner_build_guard = 15;
+   gc_inner_build_recruits_experience = 20;
+   gc_inner_build_ritual = 27;
+   gc_inner_build_karma = 46;
+   gc_inner_build_race_alliance = 47;
+
+
+   // General
+   //__________________________________________
+
+   gc_dlc_path = '.\data\scripts\dyn\';
+   gc_dlc_ext = '*.script';
+   gc_allied_forces_id = 303730;
+   gc_fxTree_fileName = '.\data\pfx\fx.tree';
+   gc_fxTree_parsName = 'particles';
+   gc_ParsersRoot = 'RootParser';
+   gc_MaxSeedValue = 10000
+
+   gc_InGameModdingToolsEnabled = false;           // enables window designer, not recommended for normal players as they can screw things up for themselves.
+
+   // temporary uncompressed file name path relative to profiles root folder
+   gc_TempMap_FileName = 'temp_map';
+
+   gc_demoVersion = 0;
+
+   gc_AntiFreezeEnabled = false;
+   
+   // recycling game objects not recommended as they increase access violation errors for unknown reasons.
+   gc_RecycleHeroes = false;
+   gc_RecycleBattleField = false;
+   gc_RecycleVirtualUnits = false;
+   gc_RecyclePointers = false;
+   gc_RecycleProvinceFlags = false;
+   gc_RecycleProjectiles = false;
+   gc_RecycleFlyTexts = false;
+   gc_RecycleFX = false;
+   gc_RecycleGUI = true; // recycling GUI elements so far seems beneficial.
+   gc_LogRecycling = false;
+
+   // game modes (gIntRegister_CurGameMode)
+   gc_GameModeMenu = 0;
+   gc_GameModeStrategy = 1;
+   gc_GameModeTactics = 2;
+   gc_GameModeAstral = 3;
+
+   // game types (gGame.gametype)
+   gc_GameTypeNone = 0;
+   gc_GameTypeCustom = 1;
+   gc_GameTypeCampaign = 2;
+   gc_GameTypeHotseat = 3;
+   gc_GameTypeLanShard = 4;
+   gc_GameTypeLanBattle = 5;
+   gc_GameTypeHotseatBattle = 6;
+
+   // game type flags (see_misc_GetGameFlags)
+   gc_GameTypeFlagSingle = 1;
+   gc_GameTypeFlagInternet = 2;
+   gc_GameTypeFlagBattle = 4;
+   gc_GameTypeFlagCampaign = 8;
+   gc_GameTypeFlagMaster = $10;
+   gc_GameTypeFlagHumanBattle = $20;
+   gc_GameTypeFlagAstral = $40;
+   gc_GameTypeFlagMenu = $80;
+
+   // group names
+   gc_group_name_sGlobal         = 'global';
+   gc_group_name_sSelected       = 'sel';
+   gc_group_name_sMouse          = 'mouse';
+   gc_group_name_sShoot          = 'shoot';
+
+   // player names
+   gc_battle_attackPlayerName = 'player.attack';
+   gc_battle_defendPlayerName = 'player.defend';
+   gc_battle_virtAttackPlayerName = 'virt.player.attack';
+   gc_battle_virtDefendPlayerName = 'virt.player.defend';
+   gc_astral_shardsPlayerName = 'plShards';
+
+   // race tags
+   gc_map_MapProvinceRaceTag         = 100;
+   gc_map_PlayerRaceTag              = 200;
+   gc_astral_playerRaceTag           = 300;
+
+   // herb data
+   gc_MaxHerbSign = 26;
+   gc_MaxHerbColor = 16;
+   
+   // conflict types
+   gc_LanConflictNone = 0;
+   gc_LanConflictCancelSiege = 1;   // cancel siege in own province
+   gc_LanConflictSimMove = 2;       // simultaneous move into neutral province
+   gc_LanConflictProvAttack = 3;    // hero moved to enemy province
+   gc_LanConflictSiegeAttack = 4;   // walls < 50%, siege attack
+
+   gc_map_RemoveObjRadius            = 0.9; // radius of removing objects around province buildings (1.25 old value)
+   gc_map_RemoveObjCastleRadius      = 2.5; // radius of removing objects around castle
+   gc_map_sGlobalGroupName           = 'global'; // selected game object group name
+	
+	gc_SceneryDataPath = '.\data\gen\scenery.cfg';
+   gc_MaxPrunerObjects = 50; // no player should have objects with different basename a greater number than this.
+	
+	gc_ObjectFlagAstralDecor = 1
+	gc_ObjectFlagRitual = 2
+	gc_ObjectFlagBattleFX = 4
+	
+	gc_ProvincePopulationSceneryLimit = 3
+	gc_OuterBuildSceneryLimit = 4
+
+   // Prototype limits (for exclusions.cfg)
+   gc_max_worldrules = $20;
+   gc_max_spells = $80;
+   gc_max_units = $80;
+
+
+   // Sound & Music
+   //__________________________________________
+   gc_SoundFadeTime = 0.3;
+   gc_SoundLoopTagWalk = -1;
+   gc_SoundLoopTagFlight = -2;
+   gc_SoundLoopTagIdle = -3;
+   
+   gc_MusicTrackCount = 69;
+   gc_MaxBattleMusic = 5;
+   gc_WeakEnemyCompareLimit = 130;
+   gc_StrongEnemyCompareLimit = 60;
+
+
+   // Astral & Campaign
+   //__________________________________________
+   gc_MaxShardBonus = 5;
+   gc_MaxShardEvent = 5;
+   gc_MinShardBuild = 6;
+   gc_MaxShardBuild = 8;
+
+   gc_MaxCampPlayer = 17;
+   gc_MaxCampPlayerBuild = 300;
+
+   gc_MaxShards          = 150;
+   gc_MaxCampaignJournal = 24;
+   gc_MaxCampaignAward   = 9;
+   gc_MaxCampaignDialog  = 2000;
+   gc_MaxCampaignItem    = 20;
+   gc_MaxCampaignEvent   = 50;
+   gc_MaxCampaignQuest   = 20;
+   gc_MaxCampaignLord    = 16;
+   gc_MaxDialogAllowed   = 6;
+   gc_MaxPlayerBonus     = 2000; //gc_MaxShards*gc_MaxShardBonus
+   
+
+   // Shard
+   //__________________________________________
+   gc_StratHexSize       = 6.0
+   gc_MapSizeOptions     = 8
+   gc_MaxMapSize         = 20
+   gc_MaxMapGridCount    = 400 // gc_MaxMapSize*gc_MaxMapSize
+   gc_MaxMapPlayers      = 16
+   gc_MaxCustomMapPlayer = 16;
+   gc_MaxHeroesPerPlayer = 8;
+   gc_MaxLanMapHumanPlayers = 3;
+
+	gc_ShardVisualCrystal = 1
+	gc_ShardVisualDesert = 2
+	gc_ShardVisualDead = 3
+	gc_ShardVisualAutumn = 4
+	gc_ShardVisualVulcan = 5
+	gc_ShardVisualIce = 6
+
+   // Terrain Types
+   gc_MountainTerrainType = -2
+   gc_WaterTerrainType    = -1
+   gc_PlainTerrainType    = 1
+   gc_ForestTerrainType   = 2
+   gc_HillTerrainType     = 3
+   gc_SwampTerrainType    = 4
+   gc_DesertTerrainType   = 5
+   gc_DeadLandTerrainType = 6
+   
+   // Terrain Generation
+   gc_MinWaterPercent = 5;
+   gc_MaxWaterPercent = 45;
+   gc_WaterPercentFactor = 0.5;
+
+   gc_MinHillPercent = 15;
+   gc_MaxHillPercent = 35;
+   gc_HillPercentFactor = 0.5;
+
+   gc_MinForestPercent = 10;
+   gc_MaxForestPercent = 30;
+   gc_ForestPercentFactor = 0.5;
+
+   gc_MinSwampPercent = 10;
+   gc_MaxSwampPercent = 30;
+   gc_SwampPercentFactor = 0.5;
+
+   gc_MinDesertPercent = 5;
+   gc_MaxDesertPercent = 15;
+   gc_DesertPercentFactor = 0.5;
+
+   gc_MinDeadLandPercent = 4;
+   gc_MaxDeadLandPercent = 12;
+   gc_DeadLandPercentFactor = 0.5;
+
+   gc_MinIslesPercent = 0;
+   gc_MaxIslesPercent = 20;
+   gc_IslesPercentFactor = 0.5;
+
+   gc_MinDissolve = 10;
+   gc_MaxDissolve = 50;
+   gc_DissolveFactor = 0.5;
+	
+	gc_WaterNameShardMap = 'GlobalMap';
+	
+	
+	// Stronghold
+   //__________________________________________
+   gc_map_CastleRightX  = 45;
+   gc_map_CastleBottomY = 43;
+	gc_WaterNameTown = 'townwater';
+	gc_WaterNameInnerBuild = 'placeWater';
+
+
+   // Provinces
+   //__________________________________________
+   gc_map_ProvinceEventFreq = 3;  // event frequency in percents
+   gc_MaxProvinceLevel   = 11
+   gc_AttitudeTime       = 20
+   gc_GuardRessTime      = 4
+   gc_MaxUnrest          = 500
+   gc_MaxProvinceSite    = 30
+   
+   // province update flags Province->'UpdateFlags'
+   gc_province_use_update_flags = 1;
+   gc_province_uf_sites_updated = 1;
+   gc_province_uf_pars_updated = $100;
+
+
+   // Heroes
+   //__________________________________________
+   gc_MaxHeroCount       = 8
+   gc_MaxHeroSpellCount  = 21
+   gc_MaxHeroSkillCount  = 11
+   gc_MaxHeroSkillLevel  = 5
+   gc_HeroResurrectGold    = 150
+   gc_HeroResurrectGem     = 30
+   gc_HeroResurrectGoldAdd = 30
+   gc_HeroResurrectGemAdd  = 7
+   gc_HeroPriceMult        = 10
+   gc_HeroDiplomacyItemsCount = 4
+   gc_HeroQuestLimit       = 9
+   gc_HeroInventoryCount = 29
+   gc_HeroDollSlotsCount = 17
+   gc_MaxBodyDistance    = 6
+   gc_MaxHeroTargets     = 4
+   gc_ExploreExperience  = 4
+   gc_map_MaxHeroLevel   = 30;
+   gc_map_Unit_Exp_First_Level       = 20; // experience needed for reaching first level
+   gc_map_Unit_Exp_Add               = 10; // modificator for higher levels
+
+   // hero tasks (gc_map_GOStack_MapUnit_iTask)
+   gc_UnitTaskRest = 0;
+   gc_UnitTaskMove = 1;
+   gc_UnitTaskExplore = 2;
+   gc_UnitTaskRobber = 3;
+   gc_UnitTaskAttackSite = 4;
+   gc_UnitTaskSiege = 5;
+   gc_UnitTaskAttackOwnDefender = 6;
+   
+
+   // Battle
+   //__________________________________________
+   gc_MaxBattleDuration = 40
+   gc_HexSize = 2.885
+   gc_battle_GridSize = 8
+   gc_battle_GridX = 33
+   gc_battle_GridBottomY = 58 // Offset
+	gc_WaterNameBattle = 'battle';
+
+   gc_battle_idle_skip_global = -1         // skip nothing state globally
+   gc_battle_idle_normal      = 0          // normal idle
+   gc_battle_idle_opponent    = 1          // opponents turn in progress
+   gc_battle_idle_maketurn    = 2          // should start its turn and set mode to gc_battle_idle_normal
+
+   gc_MaxBattleLogSize     = 100
+   gc_MaxBattleFieldUnits  = 64
+   gc_BackstabBonus        = 2
+   gc_SidestabBonus        = 1
+
+
+   // Miscellaneous
+   //__________________________________________
+   gc_TreasurySize              = 40
+   gc_MaxLootCount              = 5
+   gc_BaseWallRepair            = 5
+   gc_MercenaryTime             = 7
+   gc_battle_Unit_Level_Cap     = 30; // max unit level
+   gc_ExpFirstLevel             = 20
+   gc_ExpAdd                    = 10
+   gc_MaxProfit                 = 500
+   gc_NoCorruption              = 18
+   gc_MaxRoll                   = 1000
+   gc_MaxPath                   = 1000
+   gc_MaxRace                   = 30
+   gc_MaxRaceQuest              = 10
+   gc_ResBuyChange              = 5
+   gc_PoisonDuration            = 3
+   gc_StaticLoot                = false
+   gc_StaticEvent               = false
+   gc_ScoutingPrice             = 30
+   gc_MaxArmyCount              = 16
+   gc_MaxUnitMedalsCount        = 3
+   gc_MaxUnitLevel              = 20
+   gc_ShardCapturePoss          = 0.2
+   gc_MaxTutorialHistory        = 256
+   gc_NecromancySlots           = 5
+   gc_ShardToAstralKarma        = 0.2
+   gc_ShardToAstralAtt          = 0.5
+   gc_CalcIrregIncomeInterval   = 1
+   gc_IrregIncomePreserve       = 0.85
+   
+   
+   // Genesis Mode
+   //__________________________________________
+   gc_GM_BonusIncome = 0
+   gc_GM_ProvinceDetails = 1
+   gc_GM_RearAttack = 2
+   gc_GM_AstralEnergySpell = 3
+   gc_GM_TwoWeapons = 4
+   
+   
+   // Statistics
+   //__________________________________________
+   gc_StatsMaxShardCheckPoints  = 11
+   gc_StatsFirstCheckPoint      = 10
+   gc_StatsSecondCheckPoint     = 30
+   gc_StatsThirdCheckPoint      = 60
+   gc_StatsFourthCheckPoint     = 100
+   gc_StatsFifthCheckPoint      = 150
+   gc_StatsSixthCheckPoint      = 200
+   gc_StatsSeventhCheckPoint    = 300
+   gc_StatsEighthCheckPoint     = 400
+   gc_StatsNinthCheckPoint      = 600
+   gc_StatsTenthCheckPoint      = 800
+   gc_StatsEleventhCheckPoint   = 1000
+
+
+   // Diplomacy
+   //__________________________________________
+   gc_DipAgreementTimer = 11
+   gc_TreatyWar = 1
+   gc_TreatyPeace = 2
+   gc_TreatyUnion = 3
+   gc_TreatyCancelUnion = 4
+   gc_MessageTreaty = 1
+   gc_MessageTrade = 2
+   gc_MessageExchange = 3
+   gc_MessageCancelTrade = 4
+   gc_MessageGreetings = 5
+   gc_MessageThrowDice = 7
+   gc_MessageDemandSurrender = 8
+   gc_MessageSurrender = 9
+   
+   gc_MaxTradeResCount   = 9
+   gc_MaxTradeProvCount  = 8
+   gc_MaxTradeItemCount  = 8
+
+
+   // Internet / Multiplayer
+   //__________________________________________
+   gc_MaxInetHeroCount   = 4
+   gc_HeroClassChoiceCount = 16
+   gc_MinAllowedHeroClasses = 12
+   gc_TerrainChoiceCount = 6
+   gc_MinAllowedTerrains = 4
+   gc_PingInterval = 15; //seconds
+
+   gc_inet_actiontype_none = 0;
+   gc_inet_actiontype_attack = 1;
+   gc_inet_actiontype_fireattack = 2;
+   gc_inet_actiontype_firedamage = 3;
+   gc_inet_actiontype_spell = 4;
+   gc_inet_actiontype_heal = 5;
+   gc_inet_actiontype_rest = 6;
+   gc_inet_actiontype_changeweapon = 7;
+   gc_inet_actiontype_activateability = 8;
+   gc_inet_actiontype_move = 9;
+   gc_inet_actiontype_teleport = 10;
+   gc_inet_actiontype_turn = 11;
+
+   // battle gui antifreeze minimum delay in secs
+   gc_gui_battle_antifreeze_delay         = 6;
+
+   gc_ConnectIPListMax = 10;
+   //gc_LAN_DUMP  = 1;
+   //gc_LAN_BUY   = 2;
+   //gc_LAN_START = 3;
+   //gc_LAN_READY = 4;
+   //gc_LAN_READY_BUY = 300;    // Lan client ready to start game
+   //gc_LAN_READY_START = 301;  // Lan client ready to buy armies
+   //gc_LAN_MESSAGE = 400;      // Lan chat message
+
+   gc_LAN_DUMP  = 1;
+   gc_LAN_HERO  = 2;
+   gc_LAN_READY = 3; // Client tells server that servers HERO parser received and client is ready to run map generation.
+   gc_LAN_START = 4; // Server run map generation right after LanParserSend. Client run map generation right after parser receive.
+   gc_LAN_READYPLACEMENTMODE = 5;
+   gc_LAN_EXITPLACEMENTMODE = 6;
+   gc_LAN_ACTION = 7;
+   gc_LAN_CLIENTENDTURN = 8;
+   gc_LAN_MASTERENDTURN = 9;
+   gc_LAN_CLIENTWIN = 10;
+   gc_LAN_MASTERWIN = 11;
+   gc_LAN_CLIENTSURRENDER = 12;
+   gc_LAN_UNUSED = 13;
+   gc_LAN_UNUSED2 = 14;
+   gc_LAN_CLIENTPLACEMENT = 15;
+   gc_LAN_CLIENTPLACEMENTREADY = 16;
+   gc_LAN_SHARD_SETTINGS = 17;
+   gc_LAN_SHARD_ENDTURN = 18;
+   gc_LAN_SHARD_CALCTURN = 19;
+   gc_LAN_MESSAGE = 20;
+   gc_LAN_SHARD_ENDCONFLICTS = 21;
+   gc_LAN_SHARD_SYNCCONFLICTS = 22;
+   gc_LAN_SHARD_PLAYERSINFO = 23;
+   gc_LAN_SHARD_SHOWQUERY = 24;
+   gc_LAN_SHARD_CHOOSERESULT = 25;
+   gc_LAN_SHARD_SHOWPROVHEROES = 26;
+   gc_LAN_SHARD_CHOOSEHERO = 27;
+   gc_LAN_SHARD_FADETOBATTLE = 28;
+   gc_LAN_SHARD_BATTLELOADED = 29;
+   gc_LAN_SHARD_STARTBATTLE = 30;
+   gc_LAN_SHARD_CHECKNEWBATTLE = 31;
+   gc_LAN_SHARD_EXITBATTLE = 32;
+   gc_LAN_SHARD_BATADDPLAYERS = 33;
+   gc_LAN_SHARD_SYNCHERO = 34;
+   gc_LAN_SHARD_PLAYERLOSE = 35;
+   gc_LAN_SHARD_SYNC_READY = 36;
+   gc_LAN_SHARD_SYNC_RELEASE = 37;
+   gc_LAN_SHARD_SYNC_REVOKE = 38;
+   gc_LAN_RESEND_PARSER_REQUEST = 39;
+   gc_LAN_SHARD_PROCEEDHERODEATH = 40;
+   gc_LAN_SHARD_DIPLOMACYMESSAGE = 41;
+   gc_LAN_SHARD_SYNCTREASURY = 42;
+   gc_LAN_SHUTDOWN_GAME = $ff;
+   gc_LAN_SHARD_DUMPCONFLICTS = $100; // not a lan command really
+
+   gc_lan_max_parsers_queue_size = $20;
+   gc_lan_max_parsers_queue_limit = $1e;
+
+   gc_lt_ALL = -1;
+   gc_lt_connect = 0;
+   gc_lt_server_answer = 1;
+   gc_lt_auth = 2;
+   gc_lt_loading = 3;
+   gc_lt_placement = 4;
+   gc_lt_map_end_turn = 5;
+   gc_lt_conflicts = 6;
+   gc_lt_map_loading_sync = 7;
+   gc_lt_map_start_turn = 8;
+	gc_lt_restart_session = 9;
+   gc_max_lan_wait_timers = 10;
+
+   // lan_stimer status
+   gc_lan_timer_status_notactive = 0;
+   gc_lan_timer_status_armed = 1;
+   gc_lan_timer_status_released = 2;
+
+   gc_lt_cancel_base_tag = 98;
+
+   gc_lan_slot_max = 2;
+   gc_lan_player_max = 2;
+   gc_lan_spec_max = 10;
+   gc_lan_battlespeed = 0.5;
+   gc_lan_itempricemod = 0.5;
+   gc_lan_startpoints = 350;
+   gc_lan_maxpoints = 3000;
+   gc_hotseat_maxpoints = 10000;
+
+   // Scenario
+   //__________________________________________
+   gc_triggertype_provcapture = 1;
+   gc_triggertype_sitecapture = 2;
+   gc_triggertype_herodie = 3;
+   gc_triggertype_heroresurrect = 4;
+   gc_triggertype_turn = 5;
+   gc_triggertype_herocometoprov = 6;
+   gc_triggertype_gamestart = 7;
+
+   gc_actiontype_runevent = 1;
+   gc_actiontype_aienabled = 2;
+   gc_actiontype_herorecruitallowed = 3;
+   gc_actiontype_triggerenabled = 4;
+   gc_actiontype_buildingallowed = 5;
+   gc_actiontype_provinceenabled = 6;
+   gc_actiontype_winlose = 7;
+   gc_actiontype_generatemap = 8;
+
+
+   // Editor
+   //__________________________________________
+   gc_editor_MaxCustomSitesCount = 8;
+   gc_editor_MaxWindowCount = 6;
+   gc_editor_WindowControl = 0;
+   gc_editor_WindowPalette = 1;
+   gc_editor_WindowPlayer = 2;
+   gc_editor_WindowProvince = 3;
+   gc_editor_WindowHero = 4;
+   gc_editor_WindowTrigger = 5;
+
+   gc_MaxScenarioEvents = 64;
+   gc_MaxScenarioTriggers = 64;
+   gc_MaxScenarioEventEffects = 8;
+   gc_MaxScenarioEventConditions = 8;
+   gc_MaxScenarioEventAnswerConditions = 8;
+   gc_MaxScenarioTriggerActions = 6;
+   gc_MaxScenarioEventFlags = $18;
+   gc_MaxEditorHeroCount = 4;
+   
+
+   // Interface
+   //__________________________________________
+   gc_gui_battle_btnEndTurn               = 5001;
+   gc_gui_battle_btnEndBattle             = 5002;
+   gc_gui_battle_btnExitPlacementMode     = 5003;
+   gc_gui_battle_btnControlRest           = 5004;
+   gc_gui_battle_btnControlNextUnit       = 5005;
+   gc_gui_battle_btnControlSpellBook      = 5006;
+   gc_gui_battle_btnCloseResultsWindow    = 5007;
+   gc_gui_battle_btnDismissSpell          = 5008;
+   gc_gui_battle_btnEffectsScrollLeft     = 5009;
+   gc_gui_battle_btnEffectsScrollRight    = 5010;
+   gc_gui_battle_btnControlSwitchWeapon   = 5011;
+   gc_gui_battle_btnSettings              = 5012;
+   gc_gui_battle_btnControlAbilityBaseTag = 5100;
+   gc_gui_battle_btnControlAbilityBaseTagLast = 5199;
+   gc_gui_battle_btnEffectsBaseTag        = 5500;
+   gc_gui_battle_btnUpgradesBaseTag       = 6000;
+   gc_gui_battle_btnSkillsBaseTag         = 6500;
+
+   gc_gui_heropanel_QuestBaseTagLast           = 8299;
+   gc_gui_heropanel_QuestBaseTag               = 8200;
+   gc_gui_heropanel_DismissQuestBaseTag        = 8100;
+   gc_gui_heropanel_DismissQuestApproveBaseTag = 8000;
+
+   gc_gui_heropanel_btnCloseWindowAccept       = 1100;
+   gc_gui_heropanel_btnCloseWindow    = 1101;
+   gc_gui_heropanel_btnSquad          = 1102;
+   gc_gui_heropanel_btnInventory      = 1103;
+   gc_gui_heropanel_btnSpellbook      = 1104;
+   gc_gui_heropanel_btnHeroInfo       = 1105;
+   gc_gui_heropanel_btnDismiss        = 1106;
+   gc_gui_heropanel_btnAstralAccept   = 1107;
+   gc_gui_heropanel_btnDismissHero    = 1139;
+   gc_gui_heropanel_btnChooseNextHero = 1141;
+   gc_gui_heropanel_btnChoosePrevHero = 1142;
+
+   //gc_gui_castlepanel_btnCloseWindow     = 1107;
+   //gc_gui_castlepanel_btnMilitaryQuarter = 1108;
+   //gc_gui_castlepanel_btnTradeQuarter    = 1109;
+   //gc_gui_castlepanel_btnMagicQuarter    = 1110;
+   //gc_gui_castlepanel_btnCraftQuarter    = 1111;
+   //gc_gui_castlepanel_btnHolyQuarter     = 1112;
+   //gc_gui_castlepanel_btnCentralQuarter  = 1113;
+   //gc_gui_castlepanel_btnJoyQuarter      = 1114;
+   //gc_gui_castlepanel_btnForestQuarter   = 1115;
+   //gc_gui_castlepanel_btnAllyQuarter     = 1116;
+
+   gc_gui_radialherohud_btnRobber        = 1117;
+   gc_gui_radialherohud_btnAttackGuard   = 1118;
+   gc_gui_radialherohud_btnSite          = 1119;
+   gc_gui_radialherohud_btnExplore       = 1120;
+   gc_gui_radialherohud_btnPortrait      = 1121;
+   gc_gui_radialherohud_btnSquad         = 1122;
+   gc_gui_radialherohud_btnInventory     = 1123;
+   gc_gui_radialherohud_btnSpellbook     = 1124;
+   gc_gui_radialherohud_btnCancelOrder   = 1138;
+   gc_gui_radialherohud_btnHeroInfo      = 1140;
+
+   gc_gui_shoppanel_btnSortAll           = 1125;
+   gc_gui_shoppanel_btnSortMagic         = 1126;
+   gc_gui_shoppanel_btnSortWeapon        = 1127;
+   gc_gui_shoppanel_btnSortArmor         = 1128;
+   gc_gui_shoppanel_btnSortJewels        = 1129;
+   gc_gui_shoppanel_btnSortScrolls       = 1130;
+   gc_gui_shoppanel_btnSortFlags         = 1131;
+
+   gc_gui_castlepanel_tabs_btnBuild      = 1132;
+   gc_gui_castlepanel_tabs_btnHero       = 1133;
+   gc_gui_castlepanel_tabs_btnGarrison   = 1134;
+   gc_gui_castlepanel_tabs_btnInventory  = 1135;
+   gc_gui_castlepanel_tabs_btnMagic      = 1136;
+   gc_gui_castlepanel_tabs_btnProvinceList = 1137;
+
+   //gc_gui_castlepanel_btnLevel1          = 1200;
+   //gc_gui_castlepanel_btnLevel2          = 1201;
+   //gc_gui_castlepanel_btnLevel3          = 1202;
+   //gc_gui_castlepanel_btnLevel4          = 1203;
+
+   gc_gui_radialprovince_btnBuild        = 1204;
+   gc_gui_radialprovince_btnSite         = 1205;
+   gc_gui_radialprovince_btnGuard        = 1206;
+   gc_gui_radialprovince_btnGarrison     = 1207;
+
+   gc_gui_unitpanel_btnDismiss           = 1208;
+   gc_gui_spellpanel_btnDismiss          = 1209;
+   //gc_gui_btnDestroyOuterBuild           = 1210;
+   //gc_gui_btnDismissProvDefender         = 1211;
+   gc_gui_shoppanel_btnRepair            = 1212;
+   gc_gui_selectdefender_btnSelect       = 1213;
+   gc_gui_selectdefender_btnScrollUp     = 1214;
+   gc_gui_selectdefender_btnScrollDown   = 1215;
+   gc_gui_recruithero_btnRecruit         = 1216;
+   gc_gui_itempanel_btnDismiss           = 1217;
+   gc_gui_dollpanel_btnDismiss           = 1218;
+   gc_gui_shoppanel_btnRepairAll         = 1219;
+   gc_gui_question_btnCheckBoxMesLoafers = 1220;
+
+   gc_gui_castle_buildings_btnBaseTag    = 1300;
+
+   //gc_gui_buildingpanel_btnCloseWindow   = 1400;
+   //gc_gui_buildingpanel_btnBuy           = 1401;
+   //gc_gui_spellpanel_btnCloseWindow      = 1402;
+
+   //gc_gui_unitspanel_btnCloseWindow      = 1500;
+   gc_gui_garrisonpanel_btnCloseWindow   = 1501;
+   gc_gui_garrisonpanel_btnDismiss       = 1502;
+
+   gc_gui_hotkey_btnEscape               = 9001;
+   gc_gui_hotkey_btnEnter                = 9002;
+   gc_gui_hotkey_btnSpace                = 9003;
+   gc_gui_charfilter_numeric             = '1234567890';
+
+   gc_gui_castle_units_btnBaseTag        = 1600;
+   gc_gui_hero_unitslots_btnBaseTag      = 1700;
+   gc_gui_battle_unitpanel_btnCloseWindow = 1800;
+   gc_gui_castle_spells_btnBaseTag       = 1900;
+   gc_gui_hero_spellslots_btnBaseTag     = 2000;
+   gc_gui_hero_spellslots_btnBaseTagLast = 2900;
+   gc_gui_outerbuildings_btnBaseTag      = 3000;
+   gc_gui_HeroInventorySlots_btnBaseTag  = 3200;
+   gc_gui_NoFreeSpaceItemSlots_btnBaseTag = 3300;
+   gc_gui_treasuryitemslots_btnBaseTag   = 3400;
+   gc_gui_shopitemslots_btnBaseTag       = 3600;
+   gc_gui_defenders_btnBaseTag           = 5000;
+   gc_gui_rituals_btnBaseTag             = 5500;
+   gc_gui_site_btnBaseTag                = 6000;
+
+   // vvk
+   // element name to determine debug hotkeys availability
+   gc_gui_allow_debug_keys_element = 'debug_hotkeys_enabled';
+   // chars per second for ai turn screen
+   gc_gui_ai_turn_chars_per_second = 30;
+   // camera
+   gc_gui_map_camera_min_zoom = 30;
+   gc_gui_map_camera_max_zoom = 50;
+   gc_gui_map_camera_default_zoom = 50;
+   gc_gui_map_camera_max_zoom_5x4 = 52;
+
+   // game commands
+   gc_gui_game_commands_max = $180;
+   gc_gui_game_commands_max_per_hotkey = $18;
+   cRootWindowCommandName = 'g_command';
+   gc_gui_command_flag = $1000000;
+   gc_gui_command_hotkey_start_uid = $1001000;
+   gc_gui_command_attr_system = 1;     // starts with '.'
+   gc_gui_command_attr_top = 2;        // starts with '_'
+
+   // mode switch constants
+   cGUISwitchModeTimerName = 'VVK.SwitchModeTimer';
+   gc_gui_ModeNone = 0;
+   gc_gui_ModeMap = 1;
+   gc_gui_ModeCastle = 2;
+   gc_gui_ModeBattle = 3;
+   gc_gui_ModeEndTurn = 4;
+   gc_gui_ModeSwitchToMainMenu = 5;
+   gc_gui_ModeSwitchToAstral = 6;
+   gc_gui_ModeExitGame = 7;
+   gc_gui_ModeSwitchToLanMenu = 8; // all players exit
+   gc_gui_ModeExitLanGame = 9;     // all players exit
+
+   // timers section
+   //gc_gui_Timer_TooltipsPrefix = 'VVK.InfoTimers_';
+   //gc_gui_Timer_TooltipInnerBuild = 'IB_Info';
+   //gc_gui_Timer_TooltipResPanel = 'CPR_Info';
+   //gc_gui_Timer_TooltipItem = 'ITE_Info';
+
+   gc_gui_min_viewerheight = 900;
+   gc_gui_min_viewerwidth = 1280;
+	
+	gc_ProjOptionsPreset = 'Preset';
+	gc_ProjOptionsPresetLowest = 'guiSetLowest';
+	gc_ProjOptionsPresetLow = 'guiSetLow';
+	gc_ProjOptionsPresetMedium = 'guiSetMedium';
+	gc_ProjOptionsPresetHigh = 'guiSetHigh';
+	gc_ProjOptionsPresetUltra = 'guiSetUltra';
+	gc_ProjOptionsPresetCustom = 'guiSetCustom';
+	gc_ProjOptionsResolution = 'Resolution';
+	gc_ProjOptionsAntiAliasing = 'AntiAliasing';
+	gc_ProjOptionsHDRType = 'HDRType';
+	gc_ProjOptionsVSyncMode = 'VSyncMode';
+	gc_ProjOptionsShadowEnabled = 'ShadowMapEnabled';
+	gc_ProjOptionsTextureFilter = 'TextureFilteringQuality';
+	gc_ProjOptionsShaderType = 'ShaderType';
+	gc_ProjOptionsWaterReflection = 'WaterReflection';
+	gc_ProjOptionsLightChange = 'lightchange';
+
+   // layers names
+   gc_gui_max_layers_number = 15;
+
+   cTopmostLayer = 1;
+   cCameraLayer = 2;
+   cTooltipLayer = 3;
+   cTutorialLayer = 4;
+   cDragDropLayer = 5;
+   cInterfaceLayer = 6;
+   cChatLayer = 7;
+   cHUDTacticsUnitLayer = 8;
+   cHUDTacticsTextLayer = 9;
+   cHUDStrategyHeroLayer = 10;
+   cHUDStrategyProvLayer = 11;
+   cHUDStrategyResLayer = 12;
+   cLanChatLayer = 13;
+
+   // z order of layers
+   cTopmostLayerZOrder = 900;
+   cCameraLayerZOrder = 400;
+   cChatLayerZOrder = 350;
+   cLanChatLayerZOrder = 340;
+   cTooltipLayerZOrder = 330;
+   cTutorialLayerZOrder = 300;
+   cDragDropLayerZOrder = 250;
+   cInterfaceLayerZOrder = 100;
+   cHUDTacticsTextZOrder = 50;
+   cHUDTacticsUnitZOrder = 30;
+   cHUDStrategyHeroZOrder = 60;
+   cHUDStrategyProvZOrder = 40;
+   cHUDStrategyResZOrder = 20;
+
+   // root window constants
+   // z order data root element
+   cRootWindowZOrderName = 'zorder';
+
+   cRootWindowNormal = 1;
+   cRootWindowActive = 2;
+   cRootWindowCP = 4;
+   cRootWindowModal = 8;
+   cRootWindowTop = $10;
+   cRootWindowAllTypes = $1f;
+   cRootWindowTopmostCheckAllModals = $10000; // otherwise in get topmost modal windows with cRootWindowAttrModalNoBlack won't be included
+
+   cRootWindowAttrLowest = -1;
+   cRootWindowAttrHighest = 1;
+   cRootWindowAttrModalNoBlack = 1;
+   cRootWindowAttrScaleByY = 2; // set if window should be scaled depending on current screen size
+
+   cRootWindowZOrderTop = 400;
+   cRootWindowZOrderModal = 300;
+   cRootWindowZOrderPanel = 200;
+   cRootWindowZOrderActive = 100;
+   cRootWindowZOrderNormal = 10;
+
+   // tooltips general name
+   gc_gui_TooltipExtraArea = 'extra_tooltip_area';
+   gc_gui_TooltipRealArea = 'real_tooltip_area'; // see VVK.FitTooltipToScreen for details
+
+   // dynamic windows (dettails see in VVK.DynamicWindowBuildingCallback)
+   cDW_CallbackSetup = 0;
+   cDW_CallbackIsDisplayable = 1;
+   cDW_CallbackGetWidth = $10;
+   cDW_CallbackDisplay = $11;
+   cDW_CallbackShutdown = $40;
+
+   cDW_FirstDisplayableField = $1e;
+   cDW_LastDisplayableField = $8;
+   cDW_HeightBetweenRows = $a; // x - offset from right side, y - initialp position for stacked elements, w,h - space between stacked elements
+
+   // floating tooltips
+   gc_gui_ft_timer_str_char = $21;
+   gc_gui_ft_timer_str_sym = '!';
+   gc_gui_float_tooltips_max = $20;
+   gc_gui_float_tooltips_timer_delta = 0.1;
+
+   // tooltips callback commands (see VVK.ProcessHintGUI for details)
+   cFloatTooltipOnHint = 1;
+   cFloatTooltipMouseMove = 2;
+   cFloatTooltipDisplay = 3;
+   cFloatTooltipIsSameObject = 4;
+   cFloatTooltipUpdatePos = 5;
+   cFloatTooltipOnMouseButton = 6;
+   cFloatTooltipOnTimer = 7;
+   cFloatTooltipRegister = 8;
+   cFloatTooltipUnRegister = 9;
+
+   // fit window to screen constants
+   //cFitWindowModeDefault = 0;     // bottom right under cursor, align: cFW_AlignLT_RB, fallback: Right,Top,Left
+   //cFitWindowModeAdvanced = 1;    //
+
+   cFW_PositionTop = 0;
+   cFW_PositionRight = 1;
+   cFW_PositionBottom = 2;
+   cFW_PositionLeft = 3;
+
+   cFW_AlignLT_LT = 0;
+   cFW_AlignLT_RB = 1;
+   cFW_AlignRB_LT = 2;
+   cFW_AlignRB_RB = 3;
+   cFW_AlignMiddle = 4;
+
+   // inner building tooltip types
+   cFT_IBGeneric = 0;
+   // strategy level
+   cFT_IBAdvBuild = 1;
+   cFT_IBSimpleBuild = 2;
+   cFT_IBQueue = 3;
+   cFT_IBBuildInfo = 4;
+   cFT_IBResDetails = 5;
+   cFT_IBVictoryDialog = 6;
+   // astral level
+   cFT_IBShardInfo = 7;
+   cFT_IBShardAttack = 8;
+   // battle level
+   cFT_IBBattleReward = 9;
+   // clear and replace buttons
+   cFT_IBQueueActions = $10;
+
+   // unit tooltip types (see ftooltipunit for details)
+   cFT_UnitTemplate = 0;
+   cFT_UnitMapArmy = 1;
+   cFT_UnitMapHero = 2;
+   cFT_UnitBattle = 3;
+   cFT_HeroTemplate = 4;
+   cFT_UnitAstralHero = 5;
+   cFT_AstralHero = 6;
+
+   //cFT_UClassic = 1;          // [1] - go_handle, [2] - go_parser, [3] - army_parser
+   //cFT_UIndex = 2;            // [1] - player_index, [2] - object index in player's objects
+   //cFT_Map_UUID = 3;          // [1] - hero map UID (0,0 from army is taken using state GetSlotUnit)
+   //cFT_Battle_UUID = 4;       // [1] - unit battle UID
+
+   // items price display modes
+   cFT_ItemPriceHide = 0;
+   cFT_ItemPriceSell = 1;
+   cFT_ItemPriceBuy = 2;
+   cFT_ItemPriceBase = 3;
+   cFT_ItemPricePoints = 4;
+
+   // items hero uid constants
+   cFT_ItemHeroDefault = 0;
+   cFT_ItemHeroGlobalUID1 = -1;  // gIntRegister_GUIActiveHeroUID1
+   cFT_ItemHeroHotSeat1 = -2;    // gHotSeatPlayer1.hero[gHotSeatPlayer1.curhero].arritems
+   cFT_ItemHeroHotSeat2 = -3;    // gHotSeatPlayer2.hero[gHotSeatPlayer2.curhero].arritems
+   cFT_ItemHeroMultiplayer = -4; // gInetBattle.hero[gInetBattle.curhero].arritems
+   cFT_ItemHeroMapEditor = -5;   // gEditorCustomPlayer.hero[gEditorCustomPlayer.curhero].arritems
+
+   // spells,abilities,effects,rituals mode types
+   cFT_ASER_Ability = 0;
+   cFT_ASER_Effect = 1;
+   cFT_ASER_EffectSpell = 2; // for units
+   cFT_ASER_Spell = 3;
+   cFT_ASER_Ritual = 4;
+   cFT_ASER_EffectExtra = 5; // for programmable effects in spells
+   cFT_ASER_SetItem = 6; // for item names in item tooltips in set sections
+
+   // resources
+   cFT_ResSkipAccess = 0;
+   cFT_ResHasAccess = 1;
+   cFT_ResNoAccess = 2;
+
+   // spells tooltip types
+   cFT_SpellTypeDefault = 0;
+   cFT_SpellTypeBook = 1;
+
+   // ritual tooltip types
+   cFT_RitualTypeDefault = 0;
+   cFT_RitualTypeList = 1;
+
+   // defender tooltip types
+   cFT_DefenderTypeDefault = 0;         // startegy mode - for price calculation and availability we are using map player handle
+   cFT_DefenderTypeTemplate = 1;        // other modes - price are taken from db, availability not checked
+
+   // defender tooltip types
+   cFT_OuterBuildTypeDefault = 0;       // startegy mode - for price calculation and availability we are using map player handle
+   cFT_OuterBuildTypeTemplate = 1;      // other modes - price are taken from db, availability not checked
+
+   // map.MainPanel
+   gc_gui_CPBottomName = 'map_mainpanel_bottom';
+   gc_gui_CPStatusTextName = 'map_mainpanel_text';
+   gc_gui_CPResTooltipName = 'map_mainpanel_res_tooltip';
+   gc_gui_CPPopupButtonsName = 'map_popup_buttons';
+
+   cCPResTooltipTemplateName = 'main_panel_res_details';
+
+   gc_gui_mainpanel_btnCastle         = 1001;
+   gc_gui_mainpanel_btnRitual         = 1002;
+   gc_gui_mainpanel_btnDiplomacy      = 1003;
+   gc_gui_mainpanel_btnProvinceList   = 1004;
+   gc_gui_mainpanel_btnStatistics     = 1005;
+   gc_gui_mainpanel_btnNextHero       = 1006;
+   gc_gui_mainpanel_btnMenu           = 1007;
+   gc_gui_mainpanel_btnEndTurn        = 1008;
+   gc_gui_mainpanel_btnResourceHint   = 1009;
+   gc_gui_mainpanel_btnMap            = 1010;
+   gc_gui_mainpanel_btnSettingsMenu   = 1011;
+   gc_gui_mainpanel_btnAlchemy        = 1012;
+
+   gc_gui_mainpanel_btnPopupFirst = 1020;
+   //gc_gui_mainpanel_btnProvinceListStack = 1020;
+   gc_gui_mainpanel_btnPopupLast = 1030;
+
+   // other map windows names
+   cCastleGarrisonWindowName = 'map_garrisonpanel';
+   cCastleHeroRecruitWindowName = 'map_herorecruitpanel';
+   cCastleShopWindowName = 'map_shoppanel';
+   cCastleLibraryWindowName ='map_spellpanel';
+   cHeroResourcesPanelName = 'map_hero_res_panel';
+   cMapRitualsListWindowName = 'prov_rituals_window'; // template as well
+   cBattleSpellBookWindowName = 'battle_spellbook_window'; // template as well
+   cMapSitesListWindowName = 'map_sites_window'; // template as well
+   cMapDefendersListWindowName = 'map_defenders_window'; // template as well
+   cMapOuterBuildListWindowName = 'map_outerbuild_window'; // template as well
+   cMapMinimapWindowName = 'map_minimap_window';                 // template as well
+
+   // VVK.ShowBuildWindow & VVK.ShowBuildWindow2
+   gc_gui_default_inner_build_id = 7; // recruiting station
+
+   cCastleBuildingsWindowName = 'vvk_build_window';
+   cCastleBuildingsWindow2Name = 'vvk_build_window_2';
+   cInnerBuildingTooltipWindowName = 'inner_build_info';
+   cInnerBuildingTooltipTemplateName = 'inner_build_details';
+   cInnerBuildingTooltipTemplate2Name = 'inner_build2_details';
+   cBuildingsWindowQuarterPfx = 'map_castle_quarterpanel_';
+   cBuildingsWindowRankPfx = 'map_castle_quarterpanel_rank_';
+   // string tag contains window name of queue buttons
+   cBuildWindowQueueButtonsParent = 'building_queue_buttons_path';
+   cBuildWindowQueueButtonsPrefix = 'buildings_queue_';
+   cMaxBuildingsQueueSize = 4;
+
+   // items
+   cItemTooltipWindowName = 'item_tooltip_info';
+   cItemTooltipTemplateName = 'item_details_window';
+
+   // spells
+   cSpellTooltipWindowName = 'spell_tooltip_info';
+   cSpellTooltipTemplateName = 'spell_details_window';
+
+   // rituals
+   cRitualTooltipWindowName = 'ritual_tooltip_info';
+   cRitualTooltipTemplateName = 'ritual_details_window';
+
+   // sites
+   cSiteTooltipWindowName = 'site_tooltip_info';
+   cSiteTooltipTemplateName = 'site_details_window';
+
+   // defenders
+   cDefenderTooltipWindowName = 'defender_tooltip_info';
+   cDefenderTooltipTemplateName = 'defender_tooltip_info';
+
+   // outer buildings
+   cOuterBuildTooltipWindowName = 'outerbuild_tooltip_info';
+   cOuterBuildTooltipTemplateName = 'outerbuild_tooltip_info';
+
+   // load lan game
+   cLanLoadGameSyncName = 'lan_load_game_sync';
+
+   // hero panel modes (gIntRegister_GUICurHeroMode)
+   gc_HeroPanelNotValid = -1;
+   gc_HeroPanelBothPanels = 0;
+   gc_HeroPanelUnitsOnly = 1;
+   gc_HeroPanelSpellsOnly = 2;
+   gc_HeroPanelInventory = 3;
+   gc_HeroPanelSpellbook = 4;
+   gc_HeroPanelExchange = 5;
+   gc_HeroPanelExtraUnit = 6;
+
+   // drag drop types (DoDragElement)
+   gc_dragdrop_unit = 0;
+   gc_dragdrop_item = 1;
+   gc_dragdrop_spell = 2;
+   gc_dragdrop_scroll = 3;
+   gc_dragdrop_egg = 4;
+   gc_dragdrop_ritual = 5;
+   gc_dragdrop_battle_spell = 6;
+
+   tagFirstBuildButton = $10000;
+   tagLastBuildButton = $10fff;
+   tagFirstQuickBuildButton = $11000;
+   tagLastQuickBuildButton = $11fff;
+   tagFirstExtraBuildButton = $12000;
+   tagLastExtraBuildButton = $12fff;
+   tagFirstGroupStats = $13000;
+   tagLastGroupStats = $13fff;
+   tagFirstBuildButton_2 = $14000;
+   tagLastBuildButton_2 = $14fff;
+   tagFirstTooltipBuildButton = $15000;
+   tagLastTooltipBuildButton = $15fff;
+
+   tagCloseWindow = $20000;
+   tagBuildBuilding = $20001;
+   tagBuildBuildingTurnFirst = $20002;
+   tagBuildBuildingTurnLast = $20005;
+   //tagBuiltBuilding = $20006;
+   tagShowAllButton = $20007;
+   tagShowAvailableButton = $20008;
+   tagShowMinimizedButton = $20009;
+   tagToggleUnavailableButton = $2000a;
+   tagBuildBuildingQueueFirst = $2000b;
+   tagBuildBuildingQueueLast = $2000e;
+   tagBuildQuarterFirst = $20010;
+   tagBuildQuarterLast = $20018;
+   tagBuildRankFirst = $20020;
+   tagBuildRankLast = $20023;
+   tagBuildPopupModeFirst = $20024;
+   tagBuildPopupModeLast = $20025;
+   tagBuildShowModeFirst = $20026;
+   tagBuildShowModeLast = $2002f;
+   tagBuildButtonBack = $20030;
+   tagBuildButtonFwd = $20031;
+   tagBuildButtonAdvanced = $20032;
+   tagBuildQuarterZoomOut = $20034;
+
+   // VVK.map.ProcessBuildingsQueue
+   cProcessBuildingsQueueWindowName = 'vvk_pending_build_queue';
+
+   tagPBQ_BuildBuilding = $20100;
+   tagPBQ_PostponeBuilding = $20101;
+   tagPBQ_GotoCastle = $20102;
+
+   // vvk.map.ShowOuterBuildList (same namespace as build window!)
+   tagOuterBuildCloseButton = $20000;
+   tagOuterBuildConstruct = $20001;
+   tagOuterBuildDemolish = $20002;
+   tagOuterBuildDemolishAccept = $20003;
+   tagOuterBuildCloseDetails = $20004;
+   tagOuterBuildFirstButton = $10000;
+   tagOuterBuildLastButton = $10fff;
+
+   // vvk.map.ShowDefendersList (same namespace as build window!)
+   tagDefendersCloseButton = $20000;
+   tagDefendersDismiss = $20001;
+   tagDefendersDismissAccept = $20002;
+   tagDefendersAttack = $20003;
+   tagDefendersFirstButton = $10000;
+   tagDefendersLastButton = $10fff;
+   tagDefendersHireFirstButton = $11000;
+   tagDefendersHireLastButton = $11fff;
+
+   // VVK.ShowAchievement
+   cBaseAchievWindowName = 'achievements_window';
+
+   // question dialog default name
+   cQuestionDialogWindowName = 'questiondialog';
+   // list menu header window
+   cListMenuHeaderWindowName = 'list_menu_header';
+   // VVK.ShowAdsWindow
+   cBaseAdsWindowName = 'runtime_ads_window';
+   // quick access menu
+   cQuickAccessMenuWindowName = 'quick_access_menu';
+   // lan profile register
+   cLanProfileWindowName = 'lan_profile';
+   cLanRegisterStatusWindowName = 'lan_profile_register_status';
+   gc_lan_BuiltinUserPassword = 'EADOR2';
+   // last turn gold and gem income
+   cLastTurnIncomeWindowName = 'map_last_turn_income_window';
+   gc_gui_LastTurnIncomeWindowDelay = 3;
+   gc_gui_LastTurnIncomeWindowFadeDelay = 0.5;
+
+   // Fonts setup
+   gc_gui_gamefonts_max_number = 10;
+   gc_gui_gamefonts_names_max_number = 25;
+   gc_gui_max_sizes_number = 3;
+   gc_gui_gamefonts_max_ids_number = 16;
+   gc_gui_gamefonts_max_color_ids_number = 8;
+
+   gc_gui_fontsize_default = 0;
+   gc_gui_fontsize_small = -1;
+   gc_gui_fontsize_smallest = -4;
+   gc_gui_fontsize_large = 1;
+   gc_gui_fontsize_largest = 4;
+
+   gc_gui_fontsection_default = 0;
+   gc_gui_fontsection_menu = 1;
+   gc_gui_fontsection_astral = 2;
+   gc_gui_fontsection_strategy = 3;
+   gc_gui_fontsection_tactics = 4;
+
+   gc_gui_if_base_window_id = $1f;
+   gc_gui_interface_max_elements_number = $21;
+   gc_gui_interface_max_colors_number = $8;
+   gc_gui_interface_max_windows_number = 85;
+
+   gc_inner_buildings_max_id = 215;
+   gc_inner_buildings_max_groups = 24;
+   gc_inner_buildings_max_bld_in_group = 35;
+   gc_inner_buildings_array_max = 21;
+
+   gc_outer_buildings_max_no = $40;
+   gc_outer_buildings_max_upgrades = 5;
+
+   gc_gui_menu_button_height = 48;
+
+   // font colors
+   gc_gui_fontcolor_LogR = 0.7450980392156863 ; // 190
+   gc_gui_fontcolor_LogG = 0.7058823529411765; // 180
+   gc_gui_fontcolor_LogB = 0.5882352941176471; // 150
+
+   gc_gui_fontcolor_HeaderRedR = 0.5546875 ; // 142
+   gc_gui_fontcolor_HeaderRedG = 0.09765625; // 25
+   gc_gui_fontcolor_HeaderRedB = 0.05078125; // 13
+
+   gc_gui_fontcolor_HintRedR = 0.4901960784313725 // 125
+   gc_gui_fontcolor_HintRedG = 0.00
+   gc_gui_fontcolor_HintRedB = 0.00
+
+   gc_gui_fontcolor_HeaderDarkR = 0.203125 ; // 52
+   gc_gui_fontcolor_HeaderDarkG = 0.1484375; // 38
+   gc_gui_fontcolor_HeaderDarkB = 0.1484375; // 38
+
+   gc_gui_fontcolor_HeaderR = 0.8359375 ; // 214 Current: 191(243 (iroma))
+   gc_gui_fontcolor_HeaderG = 0.79296875; // 203 Current: 186(215 (iroma))
+   gc_gui_fontcolor_HeaderB = 0.6328125 ; // 162 Current: 169(144 (iroma))
+
+   gc_gui_fontcolor_NormalR = 0.71875   ; // 184
+   gc_gui_fontcolor_NormalG = 0.703125  ; // 180
+   gc_gui_fontcolor_NormalB = 0.6484375 ; // 166
+   gc_gui_fontcolor_NormalDarkR = 0.0859375; // 22
+   gc_gui_fontcolor_NormalDarkG = 0.1015625; // 26
+   gc_gui_fontcolor_NormalDarkB = 0.1132812; // 29
+
+   gc_gui_fontcolor_NormalWhiteR = 1;
+   gc_gui_fontcolor_NormalWhiteG = 1;
+   gc_gui_fontcolor_NormalWhiteB = 1;
+
+   gc_gui_fontcolor_ActiveR = 0.890625  ; // 228
+   gc_gui_fontcolor_ActiveG = 0.71875   ; // 184
+   gc_gui_fontcolor_ActiveB = 0.08203125; // 21
+
+   gc_gui_fontcolor_HoverR  = 0.38671875; // 99
+   gc_gui_fontcolor_HoverG  = 0.78125   ; // 200
+   gc_gui_fontcolor_HoverB  = 0.9296875 ; // 238
+
+   gc_gui_fontcolor_YellowR = 0.890625  ; // 228
+   gc_gui_fontcolor_YellowG = 0.71875   ; // 184
+   gc_gui_fontcolor_YellowB = 0.08203125; // 21
+
+   gc_gui_fontcolor_GreenR  = 0.12; // 30
+   gc_gui_fontcolor_GreenG  = 0.78; // 200
+   gc_gui_fontcolor_GreenB  = 0.00; // 0
+
+   gc_gui_fontcolor_RedR    = 1.00; // 256
+   gc_gui_fontcolor_RedG    = 0.00; // 0
+   gc_gui_fontcolor_RedB    = 0.00; // 0
+
+   gc_gui_fontcolor_BrownR  = 0.546875 ;  // 140
+   gc_gui_fontcolor_BrownG  = 0.4765625;  // 122
+   gc_gui_fontcolor_BrownB  = 0.296875 ;  // 76
+
+   gc_gui_fontcolor_GrayR   = 0.46875 ;   // 120
+   gc_gui_fontcolor_GrayG   = 0.46875 ;   // 120
+   gc_gui_fontcolor_GrayB   = 0.453125;   // 116
+
+   gc_gui_fontcolor_Rarity2R = 0.9764705; // 249
+   gc_gui_fontcolor_Rarity2G = 1;         // 255
+   gc_gui_fontcolor_Rarity2B = 0.4313725; // 110
+
+   gc_gui_fontcolor_Rarity3R = 0.2705882; // 69
+   gc_gui_fontcolor_Rarity3G = 0.6705882; // 171
+   gc_gui_fontcolor_Rarity3B = 0.2;       // 51
+
+   gc_gui_fontcolor_Rarity4R = 0;         // 0
+   gc_gui_fontcolor_Rarity4G = 0.4352941; // 111
+   gc_gui_fontcolor_Rarity4B = 1;         // 255
+
+   gc_gui_fontcolor_Rarity5R = 0.5294117; // 135
+   gc_gui_fontcolor_Rarity5G = 0.3450980; // 88
+   gc_gui_fontcolor_Rarity5B = 0.8039215; // 205
+
+   gc_gui_fontcolor_Rarity6R = 1;         // 255
+   gc_gui_fontcolor_Rarity6G = 0.2862745; // 73
+   gc_gui_fontcolor_Rarity6B = 0.2392156; // 61
+
+   // lang tables ID
+   gc_gui_LangTableIDMapProvinceInfo = 'map.provinceinfo';
+   gc_gui_LangTableIDMapCommon       = 'map.common';
+
+   gc_gui_max_modal_queries = $40;
+
+   gc_gui_query_heroQuestLimit = 7080
+
+   gc_gui_astral_btnEndTurn     = 9001;
+   gc_gui_astral_btnZarr        = 9002;
+   gc_gui_astral_btnStatistics  = 9003;
+   gc_gui_astral_btnAttack      = 9004;
+   gc_gui_astral_btnStartBattle = 9005;
+   gc_gui_astral_btnTalk        = 9006;
+
+   gc_gui_query_heroWinOrcaEncounter    = 7680;
+   gc_gui_query_heroExploreNothingFound = 9001;
+   gc_gui_query_heroExploreFoundSite    = 9002;
+   gc_gui_query_heroEnemyAttackProvince = 9003;
+   gc_gui_query_heroAttackProvDefender  = 9004;
+   gc_gui_query_heroAttackProvEnemyHero = 9005;
+   gc_gui_query_heroAttackProvNoGuard   = 9006;
+   gc_gui_query_heroStartSiege          = 9007;
+   gc_gui_query_heroEnemyRetreat        = 9008;
+   gc_gui_query_heroEnemyDefRetreat     = 9010;
+   gc_gui_query_heroContinueSiegeNoHole = 9011;
+   gc_gui_query_heroContinueSiegeHole   = 9012;
+   gc_gui_query_heroContinueSiegeAttack = 9013;
+   gc_gui_query_playerWin               = 9014;
+   gc_gui_query_heroExploreFinished     = 9015;
+   gc_gui_query_heroDeliverToCastle     = 9016;
+   gc_gui_query_heroResurrect           = 9019;
+   gc_gui_query_heroResurrectNoMoney    = 9021;
+   gc_gui_query_playerMyLose            = 9023;
+   gc_gui_query_heroRobProvince         = 9024;
+   gc_gui_query_playerEnemySiege        = 9025;
+   gc_gui_query_playerEnemySiegeRuinedWalls = 9026;
+   gc_gui_query_playerEnemySiegeAttack      = 9027;
+   gc_gui_query_playerLostProvince          = 9028;
+   gc_gui_query_provStartRebel              = 9029;
+   gc_gui_query_playerEnemyCaptureProvince  = 9030;
+   gc_gui_query_playerAstralGatesUnluck     = 9031;
+   gc_gui_query_playerCampPlayerLose        = 9032;
+   gc_gui_query_playerDiplomacyAllyOfferPeace = 9033;
+   gc_gui_query_playerDiplomacyAllyPeaceSigned = 9034;
+   gc_gui_query_heroAttackProvinceNoWar     = 9035;
+   gc_gui_query_heroAttackAllyProvince      = 9036;
+   gc_gui_query_heroBodyDeliveredToCastle   = 9037;
+   gc_gui_query_heroEnemyAttackSiegeHero    = 9039;
+   gc_gui_query_heroAttackSiegePlayer       = 9040;
+   gc_gui_query_heroAttackSiegeRebel        = 9041;
+   gc_gui_query_playerEnemyStartSiege       = 9045;
+   gc_gui_query_heroAttackOwnDefender       = 9046;
+   gc_gui_query_heroMakeSabotage            = 9047;
+   gc_gui_query_heroEnemyMakeFalseAlarm     = 9048;
+   gc_gui_query_heroEnemyMakePoisonedWater  = 9049;
+   gc_gui_query_heroEnemyMakePanic          = 9050;
+   gc_gui_query_heroBlizzard                = 9051;
+   gc_gui_query_playerRitualMagicBarrier    = 9052;
+   gc_gui_query_heroProvinceMagicBarrier    = 9053;
+   gc_gui_query_battleFearVictory           = 9054;
+   gc_gui_query_heroFinalRobProvince        = 9055;
+   gc_gui_query_heroArenaEnterBarracks      = 9056;
+   gc_gui_query_heroArenaStartBattle        = 9057;
+   gc_gui_query_heroArenaWinBattle          = 9058;
+   gc_gui_query_heroArenaChooseSide         = 9059;
+   gc_gui_query_heroArenaMakeBet            = 9060;
+   gc_gui_query_heroArenaNoBattle           = 9061;
+   gc_gui_query_heroArenaWinBetSide         = 9062;
+   gc_gui_query_heroArenaLoseBetSide        = 9063;
+   gc_gui_query_heroArenaOrcaBattle         = 9064;
+   gc_gui_query_heroArenaDrawBet            = 9065;
+   gc_gui_query_battleRestrictSpellUsage    = 9066;
+   gc_gui_query_playerLocalLordLose         = 9067;
+   gc_gui_query_campLoseDeveloped           = 9068;
+   gc_gui_query_campLoseUndeveloped         = 9069;
+   gc_gui_query_campLoseRefuse              = 9070;
+   gc_gui_query_campDemonInvasion           = 9071;
+   gc_gui_query_campErduFinal               = 9072;
+   gc_gui_query_campDemonInvasionCharm      = 9073;
+   gc_gui_query_campWorldAttackLose         = 9074;
+   gc_gui_query_heroAltarKey                = 9075;
+   gc_gui_query_heroAltarAmphora            = 9076;
+   gc_gui_query_heroAltarAmphoraAndKey      = 9077;
+   gc_gui_query_heroAltarManuscript         = 9078;
+   gc_gui_query_heroAltarKeyFound           = 9079;
+   gc_gui_query_heroAltarKeyNotFound        = 9080;
+   gc_gui_query_heroAltarAmphoraFound       = 9081;
+   gc_gui_query_heroAltarAmphoraNotFound    = 9082;
+   gc_gui_query_heroAttackPassableProvince  = 9083;
+   gc_gui_query_heroSimultaneousAttack      = 9084;
+   gc_gui_query_heroSimultaneousAttackRetreat = 9085;
+   gc_gui_query_lan_playerMyLose            = 9086;
+   gc_gui_query_lan_playerWin               = 9087;
+
+   gc_gui_query_campStartTutorial           = 15003;
+
+   gc_gui_query_diplUndeliveredMessage      = 16001;
+   gc_gui_query_diplCancelMessage           = 16002;
+   gc_gui_query_diplCancelTrade             = 16003;
+   gc_gui_query_diplDeclareWarFromUnion     = 16004;
+   gc_gui_query_diplGetWarFromUnion         = 16005;
+   gc_gui_query_diplRestrictCancelTrade     = 16006;
+   gc_gui_query_diplRestrictWarFromPeace    = 16007;
+   gc_gui_query_diplRestrictWarFromGift     = 16008;
+   gc_gui_query_diplRestrictCancelUnion     = 16009;
+   gc_gui_query_diplRestrictSecondUnion     = 16010;
+   gc_gui_query_diplMeetLocalLord           = 16011;
+   gc_gui_query_diplMeetOverlord            = 16012;
+   gc_gui_query_diplShardLot                = 16013;
+   gc_gui_query_diplShardLotWin             = 16014;
+   gc_gui_query_diplShardLotLose            = 16015;
+   gc_gui_query_diplAskPeaceFromUnion       = 16016;
+   gc_gui_query_diplCancelDeal              = 16017;
+   gc_gui_query_diplOfferWithdrawn          = 16018;
+   gc_gui_query_diplUnionPeaceAlliesNotif   = 16019;
+   gc_gui_query_diplNewWar                  = 16020;
+   gc_gui_query_diplPeaceSigned             = 16021;
+   gc_gui_query_diplWarContinues            = 16022;
+   gc_gui_query_diplNewUnion                = 16023;
+   gc_gui_query_diplUnionBroken             = 16024;
+
+   // query indices
+   gc_query_EventMinIndex = 0;
+   gc_query_EventMaxIndex = 2999;
+   gc_query_GuardMinIndex = 3000;
+   gc_query_GuardMaxIndex = 4999;
+   gc_query_SiteMinIndex = 5000;
+   gc_query_SiteMaxIndex = 6999;
+   gc_query_EncounterMinIndex = 7000;
+   gc_query_EncounterMaxIndex = 8999;
+   gc_query_CampEventMinIndex = 10000;
+   gc_query_CampEventMaxIndex = 11999;
+   gc_query_ScenarioEventMinIndex = 20000;
+   gc_query_ScenarioCampEventMaxIndex = 21999;
+
+   gc_gui_material_blank_0 = 'misc.blank.black.alpha.0';
+   gc_gui_material_blink_btn_round  = 'gamepanel01.btn.round.49x49.highlight';
+   gc_gui_material_blink_btn_square = 'gamepanel01.btn.icon.66x67.highlight';
+
+   gc_gui_DelimiterChar       = 124; // 124 == |
+   gc_gui_DelimiterCharStr    = #124; // 124 == |
+   gc_gui_DotChar             = 46; // 46 == .
+   gc_gui_QuoteChar           = 34; // 34 == "
+   gc_gui_FadeTime0_2         = 0.2;
+   gc_gui_FadeTime0_4         = 0.4;
+   gc_gui_FadeTime0_6         = 0.6;
+   gc_gui_FadeTime1_25        = 1.25;
+   gc_gui_BreakLine           = #13+#10;
+   gc_gui_GoldIconChar        = '%style(Symbols)%0%style(default)%';
+   gc_gui_GemIconChar         = '%style(Symbols)%1%style(default)%';
+   gc_gui_GoldIconChar_0_5    = '%style(Symbols)%2%style(default)%';
+   gc_gui_GemIconChar_0_5     = '%style(Symbols)%3%style(default)%';
+   gc_gui_GoldIconStrokedChar = '%style(Symbols)%4%style(default)%';
+   gc_gui_GemIconStrokedChar  = '%style(Symbols)%5%style(default)%';
+
+   gc_gui_KarmaChar        = '%style(Symbols)%@%style(default)%';
+   gc_gui_IronChar        = '%style(Symbols)%A%style(default)%';
+   gc_gui_WoodChar        = '%style(Symbols)%B%style(default)%';
+   gc_gui_HorsesChar        = '%style(Symbols)%C%style(default)%';
+   gc_gui_MandragoraChar        = '%style(Symbols)%D%style(default)%';
+   gc_gui_ArcaniteChar        = '%style(Symbols)%E%style(default)%';
+   gc_gui_MarbleChar        = '%style(Symbols)%F%style(default)%';
+   gc_gui_MithrilChar        = '%style(Symbols)%G%style(default)%';
+   gc_gui_DionyChar        = '%style(Symbols)%H%style(default)%';
+   gc_gui_BlackLotusChar        = '%style(Symbols)%I%style(default)%';
+   gc_gui_MoodChar        = '%style(Symbols)%J%style(default)%';
+   gc_gui_XPChar        = '%style(Symbols)%K%style(default)%';
+
+   gc_gui_KarmaBadChar        = '%style(Symbols)%`%style(default)%';
+   gc_gui_IronStrokedChar        = '%style(Symbols)%a%style(default)%';
+   gc_gui_WoodStrokedChar        = '%style(Symbols)%b%style(default)%';
+   gc_gui_HorsesStrokedChar        = '%style(Symbols)%c%style(default)%';
+   gc_gui_MandragoraStrokedChar        = '%style(Symbols)%d%style(default)%';
+   gc_gui_ArcaniteStrokedChar        = '%style(Symbols)%e%style(default)%';
+   gc_gui_MarbleStrokedChar        = '%style(Symbols)%f%style(default)%';
+   gc_gui_MithrilStrokedChar        = '%style(Symbols)%g%style(default)%';
+   gc_gui_DionyStrokedChar        = '%style(Symbols)%h%style(default)%';
+   gc_gui_BlackLotusStrokedChar        = '%style(Symbols)%i%style(default)%';
+   gc_gui_MoodBadChar        = '%style(Symbols)%j%style(default)%';
+   gc_gui_XPBadChar        = '%style(Symbols)%k%style(default)%';
+
+// table style constants
+   gc_gui_TableStyleBorder = 0;       // 6px wooden border
+   gc_gui_TableStyleOpaque = 1;       // 6px opaque border
+   gc_gui_TableStyleNone = 2;         // no borders
+
+   gc_gui_TableFrameTop = 0;          // top line
+   gc_gui_TableFrameBottom = 1;       // bottom line
+   gc_gui_TableFrameCenter = 2;       // center line
+
+// table border styale (for)
+
+// text table spacers constants
+   gc_gui_TableIdx_lt = 0;
+   gc_gui_TableIdx_ct = 1;
+   gc_gui_TableIdx_rt = 2;
+   gc_gui_TableIdx_rc = 3;
+   gc_gui_TableIdx_rb = 4;
+   gc_gui_TableIdx_cb = 5;
+   gc_gui_TableIdx_lb = 6;
+   gc_gui_TableIdx_lc = 7;
+   gc_gui_TableIdx_cc = 8;
+   gc_gui_TableIdx_l = 9;
+   gc_gui_TableIdx_c = 10;
+   gc_gui_TableIdx_r = 11;
+   gc_gui_TableIdx_spacers_start = $10;
+   gc_gui_TableIdx_lines_start = $30;
+
+   gc_gui_TableIdx_opaque_start = $40;
+   gc_gui_TableIdx_opaque_offset = $50;
+
+   gc_gui_table_font_handle = 'font.table.6px';
+
+// achievements constants (copied from assets/design/steam_achievements_ids.xls file - DO NOT ALTER!!)
+   gc_achiev_tactical_battle_won = $BBC7; //
+   gc_achiev_hero_resurrected = $B607; //
+   gc_achiev_hero_level_up = $BED7; //
+   gc_achiev_province_captured = $B3B7; //
+   gc_achiev_siege_laid = $B357;
+   gc_achiev_zarr_dialogue = $BCD7;
+   gc_achiev_shard_conquered = $BE07;
+   gc_achiev_dragon_slain = $B3C7; //
+   gc_achiev_whole_province_explored = $B147; //
+   gc_achiev_50p_of_provinces_captured = $BA07;
+   gc_achiev_hero_level_20 = $BD27;
+   gc_achiev_unit_awarded = $BC17;
+   gc_achiev_battle_hero_left_alone = $BAF7; //
+   gc_achiev_meeting_with_oinor = $BB87;
+   gc_achiev_meeting_with_belez = $BD17;
+   gc_achiev_meeting_with_dogor = $BD37;
+   gc_achiev_meeting_with_vianta = $BAA7;
+   gc_achiev_meeting_with_oumm = $BE57;
+   gc_achiev_meeting_with_stenriya = $BD47;
+   gc_achiev_meeting_with_lanshar = $BA57;
+   gc_achiev_meeting_with_dariol = $B567;
+   gc_achiev_meeting_with_uldagan = $B117;
+   gc_achiev_meeting_with_erdu = $B1A7;
+   gc_achiev_meeting_with_dorikus = $B637;
+   gc_achiev_meeting_with_adrageron = $B7E7;
+   gc_achiev_meeting_with_ranadil = $B9F7;
+   gc_achiev_meeting_with_nameless = $B2A7;
+   gc_achiev_meeting_with_magnus = $B4B7;
+   gc_achiev_kill_it_all_ending = $B5D7; // +
+   gc_achiev_all_castle_buildings = $B0A7;
+   gc_achiev_hero_level_10 = $BE77; //
+   gc_achiev_magic_level_4 = $BF47;
+   gc_achiev_shard_captured_45_turns = $B137;
+   gc_achiev_lost_mutiny_in_castle = $B2B7; // +
+   gc_achiev_master_attack_averted = $BDD7; // +
+   gc_achiev_lost_chaos_came = $BB27; // +
+   gc_achiev_alliance_with_orcs = $B9C7;
+   gc_achiev_alliance_with_dwarves = $BA77;
+   gc_achiev_alliance_with_goblins = $B957;
+   gc_achiev_alliance_with_elves = $BD07;
+   gc_achiev_alliance_with_lizardmen = $B787;
+   gc_achiev_alliance_with_halflings = $B917;
+   gc_achiev_alliance_with_centaurs = $B3E7;
+   gc_achiev_shop_captured = $B907; // +
+   gc_achiev_undead_50 = $B337; // +
+   gc_achiev_meeting_with_herskil = $B247;
+   gc_achiev_tactician = $B287;
+   gc_achiev_strategist = $B0F7;
+   gc_achiev_arena_champion = $B6B7;
+   gc_achiev_explorer = $BD77;
+   gc_achiev_cartographer = $BF77;
+   gc_achiev_architect = $BAE7;
+   gc_achiev_dragon_slayer = $B4E7;
+   gc_achiev_looter = $B547;
+   gc_achiev_items_collector = $B3A7;
+   gc_achiev_two_years = $BFC7;
+
+// quick access stats data strings
+   gc_asd_default_value = '306|296|80';
+//
+   gc_battle_speed_min        = 0.8; // min battlespeed orign factor
+   gc_battle_speed_max        = 7.5; // max battlespeed orign factor
+   gc_battle_speed_absolute_max = 50.0;// battlespeed for max
+
+   gc_battle_unit_origininterval = 33;
+   gc_battle_unit_attackspeedmod = 0.66;
+   gc_battle_unit_turnspeedmod = 0.33;
+   gc_battle_unit_woundspeedmod = 0.66;
+   gc_battle_unit_deathspeedmod = 0.5;
+   gc_battle_projectilespeedmod = 0.4;
+	
+	gc_gui_provhudflag_name = 1;
+	gc_gui_provhudflag_type = 2;
+	gc_gui_provhudflag_level = 4;
+	gc_gui_provhudflag_mood = 8;
+	gc_gui_provhudflag_unrest = 16;
+	gc_gui_provhudflag_guard = 32;
+	gc_gui_provhudflag_overpop = 64;
+	gc_gui_provhudflag_quest = 128;
+	gc_gui_provhudflag_arena = 256;
+	gc_gui_provhudflag_shop = 512;
+	gc_gui_provhudflag_lair = 1024;
+	gc_gui_provhudflag_temple = 2048;
+	gc_gui_provhudflags_default = 249;
+
+   gc_gui_HeroHUDFadeTime     = 0.4;
+   gc_gui_ProvHUDFadeInTime   = 0.3;
+   gc_gui_ProvHUDFadeOutTime  = 0.225;
+
+   gc_gui_unit_minturncursordist = 1.1; // min distance to show turn cursor in tactical battle
+
+   gc_AlphaFade_Radius      = 3;
+   gc_AlphaFade_MinTime     = 1;
+   gc_AlphaFade_MaxTime     = 2;
+   gc_AlphaFade_StartAlpha  = 1;
+   gc_AlphaFade_EndMinAlpha = 0.1;
+   gc_AlphaFade_EndMaxAlpha = 0.5;
+   gc_AlphaFade_KeyName     = 'alphaFade';
+   gc_AlphaFade_PlayerName  = 'battle.pattern';
+
+   gc_BlendLighting_Strategy_DelayTime = 300; // in sec
+   gc_BlendLighting_Tactics_DelayTime = 300;  // in sec
+   gc_BlendLighting_DelayTimeLongModifier = 4;
+   gc_BlendLighting_Interval = 5000;          // in ms
+   gc_BlendLighting_PatternCount = 6;
+   gc_BlendLighting_PatternPrefix = 'ingame';
+
+   gc_Settings_LowestDecalMinDist = 1;
+   gc_Settings_LowestDecalMaxDist = 600;
+
+   gc_Tutorial_HintDisabled = 0;
+   gc_Tutorial_HintHidden   = 1;
+   gc_Tutorial_HintEnabled  = 2;
+   
+
+   // gv logging constants (gIntRegister_GVLogging)
+   //__________________________________________
+   gc_gvlog_ident_width = 1;
+   gc_gvlog_log_all = -1;
+   gc_gvlog_log_none = 0;
+   gc_gvlog_log_vars = $ffff;
+
+   gc_gvlog_log_all_lan = $101;
+
+   gc_gvlog_mapturnfinished = 1;
+   gc_gvlog_battlemaplock = 2;
+   gc_gvlog_shardmaplock = 4;
+   gc_gvlog_astrallock = 8;
+   gc_gvlog_setcurrentplayer = $10;
+   gc_gvlog_setinterfaceplayer = $20;
+   gc_gvlog_setplayersnumber = $40;
+   gc_gvlog_iohandle = $1000;
+   gc_gvlog_lantimers = $8000;
+   gc_gvlog_statestrace_gui = $10000;
+   gc_gvlog_statestrace_map = $20000;
+   gc_gvlog_statestrace_obj = $40000;
+   gc_gvlog_statestrace_query = $80000;
+   gc_gvlog_statestrace_astral = $100000;
+   gc_gvlog_statestrace_misc = $800000;
+   gc_gvlog_statestrace_all = $ff0000;
+   gc_gvlog_statestrace_shift = $10;
+
+section.end
+
+// registers
+section.begin
+   gc_expoVersion                        = Integer
+   
+   gIntRegister_CurGameMode              = Integer
+   gIntRegister_CameraMode               = Integer
+   gBoolRegister_NeedSeasonChangeObjects = Boolean
+   gBoolRegister_NeedSeasonChangeBattle  = Boolean
+
+   // generation
+   gFloatRegister_CamRestrictH      = Float
+   gBoolRegister_GeneratorFinished  = Boolean
+   gFloatRegister_MapGridXCoord          = Float
+   gFloatRegister_MapGridYCoord          = Float
+   gFloatRegister_GridXCoord        = Float
+   gFloatRegister_GridYCoord        = Float
+   gFloatRegister_TownPositionX     = Float
+   gFloatRegister_TownPositionY     = Float
+   gIntRegister_fowcloud_province   = Integer
+   
+   // sound registers
+   gArr_MusicTrackCooldown = Integer[gc_MusicTrackCount]
+   gArr_BattleMusicTracks = Integer[gc_MaxBattleMusic]
+
+   // map registers
+   //__________________________________________
+   gBoolRegister_MapAIEnabled       = Boolean
+   gBoolRegister_MapWin             = Boolean
+   gBoolRegister_MapLose            = Boolean
+   gIntRegister_MapBattleProvince   = Integer
+   gIntRegister_MapExploreValue     = Integer
+   gIntRegister_MapMyPlayerIndex    = Integer
+   //gIntRegister_MapUpgHeroHandle  = Integer
+   gIntRegister_MapActiveHeroHandle = Integer
+   gIntRegister_MoveMapHeroHandle   = Integer
+   gIntRegister_MapCurrentShop      = Integer
+
+   gIntRegister_VirtualBattleResult = Integer
+   gBoolRegister_VirtualBattleHeroDied = Boolean
+   gIntRegister_DeadHeroHandle      = Integer
+   gIntRegister_BattleProvIndex1    = Integer
+   gIntRegister_BattleProvIndex2    = Integer
+
+   // player turn progress registers
+   //__________________________________________
+   gIntRegister_MapTurnIteration    = Integer
+   gIntRegister_MapCurHeroIndex     = Integer
+   gIntRegister_MapCurPlayerIndex   = Integer
+   gIntRegister_CurProvinceIndex    = Integer
+   gIntRegister_CurEventTimerIndex  = Integer
+   gIntRegister_CurIndex            = Integer
+   gIntRegister_ConflictPlayerIndex = Integer
+   gIntRegister_ConflictHeroUID1    = Integer
+   gIntRegister_ConflictHeroUID2    = Integer
+   gStringRegister_ClientQueryID    = String
+   gIntRegister_MapLockCount        = Integer
+   gBoolRegister_MapTurnFinished    = Boolean
+   gBoolRegister_AfterEndTurn       = Boolean
+   gBoolRegister_WaitLanQueryResult = Boolean
+   gBoolRegister_MapResolveConflicts = Boolean
+   gBoolRegister_MapProceedBattle   = Boolean
+   gBoolRegister_LanMapTurnPassed   = Boolean
+   gIntRegister_PlayBell            = Integer
+   
+   gFloatRegister_FramesPerSecondFactor = Float
+   gIntRegister_AntiFreezeStarted = Integer
+   gIntRegister_AntiFreezeUpdated = Integer
+   gFloatRegister_AntiFreezeLowFactor = Float
+   gFloatRegister_AntiFreezeLowFPS = Float
+
+   // encounter and event registers
+   //__________________________________________
+   gIntRegister_EncounterParam1 = Integer
+   gIntRegister_EncounterParam2 = Integer
+   gIntRegister_EncounterEnemyArmy = Integer
+   gBoolRegister_EventIsRebel = Boolean
+
+   gIntRegister_FoundSiteIndex         = Integer
+   gIntRegister_EncounterResult        = Integer
+   gIntRegister_EncounterGuardLevel    = Integer
+   gIntRegister_EncounterDifficulty    = Integer
+   gIntRegister_EncounterQuestID       = Integer
+   gBoolRegister_EncounterDiffFlag     = Boolean
+   gIntRegister_EventAttackerLevel     = Integer
+   gIntRegister_CurrentEventID         = Integer
+   gIntRegister_CurrentEncounterID     = Integer
+   gBoolRegister_UpdateHeroPath        = Boolean
+   gBoolRegister_CheckLevelUp          = Boolean
+
+   // battle registers
+   //__________________________________________
+   gIntRegister_BattleAttackArmy       = Integer
+   gIntRegister_BattleDefendArmy       = Integer
+   gIntRegister_BattleAttackHeroHandle = Integer
+   gIntRegister_BattleDefendHeroHandle = Integer
+   gIntRegister_BattleAttackPlayer     = Integer
+   gIntRegister_BattleDefendPlayer     = Integer
+
+   gIntRegister_BattleLockCount     = Integer
+   gFloatRegister_BattleLockTime    = Float
+   gIntRegister_BattleCurrentTurn   = Integer
+   gIntRegister_BattleCurPlIndex    = Integer
+   gIntRegister_BattleCurGOIndex    = Integer
+   gIntRegister_BattleCurTowerIndex = Integer
+   
+   gIntRegister_EndHexCell         = Integer
+   gIntRegister_EndHexUID          = Integer
+   gIntRegister_StartTrackNode     = Integer
+   gIntRegister_EndTrackNode       = Integer
+   gIntRegister_BeforeEndTrackNode = Integer
+   
+   // 0 - no battle, 1-battle with province owner, 2 - battle with defender, 3 - siege in progress, 4 - battle with enemy hero in the third party province
+   gIntRegister_NewBattle           = Integer
+   gIntRegister_BattleSiteIndex     = Integer
+   gIntRegister_BattleGuardIndex    = Integer
+   gIntRegister_BattleDefenderIndex = Integer
+   gIntRegister_BattleSiteID        = Integer
+   gIntRegister_BattleSiteLevel     = Integer
+   gIntRegister_ArenaLeague         = Integer
+   gIntRegister_ArenaReward         = Integer
+   gIntRegister_ArenaChosenSide     = Integer
+   gIntRegister_ArenaBet            = Integer
+   gIntRegister_FalseAlarmPrice       = Integer
+   gIntRegister_PoisonedWaterPrice    = Integer
+   gIntRegister_PanicPrice            = Integer
+
+   gIntRegister_AfterBattleEventID     = Integer
+   gIntRegister_AfterBattleEncounterID = Integer
+   gStringRegister_AfterBattleQuery    = String
+
+   gBoolRegister_BattleSimulate       = Boolean
+   gBoolRegister_RealAIBattle         = Boolean
+   gBoolRegister_QuickBattle          = Boolean
+   gFloatRegister_UnitMoveSpeedBoost  = Float
+   gBoolRegister_IsHumanPlayer        = Boolean
+   gBoolRegister_IsDefenderBattle     = Boolean
+   gBoolRegister_IsAutoBattle         = Boolean
+   gBoolRegister_IsDefenderAutoBattle = Boolean
+   gBoolRegister_BattlePlaceMode      = Boolean
+   gBoolRegister_WriteToGrid          = Boolean
+   gBoolRegister_BattleIsAttackerAction = Boolean
+   gBoolRegister_BattleSwitchPlayer   = Boolean
+   gBoolRegister_BattleEndBattle      = Boolean
+   gBoolRegister_BattleSiteIsGuarded  = Boolean
+   gBoolRegister_BattleIsSiege        = Boolean
+   gBoolRegister_ArenaBattle          = Boolean
+   gBoolRegister_ArenaWatcher         = Boolean
+   gBoolRegister_ResetBattleData      = Boolean
+   gBoolRegister_InBattle             = Boolean
+   gStringRegister_Battle_LeftTType   = String
+   gStringRegister_Battle_RightTType  = String
+   gBoolRegister_BattleEnemyFullPower = Boolean
+
+   // time at which is safe to display next flytext queue (see gc_flytext_QueueDelay)
+   gFloatRegister_BattleFlyTextTime = Float
+   
+   gBoolRegister_ShowBattleLog        = Boolean
+   
+   // selection registers
+   //__________________________________________
+   gIntRegister_MapHoverUID = Integer
+   gIntRegister_MapSelectedSlotHeroUID = Integer
+   gIntRegister_MapSelectedUnitSlot = Integer
+   gIntRegister_MapSelectedSpellSlot = Integer
+   gIntRegister_MapSelectedGarrisonUnitSlot = Integer
+   gIntRegister_MapSelectedItemSlot = Integer
+   gIntRegister_MapDismissHeroUID   = Integer
+   gIntRegister_MapSelectedHex      = Integer
+   gIntRegister_MapUnderCursorHex   = Integer
+   gIntRegister_MapSelectedUID      = Integer
+   gIntRegister_MapSelectedBuilding = Integer
+   gIntRegister_MapPickedUnitID     = Integer
+   gIntRegister_MapPickedUnitExp    = Integer
+   gBoolRegister_MapMercenaryPicked = Boolean
+   //gIntRegister_MapPickedInnerBuildID = Integer
+   //gIntRegister_MapPickedOuterBuildID = Integer
+   gIntRegister_MapPickedSpellID    = Integer
+   gIntRegister_MapPickedItemID     = Integer
+   gIntRegister_MapPickedDefenderID = Integer
+   gIntRegister_MapPickedRitualID   = Integer
+   gIntRegister_MapPickedItemDurability = Integer
+   
+   gIntRegister_SelectedUID           = Integer
+   //gIntRegister_InfoUnitUID         = Integer
+   gIntRegister_CurSpell              = Integer
+   gIntRegister_CurSpellIndex         = Integer
+   gIntRegister_SacrificeUID          = Integer
+   gIntRegister_TeleportUID           = Integer
+
+   // query registers
+   //__________________________________________
+   gIntRegister_CurQueryHandle = Integer
+   gStringRegister_MyHeroName = String
+   gStringRegister_ProvinceName = String
+   gIntRegister_DefenderEnemyCount = Integer
+   gStringRegister_DefenderEnemyList = String
+   gIntRegister_GuardEnemyCount = Integer
+   gStringRegister_GuardEnemyList = String
+   gIntRegister_TurnsOnHeroRevive = Integer
+   gIntRegister_GoldCost = Integer
+   gIntRegister_GemCost = Integer
+   gStringRegister_EnemyPlayerName = String
+   gStringRegister_EnemyPlayerNameDiplomacy = String
+   gStringRegister_EnemyHeroName = String
+   gIntRegister_EnemyHeroArmyCount = Integer
+   gStringRegister_EnemyHeroArmyList = String
+   gIntRegister_SiegeTurnsLeft = Integer
+   gIntRegister_EffectValue = Integer
+   gStringRegister_SiteName = String
+   gIntRegister_ExploreValue = Integer
+   gIntRegister_AbilityPower = Integer
+   gIntRegister_GoldReward = Integer
+   gIntRegister_GemReward = Integer
+   gIntRegister_TreasureGoldReward = Integer
+   gIntRegister_TreasureGemReward = Integer
+   gIntRegister_HeroLevel = Integer
+   gStringRegister_HeroClass = String
+   gIntRegister_BattleEffectValue = Integer
+   gStringRegister_SpellName = String
+   gBoolRegister_ShowAdvice = Boolean
+   gBoolRegister_ShowPlayerHint = Boolean
+   gStringRegister_AttackerHeroClass = String
+   gStringRegister_DefenderHeroClass = String
+   gStringRegister_CampaignQueryID = String
+   gStringRegister_ShardName = String
+   gStringRegister_RulerTitle = String
+   gIntRegister_NumYears = Integer
+   gStringRegister_StrYears = String
+   gIntRegister_RecordPlace = Integer
+   gStringRegister_QuestValue = String
+   gStringRegister_UnitName = String
+   gIntRegister_UnitCount = Integer
+   gIntRegister_MoodDummyUID = Integer
+   gStringRegister_BuildName = String
+   gStringRegister_TerrainName = String
+   gStringRegister_ResourceName = String
+   gIntRegister_GuardianArtifactPercent = Integer
+   gIntRegister_DiplomacyTurnLeft = Integer
+   gIntRegister_QueryPlayerIndex = Integer
+   gIntRegister_QueryPlayerIndex1 = Integer
+   gStringRegister_SkillName = String
+   gStringRegister_PlayersList = String
+   gIntRegister_AstralEnergy = Integer
+   gBoolRegister_QueryBribeGuard = Boolean
+   gIntRegister_QuerySpellUsage = Integer
+   gBoolRegister_IsQueryScout = Boolean
+
+   // astral & campaign registers
+   //__________________________________________
+   gIntRegister_AstralSelectedShard    = Integer
+   gIntRegister_AstralUnderCursorShard = Integer
+   gIntRegister_AstralEnergySpend      = Integer
+   gBoolRegister_AstralDialogStarted   = Boolean
+   gIntRegister_CurrentCampPlayer      = Integer
+   gIntRegister_CampAttackPlayer       = Integer
+   gIntRegister_CampDefendPlayer       = Integer
+   gIntRegister_ShardBattleResult      = Integer
+   gIntRegister_AstralLockCount        = Integer
+   gIntRegister_AddShardsCount         = Integer
+   gBoolRegister_ShardBattleStarted    = Boolean
+
+   // tutorial registers
+   //__________________________________________
+   gArrTutorialHistory                  = Integer[gc_MaxTutorialHistory]
+   gIntRegister_TutorialHistoryIndex    = Integer
+   gIntRegister_TutorialCurrentHint     = Integer
+
+   // enable buttons tutorials
+   gBoolRegister_BtnEndTurnEnabled      = Boolean
+   gBoolRegister_BtnCastleEnabled       = Boolean
+   gBoolRegister_BtnDiplomacyEnabled    = Boolean
+   gBoolRegister_BtnStatisticsEnabled   = Boolean
+   gBoolRegister_BtnRitualEnabled       = Boolean
+   gBoolRegister_BtnExploreEnabled      = Boolean
+   gBoolRegister_BtnPillageEnabled      = Boolean
+   gBoolRegister_BtnEnterSiteEnabled    = Boolean
+   gBoolRegister_BtnRitualEnabled       = Boolean
+   gBoolRegister_BtnLibraryEnabled      = Boolean
+   gBoolRegister_BtnGarrisonEnabled     = Boolean
+   gBoolRegister_BtnOuterBuildEnabled   = Boolean
+   gBoolRegister_BtnDefenderEnabled     = Boolean
+   gBoolRegister_BtnShopEnabled         = Boolean
+   gBoolRegister_BtnHeroCloseEnabled    = Boolean
+   gBoolRegister_BtnBatEndTurnEnabled   = Boolean
+   gBoolRegister_BtnCastleCloseEnabled  = Boolean
+   gBoolRegister_BtnAttackShardEnabled  = Boolean
+   gBoolRegister_BtnNextHeroEnabled     = Boolean
+   gBoolRegister_BtnInnerBuildEnabled   = Boolean
+   gBoolRegister_BtnQuarterEnabled      = Boolean
+   gBoolRegister_BtnAdvBuildEnabled     = Boolean
+   gBoolRegister_BtnMenuEnabled         = Boolean
+   gBoolRegister_BtnCastleBuildEnabled  = Boolean
+   gBoolRegister_BtnEndTurnBlink        = Boolean
+   gBoolRegister_BtnCastleBlink         = Boolean
+   gBoolRegister_BtnDiplomacyBlink      = Boolean
+   gBoolRegister_BtnStatisticsBlink     = Boolean
+   gBoolRegister_BtnRitualBlink         = Boolean
+   gBoolRegister_BtnExploreBlink        = Boolean
+   gBoolRegister_BtnPillageBlink        = Boolean
+   gBoolRegister_BtnEnterSiteBlink      = Boolean
+   gBoolRegister_BtnRitualBlink         = Boolean
+   gBoolRegister_BtnLibraryBlink        = Boolean
+   gBoolRegister_BtnGarrisonBlink       = Boolean
+   gBoolRegister_BtnOuterBuildBlink     = Boolean
+   gBoolRegister_BtnDefenderBlink       = Boolean
+   gBoolRegister_BtnShopBlink           = Boolean
+   gBoolRegister_BtnHeroCloseBlink      = Boolean
+   gBoolRegister_BtnBatEndTurnBlink     = Boolean
+   gBoolRegister_BtnNextHeroBlink       = Boolean
+   gBoolRegister_BtnRepairBlink         = Boolean
+   gBoolRegister_BtnRepairAllBlink      = Boolean
+   gBoolRegister_BtnCastleCloseBlink    = Boolean
+   gBoolRegister_BtnRecruitHeroBlink    = Boolean
+   gBoolRegister_BtnAttackShardBlink    = Boolean
+   gBoolRegister_BtnZarrTalkBlink       = Boolean
+   gBoolRegister_BtnAstralStatsBlink    = Boolean
+   gBoolRegister_BtnAstralStatsBlink    = Boolean
+   gBoolRegister_BtnBattleSettingsBlink = Boolean
+   gBoolRegister_BtnSwitchWeaponBlink   = Boolean
+   gBoolRegister_BtnQuarterBlink        = Boolean
+   gBoolRegister_BtnAdvBuildBlink       = Boolean
+   gBoolRegister_BtnCastleBuildBlink    = Boolean
+
+   // GUI registers
+   //__________________________________________
+   gStringRegister_ItemPlace                    = String
+   gIntRegister_GUIShopSortMode                 = Integer
+   gBoolRegister_RepairItemMode                 = Boolean
+   gIntRegister_GUIBuildProvListTab             = Integer
+   gBoolRegister_GUIUpdateInterfacePanel        = Boolean
+   gBoolRegister_GUIProcessBuildingsQuery       = Boolean
+   gBoolRegister_GUIUpdateMapHexGrid            = Boolean
+   gIntRegister_GUICurCastleMode                = Integer
+   gIntRegister_GUICurCastleTabMode             = Integer
+   gIntRegister_GUICurHeroMode                  = Integer
+   gIntRegister_TutCurCastleMode                = Integer
+   gIntRegister_TutCurCastleTabMode             = Integer
+   gIntRegister_TutCurHeroMode                  = Integer
+   gBoolRegister_GUIUpdateMapDrawPath           = Boolean
+   gBoolRegister_GUIUpdateBattlePlacementMode   = Boolean
+   gBoolRegister_GUIMapCheckEndGame             = Boolean
+   gIntRegister_GUIMapChooseHeroProvince        = Integer
+   gBoolRegister_GUIMapShowChooseDefender       = Boolean
+   gBoolRegister_GUIBattleResultWindow          = Boolean
+   gBoolRegister_GUIBattleExitBattleMode        = Boolean
+   gBoolRegister_GUIBattleUpdateHexGrid         = Boolean
+   gBoolRegister_GUIBattleResetHexGrid          = Boolean
+   gBoolRegister_GUIMapUpdate                   = Boolean
+   gBoolRegister_GUIEndTurn                     = Boolean
+   gIntRegister_CastleUnderCursorBuildID        = Integer
+   gIntRegister_GUIScrollSliderHandle           = Integer
+   gIntRegister_GUISettingTab                   = Integer
+   gIntRegister_GUIActiveHeroUID1               = Integer
+   gIntRegister_GUIActiveHeroUID2               = Integer
+   gBoolRegister_GUIExchangeSecond              = Boolean
+   gIntRegister_CampaignHeroesPanel             = Integer
+   gBoolRegister_GUIForceMouseMove              = Boolean
+   gIntRegister_GUIProvinceListSortOrder        = Integer
+   gIntRegister_GUIProvinceListSortMode         = Integer
+   gIntRegister_GUIProvinceListStatMode         = Integer
+   gIntRegister_GUINoSpaceForItemHeroUID        = Integer
+   gIntRegister_GUIShowFinishCampaignIndex      = Integer
+   gBoolRegister_GUIShowFinishCampaign          = Boolean
+   gBoolRegister_GUIAstralShowHintScroll        = Boolean
+   gBoolRegister_GUIExecuteStartEvent           = Boolean
+   gIntRegister_GUIDrawPathUID                  = Integer
+   //gBoolRegister_GUIMapUpdateResHUD           = Boolean
+   gBoolRegister_GUIProvRadialPlaceInCenter     = Boolean
+   gIntRegister_GUIRouteOnGUIRestart            = Integer
+   gBoolRegister_GUIBattleSelectNextUnit        = Boolean
+   gIntRegister_GUITutorialChooseDifficultyMode = Integer
+   gBoolRegister_GUISaveAstral                  = Boolean
+   gFloatRegister_GUICameraHeight               = Float
+   gIntRegister_GUIBattleTooltipLastEndHexCell  = Integer
+   gBoolRegister_GUIProgressOnceOnGUIDoCreate   = Boolean
+   gFloatRegister_AlchemySlider                 = Float
+   gBoolRegister_Loading                        = Boolean
+   gBoolRegister_GUIStartup                     = Boolean
+   gStringRegister_GUIProvincesToUpdate         = String
+   gStrRegister_PendingAchievements             = String
+   gBoolRegister_BrokenWeapon                   = Boolean
+   //gIntRegister_CurHeroUIDInfo                = Integer
+   gIntRegister_UnitInfoParser                  = Integer
+   gBoolRegister_ShowExtendedHint               = Boolean
+   gBoolRegister_ShowBattleExtendedHint         = Boolean
+   gBoolRegister_ShowMapExtendedHint            = Boolean
+   gBoolRegister_ShowProvinceExtendedHint       = Boolean
+   gBoolRegister_ConvertGenesisMode              = Boolean
+
+   // diplomacy
+   gIntRegister_DiplomacyActivePlayerID = Integer
+   gIntRegister_DiplomacyActivePlayerIDTemporary = Integer
+   gIntRegister_QueryDiplomacyPlayerID = Integer
+   gBoolRegister_DiplomacyInited = Boolean
+   gIntRegister_DiplomacyWindowMode = Integer
+
+   // vvk registers
+   gIntRegister_GUIShardGameMode = Integer
+   // [0] - mode (0-normal, 1-advanced)
+   // [1] - show mode (0-all, 1-available, 2-buildable)
+   // [2] - selected building id for simple mode
+   // [3] - details mode (bw2 only)
+   // [4] - selected building id for advanced mode
+   gStrRegister_GUIBuildWindowState = String
+   gStrRegister_GUIBuildHistory = String
+
+   // console registers
+   gIntRegister_ConsoleCommandIndex = Integer
+   gStrRegister_ConsoleLog = String
+   gStrRegister_ConsoleLogHistory = String
+   gArrRegister_ConsoleAliases = String[$100]
+   gStrRegister_ConsolePrevKeyDownState = String
+   gIntConsoleStateMachineHandle = Integer
+
+   // lan console registers
+   gIntRegister_LanConsoleCommandIndex = Integer
+   gStrRegister_LanConsoleLog = String
+   gStrRegister_LanConsoleLogHistory = String
+   gStrRegister_LanConsolePrevKeyDownState = String
+   gStrRegister_BattleNicks = String[2]
+   gIntRegister_BattleIDs = Integer[2]
+
+   // internet & multiplayer
+   //__________________________________________
+   gIntRegister_AstralChatMode = Integer
+   gIntRegister_InetWindowMode = Integer
+   gIntRegister_InetHeroMode = Integer
+   gBoolRegister_InetStartBattle = Boolean
+   gIntRegister_InetRecruitRankMode = Integer
+   gIntRegister_InetLibraryRankMode = Integer
+   gIntRegister_InetShopRankMode = Integer
+   gIntRegister_InetShopSortMode = Integer
+   gIntRegister_InetPickedUnitSlot = Integer
+   gIntRegister_InetPickedSpellSlot = Integer
+   gIntRegister_InetPickedItemSlot = Integer
+   gIntRegister_InetShopPickedSpellID = Integer
+   gIntRegister_InetShopPickedUnitID = Integer
+   gIntRegister_InetShopPickedItemID = Integer
+   gBoolRegister_InetUnitLevelUpMode = Boolean
+   gIntRegister_InetUnitLevelUpSlot = Integer
+   gIntRegister_InetSelectedPlayerID = Integer
+   gIntRegister_InetSelectedGameID = Integer
+   gBoolRegister_IsHotSeat = Boolean
+   gIntRegister_InetPointsMode = Integer
+   gIntRegister_HotSeatActivePlayer = Integer
+   gIntRegister_ShardHotSeatActivePlayer = Integer
+
+   // lan
+   TLanWaitTimer : struct.begin
+      timer = Float
+      event_tag = Integer
+      event_state = String
+      event_command = String
+      text = String
+      cancel_delay = Integer
+      flags = Integer
+   struct.end
+   gArr_LanTimers = TLanWaitTimer[gc_max_lan_wait_timers]
+	
+   gIntRegister_InetLanTurn = Integer
+   gBoolRegister_InetLanIsEvaluateOrder = Boolean
+   gIntRegister_InetLanActionSyncEnum = Integer
+   gBoolRegister_LanClientEndTurn = Boolean
+   gIntRegister_LanSwitchToMasterTurn = Integer
+   gIntRegister_LanSwitchToClientTurn = Integer
+   gIntRegsiter_LanReadyPlayersCount  = Integer
+   gIntRegsiter_LanShardBatReadyCount = Integer
+   gIntRegsiter_LanBatServerID   = Integer
+   gIntRegsiter_LanBatClientID   = Integer
+   gStringRegister_LanCurrentBattleIDs = String
+   gIntRegister_MyLanID = Integer
+	gBoolRegister_HaltLanProgress = Boolean
+
+   // lan save/load
+   gIntRegister_LanMapUID = Integer
+   gStringRegister_LanMapSaveName = String
+
+   // lan strategy mode parsers queue
+   TStrategyParserData : struct.begin
+      t = Integer
+      id = Integer
+      parser = Integer
+   struct.end
+
+   // 0 - no logging, 1 - log only heavy ones, 2 - log all
+   gIntRegister_LogLanParsers = Integer
+   gIntRegister_LogLanParserUID = Integer
+   gStringRegister_LogLanParserPfx = String
+   gIntRegister_LanParsersBufferIndex = Integer
+   gIntRegister_LanParsersNumber = Integer[2]
+   gArr_LanParsersQueue = TStrategyParserData[gc_lan_max_parsers_queue_size][2]
+
+   // nick or name?
+   gBoolRegister_UseNameAsNick = Boolean
+
+   // gv logging control (see gc_gvlog_ constants)
+   gIntRegister_GVLogging = Integer
+   gArr_GvLogModuleNames = String[34]
+   gIntRegister_GvLogIdentLevel = Integer
+
+   // pfx smart tree
+   //__________________________________________
+   gIntRegister_fxTree_RootHandle = Integer
+   gStringRegister_fxTree_NodeName = String
+   gIntRegister_fxTree_NodeHandle = Integer
+   gIntRegister_fxTree_NodeTarget = Integer
+   gFloatRegister_fxTree_CoordTargetX = Float
+   gFloatRegister_fxTree_CoordTargetY = Float
+   gFloatRegister_fxTree_CoordTargetZ = Float
+   gFloatRegister_fxTree_SleepTime = Float
+   gBoolRegister_fxTree_Loaded = Boolean
+   
+   // random key registers
+   //__________________________________________
+   gIntRegister_RandomExtKey0 = Integer
+   gIntRegister_RandomExtKey1 = Integer
+   gIntRegister_MapGeneratorKey0 = Integer
+   gIntRegister_MapGeneratorKey1 = Integer
+   gIntRegister_GlobalMapGeneratorKey0 = Integer
+   gIntRegister_GlobalMapGeneratorKey1 = Integer
+
+   // debug registers
+   //__________________________________________
+   gBoolRegister_debugNoCameraRestricts = Boolean
+   gBoolRegister_StandHeroAtProvCenter = Boolean
+   gIntRegister_DbgMapSelectedHex = Integer
+   gIntRegister_dbgX = Integer
+   gIntRegister_dbgY = Integer
+   gIntRegister_dbgZ = Integer
+   gFloatRegister_gDbgFloat0PrevValue = Float
+   gFloatRegister_gDbgFloat1PrevValue = Float
+   gFloatRegister_gDbgFloat2PrevValue = Float
+   gFloatRegister_gDbgFloat3PrevValue = Float
+   gIntRegister_DebugAutopassTurns = Integer
+   gBoolRegister_CheatCanBuildInfinite = Boolean
+   gFloatRegister_DoDebugHintAlpha = Float
+   gBoolRegister_DebugForceExtendedHint = Boolean
+   gBoolRegister_ShowResourceOnProvince = Boolean
+   gBoolRegister_BattleInfiniteMovePoints = Boolean
+
+   // demo registers
+   //__________________________________________
+   gIntRegister_CurDemoMode = Integer
+   gIntRegister_DemoQueryIntro = Integer
+   gIntRegister_DemoQueryBattle = Integer
+   gIntRegister_DemoQueryMap = Integer
+   gIntRegister_DemoQueryCampaign = Integer
+
+   // map editor
+   //__________________________________________
+   gBoolRegister_EditorFastGeneration = Boolean
+   gBoolRegister_EditorAllowed        = Boolean
+
+   // -------------------------------------------
+
+   TParserData : struct.begin
+      handle = Integer
+      number = Integer
+   struct.end
+
+   TPrototypeData : struct.begin
+      root = TParserData
+
+      provinceTypes = TParserData
+      provinceLevels = TParserData
+      provinceNames = TParserData
+      prefixes = TParserData
+      suffixes = TParserData
+      terrainTypes = TParserData
+      resources = TParserData
+      sites = TParserData
+      races = TParserData
+      events = TParserData
+      units = TParserData
+      unitLevels = TParserData
+      heroClasses = TParserData
+      guardTypes = TParserData
+      guards = TParserData
+      unitUpgrades = TParserData
+      abilities = TParserData
+      innerBuildings = TParserData
+      buildGroups = TParserData
+      spells = TParserData
+      medals = TParserData
+      skills = TParserData
+      heroBonuses = TParserData
+      effects = TParserData
+      outerBuildings = TParserData
+      items = TParserData
+      itemTypes = TParserData
+      itemSets = TParserData
+      itemSlots = TParserData
+      defenders = TParserData
+      encounters = TParserData
+      rituals = TParserData
+      mercenaries = TParserData
+      heroPrices = TParserData
+      shardBonuses = TParserData
+      landmarks = TParserData
+      campEvents = TParserData
+      townQuarters = TParserData
+      players = TParserData
+      bfObjects = TParserData
+      extHeroClasses = TParserData
+      quests = TParserData
+      attitudes = TParserData
+      difficulty = TParserData
+      unitTypes = TParserData
+
+      extItems = TParserData
+      heroAdvices = TParserData
+      rulerNicks = TParserData
+      rulerTitles = TParserData
+      bookMasters = TParserData
+      campDifficulties = TParserData
+      worldRules = TParserData
+      music = TParserData
+      objectTypes = TParserData
+      scenarioevents = TParserData
+      customdifficulty = TParserData
+      flytextpars = Integer
+      flytextstyles = Integer
+   struct.end
+
+   TBattleData : struct.begin
+      root = TParserData
+      patternList = TParserData
+      zoneList = TParserData
+      columnZones = TParserData
+   struct.end
+
+   gPrototypeData = TPrototypeData
+   gBattleData = TBattleData
+   gPatternCover = TParserData
+   gPatternCoverTerrainTypes = TParserData
+
+   gGridVertices = TParserData
+
+   gStratHexCells = TParserData
+   gHexCells = TParserData
+
+   gStatistics = TParserData
+   
+   gWindows = TParserData
+
+   // -------------------------------------------
+
+   gArrRollerP = Integer[gc_MaxRoll]
+   gArrRollerN = Integer[gc_MaxRoll]
+
+   gIntRegister_MaxArrPathValue = Integer
+
+   gArrPath = Integer[gc_MaxPath]
+
+	TPruningObject : struct.begin
+		baseName = String
+		frequency = Integer
+		count = Integer
+   struct.end
+	
+	gSceneryPruner = TPruningObject[gc_MaxPrunerObjects]
+	gProvinceSceneryPruner = TPruningObject[gc_MaxPrunerObjects]
+
+   TVector3f : struct.begin
+      x = Float
+      y = Float
+      z = Float
+   struct.end
+
+   TVector4f : struct.begin
+      x = Float
+      y = Float
+      z = Float
+      w = Float
+   struct.end
+
+   TDifficulty : struct.begin
+      custom = Boolean
+      basediff = Integer
+      neutralhp = Integer
+      defenderhp = Integer
+      expmod = Integer
+      startgold = Integer
+      startgem = Integer
+      goldincomeadd = Integer
+      gemincomeadd = Integer
+      corruption = Integer
+      score = Integer
+   struct.end
+
+   TFloatDifficulty : struct.begin
+      neutralhp = Float
+      defenderhp = Float
+      expmod = Float
+      startgold = Float
+      startgem = Float
+      goldincomeadd = Float
+      gemincomeadd = Float
+      corruption = Float
+   struct.end
+
+   TMap : struct.begin
+      players = Integer
+      difficulty = Integer
+      x = Integer
+      y = Integer
+      typ = Integer
+      water = Integer
+      hill = Integer
+      forest = Integer
+      swamp = Integer
+      desert = Integer
+      deadland = Integer
+      isles = Integer
+      dissolve = Integer
+      neutrals = Integer
+      resource = Integer
+      site = Integer
+      population = Integer
+   struct.end
+
+   TGame : struct.begin
+      seed = Integer
+      currentturn = Integer
+      gametype = Integer
+      resbuy = Integer
+      resprices = Integer[10]
+      maxplayers = Integer
+      activeplayer = Integer
+      worldrule = Integer
+      victorycond = Integer
+      diplomacy = Boolean
+      fog = Boolean
+      arrplayercontrol = Integer[gc_MaxCampPlayer]
+      arrplayerset = Integer[gc_MaxCampPlayer]
+      arrracequest = Integer[gc_MaxRace]
+      arrplayerdifficulty = TDifficulty[gc_MaxCampPlayer]
+      map = TMap
+      quickgame = Boolean
+      allowedheroes = Integer
+	  sandbox = Boolean
+	  genesismode = String
+	  improvedai = Boolean
+   struct.end
+
+   gGame = TGame
+
+   TShard : struct.begin
+      nameprefix = String
+      namesuffix = String
+      pattern = String
+      pos = TVector3f
+      num = Integer
+      uid = Integer
+      level = Integer
+      seed = Integer
+      income = Integer
+      terrain = Integer
+      ipplayer = Integer
+      worldrule = Integer
+      victorycond = Integer
+      arbonus =	Integer[gc_MaxShardBonus][2]
+      arevent = Integer[gc_MaxShardEvent]
+      arbuilding = Integer[gc_MaxShardBuild]
+      map = TMap
+   struct.end
+
+   gShards = TShard[gc_MaxShards]
+
+   arrChosenBonuses = Integer[gc_MaxPlayerBonus][2]
+
+   TCampPlayer : struct.begin
+      energy = Integer
+      energybonus = Integer
+      energypenalty = Integer
+      energylose = Integer
+      energydrain = Integer
+      sizebonus = Integer
+      ipprofile = Integer
+      karma = Integer
+      score = Integer
+      treaty = Integer
+      treaty1 = Integer
+      y = Integer
+      arrattitude = Integer[gc_MaxCampPlayer]
+      arrbuilds = Integer[gc_MaxCampPlayerBuild]
+      mapscore = Integer
+      questscore = Integer
+      dipscore = Integer
+      killscore = Integer
+      firstmeet = Boolean
+      shardmeet = Boolean
+      ingame = Boolean
+      human = Boolean
+      lord = Boolean
+      buildadded = Boolean
+      mainshard = Integer
+   struct.end
+
+   TCampQuest : struct.begin
+      questindex = Integer
+      status = Integer
+      provindex = Integer
+      siteindex = Integer
+   struct.end
+
+   TCampaign : struct.begin
+      currentturn = Integer
+      activeshard = Integer
+      activeplayer = Integer
+      activelord = Integer
+      difficulty = Integer
+      maxshards = Integer
+      timebonus = Integer
+      reserv = Integer
+      arrjournals = Integer[gc_MaxCampaignJournal]
+      arrawards = Integer[gc_MaxCampaignAward]
+      turnlimit = Integer
+      mindifficulty = Integer
+      arrdialogs = Integer[gc_MaxCampaignDialog]
+      arritems = Integer[gc_MaxCampaignItem]
+      arrevents = Integer[gc_MaxCampaignEvent]
+      arrquests = TCampQuest[gc_MaxCampaignQuest]
+      defender = Boolean
+      finished = Boolean
+      arrcampplayers = TCampPlayer[gc_MaxCampPlayer]
+      arrcamplords = TCampPlayer[gc_MaxCampaignLord]
+   struct.end
+
+   gCampaign = TCampaign
+
+   TCampMapHeroUnit : struct.begin
+      values = String
+      keys = String
+      upgrades = String
+      medals = String
+   struct.end
+
+   TCampMapHero : struct.begin
+      hero_class = Integer
+      stats = String
+      stack = String
+      parser = String
+      skills = String
+      spells = String
+      doll = String
+      units_no = Integer
+      units = TCampMapHeroUnit[gc_MaxArmyCount]
+   struct.end
+
+   // if units_no = 0 then hero is not valid
+   gCampMapHero = TCampMapHero
+
+   TTutorial : struct.begin
+      init = Boolean
+      mode = Boolean
+      map = Boolean
+      move = Integer
+      trade = Integer
+      hire = Integer
+      library = Integer
+      site = Integer
+      task = Integer
+      turn = Integer
+      mercenary = Integer
+      garrison = Integer
+      scroll = Integer
+      egg = Integer
+      provBuild = Integer
+      provGuard = Integer
+      castles = Integer
+      ritualHero = Integer
+      ritualProv = Integer
+      ritualCast = Integer
+      repair = Integer
+      death = Integer
+      battle = Integer
+      build = Integer
+      hero = Integer
+      population = Integer
+      resource = Integer
+      groups = Integer
+      spellRank = Integer
+      unitRank = Integer
+      stamina = Integer
+      ranged = Integer
+      heal = Integer
+      morale = Integer
+      ammo = Integer
+      orc = Integer
+      fortify = Integer
+      magic = Integer
+      bonus = Integer
+      alchemy = Integer
+      diplomacy = Integer
+      corrupt = Integer
+      quest = Integer
+      castleDefence = Integer
+      noDip = Integer
+      dipTrade = Integer
+      exchange = Integer
+      war = Integer
+      peace = Integer
+      union = Integer
+      broken = Integer
+      squadMorale = Integer
+      lostShard = Integer
+      defendWorld = Integer
+      defendCastle = Integer
+      unitPrice = Integer
+      add1 = Integer
+      add2 = Integer
+      deliver = Integer
+      advancedmode = Integer
+      buildrank = Integer
+      buyUnit = Boolean
+      learnSpell = Boolean
+      buyItem = Boolean
+   struct.end
+
+   gTutorial = TTutorial
+
+   TProfile : struct.begin
+      name = String
+      land = String
+      difficulty = Integer
+      color1 = Integer
+      color2 = Integer
+      sign = Integer
+      avatar = Integer
+      sndmute = Integer
+      sndmaster = Float
+      sndmusic = Float
+      sndambient = Float
+      sndfx = Float
+      sndvoice = Float
+      sndinterface = Float
+      scrollspeed = Float
+      wheelspeed = Float
+      keyspeed = Float
+      battlespeed = Float
+      autolvlup = Integer
+      autocombat = Integer
+      finishtutorial = Boolean
+      wargrid = Boolean
+      warbar = Integer
+      warautospell = Integer
+      warendturn = Boolean
+      brushunderunit = Boolean
+      autosave = Integer
+      autosavebattle = Boolean
+      diplomacy = Boolean
+      fog = Boolean
+      tutorialmode = Boolean
+      provhudflags = Integer
+      mestutor = Boolean
+      meslimitpopulation = Boolean
+      mesloafers = Boolean
+      messaleunits = Boolean
+      mesremoval = Boolean
+      mesdismisguard = Boolean
+      mesdestroybuilds = Boolean
+      mesbuildinner = Boolean
+      mesbuildouter = Boolean
+      mesbuildgold = Float
+      mesbuildgem = Float
+      lastcampaignsave = String
+      lastcustomsave = String
+      netemail = String
+      netpass = String
+      netkey = String
+      clampingmouse = Boolean
+		shardscenery = Integer
+		townscenery = Integer
+		provincescenery = Integer
+		battlescenery = Integer
+      objectflags = Integer
+		simplegraphics = Boolean
+      lightchange = Integer
+      achievements = String
+      quick_access = String
+      battle_flytext = Integer
+      nick = String
+      map = TMap
+      advdiff = TDifficulty
+      advfloatdiff = TFloatDifficulty
+      storeadvdiff = String
+		exthintdelay = Float
+		serverautoconnect = Boolean
+		allowedheroes = Integer
+      astralchatsize = Integer
+      chatopacity = Float
+      chatnotifications = Integer
+		quickgame = Boolean
+		sandbox = Boolean
+      profilemessage = String
+      battlespeedally = Float
+      latestmodname = String
+      latestmodversion = String
+		improvedai = Boolean
+		genesismode = String
+		mapsettings = String
+		custommapplayers = Integer
+		custommapsize = Integer
+		custommapworldrule = Integer
+   struct.end
+
+   gProfile = TProfile
+   gProfileTmp = TProfile
+
+   gStringRegister_ProfileSavesFolderRoot = String
+   gStringRegister_ProfileSavesFolderLast = String
+   gStringRegister_ProfileSavesFolderName = String
+
+   THotseatProfile : struct.begin
+      name = String
+      land = String
+      color1 = Integer
+      color2 = Integer
+      sign = Integer
+      avatar = Integer
+   struct.end
+
+   gArrHotseatProfiles = THotseatProfile[gc_MaxMapPlayers]
+   gHotseatProfileTmp = THotseatProfile
+
+   TTrade : struct.begin
+      gold = Integer
+      gem = Integer
+      trade = Boolean
+      arrResources = Boolean[gc_MaxTradeResCount]
+      arrProvinces = Integer[gc_MaxTradeProvCount]
+      arrItems = Integer[gc_MaxTradeItemCount][2]
+   struct.end
+
+   TDiplMessage : struct.begin
+      mType = Integer
+      treaty = Integer
+      text = String
+      tradeGive = TTrade
+      tradeTake = TTrade
+      deal = Integer
+   struct.end
+
+   TDiplomacy : struct.begin
+      treaty    = Integer
+      pass      = Integer
+      attitude  = Integer
+      answer    = Integer
+      lanAnswer = Boolean
+      canKill   = Integer
+      power     = Integer
+      meet      = Integer
+      trade     = TTrade
+      message   = TDiplMessage
+      // arrTalk:
+      // 1 = war, 2 = peace, 3 = alliance, 4 = exchange, 5 = trade, 6 = demand, 7 = gift
+      // 0 = answer, 1 = timer, 2 = unused apparently
+      arrTalk    = Integer[8][3]
+      // 0 = attacked without declaring war, 1 = attacked an ally, 2 & 3 unused
+      arrTraitor = Integer[4]
+	  random = Integer
+	  displayPriority = Integer
+      queryWindowMessage = TDiplMessage
+   struct.end
+
+   TDiplomacyFilters : struct.begin
+      gold = Integer
+      gem = Integer
+      treasuryX = Integer
+      treasuryY = Integer
+      arrResources = Boolean[gc_MaxTradeResCount]
+   struct.end
+
+   gDiplMessage = TDiplMessage
+   gArrDiplomacy = TDiplomacy[gc_MaxCustomMapPlayer][gc_MaxCustomMapPlayer]
+   // what should be displayed to other players in the diplomacy window
+   gDiplFilters = TDiplomacyFilters[gc_MaxCustomMapPlayer]
+
+   TMapSettingsPlayers : struct.begin
+      id = Integer
+      control = Integer
+      advdiff = TDifficulty
+   struct.end
+
+   TMapSettings : struct.begin
+      players = Integer
+      difficulty = Integer
+      size = Integer
+      typ = Integer
+      water = Float
+      hill = Float
+      forest = Float
+      swamp = Float
+      wastelands = Float
+      isles = Float
+      dissolve = Float
+      neutrals = Float
+      resource = Float
+      site = Float
+      population = Float
+      worldrule = Integer
+      arrplayers = TMapSettingsPlayers[gc_MaxCustomMapPlayer]
+      advfloatdiff = TFloatDifficulty
+	  random = Boolean
+      allowedheroes = Integer
+      fog = Boolean
+      diplomacy = Boolean
+      quickgame = Boolean
+	  sandbox = Boolean
+	  improvedai = Boolean
+	  genesismode = String
+   struct.end
+
+   TVideoSettings : struct.begin
+      preset = String
+      resolution = Integer
+      antialiasing = String
+      hdrtype = String
+      vsyncmode = String
+      shadowenabled = Boolean
+      texturefilter = String
+      shadertype = String
+      waterreflection = String
+   struct.end
+
+   gMapSettings = TMapSettings
+   gMapSettingsTmp = TMapSettings
+   gVideoSettings = TVideoSettings
+   gVideoSettingsTmp = TVideoSettings
+
+   TInetUnit : struct.begin
+      unitid = Integer
+      level = Integer
+      hero = Boolean
+      arrmedals = Integer[gc_MaxUnitMedalsCount]
+      arrupgrades = Integer[gc_MaxUnitLevel]
+   struct.end
+
+   TInetHeroSkill : struct.begin
+      id = Integer
+      level = Integer
+   struct.end
+
+   TInetHero : struct.begin
+      class1 = Integer
+      class2 = Integer
+      level = Integer
+      health = Integer
+      leader = Integer
+      magic = Integer
+      life = Integer
+      name = String
+      portrait = String
+      arrunits = TInetUnit[gc_MaxArmyCount]
+      arritems = Integer[gc_HeroInventoryCount]
+      arrspells = Integer[gc_MaxHeroSpellCount]
+      arrskills = TInetHeroSkill[gc_MaxHeroSkillCount]
+      lanid = Integer
+      randkey0 = Integer
+      randkey1 = Integer
+      allowedterrains = Integer
+      allowplain = Boolean
+      allowforest = Boolean
+      allowhill = Boolean
+      allowswamp = Boolean
+      allowdesert = Boolean
+      allowdeadland = Boolean
+   struct.end
+
+   TInetMap : struct.begin
+      randkey0 = Integer
+      randkey1 = Integer
+      seed = Integer
+      lefttype = Integer
+      righttype = Integer
+      siteid = Integer
+      visualid = Integer
+   struct.end
+
+   TInetBattle : struct.begin
+      curhero = Integer
+      points = Integer
+      map = TInetMap
+      hero = TInetHero[gc_MaxInetHeroCount]
+   struct.end
+
+   TInetProfile : struct.begin
+      id = Integer
+      name = String
+      land = String
+      netemail = String
+      netpass = String
+      netkey = String
+      color1 = Integer
+      color2 = Integer
+      sign = Integer
+      avatar = Integer
+      wins = Integer
+      exp = Integer
+      level = Integer
+   struct.end
+
+   gInetProfile = TInetProfile
+   gInetProfileTmp = TInetProfile
+   gInetBattle = TInetBattle
+   gLanHeroServer = TInetHero
+   gLanHeroClient = TInetHero
+   gHotSeatPlayer1 = TInetBattle
+   gHotSeatPlayer2 = TInetBattle
+   gEditorCustomPlayer = TInetBattle
+   gEditorCustomPlayerTemporary = TInetBattle
+
+   TInetShell : struct.begin
+      allowedheroclasses = Integer
+      allowwarrior = Boolean
+      allowscout = Boolean
+      allowcommander = Boolean
+      allowwizard = Boolean
+      allowedterrains = Integer
+      allowplain = Boolean
+      allowforest = Boolean
+      allowhill = Boolean
+      allowswamp = Boolean
+      allowdesert = Boolean
+      allowdeadland = Boolean
+      allowpointsdif = Integer
+      customgame = Boolean
+      custompointslimit = Integer
+      customgamekey = String
+      customjoinkey = String
+      chatfriendmsg = Integer
+      chatprivatemsg = Integer
+   struct.end
+
+   TLanShardPlayer : struct.begin
+      lanid = Integer
+      profile = THotseatProfile
+   struct.end
+
+   TLanShardGame : struct.begin
+      masterid = Integer
+      arrlanplayers = TLanShardPlayer[gc_MaxCustomMapPlayer]
+   struct.end
+
+   gLanShardGame = TLanShardGame
+
+   TNecroInfo : struct.begin
+      unitID = Integer
+      count = Integer
+      curIndex = Integer
+   struct.end
+
+   arrNecroInfo = TNecroInfo[5]
+
+   gInetShell = TInetShell
+
+   TEditorSite : struct.begin
+      id = Integer
+      level = Integer
+      explore = Integer
+      guarded = Boolean
+      guardtype = Integer
+      guardlevel = Integer
+   struct.end
+
+   TEditorGrid : struct.begin
+      ind = Integer
+      x = Integer
+      y = Integer
+      enabled = Boolean
+      terrain = Integer
+      provincetype = Integer
+      castle = Boolean
+      player = Integer
+      guardtype = Integer
+      guardid = Integer
+      defenderid = Integer
+      name = String
+      goldinc = Integer
+      geminc = Integer
+      explored = Integer
+      resourceid = Integer
+      resexplored = Boolean
+      outerbuild = Integer[3]
+      //sites = TEditorSite[gc_editor_MaxCustomSitesCount]
+   struct.end
+
+   TEditorHeroUnit : struct.begin
+      unitid = Integer
+      level = Integer
+      hero = Boolean
+      //arrmedals = Integer[gc_MaxUnitMedalsCount]
+      //arrupgrades = Integer[gc_MaxUnitLevel]
+   struct.end
+
+   TEditorHeroSkill : struct.begin
+      id = Integer
+      level = Integer
+   struct.end
+
+   TEditorHero : struct.begin
+      class1 = Integer
+      class2 = Integer
+      level = Integer
+      health = Integer
+      leader = Integer
+      magic = Integer
+      life = Integer
+      name = String
+      portrait = String
+      provind = Integer
+      arrunits = TEditorHeroUnit[gc_MaxArmyCount]
+      arritems = Integer[gc_HeroInventoryCount]
+      arrspells = Integer[gc_MaxHeroSpellCount]
+      arrskills = TEditorHeroSkill[gc_MaxHeroSkillCount]
+   struct.end
+
+   TEditorPlayer : struct.begin
+      ind = Integer
+      id = Integer
+      difficulty = Integer
+      castleprovind = Integer
+      karma = Integer
+      gold = Integer
+      gem = Integer
+      union = Integer
+      customstartres = Boolean
+      locallord = Boolean
+      human = Boolean
+      treaty = Integer[gc_MaxCustomMapPlayer]
+      buildings = Boolean[gc_inner_buildings_max_id]
+      heroes = TEditorHero[gc_MaxEditorHeroCount]
+   struct.end
+
+   TEditorTemporary : struct.begin
+      seed = Integer
+      randkey1 = Integer
+      diplomacy = Boolean
+      fog = Boolean
+      worldrule = Integer
+      map = TMap
+      arrplayers = TMapSettingsPlayers[gc_MaxCustomMapPlayer]
+      grid = TEditorGrid
+      hero = TEditorHero
+      player = TEditorPlayer
+   struct.end
+
+   TMapEditor : struct.begin
+      enabled = Boolean
+      run = Boolean
+      id = Integer
+      name = String
+      seed = Integer
+      randkey0 = Integer
+      randkey1 = Integer
+      map = TMap
+      diplomacy = Boolean
+      fog = Boolean
+      worldrule = Integer
+      arrplayers = TMapSettingsPlayers[gc_MaxCustomMapPlayer]
+      grid = TEditorGrid[gc_MaxMapGridCount]
+      players = TEditorPlayer[gc_MaxCustomMapPlayer]
+      temporary = TEditorTemporary
+   struct.end
+
+   TWindowPos : struct.begin
+      init = Boolean
+      x = Integer
+      y = Integer
+      hal = String
+      val = String
+   struct.end
+
+   TEventEffect : struct.begin
+      index = Integer
+      power = Integer
+      param1 = Integer
+      param2 = Integer
+   struct.end
+
+   TEventRoute : struct.begin
+      result1 = Integer
+      result2 = Integer
+      possibility = Integer
+   struct.end
+
+   TEventCondition : struct.begin
+      power = Integer
+      param1 = Integer
+      param2 = Integer
+   struct.end
+
+   TEventAnswerCondition : struct.begin
+      resultid = String
+      param1 = Integer
+      param2 = Integer
+   struct.end
+
+   TEvent : struct.begin
+      id = Integer
+      hint = String
+      etype = Integer
+      possibility = Integer
+      attacker = Integer
+      eventwin = Integer
+      eventlose = Integer
+      eventdraw = Integer
+      provtype = Integer
+      karma = Integer
+      effects = TEventEffect[gc_MaxScenarioEventEffects]
+      route = TEventRoute
+      conditions = TEventCondition[gc_MaxScenarioEventConditions]
+      answerconditions = TEventAnswerCondition[gc_MaxScenarioEventAnswerConditions]
+   struct.end
+
+   TTriggerAction : struct.begin
+      actiontype = Integer
+      enabled = Boolean
+      hint = String
+      ind = Integer
+      flag1 = Boolean
+      flag2 = Boolean
+      param1 = Integer
+      param2 = Integer
+      param3 = Integer
+      param4 = Integer
+   struct.end
+
+   TTrigger : struct.begin
+      id = Integer
+      hint = String
+      enabled = Boolean
+      evaluated = Boolean
+      ttype = Integer
+      provind = Integer
+      siteind = Integer
+      siteid = Integer
+      heroind = Integer
+      ownerind = Integer
+      turn = Integer
+      actions = TTriggerAction[gc_MaxScenarioTriggerActions]
+      //event = TEvent
+   struct.end
+
+   TScenarioTemporary : struct.begin
+      trigger = TTrigger
+      event = TEvent
+   struct.end
+
+   TScenarioPlayer : struct.begin
+      allowedbuildings = Boolean[gc_inner_buildings_max_id]
+   struct.end
+
+   TScenario : struct.begin
+      enabled = Boolean
+      started = Boolean
+      triggers = TTrigger[gc_MaxScenarioTriggers]
+      evaluate = TTrigger
+      temporary = TScenarioTemporary
+      players = TScenarioPlayer[gc_MaxCustomMapPlayer]
+   struct.end
+
+   gScenario = TScenario
+
+   TGUIEditor : struct.begin
+      changed = Boolean
+      showprovince = Boolean
+      showmap = Boolean
+      showplayer = Boolean
+      showpalette = Boolean
+      showhero = Boolean
+      showtrigger = Boolean
+      selgridparser = Integer
+      selgrid = Integer
+      selplayerparser = Integer
+      selplayer = Integer
+      selhero = Integer
+      selevent = Integer
+      seltrigger = Integer
+      selaction = Integer
+      copygridind = Integer
+      palettemode = Integer
+      paletteattr = Integer
+      windowpos = TWindowPos[gc_editor_MaxWindowCount]
+   struct.end
+
+   gMapEditor = TMapEditor
+   gGUIEditor = TGUIEditor
+
+   gIntRegister_ScenarioEventFlags = Integer
+
+// vvk
+   gArrGUIFontSpacers = String[128]
+
+   TColorRGBA : struct.begin
+      r = Float
+      g = Float
+      b = Float
+      a = Float
+   struct.end
+
+   TGameFont : struct.begin
+      file_name = String
+      name = String[gc_gui_gamefonts_names_max_number]
+   struct.end
+
+   gArrGUIGameFonts = TGameFont[gc_gui_gamefonts_max_number]
+
+   gArrGUIGameFontsID = String[gc_gui_gamefonts_max_ids_number]
+   gArrGUIGameFontsColorID = TColorRGBA[gc_gui_gamefonts_max_color_ids_number]
+
+   TElementPos : struct.begin
+      x = Integer
+      y = Integer
+   struct.end
+
+   TElementSize : struct.begin
+      w = Integer
+      h = Integer
+   struct.end
+
+   TRectangle : struct.begin
+      pos = TElementPos
+      size = TElementSize
+   struct.end
+
+   TElementAlign : struct.begin
+      h = String
+      v = String
+   struct.end
+
+   TInterfaceElementData : struct.begin
+      p = TRectangle
+      p_raw = TRectangle
+      scalable = Integer
+      font_handle = String
+      color = TColorRGBA
+      align = TElementAlign
+      color_index = Integer
+      font_index = Integer
+      align_raw = Integer
+   struct.end
+
+   TInterfaceWindowData : struct.begin
+      window_name = String
+      colors = TColorRGBA[gc_gui_interface_max_colors_number]
+      e = TInterfaceElementData[gc_gui_interface_max_elements_number]
+   struct.end
+
+   gArr_gui_if_window_data = TInterfaceWindowData[gc_gui_interface_max_windows_number]
+
+   gc_gui_fontcolor_HeaderRed = TColorRGBA
+   gc_gui_fontcolor_HeaderDark = TColorRGBA
+   gc_gui_fontcolor_Header = TColorRGBA
+   gc_gui_fontcolor_Normal = TColorRGBA
+   gc_gui_fontcolor_NormalDark = TColorRGBA
+   gc_gui_fontcolor_NormalWhite = TColorRGBA
+   gc_gui_fontcolor_Active = TColorRGBA
+   gc_gui_fontcolor_Hover = TColorRGBA
+   gc_gui_fontcolor_Yellow = TColorRGBA
+   gc_gui_fontcolor_Green = TColorRGBA
+   gc_gui_fontcolor_Red = TColorRGBA
+   gc_gui_fontcolor_Brown = TColorRGBA
+   gc_gui_fontcolor_Gray = TColorRGBA
+   gc_gui_fontcolor_Black = TColorRGBA
+
+   gc_gui_fontcolor_Attention = TColorRGBA
+   gc_gui_fontcolor_Info = TColorRGBA
+   gc_gui_fontcolor_ExtraInfo = TColorRGBA
+   gc_gui_fontcolor_Warning = TColorRGBA
+
+   gc_gui_fontcolor_Rarity2 = TColorRGBA
+   gc_gui_fontcolor_Rarity3 = TColorRGBA
+   gc_gui_fontcolor_Rarity4 = TColorRGBA
+   gc_gui_fontcolor_Rarity5 = TColorRGBA
+   gc_gui_fontcolor_Rarity6 = TColorRGBA
+
+   gc_gui_align_middle = TElementAlign
+   gc_gui_align_lt = TElementAlign
+   gc_gui_align_lm = TElementAlign
+   gc_gui_align_rb = TElementAlign
+   gc_gui_align_rm = TElementAlign
+   gc_gui_align_rt = TElementAlign
+   gc_gui_align_mt = TElementAlign
+   gc_gui_align_mb = TElementAlign
+   gc_gui_align_parent_m = TElementAlign
+   gc_gui_align_parent_lt = TElementAlign
+   gc_gui_align_parent_lm = TElementAlign
+   gc_gui_align_parent_lb = TElementAlign
+   gc_gui_align_parent_mt = TElementAlign
+   gc_gui_align_parent_rt = TElementAlign
+   gc_gui_align_parent_rb = TElementAlign
+   gc_gui_align_parent_rm = TElementAlign
+   gc_gui_align_parent_mb = TElementAlign
+
+// and now backtrace for items - dirty hack but will do so far
+   TInnerBuildingIDs : struct.begin
+      no = Integer
+      ids = Integer[gc_inner_buildings_array_max]
+      group_no = Integer
+   struct.end
+
+   gArr_inner_buildings_opens_access_to = TInnerBuildingIDs[gc_inner_buildings_max_id]
+
+   TInnerBuildGroupData : struct.begin
+      no = Integer
+      built_no = Integer
+      color_no = Integer
+      color = TColorRGBA
+      id = Integer[gc_inner_buildings_max_bld_in_group]
+   struct.end
+
+   gArr_inner_buildings_groups = TInnerBuildGroupData[gc_inner_buildings_max_groups]
+
+   TOuterBuildExtraData : struct.begin
+      id = Integer
+      parent_id = Integer
+      level = Integer
+      group = Integer
+      parent_idx = Integer
+      child_idx = Integer
+      upgrades_no = Integer
+   struct.end
+
+   gArr_outer_buildings_data_no = Integer
+   gArr_outer_buildings_data = TOuterBuildExtraData[gc_outer_buildings_max_no]
+
+// hotkey: list of keys separated by commas, each key is key and its state separated by | sign if state is not spiUp,
+// ie: Alt|spiDown,Escape,Enter
+   TGameCommand : struct.begin
+      id = Integer
+      scope = String
+      name = String
+      attr = String
+      hotkey = String
+   struct.end
+
+   gArr_gui_game_commands = TGameCommand[gc_gui_game_commands_max]
+   gInt_gui_GameCommandUID = Integer
+
+// each is single entry from hotkey above
+   TGameCommandHotkey : struct.begin
+      id = Integer
+      cmd_no = Integer
+      cmd = Integer[gc_gui_game_commands_max_per_hotkey]
+      hotkey = String
+   struct.end
+
+   gArr_gui_game_commands_hotkeys = TGameCommandHotkey[gc_gui_game_commands_max]
+
+// floating tooltips system
+   TFloatingTooltip : struct.begin
+      state = String
+      timer = String
+      window_name = String
+   struct.end
+
+   gArr_gui_float_tooltips = TFloatingTooltip[gc_gui_float_tooltips_max]
+   gArr_gui_float_tooltips_check_time = Float
+
+// RootWindow uid
+   gInt_gui_RootWindowUID = Integer
+
+// scalable window scale
+   gFloat_RootWindowScale = Float
+
+// layers handles array
+   gArr_gui_Layers = Integer[gc_gui_max_layers_number]
+// list of modal queries
+// query id or 0 for end of list
+// -1 for all modes, else mode id (see gc_GameMode )
+   TModalGameQuery : struct.begin
+      id = Integer
+      mode = Integer
+   struct.end
+
+   gArr_ModalQueries = TModalGameQuery[gc_gui_max_modal_queries]
+//
+   gIntRegister_StringReplaceRegExHandle = Integer
+//
+   gInetEventLock = Integer
+   gLanGameMode = Integer
+   gLanGameRoom = String
+   gShellWantMaster = Integer
+   gShellViewProfID = Integer
+   gConnectIPList = String[gc_ConnectIPListMax]
+   gConnectIPIndex = Integer
+   gConnectIPCount = Integer
+   gConnectHost = String
+section.end
+
+section.begin
+   Code : struct.begin
+      [*] = ;var i : Integer;
+      [*] = ;
+      [*] = ;gc_expoVersion := 0;
+      [*] = ;gBoolRegister_EditorAllowed := False;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_HeaderRed.r := gc_gui_fontcolor_HeaderRedR;
+      [*] = ;gc_gui_fontcolor_HeaderRed.g := gc_gui_fontcolor_HeaderRedG;
+      [*] = ;gc_gui_fontcolor_HeaderRed.b := gc_gui_fontcolor_HeaderRedB;
+      [*] = ;gc_gui_fontcolor_HeaderRed.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_HeaderDark.r := gc_gui_fontcolor_HeaderDarkR;
+      [*] = ;gc_gui_fontcolor_HeaderDark.g := gc_gui_fontcolor_HeaderDarkG;
+      [*] = ;gc_gui_fontcolor_HeaderDark.b := gc_gui_fontcolor_HeaderDarkB;
+      [*] = ;gc_gui_fontcolor_HeaderDark.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Header.r := gc_gui_fontcolor_HeaderR;
+      [*] = ;gc_gui_fontcolor_Header.g := gc_gui_fontcolor_HeaderG;
+      [*] = ;gc_gui_fontcolor_Header.b := gc_gui_fontcolor_HeaderB;
+      [*] = ;gc_gui_fontcolor_Header.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Normal.r := gc_gui_fontcolor_NormalR;
+      [*] = ;gc_gui_fontcolor_Normal.g := gc_gui_fontcolor_NormalG;
+      [*] = ;gc_gui_fontcolor_Normal.b := gc_gui_fontcolor_NormalB;
+      [*] = ;gc_gui_fontcolor_Normal.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_NormalDark.r := gc_gui_fontcolor_NormalDarkR;
+      [*] = ;gc_gui_fontcolor_NormalDark.g := gc_gui_fontcolor_NormalDarkG;
+      [*] = ;gc_gui_fontcolor_NormalDark.b := gc_gui_fontcolor_NormalDarkB;
+      [*] = ;gc_gui_fontcolor_NormalDark.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_NormalWhite.r := gc_gui_fontcolor_NormalWhiteR;
+      [*] = ;gc_gui_fontcolor_NormalWhite.g := gc_gui_fontcolor_NormalWhiteG;
+      [*] = ;gc_gui_fontcolor_NormalWhite.b := gc_gui_fontcolor_NormalWhiteB;
+      [*] = ;gc_gui_fontcolor_NormalWhite.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Active.r := gc_gui_fontcolor_ActiveR;
+      [*] = ;gc_gui_fontcolor_Active.g := gc_gui_fontcolor_ActiveG;
+      [*] = ;gc_gui_fontcolor_Active.b := gc_gui_fontcolor_ActiveB;
+      [*] = ;gc_gui_fontcolor_Active.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Hover.r := gc_gui_fontcolor_HoverR;
+      [*] = ;gc_gui_fontcolor_Hover.g := gc_gui_fontcolor_HoverG;
+      [*] = ;gc_gui_fontcolor_Hover.b := gc_gui_fontcolor_HoverB;
+      [*] = ;gc_gui_fontcolor_Hover.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Yellow.r := gc_gui_fontcolor_YellowR;
+      [*] = ;gc_gui_fontcolor_Yellow.g := gc_gui_fontcolor_YellowG;
+      [*] = ;gc_gui_fontcolor_Yellow.b := gc_gui_fontcolor_YellowB;
+      [*] = ;gc_gui_fontcolor_Yellow.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Green.r := gc_gui_fontcolor_GreenR;
+      [*] = ;gc_gui_fontcolor_Green.g := gc_gui_fontcolor_GreenG;
+      [*] = ;gc_gui_fontcolor_Green.b := gc_gui_fontcolor_GreenB;
+      [*] = ;gc_gui_fontcolor_Green.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Red.r := gc_gui_fontcolor_RedR;
+      [*] = ;gc_gui_fontcolor_Red.g := gc_gui_fontcolor_RedG;
+      [*] = ;gc_gui_fontcolor_Red.b := gc_gui_fontcolor_RedB;
+      [*] = ;gc_gui_fontcolor_Red.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Brown.r := gc_gui_fontcolor_BrownR;
+      [*] = ;gc_gui_fontcolor_Brown.g := gc_gui_fontcolor_BrownG;
+      [*] = ;gc_gui_fontcolor_Brown.b := gc_gui_fontcolor_BrownB;
+      [*] = ;gc_gui_fontcolor_Brown.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Gray.r := gc_gui_fontcolor_GrayR;
+      [*] = ;gc_gui_fontcolor_Gray.g := gc_gui_fontcolor_GrayG;
+      [*] = ;gc_gui_fontcolor_Gray.b := gc_gui_fontcolor_GrayB;
+      [*] = ;gc_gui_fontcolor_Gray.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Black.r := 0;
+      [*] = ;gc_gui_fontcolor_Black.g := 0;
+      [*] = ;gc_gui_fontcolor_Black.b := 0;
+      [*] = ;gc_gui_fontcolor_Black.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Attention.r := 220/255;
+      [*] = ;gc_gui_fontcolor_Attention.g := 30/255;
+      [*] = ;gc_gui_fontcolor_Attention.b := 20/255;
+      [*] = ;gc_gui_fontcolor_Attention.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Info.r := 20/255;
+      [*] = ;gc_gui_fontcolor_Info.g := 224/255;
+      [*] = ;gc_gui_fontcolor_Info.b := 20/255;
+      [*] = ;gc_gui_fontcolor_Info.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_ExtraInfo.r := $18/255;
+      [*] = ;gc_gui_fontcolor_ExtraInfo.g := $18/255;
+      [*] = ;gc_gui_fontcolor_ExtraInfo.b := $e8/255;
+      [*] = ;gc_gui_fontcolor_ExtraInfo.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Warning.r := 228/255;
+      [*] = ;gc_gui_fontcolor_Warning.g := 184/255;
+      [*] = ;gc_gui_fontcolor_Warning.b := 21/255;
+      [*] = ;gc_gui_fontcolor_Warning.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Rarity2.r := gc_gui_fontcolor_Rarity2R;
+      [*] = ;gc_gui_fontcolor_Rarity2.g := gc_gui_fontcolor_Rarity2G;
+      [*] = ;gc_gui_fontcolor_Rarity2.b := gc_gui_fontcolor_Rarity2B;
+      [*] = ;gc_gui_fontcolor_Rarity2.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Rarity3.r := gc_gui_fontcolor_Rarity3R;
+      [*] = ;gc_gui_fontcolor_Rarity3.g := gc_gui_fontcolor_Rarity3G;
+      [*] = ;gc_gui_fontcolor_Rarity3.b := gc_gui_fontcolor_Rarity3B;
+      [*] = ;gc_gui_fontcolor_Rarity3.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Rarity4.r := gc_gui_fontcolor_Rarity4R;
+      [*] = ;gc_gui_fontcolor_Rarity4.g := gc_gui_fontcolor_Rarity4G;
+      [*] = ;gc_gui_fontcolor_Rarity4.b := gc_gui_fontcolor_Rarity4B;
+      [*] = ;gc_gui_fontcolor_Rarity4.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Rarity5.r := gc_gui_fontcolor_Rarity5R;
+      [*] = ;gc_gui_fontcolor_Rarity5.g := gc_gui_fontcolor_Rarity5G;
+      [*] = ;gc_gui_fontcolor_Rarity5.b := gc_gui_fontcolor_Rarity5B;
+      [*] = ;gc_gui_fontcolor_Rarity5.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_fontcolor_Rarity6.r := gc_gui_fontcolor_Rarity6R;
+      [*] = ;gc_gui_fontcolor_Rarity6.g := gc_gui_fontcolor_Rarity6G;
+      [*] = ;gc_gui_fontcolor_Rarity6.b := gc_gui_fontcolor_Rarity6B;
+      [*] = ;gc_gui_fontcolor_Rarity6.a := 1.0;
+      [*] = ;
+      [*] = ;gc_gui_align_middle.h := 'halMiddle';
+      [*] = ;gc_gui_align_middle.v := 'valMiddle';
+      [*] = ;gc_gui_align_parent_m.h := 'halParentMiddle';
+      [*] = ;gc_gui_align_parent_m.v := 'valParentMiddle';
+      [*] = ;gc_gui_align_parent_lt.h := 'halParentLeft';
+      [*] = ;gc_gui_align_parent_lt.v := 'valParentTop';
+      [*] = ;gc_gui_align_parent_rb.h := 'halParentRight';
+      [*] = ;gc_gui_align_parent_rb.v := 'valParentBottom';
+      [*] = ;gc_gui_align_parent_rt.h := 'halParentRight';
+      [*] = ;gc_gui_align_parent_rt.v := 'valParentTop';
+      [*] = ;gc_gui_align_parent_lm.h := 'halParentLeft';
+      [*] = ;gc_gui_align_parent_lm.v := 'valParentMiddle';
+      [*] = ;gc_gui_align_parent_lb.h := 'halParentLeft';
+      [*] = ;gc_gui_align_parent_lb.v := 'valParentBottom';
+      [*] = ;gc_gui_align_parent_mt.h := 'halParentMiddle';
+      [*] = ;gc_gui_align_parent_mt.v := 'valParentTop';
+      [*] = ;gc_gui_align_parent_rm.h := 'halParentRight';
+      [*] = ;gc_gui_align_parent_rm.v := 'valParentMiddle';
+      [*] = ;gc_gui_align_parent_mb.h := 'halParentMiddle';
+      [*] = ;gc_gui_align_parent_mb.v := 'valParentBottom';
+      [*] = ;gc_gui_align_lt.h := 'halLeft';
+      [*] = ;gc_gui_align_lt.v := 'valTop';
+      [*] = ;gc_gui_align_rb.h := 'halRight';
+      [*] = ;gc_gui_align_rb.v := 'valBottom';
+      [*] = ;gc_gui_align_lm.h := 'halLeft';
+      [*] = ;gc_gui_align_lm.v := 'valMiddle';
+      [*] = ;gc_gui_align_mt.h := 'halMiddle';
+      [*] = ;gc_gui_align_mt.v := 'valTop';
+      [*] = ;gc_gui_align_rm.h := 'halRight';
+      [*] = ;gc_gui_align_rm.v := 'valMiddle';
+      [*] = ;gc_gui_align_mb.h := 'halMiddle';
+      [*] = ;gc_gui_align_mb.v := 'valBottom';
+      [*] = ;gc_gui_align_rt.h := 'halRight';
+      [*] = ;gc_gui_align_rt.v := 'valTop';
+      [*] = ;
+      [*] = ;gArr_inner_buildings_opens_access_to[0].no := -1;
+      [*] = ;gArr_outer_buildings_data_no := 0;
+      [*] = ;gInt_gui_RootWindowUID := 0;
+      [*] = ;for i := 0 to gc_gui_max_layers_number-1 do
+      [*] = ;begin
+      [*] = ;   gArr_gui_Layers[i] := 0;
+      [*] = ;end;
+      [*] = ;gIntRegister_ConsoleCommandIndex := 0;
+      [*] = ;gStrRegister_ConsoleLog := 'Welcome to %color(info)%Eador!';
+      [*] = ;gStrRegister_ConsoleLogHistory := 'help';
+      [*] = ;gArrRegister_ConsoleAliases[0] := '';
+      [*] = ;gStrRegister_ConsolePrevKeyDownState := '';
+      [*] = ;gIntConsoleStateMachineHandle := 0;
+      [*] = ;gIntRegister_LanConsoleCommandIndex := 0;
+      [*] = ;gStrRegister_LanConsoleLog := '';
+      [*] = ;gStrRegister_LanConsoleLogHistory := '';
+      [*] = ;gStrRegister_LanConsolePrevKeyDownState := '';
+      [*] = ;gStrRegister_GUIBuildWindowState := '0|1|0';
+      [*] = ;gStrRegister_GUIBuildHistory := '';
+      [*] = ;gArr_gui_game_commands[0].id := -1;
+      [*] = ;gInt_gui_GameCommandUID := 0;
+      [*] = ;gArr_gui_game_commands_hotkeys[0].id := -1;
+      [*] = ;gStrRegister_BattleNicks[0] := '';
+      [*] = ;gStrRegister_BattleNicks[1] := '';
+      [*] = ;gStrRegister_PendingAchievements := '';
+      [*] = ;gArr_gui_float_tooltips[0].state := '';
+      [*] = ;gArr_gui_float_tooltips_check_time := 0;
+      [*] = ;gBoolRegister_IsHotSeat := False;
+      [*] = ;gIntRegister_InetPointsMode := 0;
+      [*] = ;gBoolRegister_GUIProgressOnceOnGUIDoCreate := False;
+      [*] = ;gFloatRegister_AlchemySlider := 0.5;
+      [*] = ;gBoolRegister_EditorFastGeneration := False;
+      [*] = ;gIntRegister_ShardHotSeatActivePlayer := 0;
+      [*] = ;gBoolRegister_NeedSeasonChangeObjects := False;
+      [*] = ;gBoolRegister_NeedSeasonChangeBattle := False;
+      [*] = ;if SteamAPPLoad('Eador2Steam.dll') then
+      [*] = ;begin
+      [*] = ;   Log('[Steam] : SteamAPPLoad = True');
+      [*] = ;   SteamAPPInit();
+      [*] = ;end;
+      [*] = ;gFloat_RootWindowScale := 1.0;
+      [*] = ;// filling out spacers strings and constants - too bad we can't use any civilized methods to achieve this!
+      [*] = ;gArrGUIFontSpacers[0] := #48;
+      [*] = ;gArrGUIFontSpacers[1] := #49;
+      [*] = ;gArrGUIFontSpacers[2] := #50;
+      [*] = ;gArrGUIFontSpacers[3] := #51;
+      [*] = ;gArrGUIFontSpacers[4] := #52;
+      [*] = ;gArrGUIFontSpacers[5] := #53;
+      [*] = ;gArrGUIFontSpacers[6] := #54;
+      [*] = ;gArrGUIFontSpacers[7] := #55;
+      [*] = ;gArrGUIFontSpacers[8] := #56;
+      [*] = ;gArrGUIFontSpacers[9] := #57;
+      [*] = ;gArrGUIFontSpacers[10] := #58;
+      [*] = ;gArrGUIFontSpacers[11] := #59;
+      [*] = ;// spacers
+      [*] = ;gArrGUIFontSpacers[16] := #128;
+      [*] = ;gArrGUIFontSpacers[17] := #129;
+      [*] = ;gArrGUIFontSpacers[18] := #130;
+      [*] = ;gArrGUIFontSpacers[19] := #131;
+      [*] = ;gArrGUIFontSpacers[20] := #132;
+      [*] = ;gArrGUIFontSpacers[21] := #133;
+      [*] = ;gArrGUIFontSpacers[22] := #134;
+      [*] = ;gArrGUIFontSpacers[23] := #135;
+      [*] = ;gArrGUIFontSpacers[24] := #136;
+      [*] = ;gArrGUIFontSpacers[25] := #137;
+      [*] = ;gArrGUIFontSpacers[26] := #138;
+      [*] = ;gArrGUIFontSpacers[27] := #139;
+      [*] = ;gArrGUIFontSpacers[28] := #140;
+      [*] = ;gArrGUIFontSpacers[29] := #141;
+      [*] = ;gArrGUIFontSpacers[30] := #142;
+      [*] = ;gArrGUIFontSpacers[31] := #143;
+      [*] = ;gArrGUIFontSpacers[32] := #144;
+      [*] = ;gArrGUIFontSpacers[33] := #145;
+      [*] = ;gArrGUIFontSpacers[34] := #146;
+      [*] = ;gArrGUIFontSpacers[35] := #147;
+      [*] = ;gArrGUIFontSpacers[36] := #148;
+      [*] = ;gArrGUIFontSpacers[37] := #149;
+      [*] = ;gArrGUIFontSpacers[38] := #150;
+      [*] = ;gArrGUIFontSpacers[39] := #151;
+      [*] = ;gArrGUIFontSpacers[40] := #152;
+      [*] = ;gArrGUIFontSpacers[41] := #153;
+      [*] = ;gArrGUIFontSpacers[42] := #154;
+      [*] = ;gArrGUIFontSpacers[43] := #155;
+      [*] = ;gArrGUIFontSpacers[44] := #156;
+      [*] = ;gArrGUIFontSpacers[45] := #157;
+      [*] = ;gArrGUIFontSpacers[46] := #158;
+      [*] = ;gArrGUIFontSpacers[47] := #159;
+      [*] = ;// lines
+      [*] = ;gArrGUIFontSpacers[48] := #160;
+      [*] = ;gArrGUIFontSpacers[49] := #161;
+      [*] = ;gArrGUIFontSpacers[50] := #162;
+      [*] = ;gArrGUIFontSpacers[51] := #163;
+      [*] = ;gArrGUIFontSpacers[52] := #164;
+      [*] = ;gArrGUIFontSpacers[53] := #165;
+      [*] = ;gArrGUIFontSpacers[54] := #166;
+      [*] = ;gArrGUIFontSpacers[55] := #167;
+      [*] = ;gArrGUIFontSpacers[56] := #168;
+      [*] = ;gArrGUIFontSpacers[57] := #169;
+      [*] = ;gArrGUIFontSpacers[58] := #170;
+      [*] = ;gArrGUIFontSpacers[59] := #171;
+      [*] = ;gArrGUIFontSpacers[60] := #172;
+      [*] = ;gArrGUIFontSpacers[61] := #173;
+      [*] = ;gArrGUIFontSpacers[62] := #174;
+      [*] = ;gArrGUIFontSpacers[63] := #175;
+      [*] = ;gArrGUIFontSpacers[64] := #176;
+      [*] = ;gArrGUIFontSpacers[65] := #177;
+      [*] = ;gArrGUIFontSpacers[66] := #178;
+      [*] = ;gArrGUIFontSpacers[67] := #179;
+      [*] = ;gArrGUIFontSpacers[68] := #180;
+      [*] = ;gArrGUIFontSpacers[69] := #181;
+      [*] = ;gArrGUIFontSpacers[70] := #182;
+      [*] = ;gArrGUIFontSpacers[71] := #183;
+      [*] = ;gArrGUIFontSpacers[72] := #184;
+      [*] = ;gArrGUIFontSpacers[73] := #185;
+      [*] = ;gArrGUIFontSpacers[74] := #186;
+      [*] = ;gArrGUIFontSpacers[75] := #187;
+      [*] = ;gArrGUIFontSpacers[76] := #188;
+      [*] = ;gArrGUIFontSpacers[77] := #189;
+      [*] = ;gArrGUIFontSpacers[78] := #190;
+      [*] = ;gArrGUIFontSpacers[79] := #191;
+      [*] = ;// transparent table elements
+      [*] = ;gArrGUIFontSpacers[80] := #64;
+      [*] = ;gArrGUIFontSpacers[81] := #65;
+      [*] = ;gArrGUIFontSpacers[82] := #66;
+      [*] = ;gArrGUIFontSpacers[83] := #67;
+      [*] = ;gArrGUIFontSpacers[84] := #68;
+      [*] = ;gArrGUIFontSpacers[85] := #69;
+      [*] = ;gArrGUIFontSpacers[86] := #70;
+      [*] = ;gArrGUIFontSpacers[87] := #71;
+      [*] = ;gArrGUIFontSpacers[88] := #72;
+      [*] = ;gArrGUIFontSpacers[89] := #73;
+      [*] = ;gArrGUIFontSpacers[90] := #74;
+      [*] = ;gArrGUIFontSpacers[91] := #75;
+      [*] = ;
+      [*] = ;gIntRegister_ScenarioEventFlags := 0;
+      [*] = ;
+      [*] = ;gBoolRegister_UseNameAsNick := true;
+      [*] = ;
+      [*] = ;gIntRegister_LanMapUID := 0;
+      [*] = ;gStringRegister_LanMapSaveName := '';
+      [*] = ;gIntRegister_LanParsersBufferIndex := 0;
+      [*] = ;gIntRegister_LanParsersNumber[0] := 0;
+      [*] = ;gIntRegister_LanParsersNumber[1] := 0;
+      [*] = ;gStringRegister_ProfileSavesFolderRoot := '.\';
+      [*] = ;gStringRegister_ProfileSavesFolderLast := '.\';
+      [*] = ;gStringRegister_ProfileSavesFolderName := 'saves\';
+      [*] = ;gIntRegister_MaxArrPathValue := 0;
+      [*] = ;gIntRegister_LogLanParsers := gc_gvlog_log_all_lan;
+      [*] = ;gIntRegister_LogLanParserUID := 0;
+      [*] = ;gStringRegister_LogLanParserPfx := DateTimeNow('YYMMDD')+'\'+DateTimeNow('HHNN');
+      [*] = ;gStringRegister_LanCurrentBattleIDs := '';
+      [*] = ;gArr_ModalQueries[0].id := 0;
+      [*] = ;gIntRegister_GVLogging := gc_gvlog_log_all;
+      [*] = ;for i := 0 to 32 do
+      [*] = ;   gArr_GvLogModuleNames[i] := 'UNKNOWN';
+      [*] = ;gIntRegister_GvLogIdentLevel := 0;
+      [*] = ;gArr_GvLogModuleNames[33] := '                                                                                                        ';
+      [*] = ;gStringRegister_GUIProvincesToUpdate := '';
+      [*] = ;gIntRegister_MapCurPlayerIndex := -1;
+      [*] = ;gIntRegister_QueryPlayerIndex := -1;
+      [*] = ;gIntRegister_QueryPlayerIndex1 := -1;
+      [*] = ;gFloatRegister_BattleFlyTextTime := 0;
+      [*] = ;gIntRegister_AstralChatMode := 0;
+      [*] = ;gBoolRegister_ConvertGenesisMode := False;
+      [*] = ;for i := 0 to gc_MusicTrackCount do
+      [*] = ;   gArr_MusicTrackCooldown[i] := 0;
+      [*] = ;for i := 0 to gc_MaxBattleMusic do
+      [*] = ;   gArr_BattleMusicTracks[i] := 0;
+   struct.end
+   Files : struct.begin
+      [*] = .\data\scripts\lib\stringarray.script
+      [*] = .\data\scripts\lib\gv_logger.script
+      [*] = .\data\scripts\lib\pars.script
+      [*] = .\data\scripts\lib\rand.script
+      [*] = .\data\scripts\lib\worldrule.script
+      [*] = .\data\scripts\lib\map.script
+      [*] = .\data\scripts\lib\shard.script
+      [*] = .\data\scripts\lib\camp.script
+      [*] = .\data\scripts\lib\init.script
+      [*] = .\data\scripts\lib\gui.layers.script
+      [*] = .\data\scripts\lib\gui.script
+      [*] = .\data\scripts\lib\log.script
+      [*] = .\data\scripts\lib\misc.script
+      [*] = .\data\scripts\lib\actor.script
+      [*] = .\data\scripts\lib\object.script
+      [*] = .\data\scripts\lib\gui.vvk.script
+      [*] = .\data\scripts\lib\prof.script
+      [*] = .\data\scripts\lib\run.script
+      [*] = .\data\scripts\lib\fx.script
+      [*] = .\data\scripts\lib\unit.script
+      [*] = .\data\scripts\lib\lan_log.script
+      [*] = .\data\scripts\lib\inet.script
+      [*] = .\data\scripts\lib\shell.script
+      [*] = .\data\scripts\lib\gui.floattooltips.script
+      [*] = .\data\scripts\lib\gui.build.script
+      [*] = .\data\scripts\lib\cmd.script
+      [*] = .\data\scripts\lib\diplomacy.script
+      [*] = .\data\scripts\lib\achievements.script
+      [*] = .\data\scripts\lib\stats.script
+      [*] = .\data\scripts\lib\quick_access.script
+      [*] = .\data\scripts\lib\scenario.script
+      [*] = .\data\scripts\lib\editor.script
+      [*] = .\data\scripts\lib\lan_timers.script
+   struct.end
+   // outside protected
+   protected : struct.begin
+      [*] = _camp_IsBuildingAllowed
+   struct.end
+   // unserialized - not saved in map file
+   private : struct.begin
+      [*] = gPrototypeData
+      [*] = gBattleData
+      [*] = gPatternCover
+      [*] = gPatternCoverTerrainTypes
+      [*] = gGridVertices
+      [*] = gStratHexCells
+      [*] = gHexCells
+      [*] = gIntRegister_CameraMode
+      [*] = gProfile
+      [*] = gProfileTmp
+      [*] = gDiplomacy
+      [*] = gMapSettings
+      [*] = gMapSettingsTmp
+      [*] = gWindows
+		[*] = gSceneryPruner
+      [*] = gIntRegister_fxTree_RootHandle
+      [*] = gStringRegister_fxTree_NodeName
+      [*] = gIntRegister_fxTree_NodeHandle
+      [*] = gIntRegister_fxTree_NodeTarget
+      [*] = gFloatRegister_fxTree_CoordTargetX
+      [*] = gFloatRegister_fxTree_CoordTargetY
+      [*] = gFloatRegister_fxTree_CoordTargetZ
+      [*] = gFloatRegister_fxTree_SleepTime
+      [*] = gBoolRegister_fxTree_Loaded
+      [*] = gc_gui_align_middle
+      [*] = gc_gui_align_lt
+      [*] = gc_gui_align_rb
+      [*] = gc_gui_align_rt
+      [*] = gc_gui_align_lm
+      [*] = gc_gui_align_mt
+      [*] = gc_gui_align_rm
+      [*] = gc_gui_align_mb
+      [*] = gc_gui_align_parent_m
+      [*] = gc_gui_align_parent_lt
+      [*] = gc_gui_align_parent_lb
+      [*] = gc_gui_align_parent_rb
+      [*] = gc_gui_align_parent_rt
+      [*] = gc_gui_align_parent_lm
+      [*] = gc_gui_align_parent_mt
+      [*] = gc_gui_align_parent_rm
+      [*] = gc_gui_align_parent_mb
+      [*] = gArr_gui_if_window_data
+      [*] = gArrGUIGameFontsID
+      [*] = gArrGUIGameFontsColorID
+      [*] = gArrGUIGameFonts
+      [*] = gArr_inner_buildings_opens_access_to
+      [*] = gArr_inner_buildings_groups
+      [*] = gFloatRegister_FramesPerSecondFactor
+      [*] = gIntRegister_AntiFreezeStarted
+      [*] = gIntRegister_AntiFreezeUpdated
+      [*] = gFloatRegister_AntiFreezeLowFactor
+      [*] = gFloatRegister_AntiFreezeLowFPS
+      [*] = gInt_gui_RootWindowUID
+      [*] = gInetEventLock
+      [*] = gLanGameMode
+      [*] = gLanGameRoom
+      [*] = gShellWantMaster
+      [*] = gShellViewProfID
+      [*] = gConnectIPList
+      [*] = gConnectIPIndex
+      [*] = gConnectIPCount
+      [*] = gConnectHost
+      [*] = gArr_gui_Layers
+      [*] = gArrRegister_ConsoleAliases
+      [*] = gArr_gui_game_commands
+      [*] = gArr_gui_game_commands_hotkeys
+      [*] = gInt_gui_GameCommandUID
+      [*] = gInetProfile
+      [*] = gInetBattle
+      [*] = gLanHeroServer
+      [*] = gLanHeroClient
+      [*] = gInetShell
+      [*] = gHotSeatPlayer1
+      [*] = gHotSeatPlayer2
+      [*] = gFloatRegister_GUICameraHeight
+      [*] = gStrRegister_BattleNicks
+      [*] = gIntRegister_BattleIDs
+      [*] = gIntRegister_InetSelectedPlayerID
+      [*] = gIntRegister_InetSelectedGameID
+      [*] = gBoolRegister_InetLanIsEvaluateOrder
+      [*] = gBoolRegister_LanClientEndTurn
+      [*] = gIntRegister_LanSwitchToMasterTurn
+      [*] = gIntRegister_LanSwitchToClientTurn
+      [*] = gBoolRegister_IsHotSeat
+      [*] = gIntRegister_HotSeatActivePlayer
+      [*] = gFloatRegister_GUIScaleInterface
+      [*] = gIntRegister_GUIBattleTooltipLastEndHexCell
+      [*] = gIntRegister_InetPointsMode
+      [*] = gArrGUIFontSpacers
+      [*] = gVideoSettings
+      [*] = gVideoSettingsTmp
+      [*] = gBoolRegister_GUIProgressOnceOnGUIDoCreate
+      [*] = gc_gui_fontcolor_HeaderRed
+      [*] = gc_gui_fontcolor_HeaderDark
+      [*] = gc_gui_fontcolor_Header
+      [*] = gc_gui_fontcolor_Normal
+      [*] = gc_gui_fontcolor_NormalDark
+      [*] = gc_gui_fontcolor_NormalWhite
+      [*] = gc_gui_fontcolor_Active
+      [*] = gc_gui_fontcolor_Hover
+      [*] = gc_gui_fontcolor_Yellow
+      [*] = gc_gui_fontcolor_Green
+      [*] = gc_gui_fontcolor_Red
+      [*] = gc_gui_fontcolor_Brown
+      [*] = gc_gui_fontcolor_Gray
+      [*] = gc_gui_fontcolor_Black
+      [*] = gc_gui_fontcolor_Attention
+      [*] = gc_gui_fontcolor_Info
+      [*] = gc_gui_fontcolor_ExtraInfo
+      [*] = gc_gui_fontcolor_Warning
+      [*] = gc_gui_fontcolor_Rarity2
+      [*] = gc_gui_fontcolor_Rarity3
+      [*] = gc_gui_fontcolor_Rarity4
+      [*] = gc_gui_fontcolor_Rarity5
+      [*] = gc_gui_fontcolor_Rarity6
+      [*] = gFloatRegister_AlchemySlider
+      [*] = gArr_gui_float_tooltips
+      [*] = gMapEditor
+      [*] = gGUIEditor
+      [*] = gScenario
+      [*] = gBoolRegister_EditorAllowed
+      [*] = gBoolRegister_EditorFastGeneration
+      [*] = gArr_gui_float_tooltips_check_time
+      [*] = gArr_outer_buildings_data_no
+      [*] = gArr_outer_buildings_data
+      [*] = gHotseatProfileTmp
+      [*] = gIntRegister_ShardHotSeatActivePlayer
+      [*] = gBoolRegister_GUIProcessBuildingsQuery
+      [*] = gBoolRegister_GUIUpdateMapHexGrid
+      [*] = gBoolRegister_NeedSeasonChangeObjects
+      [*] = gBoolRegister_NeedSeasonChangeBattle
+      [*] = gBoolRegister_UseNameAsNick
+      [*] = gStringRegister_LanMapSaveName
+      [*] = gIntRegister_GVLogging
+      [*] = gIntRegister_LanParsersBufferIndex
+      [*] = gIntRegister_LanParsersNumber
+      [*] = gArr_LanParsersQueue
+      [*] = gStringRegister_ProfileSavesFolderRoot
+      [*] = gStringRegister_ProfileSavesFolderLast
+      [*] = gStringRegister_ProfileSavesFolderName
+      [*] = gArr_LanTimers
+      [*] = gBoolRegister_Loading
+      [*] = gBoolRegister_GUIStartup
+      [*] = gIntRegister_MaxArrPathValue
+      [*] = gIntRegister_LogLanParsers
+      [*] = gIntRegister_LogLanParserUID
+      [*] = gTempDiplomacy
+      [*] = gStringRegister_LogLanParserPfx
+      [*] = gStringRegister_LanCurrentBattleIDs
+      [*] = gArr_ModalQueries
+      [*] = gArr_GvLogModuleNames
+      [*] = gIntRegister_GvLogIdentLevel
+      [*] = gIntRegister_StringReplaceRegExHandle
+      [*] = gStringRegister_GUIProvincesToUpdate
+      [*] = gStringRegister_SkillName
+      [*] = gFloatRegister_BattleFlyTextTime
+      [*] = gFloatRegister_BattleLockTime
+      [*] = gIntRegister_CampaignHeroesPanel
+      [*] = gBoolRegister_IsDefenderAutoBattle
+      [*] = gBoolRegister_debugNoCameraRestricts
+      [*] = gBoolRegister_StandHeroAtProvCenter
+      [*] = gIntRegister_DbgMapSelectedHex
+      [*] = gIntRegister_dbgX
+      [*] = gIntRegister_dbgY
+      [*] = gIntRegister_dbgZ
+      [*] = gFloatRegister_gDbgFloat0PrevValue
+      [*] = gFloatRegister_gDbgFloat1PrevValue
+      [*] = gFloatRegister_gDbgFloat2PrevValue
+      [*] = gFloatRegister_gDbgFloat3PrevValue
+      [*] = gIntRegister_DebugAutopassTurns
+      [*] = gBoolRegister_CheatCanBuildInfinite
+      [*] = gFloatRegister_DoDebugHintAlpha
+      [*] = gBoolRegister_DebugForceExtendedHint
+      [*] = gBoolRegister_ShowResourceOnProvince
+      [*] = gBoolRegister_BattleInfiniteMovePoints
+      [*] = gBoolRegister_ConvertGenesisMode
+      [*] = gBoolRegister_HaltLanProgress
+      [*] = gIntRegister_MyLanID
+      [*] = gIntRegister_PlayBell
+   struct.end
+section.end
+

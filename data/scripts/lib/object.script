@@ -1,0 +1,1221 @@
+//
+// object.script
+//
+
+procedure _obj_LogBehaviours(goHandle : Integer);
+begin
+   var i, handle : Integer;
+   var behCount : Integer = GetBehaviourCount(goHandle);
+   if behCount > 0 then
+   begin
+      for i := 0 to behCount-1 do
+      begin
+         handle := GetBehaviourByIndex(goHandle, i);
+         _log_obj('Behaviour,   index: '+IntToStr(i)+',   key: '+GetBehaviourKey(handle)+',   class: '+GetBehaviourClassName(handle)+',   baseObject '+IntToStr(GetBehaviourBaseObject(handle)));
+      end;
+   end;
+end;
+
+
+procedure _obj_LogEffects(goHandle : Integer);
+begin
+   var i, handle : Integer;
+   var effCount : Integer = GetEffectCount(goHandle);
+   if effCount > 0 then
+   begin
+      for i := 0 to effCount-1 do
+      begin
+         handle := GetEffectByIndex(goHandle, i);
+         _log_obj('Effect,   index: '+IntToStr(i)+',   key: '+GetBehaviourKey(handle)+',   class: '+GetBehaviourClassName(handle)+',   baseObject '+IntToStr(GetBehaviourBaseObject(handle)));
+      end;
+   end;
+end;
+
+
+// _obj_GetPickedUnitHandle
+//
+function _obj_GetPickedUnitHandle() : Integer;
+begin
+   Result := 0;
+   var plHandle : Integer;
+   var plIndex : Integer;
+   var goIndex : Integer;
+   var goHandle : Integer;
+   for plIndex := 0 to GetCountOfPlayers-1 do
+   begin
+      plHandle := GetPlayerHandleByIndex(plIndex);
+      for goIndex := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+      begin
+         goHandle := GetGameObjectHandleByIndex(goIndex, plHandle);
+         if GetGameObjectPickedByHandle(goHandle) then
+         begin
+            Result := goHandle;
+            break;
+         end;
+      end;
+   end;
+end;
+
+// _obj_GetPickedChildHandle
+//
+function _obj_GetPickedChildHandle(const parentHnd : Integer) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for i:=0 to GetGameObjectCountChildByHandle(parentHnd)-1 do
+   begin
+      var childHnd : Integer = GetGameObjectGOHandleChildByHandle(parentHnd, i);
+      if GetGameObjectPickedByHandle(childHnd) then
+      begin
+         Result := childHnd;
+         break;
+      end
+      else
+      Result := _obj_GetPickedChildHandle(childHnd);
+      if (Result<>0) then break;
+   end;
+end;
+
+// _obj_GetPickedHandle
+//
+function _obj_GetPickedHandle() : Integer;
+begin
+   Result := 0;
+   var plHandle : Integer;
+   var plIndex : Integer;
+   var goIndex : Integer;
+   var goHandle : Integer;
+   for [main]plIndex := 0 to GetCountOfPlayers-1 do
+   begin
+      plHandle := GetPlayerHandleByIndex(plIndex);
+      for goIndex := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+      begin
+         goHandle := GetGameObjectHandleByIndex(goIndex, plHandle);
+         if GetGameObjectPickedByHandle(goHandle) then
+         begin
+            Result := goHandle;
+            break(main);
+         end
+         else
+         Result := _obj_GetPickedChildHandle(goHandle);
+         if (Result<>0) then break(main);
+      end;
+   end;
+end;
+
+// _obj_GetGameObjectAbsolutePosition
+//
+procedure _obj_GetGameObjectAbsolutePosition(const goHnd : Integer; var x : Float; var y : Float; var z : Float; const calcTLFAnimation : Boolean);
+begin
+   GetGameObjectAbsolutePositionByHandle(goHnd, x, y, z);
+   if (calcTLFAnimation) and (IsGameObjectWithTLF(goHnd)) then
+   begin
+      var tx, ty, tz : Float = 0;
+      GetGameObjectTLFTransformedPositionZByHandle(goHnd, tx, ty, tz);
+      x := x + tx;
+      y := y + ty;
+      z := z + tz;
+   end;
+end;
+
+procedure _obj_GetGameObjectLocalPosition(const goHnd : Integer; var x : Float; var y : Float; var z : Float; const calcTLFAnimation : Boolean);
+begin
+   x := GetGameObjectPositionXByHandle(goHnd);
+   y := GetGameObjectPositionYByHandle(goHnd);
+   z := GetGameObjectPositionZByHandle(goHnd);
+   if (calcTLFAnimation) and (IsGameObjectWithTLF(goHnd)) then
+   begin
+      var tx, ty, tz : Float = 0;
+      GetGameObjectTLFTransformedPositionLocalByHandle(goHnd, tx, ty, tz);
+      x := x + tx;
+      y := y + ty;
+      z := z + tz;
+   end;
+end;
+
+// _obj_ChildToParent
+//
+procedure _obj_ChildToParent(const goHnd : Integer; const stopTLFAnimation : Boolean);
+begin
+   GameObjectChildToParent(goHnd);
+   if (IsGameObjectWithTLF(goHnd)) then
+   begin
+      GameObjectTLFToMatrix(goHnd);
+      if (stopTLFAnimation) then
+      GameObjectTLFAnimationStop(goHnd);
+   end;
+end;
+
+
+// _obj_GetGroupHandleByName
+//
+function _obj_GetGroupHandleByName(const plHnd : Integer; const name : String) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for i:=0 to CountGroupByHandle(plHnd)-1 do
+   begin
+      var grHnd : Integer = GetGRHandleByPlayerHandleByIndex(plHnd, i);
+      if SameText(GetGroupNameByHandle(grHnd), name) then
+      begin
+         Result := grHnd;
+         break;
+      end;
+   end;
+end;
+
+// _obj_GetOrCreateGroupByName
+//
+function _obj_GetOrCreateGroupByName(const plHnd : Integer; const name : String) : Integer;
+begin
+   Result := _obj_GetGroupHandleByName(plHnd, name);
+   if (Result=0) then
+   begin
+      Result := CreateGroupByPlHandle(plHnd, name);
+      SetGroupEnabledByHandle(Result, False);
+   end;
+end;
+
+// _obj_GetOrCreateGroupByUnit
+//
+function _obj_GetOrCreateGroupByUnit(const unitHnd : Integer) : Integer;
+begin
+   var uniqID : Integer = GetGameObjectUniqueIdByHandle(unitHnd);
+   if (uniqID=0) then
+   uniqID := GameObjectMakeUniqId(unitHnd);
+   Result := _obj_GetOrCreateGroupByName(GetGameObjectPlayerHandleByHandle(unitHnd), IntToStr(uniqID));
+end;
+
+// _obj_FindChildHandle
+//
+function _obj_FindChildHandle(const parentHandle : Integer; hierarchy : Boolean; raceName, baseName, customName : String) : Integer;
+begin
+   Result := 0;
+   var i : Integer;
+   for i:=0 to GetGameObjectCountChildByHandle(parentHandle)-1 do
+   begin
+      var childHandle : Integer = GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      var childRaceName : String = GetGameObjectRaceNameByHandle(childHandle);
+      var childBaseName : String = GetGameObjectBaseNameByHandle(childHandle);
+      var childPlayerName : String = GetGameObjectPlayerNameByHandle(childHandle);
+      var childCustomName : String = GetGameObjectCustomNameByHandle(childHandle);
+      if ((raceName='') or (SameText(raceName, childRaceName)))
+      and((baseName='') or (SameText(baseName, childBaseName)))
+      //and((playerName='') or (SameText(playerName, childPlayerName)))
+      and((customName='') or (SameText(customName, childCustomName))) then
+      begin
+         Result := childHandle;
+         break;
+      end
+      else
+      if (hierarchy) then
+      Result := _obj_FindChildHandle(childHandle, hierarchy, raceName, baseName, customName);
+      if (Result<>0) then break;
+   end;
+end;
+
+// _obj_GetObjectHandleByData
+//
+function _obj_GetObjectHandleByData(parentHnd : Integer; hierarchy : Boolean; raceName, baseName, playerName, customName : String) : Integer;
+begin
+   if (parentHnd<>0) then
+   Result := _obj_FindChildHandle(parentHnd, hierarchy, raceName, baseName, customName)
+   else
+   begin
+      Result := 0;
+      var plIndex  : Integer = 0;
+      var plCount  : Integer = GetCountOfPlayers;
+      var plHandle : Integer = GetPlayerHandleByName(playerName);
+      if (plHandle<>0) then
+      begin
+         plIndex := GetPlayerIndexByHandle(plHandle);
+         plCount := plIndex+1;
+      end
+      else
+      if (playerName<>'') then
+      plIndex := -1;
+      var i : Integer;
+      if (plIndex>=0) and (plIndex<plCount) then
+      for i:=plIndex to plCount-1 do
+      begin
+         var plHnd : Integer = GetPlayerHandleByIndex(i);
+         var goInd : Integer;
+         for goInd:=0 to GetPlayerGameObjectsCountByHandle(plHnd)-1 do
+         begin
+            var goHnd : Integer = GetGameObjectHandleByIndex(goInd, plHnd);
+            var goRaceName : String = GetGameObjectRaceNameByHandle(goHnd);
+            var goBaseName : String = GetGameObjectBaseNameByHandle(goHnd);
+            var goCustomName : String = GetGameObjectCustomNameByHandle(goHnd);
+            if ((raceName='') or (SameText(raceName, goRaceName)))
+            and((baseName='') or (SameText(baseName, goBaseName)))
+            and((customName='') or (SameText(customName, goCustomName))) then
+            begin
+               Result := goHnd;
+               break;
+            end;
+         end;
+      end;
+   end;
+end;
+
+procedure _hero_GetHeroHumanName(hero_nm : String; var _name : String);
+begin
+   var nm : String = hero_nm;
+
+   if nm <> '' then
+   begin
+      if _sa_GetNumSafe_D(nm,59) > 1 then
+      begin
+         var k,s : String;
+
+         _sa_Get_D(nm,0,59,k);
+         _sa_Get_D(nm,1,59,s);
+         _name := GetLocaleTableListItemByID(k,s);
+      end
+      else
+         _name := GetLocaleTableListItemByID('hero_names', nm);
+      if _name = '' then
+         nm := '';
+   end;
+   if nm = '' then
+   begin
+      if gTutorial.map then
+         _name := gProfile.name
+      else
+         _name := '????';
+   end;
+end;
+
+procedure _hero_GetName(heroHandle : Integer; var _name : String);
+begin
+   _hero_GetHeroHumanName(ParserGetValueByKeyByHandle(ParserSelectGameObject(heroHandle),'Name'),_name);
+end;
+
+// _plr_SetPlayerGameObjectsVisible
+//
+procedure _plr_SetPlayerGameObjectsVisible(plHnd : Integer; visible : Boolean);
+begin
+   if (plHnd<>0) then
+   begin
+      var i : Integer;
+      for i:=GetPlayerGameObjectsCountByHandle(plHnd)-1 downto 0 do
+      begin
+         var goHandle : Integer = GetGameObjectHandleByIndex(i, plHnd);
+         SetGameObjectVisibleByHandle(goHandle, visible);
+      end;
+   end;
+end;
+
+// _hero_UpdateHeroHUDs
+//
+procedure _hero_UpdateHeroHUDs();
+begin
+   var i, j : Integer;
+   for i:=0 to gGame.map.players-1 do
+   begin
+      var plHnd : Integer = GetPlayerHandleByIndex(i);
+      if (plHnd<>0) then
+      begin
+         for j:=0 to GetPlayerGameObjectsCountByHandle(plHnd)-1 do
+            SetGameObjectIntValueIndByHandle(GetGameObjectHandleByIndex(i, plHnd), gc_map_GOStack_MapUnit_iUpdate, 1);
+      end;
+   end;
+end;
+
+function _plr_IsInGame(plHandle : Integer) : Boolean;
+begin
+   PlayerExecuteStateByHandle(plHandle, 'IsInGame');
+   Result := BoolRegister0;
+end;
+
+
+function _plr_GetTurnDifference(plIndex, comparePlayerInd : Integer) : Integer;
+begin
+   if (plIndex = comparePlayerInd) then
+      Result := 0
+   else
+   begin
+      if (gGame.gameType = gc_GameTypeLanShard) then
+      begin
+         var cMode : String = GetPlayerControlModeByHandle(GetPlayerHandleByIndex(plIndex));
+         var cmpCMode : String = GetPlayerControlModeByHandle(GetPlayerHandleByIndex(comparePlayerInd));
+   
+         if SameText(cMode, 'cmPlayer') and SameText(cmpCMode, 'cmPlayer') then
+            Result := 0
+         else
+         if SameText(cMode, 'cmPlayer') and SameText(cmpCMode, 'cmPC') then
+            Result := 1
+         else
+         if SameText(cMode, 'cmPC') and SameText(cmpCMode, 'cmPlayer') then
+            Result := 0
+         else
+         if (plIndex > comparePlayerInd) then
+            Result := 1
+         else
+            Result := 0;
+      end
+      else
+      begin
+         if (plIndex = 0) then
+            Result := 1
+         else
+         if (comparePlayerInd = 0) then
+            Result := 0
+         else
+         if (plIndex > comparePlayerInd) then
+            Result := 1
+         else
+            Result := 0;
+      end;
+   end;
+end;
+
+// &0xffff - object index, &0xff0000 - player index, -1 if not valid uid
+function _plr_GetIndexesFromUID(cuid : Integer) : Integer;
+begin
+   var pidx : Integer = -1;
+   var hidx : Integer = -1;
+
+   if cuid <> 0 then
+   begin
+      var h : Integer = GetGameObjectHandleByUniqueId(cuid);
+      var ph : Integer;
+
+      if h <> 0 then
+      begin
+         ph := GetGameObjectPlayerHandleByHandle(h);
+         if ph <> 0 then
+         begin
+            pidx := GetPlayerIndexByHandle(ph);
+            hidx := GetGameObjectIndexByHandle(h);
+         end;
+      end;
+   end;
+   if (pidx = -1) or (hidx=-1) then
+      Result := -1
+   else
+      Result := (pidx shl $10) or (hidx and $ffff);
+end;
+
+function _plr_GetUIDFromIndexes(pl_idx, obj_idx : Integer) : Integer;
+begin
+   Result := 0;
+   if pl_idx <> -1 then
+   begin
+      var ph : Integer;
+
+      ph := GetPlayerHandleByIndex(pl_idx);
+      obj_idx := GetGameObjectHandleByIndex(obj_idx,ph);
+      Result := GetGameObjectUniqueIdByHandle(obj_idx);
+   end;
+end;
+
+function _plr_GetUIDFromPackedIndex(p_idx : Integer) : Integer;
+begin
+   if p_idx = -1 then
+      Result := 0
+   else
+      Result := _plr_GetUIDFromIndexes(((p_idx and $ff0000) shr $10), p_idx and $ffff);
+end;
+
+{function _army_GetSimpleArmyPower(pArmyUnits : Integer) : Integer;
+begin
+   Result := 0;
+   
+   var i, pArmyUnit, level, pUnit, rank, curLife, attack : Integer;
+   var isHero : Boolean;
+   for i := 0 to ParserGetCountByHandle(pArmyUnits)-1 do
+   begin
+      pArmyUnit := ParserSelectByHandleByIndex(pArmyUnits, i);
+      level := ParserGetIntValueByKeyByHandle(pArmyUnit, 'Level');
+      curLife := ParserGetIntValueByKeyByHandle(pArmyUnit, 'CurLife');
+      isHero := ParserGetBoolValueByKeyByHandle(pArmyUnit, 'IsHero');
+      
+      if isHero then
+      begin
+         if level < 10 then 
+         rank := 2
+         else if level < 20 then 
+         rank := 3
+         else 
+         rank := 4;
+         case rank of
+            2 : Result := Result + 30 + level * 3;
+            3 : Result := Result + 100 + (level-10) * 6;
+            4 : Result := Result + 200 + (level-20) * 10;
+         end;
+         Result := Result + curLife;
+      end
+      else
+      begin
+         pUnit := ParserSelectByHandleByIndex(gPrototypeData.units.handle, ParserGetIntValueByKeyByHandle(pArmyUnit, 'UnitID'));
+         rank := ParserGetIntValueByKeyByHandle(pUnit, 'Rank');
+         attack := ParserGetIntValueByKeyByHandle(pUnit, 'Attack');
+         case rank of
+            1 : Result := Result + 20 + level;
+            2 : Result := Result + 40 + level * 2;
+            3 : Result := Result + 80 + level * 4;
+            4 : Result := Result + 160 + level * 8;
+            4 : Result := Result + 160 + level * 8;
+         end;
+         Result := Result + attack;
+         if curLife > 100 then
+            Result := Result + curLife - 100;
+      end;
+   end;
+end;}
+
+
+function _plr_GetOrCreatePlayer(const plName, raceName, cMode : String; const bClearObjects : Boolean) : Integer;
+begin
+   Result := GetPlayerHandleByName(plName);
+   
+   if (Result=0) then
+   begin
+      _log_map('Player: '+plName+' not found, creating.');
+      Result := CreatePlayer(plName, raceName, cMode);
+   end
+   else
+   if bClearObjects then
+      ClearPlayerGameObjectsByHandle(Result);
+end;
+
+
+function _obj_GetRecycled(const raceName, baseName : String) : Integer;
+begin
+   Result := 0;
+   
+   var i, goHandle : Integer;
+   
+   var recyclePlayer : Integer = GetPlayerHandleByName('recycle');
+   var objectCount : Integer = GetPlayerGameObjectsCountByHandle(recyclePlayer);
+      
+   if objectCount > 0 then
+   begin
+      if gc_LogRecycling then
+         _log_Obj('recycle object count '+IntToStr(objectCount));
+   
+      for i := 0 to objectCount-1 do
+      begin
+         goHandle := GetGameObjectHandleByIndex(i, recyclePlayer);
+         if SameText(baseName, GetGameObjectBaseNameByHandle(goHandle)) and SameText(raceName, GetGameObjectRaceNameByHandle(goHandle)) then
+         begin
+            Result := goHandle;
+            break;
+         end;
+      end;
+   end;
+end;
+
+
+function _obj_GetRecycledOrCreate(const plHandle : Integer; const raceName, baseName : String; const x, y, z : Float) : Integer;
+begin
+   if gc_LogRecycling then
+      _log_Obj('_obj_GetRecycledOrCreate '+baseName+', player: '+GetPlayerNameByHandle(plHandle)+', current object count '+IntToStr(GetPlayerGameObjectsCountByHandle(plHandle)));
+   
+   Result := _obj_GetRecycled(raceName, baseName);
+   if Result <> 0 then
+   begin
+      if gc_LogRecycling then
+         _log_Obj('reuse object: '+GetGameObjectBaseNameByHandle(Result)+', handle: '+IntToStr(Result));
+      SetGameObjectPlayerHandleByHandle(Result, plHandle);
+      
+      SetGameObjectPositionByHandle(Result, x, y, z);
+      
+      if SameText(baseName, 'fx') then
+      GameObjectExecuteStateByHandle(Result, 'DoInitial')
+      else
+      GameObjectExecuteStateByHandle(Result, 'Initial');
+	  
+      SetGameObjectVisibleByHandle(Result, true);
+   end
+   else
+   begin
+      Result := CreatePlayerGameObjectHandleByHandle(plHandle, raceName, baseName, x,y,z);
+      if gc_LogRecycling then
+         _log_Obj('create new: '+IntToStr(Result));
+   end;
+end;
+
+
+function _obj_GetInvisibleOrCreate(const plHandle : Integer; const raceName, baseName : String; const x, y, z : Float) : Integer;
+begin
+   Result := 0;
+   
+   var i, goHandle : Integer;
+   if gc_LogRecycling then
+      _log_Obj('_obj_GetInvisibleOrCreate '+baseName+', player: '+GetPlayerNameByHandle(plHandle)+', current object count '+IntToStr(GetPlayerGameObjectsCountByHandle(plHandle)));
+   
+   for i := 0 to GetPlayerGameObjectsCountByHandle(plHandle)-1 do
+   begin
+      goHandle := GetGameObjectHandleByIndex(i, plHandle);
+      if (not GetGameObjectVisibleByHandle(goHandle)) and SameText(baseName, GetGameObjectBaseNameByHandle(goHandle)) and SameText(raceName, GetGameObjectRaceNameByHandle(goHandle)) then
+      begin
+         if gc_LogRecycling then
+            _log_Obj('use existing hidden object: '+GetGameObjectBaseNameByHandle(goHandle));
+         Result := goHandle;
+      
+         SetGameObjectPositionByHandle(Result, x, y, z);
+      
+         if SameText(baseName, 'fx') then
+         GameObjectExecuteStateByHandle(Result, 'DoInitial')
+         else
+         GameObjectExecuteStateByHandle(Result, 'Initial');
+      
+         SetGameObjectVisibleByHandle(Result, true);
+         break;
+      end;
+   end;
+   
+   if Result = 0 then
+      Result := _obj_GetRecycledOrCreate(plHandle, raceName, baseName, x, y, z);
+end;
+
+
+function _obj_ChildGetInvisibleOrCreate(const parentHandle : Integer; const raceName, baseName : String) : Integer;
+begin
+   Result := 0;
+   
+   var i, goHandle : Integer;
+   var plHandle : Integer = GetGameObjectPlayerHandleByHandle(parentHandle);
+   if gc_LogRecycling then
+      _log_Obj('_obj_ChildGetInvisibleOrCreate '+baseName+', parentHandle: '+IntToStr(parentHandle)+', current child count '+IntToStr(GetGameObjectCountChildByHandle(parentHandle)));
+   
+   for i := 0 to GetGameObjectCountChildByHandle(parentHandle)-1 do
+   begin
+      goHandle := GetGameObjectGOHandleChildByHandle(parentHandle, i);
+      if (not GetGameObjectVisibleByHandle(goHandle)) and SameText(raceName, GetGameObjectRaceNameByHandle(goHandle)) and SameText(baseName, GetGameObjectBaseNameByHandle(goHandle)) then
+      begin
+         if gc_LogRecycling then
+            _log_Obj('use existing hidden child: '+GetGameObjectBaseNameByHandle(goHandle));
+         Result := goHandle;
+      
+         if SameText(baseName, 'fx') then
+         GameObjectExecuteStateByHandle(Result, 'DoInitial')
+         else
+         GameObjectExecuteStateByHandle(Result, 'Initial');
+      
+         SetGameObjectVisibleByHandle(Result, true);
+         break;
+      end;
+   end;
+   
+   if Result = 0 then
+   begin
+      Result := _obj_GetRecycled(raceName, baseName);
+      
+      if Result <> 0 then
+	  begin
+         if gc_LogRecycling then
+            _log_Obj('reuse object as child: '+GetGameObjectBaseNameByHandle(Result)+', handle: '+IntToStr(Result));
+         SetGameObjectPlayerHandleByHandle(Result, plHandle);
+         GameObjectParentToChild(Result, parentHandle);
+      
+         if SameText(baseName, 'fx') then
+         GameObjectExecuteStateByHandle(Result, 'DoInitial')
+         else
+         GameObjectExecuteStateByHandle(Result, 'Initial');
+      
+         SetGameObjectVisibleByHandle(Result, true);
+      end
+      else
+      begin
+         Result := GameObjectAddNewChild(parentHandle, raceName, baseName);
+         if gc_LogRecycling then
+            _log_Obj('create new child: '+IntToStr(Result));
+      end;
+   end;
+end;
+
+procedure _obj_Recycle(const goHandle : Integer);
+begin
+   var baseName : String = GetGameObjectBaseNameByHandle(goHandle);
+   if goHandle = 0 then
+      ErrorLog('_obj_Recycle handle does not exist.')
+   else
+   if not GetDetectClassInstance(goHandle) then
+      ErrorLog('_obj_Recycle handle '+IntToStr(goHandle)+' no class instance.')
+   else
+   if SameText(baseName, 'creation') or SameText(baseName, 'bowloflife') or SameText(baseName, 'spellboundbox') or SameText(baseName, 'waveplane') then // these cause difficulties when loading map where corresponding ritual has been casted
+      AddObjectToDestroyList(goHandle)
+   else
+   begin
+      //Log('_obj_Recycle '+IntToStr(goHandle));
+      if gc_LogRecycling then
+         _log_Obj('_obj_Recycle handle: '+IntToStr(goHandle)+' baseName: '+baseName+' raceName: '+GetGameObjectRaceNameByHandle(goHandle)+' playerName: '+GetGameObjectPlayerNameByHandle(goHandle)+', parent: '+IntToStr(GetGameObjectParentHandle(goHandle)));
+   
+      var i : Integer;
+      for i := GetGameObjectCountChildByHandle(goHandle)-1 downto 0 do
+      begin
+         var childHandle : Integer = GetGameObjectGOHandleChildByHandle(goHandle, i);
+         _obj_Recycle(childHandle);
+      end;
+   
+      if (not GetGameObjectIsParent(goHandle)) then
+      begin
+         GameObjectChildToParent(goHandle); // detach from current parent
+      end
+      else
+      if gc_LogRecycling then
+      begin
+         _obj_LogBehaviours(goHandle);
+         _obj_LogEffects(goHandle);
+      end;
+      //ReloadGameObjectProperties(goHandle, GetGameObjectRaceNameByHandle(goHandle), baseName);
+      SetGameObjectVisibleByHandle(goHandle, false); // make invisible here because Initial is executed when detaching a child, and we don't want to reload properties (happens when invisible) on store, only when acquiring a recycled object.
+      //SetGameObjectPositionByHandle(goHandle, 0, 0, 0);
+      
+      var recyclePlayer : Integer = _plr_GetOrCreatePlayer('recycle', 'misc', 'cmNone', false);
+      SetGameObjectPlayerHandleByHandle(goHandle, recyclePlayer);
+   end;
+end;
+
+procedure _plr_RecycleGameObjects(const plHandle : Integer);
+begin
+   if plHandle <> 0 then
+   begin
+      var i, goHandle : Integer;
+      for i := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto 0 do
+      begin
+         goHandle := GetGameObjectHandleByIndex(i, plHandle);
+         _obj_Recycle(goHandle);
+      end;
+   end;
+end;
+
+function _hero_GetHeroClassIndex(goHandle : Integer) : Integer;
+begin
+   Result := 0;
+   if goHandle <> 0 then
+   begin
+      var class1 : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iClassInd1);
+      var class2 : Integer = GetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iClassInd2);
+      if class2 = 0 then
+         Result := class1
+      else
+      begin
+         Result := class1 * 4 + class2;
+         if GetGameObjectIntValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_iLevel) >= 20 then
+            Result := Result + 16;
+      end;
+   end;
+end;
+
+function _plr_GetNonBuriedHeroCount(plHnd : Integer) : Integer;
+begin
+   Result := 0;
+   if (plHnd<>0) then
+   begin
+      var i : Integer;
+      for i:=GetPlayerGameObjectsCountByHandle(plHnd)-1 downto 0 do
+      begin
+         var goHandle : Integer = GetGameObjectHandleByIndex(i, plHnd);
+         if not GetGameObjectBoolValueIndByHandle(goHandle, gc_map_GOStack_MapUnit_bBuried) then
+            Result := Result + 1;
+      end;
+   end;
+end;
+
+
+procedure _obj_SetDefaultStackVariable(const objectHandle, pStack, stackIndex : Integer);
+begin
+   var pStackVar : Integer = ParserSelectByHandleByIndex(pStack, stackIndex);
+   var valueName : String = ParserGetValueByKeyByHandle(pStackVar, 'Name');
+   var specialParam : Integer = ParserGetIntValueByKeyByHandle(pStackVar, 'Param');
+   if specialParam = 0 then
+   begin
+      SetGameObjectValueByHandle(objectHandle, valueName, ParserGetValueByKeyByHandle(pStackVar, 'Value'));
+   end
+   else
+   begin
+      var value : Integer = 0;
+      case specialParam of
+         1, 2, 3 : begin // set unit ID, class ID or starting primary stat by hero basename
+            var baseName : String = GetGameObjectBaseNameByHandle(objectHandle);
+            var classInd : Integer = 0;
+         
+            case baseName of
+               'map.warrior' : classInd := 1;
+               'map.scout' : classInd := 2;
+               'map.commander' : classInd := 3;
+               'map.wizard' : classInd := 4;
+            end;
+         
+            case specialParam of
+               1 : value := 39 + classInd;
+               2 : value := classInd;
+               3 : if ((classInd < 3) and (stackIndex = gc_map_GOStack_MapUnit_iHealth)) or ((classInd = 3) and (stackIndex = gc_map_GOStack_MapUnit_iLeader)) or ((classInd = 4) and (stackIndex = gc_map_GOStack_MapUnit_iMagic)) then
+                  value := 1;
+            end;
+         end;
+         4 : begin // unique ID
+            value := GetGameObjectUniqueIdByHandle(objectHandle);
+            if value = 0 then
+               value := GameObjectMakeUniqId(objectHandle);
+         end;
+         5 : begin // AI hero power estimation
+            value := GetGameObjectIntValueIndByHandle(objectHandle, gc_map_GOStack_MapUnit_iLevel) div ParserGetIntValueByKeyByHandle(pStackVar, 'Param2');
+         end;
+         6 : begin // unit ID
+            StringRegister0 := GetGameObjectBaseNameByHandle(objectHandle);
+            MapExecuteState('GetUnitIDByName');
+            value := IntRegister0;
+         end;
+         7 : begin // get unit parser value
+            var pUnit : Integer = ParserSelectByHandleByIndex(gPrototypeData.units.handle, GetGameObjectIntValueIndByHandle(objectHandle, gc_stack_unit_iUnitID));
+            case valueName of
+               'dfr' : value := ParserGetIntValueByKeyByHandle(pUnit, 'DamageFrame');
+               'sfr' : value := ParserGetIntValueByKeyByHandle(pUnit, 'ShootFrame');
+               'cfr' : value := ParserGetIntValueByKeyByHandle(pUnit, 'CastFrame');
+            end;
+         end;
+         8 : begin // get game time
+            SetGameObjectFloatValueByHandle(objectHandle, valueName, GetGameTime);
+         end;
+         9 : begin // get from global register
+            case valueName of
+               'nextnode' : SetGameObjectValueByHandle(objectHandle, valueName, gStringRegister_fxTree_NodeName);
+               'nodetarget' : SetGameObjectIntValueByHandle(objectHandle, valueName, gIntRegister_fxTree_NodeTarget);
+               'coordtargetx' : SetGameObjectFloatValueByHandle(objectHandle, valueName, gFloatRegister_fxTree_CoordTargetX);
+               'coordtargety' : SetGameObjectFloatValueByHandle(objectHandle, valueName, gFloatRegister_fxTree_CoordTargetY);
+               'coordtargetz' : SetGameObjectFloatValueByHandle(objectHandle, valueName, gFloatRegister_fxTree_CoordTargetZ);
+               'sleepTime' : SetGameObjectFloatValueByHandle(objectHandle, valueName, gFloatRegister_fxTree_SleepTime);
+            end;
+         end;
+         else
+         begin
+            ErrorLogI(ParserGetValueByKeyByHandle(pStackVar, 'Value')+', unknown stack variable special param: '+IntToStr(specialParam));
+            value := 0;
+         end;
+      end;
+      if ParserGetIntValueByKeyByHandle(pStackVar, 'ValueType') = 0 then
+      begin
+         SetGameObjectValueByHandle(objectHandle, valueName, IntToStr(value)); 
+         if ParserGetBoolValueByKeyByHandle(pStackVar, 'Log') then
+            Log('Conditional default stackvalue '+valueName+' set as '+IntToStr(value));
+      end;
+   end
+end;
+
+
+procedure _obj_ResetStackVariables(const objectHandle : Integer; const objectType : String);
+begin
+   var i : Integer;
+   
+   var pStack : Integer = ParserSelectByHandleByKey(ParserSelectByHandleByKey(gPrototypeData.objectTypes.handle, objectType), 'Stack');
+   for i := 0 to ParserGetCountByHandle(pStack)-1 do 
+   begin
+	  _obj_SetDefaultStackVariable(objectHandle, pStack, i);
+   end;
+end;
+
+
+function _obj_GetValueExistedByNameByHandle(const objectHandle : Integer; const valueName : String) : Boolean;
+begin
+   Result := false;
+   
+   var i : Integer;
+   for i := 0 to GetGameObjectVarsCountByHandle(objectHandle)-1 do
+   begin
+      if SameText(GetGameObjectKeyNameIndByHandle(objectHandle, i), valueName) then
+      begin
+         Result := true;
+         break;
+      end;
+   end;
+end;
+
+
+procedure _obj_UpdateStackVariables(const objectHandle : Integer; const objectType : String);
+begin
+   var valueName, value, value2 : String;
+   var i, j, pStackVar, correctValueIndex : Integer;
+   
+   var pStack : Integer = ParserSelectByHandleByKey(ParserSelectByHandleByKey(gPrototypeData.objectTypes.handle, objectType), 'Stack');
+   var stackVarCount : Integer = ParserGetCountByHandle(pStack);
+   
+   // Ensure that all needed values exist
+   for i := 0 to stackVarCount-1 do
+   begin
+      pStackVar := ParserSelectByHandleByIndex(pStack, i);
+      valueName := ParserGetValueByKeyByHandle(pStackVar, 'Name');
+      if (not _obj_GetValueExistedByNameByHandle(objectHandle, valueName)) then
+      begin
+         ErrorLogI(valueName+' stack value is missing. Adding.');
+	     _obj_SetDefaultStackVariable(objectHandle, pStack, i);
+      end;
+   end;
+   
+   var bAllClear : Boolean = false;
+   repeat // Ensure that values occupy correct indices.
+      for i := GetGameObjectVarsCountByHandle(objectHandle)-1 downto 0 do
+      begin
+         correctValueIndex := -1;
+         valueName := GetGameObjectKeyNameIndByHandle(objectHandle, i);
+         for j := stackVarCount-1 downto 0 do
+         begin
+            pStackVar := ParserSelectByHandleByIndex(pStack, j);
+            if SameText(ParserGetValueByKeyByHandle(pStackVar, 'Name'), valueName) then
+            begin
+               correctValueIndex := j;
+               break;
+            end;
+         end;
+            
+         if (correctValueIndex = -1) then
+         begin
+            ErrorLogI(valueName+' stack value is not needed, ignore.');
+         end
+		 else
+         if (i <> correctValueIndex) then // swap values
+         begin
+            ErrorLogI(valueName+' stack value wrong index: '+IntToStr(i)+' instead of '+IntToStr(correctValueIndex)+', swapping');
+            value2 := GetGameObjectValueIndByHandle(objectHandle, correctValueIndex);
+            value := GetGameObjectValueIndByHandle(objectHandle, i);
+            SetGameObjectKeyNameIndByHandle(objectHandle, i, GetGameObjectKeyNameIndByHandle(objectHandle, correctValueIndex));
+            SetGameObjectKeyNameIndByHandle(objectHandle, correctValueIndex, valueName);
+            SetGameObjectValueIndByHandle(objectHandle, i, value2);
+            SetGameObjectValueIndByHandle(objectHandle, correctValueIndex, value);
+            break;
+         end;
+         
+         if i = 0 then
+            bAllClear := true;
+      end;
+   until bAllClear;
+end;
+
+procedure _obj_GetDefaultMaterial(handle : Integer; var materialName : String);
+begin
+   var raceName : String = GetGameObjectRaceNameByHandle(handle);
+   if not SameText(raceName, 'units') then
+   begin
+      materialName := '';
+	  exit;
+   end;
+   
+   var bn : String = GetGameObjectBaseNameByHandle(handle);
+   
+   if not GetGameObjectIsParent(handle) then
+   begin
+      var pbn : String = GetGameObjectBaseNameByHandle(GetGameObjectParentHandle(handle));
+	  
+      if SameText(pbn, 'imp') or SameText(pbn, 'phoenix') or SameText(pbn, 'manticore') or SameText(pbn, 'hellhound') or SameText(pbn, 'dragon') or SameText(pbn, 'dragonfire') or SameText(pbn, 'dragonstorm') or SameText(pbn, 'dragonunholy') then
+         materialName := ''
+      else
+      if SameText(pbn, 'warrior') then
+         materialName := 'warrior_weapon'
+      else
+      if SameText(pbn, 'commander') then
+      begin
+         if SameText(bn, 'commander_sword') then
+            materialName := 'commander_sword'
+         else
+            materialName := 'commander';
+      end
+      else
+      if SameText(pbn, 'thief') then
+         materialName := 'thief_wpn'
+      else
+      if SameText(pbn, 'assassin') then
+         materialName := 'assassin_wpn'
+      else
+      if SameText(pbn, 'guardian') then
+         materialName := 'guardian_halberd'
+      else
+      if SameText(pbn, 'catapult') then
+         materialName := 'catapult_stone'
+      else
+      if SameText(pbn, 'giant') then
+         materialName := 'giant_stone'
+      else
+      if SameText(pbn, 'giantfire') then
+         materialName := 'giantfire_stone'
+      else
+      if SameText(pbn, 'executioner') then
+         materialName := 'executioner_axe'
+      else
+      if SameText(pbn, 'horseman') then
+      begin
+         if SameText(bn, 'horseman_horse') then
+            materialName := 'horseman_horse'
+         else
+            materialName := 'horseman';
+      end
+      else
+      if SameText(pbn, 'horsearcher') then
+      begin
+         if SameText(bn, 'horsearcher_horse') then
+            materialName := 'horsearcher_horse'
+         else
+            materialName := 'horsearcher';
+      end
+      else
+      if SameText(pbn, 'knight') then
+      begin
+         if SameText(bn, 'knight_horse') or SameText(bn, 'knight_horse_armor1') or SameText(bn, 'knight_horse_armor2') then
+            materialName := 'knight_horse'
+         else
+            materialName := 'knight';
+      end
+      else
+      if SameText(pbn, 'paladin') then
+      begin
+         if SameText(bn, 'paladin_horse') or SameText(bn, 'paladin_stirrup1') or SameText(bn, 'paladin_stirrup2') or SameText(bn, 'paladin_horsearmor1') or SameText(bn, 'paladin_horsearmor2') then
+            materialName := 'paladin_horse'
+         else
+            materialName := 'paladin';
+      end
+      else
+      if SameText(pbn, 'ogre') then
+      begin
+         if SameText(bn, 'ogre_club') then
+            materialName := 'ogre_dubina'
+         else
+            materialName := 'ogre';
+      end;
+   end
+   else
+      materialName := bn;
+end;
+
+
+function _obj_GetCheckSceneryFlags(const objectFlags, shardScenery, townScenery, provinceScenery, battleScenery : Integer) : Integer;
+begin
+	Result := 0;
+	Inc(Result, Min(1, objectFlags xor gProfile.objectflags) * 1);
+	
+	case gIntRegister_CurGameMode of
+		gc_GameModeTactics, gc_GameModeStrategy : 
+		begin
+			if (gGame.gameType <> gc_GameTypeHotseatBattle) and (gGame.gameType <> gc_GameTypeLanBattle) then
+			begin
+				Inc(Result, Min(1, shardScenery xor gProfile.shardscenery) * 2);
+				Inc(Result, Min(1, townScenery xor gProfile.townscenery) * 4);
+				Inc(Result, Min(1, provinceScenery xor gProfile.provincescenery) * 8);
+			end;
+			
+			Inc(Result, Min(1, battleScenery xor gProfile.battlescenery) * $10);
+		end;
+	end;
+end;
+
+
+function _obj_EnabledByFlag(const bitFlag : Integer) : Boolean;
+begin
+	Result := (gProfile.objectflags and bitFlag) = 0;
+end;
+
+
+function _obj_CreationStateEnabled(const stateName : String) : Boolean;
+begin
+	Result := True;
+	
+	var pSceneryData : Integer = _misc_ParserGetOrCreateByKey('scenery_data', False);
+	if ParserGetCountByHandle(pSceneryData) = 0 then
+		ParserLoadFromFile(gc_SceneryDataPath);
+		
+	function CheckScenery(const sectionKey : String; const graphicsLevel : Integer; var bFound : Boolean) : Boolean;
+	begin
+		Result := True;
+		
+		var pScenery : Integer = ParserSelectByHandleByKey(pSceneryData, sectionKey);
+		
+		var i, pPruner : Integer;
+		for i := 0 to ParserGetCountByHandle(pScenery)-1 do
+		begin
+			pPruner := ParserSelectByHandleByIndex(pScenery, i);
+			if SameText(ParserGetValueByKeyByHandle(pPruner, 'StateName'), stateName) then
+			begin
+				Result := graphicsLevel < _pars_GetIntValueByKeyByHandleDef(pPruner, 'ClearAll', 1000);
+				bFound := True;
+				break;
+			end;
+		end;
+	end;
+	
+	var bFound : Boolean = False;
+	Result := CheckScenery('ShardScenery', gProfile.shardscenery, bFound);
+	if not bFound then
+	Result := CheckScenery('TownScenery', gProfile.townscenery, bFound);
+	if not bFound then
+	Result := CheckScenery('ProvinceScenery', gProfile.provincescenery, bFound);
+	if not bFound then
+	Result := CheckScenery('BattleScenery', gProfile.battlescenery, bFound);
+end;
+
+
+
+function _obj_GetPrunerByStateName(const sectionKey, stateName : String) : Integer;
+begin
+	Result := 0;
+
+	var pSceneryData : Integer = _misc_ParserGetOrCreateByKey('scenery_data', False);
+	if ParserGetCountByHandle(pSceneryData) = 0 then
+		ParserLoadFromFile(gc_SceneryDataPath);
+	
+	var i, pPruner : Integer;
+	pSceneryData := ParserSelectByHandleByKey(pSceneryData, sectionKey);
+	for i := 0 to ParserGetCountByHandle(pSceneryData)-1 do
+	begin
+		pPruner := ParserSelectByHandleByIndex(pSceneryData, i);
+	   if SameText(ParserGetValueByKeyByHandle(pPruner, 'StateName'), stateName) then
+		begin
+			Result := pPruner;
+			break;
+		end;
+	end;
+end;
+
+
+
+function _obj_GetPlayerPruner(const pPruner : Integer; const playerName : String) : Integer;
+begin
+	Result := 0;
+
+	var i, pPrunerPlayer : Integer;
+	var pPlayers : Integer = ParserSelectByHandleByKey(pPruner, 'Players');
+	for i := 0 to ParserGetCountByHandle(pPlayers)-1 do
+	begin
+		pPrunerPlayer := ParserSelectByHandleByIndex(pPlayers, i);
+		if SameText(ParserGetValueByKeyByHandle(pPrunerPlayer, 'Name'), playerName) then
+		begin
+			Result := pPrunerPlayer;
+			break;
+		end;
+	end;
+end;
+
+
+function _obj_PatternEnabled(const patternName : String; const pPlayer, graphicsLevel : Integer) : Boolean;
+begin
+	Result := False;
+	
+	if pPlayer <> 0 then
+	begin
+		var plName : String = ParserGetValueByKeyByHandle(pPlayer, 'Name');
+		var plHandle : Integer = GetPlayerHandleByName(plName);
+		
+		if (plHandle <> 0) then
+		begin
+			Result := True;
+			
+			var pPatterns : Integer = ParserSelectByHandleByKey(pPlayer, 'Patterns');
+			if pPatterns <> 0 then
+			begin
+				var i, pPattern : Integer;
+				for i := 0 to ParserGetCountByHandle(pPatterns)-1 do
+				begin
+					pPattern := ParserSelectByHandleByIndex(pPatterns, i);
+					if StrExists(patternName, ParserGetValueByKeyByHandle(pPattern, 'Name')) then
+					begin
+						Result := graphicsLevel <= ParserGetIntValueByKeyByHandle(pPattern, 'Level');
+						break;
+					end;
+				end;
+			end;
+		end;
+	end;
+end;
+
+
+procedure _obj_CleanPruner();
+begin
+   var i : Integer;
+   for i := 0 to gc_MaxPrunerObjects-1 do
+   begin
+      gSceneryPruner[i].baseName := '';
+      gSceneryPruner[i].frequency := 100;
+      gSceneryPruner[i].count := 0;
+   end;
+end;
+
+function _obj_GetPrunerObjectData(const pObjects : Integer; const baseName : String) : Integer;
+begin
+	Result := 0;
+	
+	var i, pObject : Integer;
+	for i := 0 to ParserGetCountByHandle(pObjects)-1 do
+	begin
+		pObject := ParserSelectByHandleByIndex(pObjects, i);
+		if StrExists(baseName, ParserGetValueByKeyByHandle(pObject, 'Name')) then
+		begin
+			Result := pObject;
+			break;
+		end;
+	end;
+end;
+
+function _obj_GetPrunerIndex(const baseName : String) : Integer;
+begin
+	Result := -1;
+	
+	var i : Integer;
+	for i := 0 to gc_MaxPrunerObjects-1 do
+	begin
+		if (gSceneryPruner[i].baseName = baseName) or (gSceneryPruner[i].count = 0) then
+		begin
+			Result := i;
+			break;
+		end;
+	end;
+end;
+
+
+function _obj_CheckPruning(const pObjects : Integer; const baseName : String; const graphicsLevel : Integer) : Boolean;
+begin
+   Result := False;
+   
+   var pObject : Integer = _obj_GetPrunerObjectData(pObjects, baseName);
+   if pObject <> 0 then
+   begin
+      var index : Integer = _obj_GetPrunerIndex(baseName);
+
+      if index >= 0 then
+      begin
+         if gSceneryPruner[index].count = 0 then // initialize new object in the array
+         begin
+            gSceneryPruner[index].baseName := baseName;
+            gSceneryPruner[index].frequency := ParserGetIntValueByIndexByHandle(ParserSelectByHandleByKey(pObject, 'Frequencies'), graphicsLevel);
+         end;
+
+         Inc(gSceneryPruner[index].count, 1);
+
+         Result := not _misc_WithinFrequency(gSceneryPruner[index].count, gSceneryPruner[index].frequency / 100);
+      end
+		else
+			ErrorLogI('Maximum pruning objects reached, object name: '+baseName);
+   end;
+end;
+
+
+function _obj_PrunePlayer(const pPlayer, graphicsLevel, checkedObjectsCount : Integer) : Integer;
+begin
+	Result := 0;
+	
+	if pPlayer <> 0 then
+	begin
+		var plName : String = ParserGetValueByKeyByHandle(pPlayer, 'Name');
+		var plHandle : Integer = GetPlayerHandleByName(plName);
+		
+		if (plHandle <> 0) and (graphicsLevel >= _pars_GetIntValueByKeyByHandleDef(pPlayer, 'PruneStart', 1000)) and (GetPlayerGameObjectsCountByHandle(plHandle) > 0) then
+		begin
+			var i, goHandle : Integer;
+			
+			var pObjects : Integer = ParserSelectByHandleByKey(pPlayer, 'Objects');
+			if pObjects <> 0 then
+			begin
+				for i := GetPlayerGameObjectsCountByHandle(plHandle)-1 downto checkedObjectsCount do
+				begin
+					goHandle := GetGameObjectHandleByIndex(i, plHandle);
+					
+					if _obj_CheckPruning(pObjects, GetGameObjectBaseNameByHandle(goHandle), graphicsLevel) then
+					begin
+						Result := Result + 1;
+						AddObjectToDestroyList(goHandle);
+					end;
+				end;
+			end;
+		end;
+	end;
+end;

@@ -1,0 +1,432 @@
+
+procedure _gui_ClearLayers();
+begin
+   var i : Integer;
+
+   for i := 0 to gc_gui_max_layers_number-1 do
+      gArr_gui_Layers[i] := 0;
+end;
+
+function _gui_GetLayerNameByID(layer_id : Integer; var dst_str : String) : Integer;
+begin
+   const cTopmostLayerName = 'guilocker';
+   const cCameraLayerName = 'cameractrl';
+   const cTooltipLayerName = 'tooltip';
+   const cTutorialLayerName = 'tutorial';
+   const cDragDropLayerName = 'drag_drop';
+   const cInterfaceLayerName = 'top';
+   const cChatLayerName = 'chat';
+   const cHUDTacticsUnitName = 'hudunit';
+   const cHUDTacticsTextName = 'hudtext';
+   const cHUDStrategyHeroName = 'hudhero';
+   const cHUDStrategyProvName = 'hudprov';
+   const cHUDStrategyResName = 'hudres';
+   const cLanChatLayerName = 'lanchat';
+
+   var names : array [0..gc_gui_max_layers_number] of String;
+   var i : Integer;
+
+   for i := 0 to gc_gui_max_layers_number-1 do
+      names[i] := '';
+
+   i := cTopmostLayer; names[i] := cTopmostLayerName;
+   i := cCameraLayer; names[i] := cCameraLayerName;
+   i := cTooltipLayer; names[i] := cTooltipLayerName;
+   i := cTutorialLayer; names[i] := cTutorialLayerName;
+   i := cDragDropLayer; names[i] := cDragDropLayerName;
+   i := cInterfaceLayer; names[i] := cInterfaceLayerName;
+   i := cChatLayer; names[i] := cChatLayerName;
+   i := cHUDTacticsUnitLayer; names[i] := cHUDTacticsUnitName;
+   i := cHUDTacticsTextLayer; names[i] := cHUDTacticsTextName;
+   i := cHUDStrategyHeroLayer; names[i] := cHUDStrategyHeroName;
+   i := cHUDStrategyProvLayer; names[i] := cHUDStrategyProvName;
+   i := cHUDStrategyResLayer; names[i] := cHUDStrategyResName;
+   i := cLanChatLayer; names[i] := cLanChatLayerName;
+
+   dst_str := names[layer_id];
+end;
+
+// because create is very rare function we can do reassignment each time instead of creating static strings array
+function _gui_CreateLayer(layer_id : Integer) : Integer;
+begin
+   var names : array [0..gc_gui_max_layers_number] of String;
+   var types : array [0..gc_gui_max_layers_number] of Integer;
+   var i : Integer;
+
+   for i := 0 to gc_gui_max_layers_number-1 do
+   begin
+      names[i] := '';
+      types[i] := 0;
+   end;
+
+   i := cTopmostLayer;         _gui_GetLayerNameByID(i,names[i]); types[i] := 1;
+   i := cCameraLayer;          _gui_GetLayerNameByID(i,names[i]); types[i] := 3;
+   i := cTooltipLayer;         _gui_GetLayerNameByID(i,names[i]); types[i] := 1;
+   i := cTutorialLayer;        _gui_GetLayerNameByID(i,names[i]); types[i] := 1;
+   i := cDragDropLayer;        _gui_GetLayerNameByID(i,names[i]); types[i] := 1;
+   i := cInterfaceLayer;       _gui_GetLayerNameByID(i,names[i]); types[i] := 1;
+   i := cChatLayer;            _gui_GetLayerNameByID(i,names[i]); types[i] := 4;
+   i := cHUDTacticsUnitLayer;  _gui_GetLayerNameByID(i,names[i]); types[i] := 2;
+   i := cHUDTacticsTextLayer;  _gui_GetLayerNameByID(i,names[i]); types[i] := 2;
+   i := cHUDStrategyHeroLayer; _gui_GetLayerNameByID(i,names[i]); types[i] := 2;
+   i := cHUDStrategyProvLayer; _gui_GetLayerNameByID(i,names[i]); types[i] := 2;
+   i := cHUDStrategyResLayer;  _gui_GetLayerNameByID(i,names[i]); types[i] := 2;
+   i := cLanChatLayer;         _gui_GetLayerNameByID(i,names[i]); types[i] := 5;
+
+   if (layer_id > 0) and (layer_id < gc_gui_max_layers_number) and (names[layer_id] <> '') then
+   begin
+      i := GetGUIElementTopIndexByName(names[layer_id]);
+      if i <> 0 then
+      begin
+         Log('WARNING: Layer is already available. ID='+IntToStr(layer_id)+', Name: '+names[layer_id]);
+         RemoveGUIElement(i);
+         i := 0;
+      end;
+
+      case types[layer_id] of
+         1 : begin
+            i := AddNewElementTopByClassName(names[layer_id], 'TOSWImageGuiControl', 0);
+            SetGUIElementAlign(i, 'halLeft', 'valTop');
+            SetGUIElementAllPositionRect(i, 0, 0, GetViewerWidth(), GetViewerHeight());
+            SetGUIElementMaterial(i, gc_gui_material_blank_0);
+         end;
+         2 : begin
+            i := AddNewElementTopByClassName(names[layer_id], 'TXGroupHUDCollection', 0);
+            SetGUIElementAlign(i, 'halLeft', 'valTop');
+            SetGUIElementAllPositionRect(i, 0, 0, GetViewerWidth(), GetViewerHeight());
+         end;
+         3 : begin
+            i := AddNewElementTopByClassName(names[layer_id], 'TOSWImageGuiControl', 0);
+            SetGUIElementAlign(i, 'halLeft', 'valTop');
+            SetGUIElementAllPositionRect(i, 0, 0, GetViewerWidth(), GetViewerHeight());
+            SetGUIElementLogicPositionRect(i, 0, 0, GetViewerWidth(), GetViewerHeight());
+            SetGUIElementMaterial(i, gc_gui_material_blank_0);
+            SetGUIAllowEvents(i, False, False, False);
+            SetGUIElementVisible(i, true);
+            SetGUICameraControl(i);
+         end;
+         4 : begin
+            StringRegister0 := names[layer_id];
+            GUIExecuteState('CreateChatLayer');
+            i := IntRegister0;
+         end;
+         5 : begin
+            StringRegister0 := names[layer_id];
+            GUIExecuteState('VVK.CreateLanChatLayer');
+            i := IntRegister0;
+         end;
+      end;
+      gArr_gui_Layers[layer_id] := i;
+
+      IntRegister0 := 0;
+      GUIExecuteState('VVK.ReorderInterfaceLayers');
+
+      Result := i;
+   end
+   else
+   begin
+      ErrorLogI('Attempt to create unknown Layer ID: '+IntToStr(layer_id));
+      Result := 0;
+   end;
+end;
+
+function _gui_GetLayerExt(layer_id : Integer; do_create : Integer) : Integer;
+begin
+   if (layer_id > 0) and (layer_id < gc_gui_max_layers_number) then
+   begin
+      var compat_mode : Integer = 0;
+      var lname : String;
+
+      if compat_mode <> 0 then
+      begin
+         _gui_GetLayerNameByID(layer_id,lname);
+         compat_mode := GetGUIElementTopIndexByName(lname);
+         if (compat_mode = 0) and (do_create > 0) then
+            compat_mode := _gui_CreateLayer(layer_id);
+         Result := compat_mode;
+      end
+      else
+      begin
+         if (gArr_gui_Layers[layer_id] = 0) and (do_create <> -1) then
+         begin
+            _gui_GetLayerNameByID(layer_id,lname);
+            ErrorLog('Attempt to retrieve non-existent layer. ID: '+IntToStr(layer_id)+', Name: '+lname);
+         end;
+         if (gArr_gui_Layers[layer_id] = 0) and (do_create > 0) then
+            _gui_CreateLayer(layer_id);
+         Result := gArr_gui_Layers[layer_id];
+      end;
+   end
+   else
+   begin
+      ErrorLogI('Attempt to create unknown Layer ID: '+IntToStr(layer_id));
+      Result := 0;
+   end;
+end;
+
+function _gui_GetLayer(layer_id : Integer) : Integer;
+begin
+   Result := _gui_GetLayerExt(layer_id,0);
+end;
+
+function _gui_GetLayerI() : Integer;
+begin
+   Result := _gui_GetLayerExt(cInterfaceLayer,0);
+end;
+
+function _gui_RootWindowGetTopmost(mode : Integer) : Integer;
+begin
+   IntRegister2 := _gui_GetLayerI();
+   IntRegister0 := 0;
+   IntRegister1 := 0;
+   IntRegister3 := mode;
+   GUIExecuteState('VVK.RootWindowOperations');
+   Result := IntRegister0;
+end;
+
+function _gui_RootWindowGetZOrder(windowHandle : Integer) : Integer;
+begin
+   var p : Integer;
+   var top : Integer = _gui_GetLayerI();
+
+   Result := cRootWindowNormal;
+   p := GetGUIElementParentByIndex(windowHandle);
+   if p = top then
+   begin
+      p := GetGUIElementIndexByNameParent(cRootWindowZOrderName,windowHandle);
+      if p <> 0 then
+         Result := _sa_GetAsInt(GetGUIElementStringTag(p),3);
+   end;
+end;
+
+function _gui_RootWindowGetExtraPriority(windowHandle : Integer) : Integer;
+begin
+   var p : Integer;
+   var top : Integer = _gui_GetLayerI();
+
+   Result := 0;
+   p := GetGUIElementParentByIndex(windowHandle);
+   if p = top then
+   begin
+      p := GetGUIElementIndexByNameParent(cRootWindowZOrderName,windowHandle);
+      if p <> 0 then
+         Result := _sa_GetAsInt(GetGUIElementStringTag(p),4);
+   end;
+end;
+
+function _gui_RootWindowGetExtraAttr(windowHandle : Integer) : Integer;
+begin
+   var p : Integer;
+   var top : Integer = _gui_GetLayerI();
+
+   Result := 0;
+   p := GetGUIElementParentByIndex(windowHandle);
+   if p = top then
+   begin
+      p := GetGUIElementIndexByNameParent(cRootWindowZOrderName,windowHandle);
+      if p <> 0 then
+         Result := _sa_GetAsInt(GetGUIElementStringTag(p),5);
+   end;
+end;
+
+// see cRootWindow constants
+// return true if window was already in list
+function _gui_RootWindowAddExt(windowHandle : Integer; mode : Integer; attr1 : Integer; attr2 : Integer; attr3 : String) : Boolean;
+begin
+   var temp_str : String;
+
+   IntRegister2 := _gui_GetLayerI();
+   IntRegister0 := mode;
+   IntRegister1 := windowHandle;
+   IntRegister3 := 0;
+   temp_str := '';
+   _sa_AddAsInt(temp_str,attr1);
+   _sa_AddAsInt(temp_str,attr2);
+   if attr3 <> '' then
+       _sa_Add(temp_str,attr3);
+   StringRegister0 := temp_str;
+   GUIExecuteState('VVK.RootWindowOperations');
+   Result := BoolRegister0;
+end;
+
+function _gui_RootWindowAdd(windowHandle : Integer; mode : Integer) : Boolean;
+begin
+   Result := _gui_RootWindowAddExt(windowHandle,mode,0,0,'');
+end;
+
+function _gui_RootWindowAddN(windowHandle : Integer) : Boolean;
+begin
+   Result := _gui_RootWindowAddExt(windowHandle,cRootWindowNormal,0,0,'');
+end;
+
+function _gui_RootWindowAddA(windowHandle : Integer) : Boolean;
+begin
+   Result := _gui_RootWindowAddExt(windowHandle,cRootWindowActive,0,0,'');
+end;
+
+function _gui_RootWindowAddM(windowHandle : Integer) : Boolean;
+begin
+   Result := _gui_RootWindowAddExt(windowHandle,cRootWindowModal,0,0,'');
+end;
+
+// if windowHandle is zero, then simply rearrange layers
+// returns true if window handle was found and was special root window
+function _gui_RootWindowRemoveFromList(windowHandle : Integer) : Boolean;
+begin
+   var top : Integer = _gui_GetLayerI();
+
+   Result := False;
+   if windowHandle <> 0 then
+   begin
+      var p : Integer;
+
+      p := GetGUIElementParentByIndex(windowHandle);
+      if p = top then
+      begin
+         p := GetGUIElementIndexByNameParent(cRootWindowZOrderName,windowHandle);
+         if p <> 0 then
+         begin
+            Result := true;
+            RemoveGUIElement(p);
+         end;
+      end
+      else
+         Log('Attempt to remove non-root window. Name: '+GetGUIElementNameByIndex(windowHandle)+', Parent: '+GetGUIElementNameByIndex(p));
+   end;
+
+   IntRegister2 := _gui_GetLayerI();
+   IntRegister0 := 0;
+   IntRegister1 := 0;
+   IntRegister3 := 0;
+   GUIExecuteState('VVK.RootWindowOperations');
+   IntRegister0 := 0;
+   GUIExecuteState('VVK.ReorderInterfaceLayers');
+end;
+
+procedure _gui_RootWindowRebuild();
+begin
+   _gui_RootWindowRemoveFromList(0);
+end;
+
+function _gui_RootWindowRemoveWithFade(handle : Integer;fade_time : Float) : Boolean;
+begin
+   var h : Integer;
+
+   if (handle <> 0) and (GetGUIElementParentByIndex(handle) = _gui_GetLayerI()) then
+   begin
+      h := 0;
+      if fade_time <> 0 then
+      begin
+         IntRegister0 := handle;
+         IntRegister1 := 1;
+         FloatRegister0 := fade_time;
+         GUIExecuteState('VVK.FadeWindow');
+      end
+      else
+      begin
+         SetGUIElementName(handle,'');
+         RemoveGUIElement(handle);
+      end;
+   end
+   else
+      h := handle;
+   Result := _gui_RootWindowRemoveFromList(h);
+end;
+
+function _gui_RootWindowGetBase(whd : Integer) : Integer;
+begin
+   var p1,p2,i : Integer;
+   var top : Integer = _gui_GetLayerI();
+
+   p1 := whd;
+   for i := 0 to $200 do
+   begin
+      p2 := GetGUIElementParentByIndex(p1);
+      if (p2 = 0) or (p2 = top) then
+         break;
+      p1 := p2;
+   end;
+   Result := p1;
+end;
+
+
+function _gui_RootWindowGetParentZOrder(whd : Integer) : Integer;
+begin
+   var p1 : Integer;
+
+   p1 := _gui_RootWindowGetBase(whd);
+   if p1 <> 0 then
+      Result := _gui_RootWindowGetZOrder(p1)
+   else
+      Result := 0;
+   //Log('ZO: '+IntToStr(Result));
+end;
+
+procedure _gui_RootWindowInit();
+begin
+//   gc_gui_scaleto768 = 0.85;
+
+   if GetViewerHeight() < gc_gui_min_viewerheight then
+   begin
+      var s : Float;
+      var i : Integer;
+
+      s := (GetViewerHeight() / gc_gui_min_viewerheight) * 100;
+      i := Floor(s);
+      gFloat_RootWindowScale := i / 100;
+   end
+   else
+      gFloat_RootWindowScale := 1.0;
+
+   Log('DX: '+IntToStr(GetViewerWidth())+', DY: '+IntToStr(GetViewerHeight())+', Scale value: '+FloatToStr(gFloat_RootWindowScale));
+end;
+
+function _gui_RootWindowGetScale(whd : Integer) : Float;
+begin
+   var p1,p,a : Integer;
+
+   Result := 1.0;
+
+   p1 := _gui_RootWindowGetBase(whd);
+   if p1 <> 0 then
+   begin
+      p := GetGUIElementIndexByNameParent(cRootWindowZOrderName,p1);
+      if p <> 0 then
+         a := _sa_GetAsInt(GetGUIElementStringTag(p),5);
+      if (p <> 0) and ((a and cRootWindowAttrScaleByY) <> 0) then
+         Result := gFloat_RootWindowScale;
+   end;
+end;
+
+function _gui_RootWindowGetBaseScaleY() : Float;
+begin
+   Result := gFloat_RootWindowScale;
+end;
+
+function _gui_RootWindowGetBaseScaleX() : Float;
+begin
+   Result := gFloat_RootWindowScale;
+end;
+
+function _gui_GetWindow(windowName : String) : Integer;
+begin
+   Result := GetGUIElementIndexByNameParent(windowName, _gui_GetLayer(cInterfaceLayer));
+end;
+
+procedure _gui_Show(elmHandle : Integer; bVisible : Boolean);
+begin
+   var i : Integer;
+   for i := GetGUIElementChildrenCount(elmHandle)-1 downto 0 do
+   begin
+      _gui_Show(GetGUIElementChildrenByIndex(elmHandle, i), bVisible);
+   end;
+   SetGUIElementVisible(elmHandle, bVisible);
+end;
+
+function _gui_IsRecycledElement(elmHandle : Integer) : Boolean;
+begin
+   var elmName : String = GetGUIElementNameByIndex(elmHandle);
+   Result := SameText(elmName, 'hintWindow') or SameText(elmName, 'battle_tooltip') or SameText(elmName, 'prov_defender_tooltip');
+end;
+
+

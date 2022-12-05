@@ -1,0 +1,362 @@
+section.begin
+   Name = Initial
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\Initial.inc
+section.end
+
+section.begin
+   Name = OnBeforeSave
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\OnBeforeSave.inc
+section.end
+
+section.begin
+   Name = OnAfterLoad
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\OnAfterLoad.inc
+section.end
+
+// SaveInfoToParser
+section.begin
+   Name = SaveInfoToParser
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\SaveInfoToParser.inc
+section.end
+
+section.begin
+   Name = Nothing
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\Nothing.inc
+section.end
+
+section.begin
+   Name = GetGlobalGroupHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetGlobalGroupHandle.inc
+section.end
+
+section.begin
+   Name = GetSelectedGroupHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetSelectedGroupHandle.inc
+section.end
+
+section.begin
+   Name = RefreshGlobalGroup
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\RefreshGlobalGroup.inc
+section.end
+
+section.begin
+   Name = GetMouseGroupHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetMouseGroupHandle.inc
+section.end
+
+section.begin
+   Name = AfterBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\AfterBattle.inc
+section.end
+
+section.begin
+   Name = SetupTowersTarget
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\SetupTowersTarget.inc
+section.end
+
+section.begin
+   Name = BeforeTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\BeforeTurn.inc
+section.end
+
+section.begin
+   Name = MakeTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\MakeTurn.inc
+section.end
+
+section.begin
+   Name = MoveUnits
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\MoveUnits.inc
+section.end
+
+section.begin
+   Name = AfterTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\AfterTurn.inc
+section.end
+
+section.begin
+   Name = CheckLose
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CheckLose.inc
+section.end
+
+section.begin
+   Name = GetDeadUnitInHex
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetDeadUnitInHex.inc
+section.end
+
+section.begin
+   Name = GetEnemyPlHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetEnemyPlHandle.inc
+section.end
+
+section.begin
+   Name = GetHeroHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetHeroHandle.inc
+section.end
+
+section.begin
+   Name = AddUnitsExperience
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\AddUnitsExperience.inc
+section.end
+
+section.begin
+   Name = MakeUpgrades
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\MakeUpgrades.inc
+section.end
+
+section.begin
+   Name = TakeMedals
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\TakeMedals.inc
+section.end
+
+section.begin
+   Name = CheckHumanTurn
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CheckHumanTurn.inc
+section.end
+
+section.begin
+   Name = SetAutoBattle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\SetAutoBattle.inc
+section.end
+
+section.begin
+   Name = GetBattleTrophies
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetBattleTrophies.inc
+section.end
+
+section.begin
+   Name = GetShootGroupHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetShootGroupHandle.inc
+section.end
+
+section.begin
+   Name = AddUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\AddUnit.inc
+section.end
+
+section.begin
+   Name = SummonUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\SummonUnit.inc
+section.end
+
+section.begin
+   Name = GetSpellVictimUID
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetSpellVictimUID.inc
+section.end
+
+section.begin
+   Name = CalcActions
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CalcActions.inc
+section.end
+
+section.begin
+   Name = CalcDangerMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CalcDangerMap.inc
+section.end
+
+section.begin
+   Name = CalcSimDangerMap
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CalcSimDangerMap.inc
+section.end
+
+section.begin
+   Name = IsAlive
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\IsAlive.inc
+section.end
+
+section.begin
+   Name = IsAllActionsDone
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\IsAllActionsDone.inc
+section.end
+
+section.begin
+   Name = GetSabotagePrices
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetSabotagePrices.inc
+section.end
+
+section.begin
+   Name = MakeSabotage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\MakeSabotage.inc
+section.end
+
+section.begin
+   Name = CheckFearVictory
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CheckFearVictory.inc
+section.end
+
+section.begin
+   Name = IsArmyScared
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\IsArmyScared.inc
+section.end
+
+section.begin
+   Name = UnitPlacement
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\UnitPlacement.inc
+section.end
+
+section.begin
+   Name = GetMapPlayerHandle
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\GetMapPlayerHandle.inc
+section.end
+
+section.begin
+   Name = FindNecromancyUnit
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\FindNecromancyUnit.inc
+section.end
+
+section.begin
+   Name = FillNecromancyInfo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\FillNecromancyInfo.inc
+section.end
+
+section.begin
+   Name = AICheckNecromancy
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\AICheckNecromancy.inc
+section.end
+
+section.begin
+   Name = ModifyAllVisualParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\ModifyAllVisualParams.inc
+section.end
+
+section.begin
+   Name = ___________________
+   LanClientExecute = True
+   UsedFileName = 
+section.end
+
+section.begin
+   Name = RestoreParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\RestoreParams.inc
+section.end
+
+section.begin
+   Name = ClearEffects
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\ClearEffects.inc
+section.end
+
+section.begin
+   Name = LogPlayersInfo
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\LogPlayersInfo.inc
+section.end
+
+section.begin
+   Name = CheckVisualParams
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CheckVisualParams.inc
+section.end
+
+section.begin
+   CurrentState = Nothing
+   SaveVariables = False
+section.end
+
+section.begin
+   Name = CheckSabotage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\CheckSabotage.inc
+section.end
+
+section.begin
+   Name = OrderSabotage
+   LanClientExecute = True
+   UsedFile = True
+   UsedFileName = .\data\scripts\units\global.inc\OrderSabotage.inc
+section.end
+
